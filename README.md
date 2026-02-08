@@ -28,7 +28,7 @@ The skills are organized following the **Agile V™ Infinity Loop**:
 ├── left-side/           # Intent & Decomposition (Requirement Architect, Logic Gatekeeper)
 ├── apex/                # Synthesis & Build (Build Agent, Test Designer, Schematic Generator, domain extensions)
 ├── right-side/          # Verification & Red Teaming (Red Team Verifier)
-└── compliance/          # Audit & Governance (Compliance Auditor, ISO-Linker)
+└── compliance/          # Audit & Governance (Compliance Auditor)
 ```
 
 
@@ -37,7 +37,7 @@ The skills are organized following the **Agile V™ Infinity Loop**:
 |---------------------|-------------|-------------------------------------------------------------------------|
 | agile-v-core        | Foundation  | The baseline "operating system" for all agents.                           |
 | requirement-architect | Left Side | Converts intent into atomic, traceable requirements.                    |
-| logic-gatekeeper    | Left Side   | Validates requirements against physical/hardware constraints.           |
+| logic-gatekeeper    | Left Side   | Validates requirements for ambiguity and physical/hardware constraints.    |
 | build-agent         | Apex        | Generates code, firmware, HDL from approved requirements (language-agnostic). |
 | test-designer       | Apex        | Designs verification suite from requirements only—runs parallel to Build Agent. |
 | schematic-generator | Apex        | Generates schematics, netlists, HDL for hardware/PCB projects.           |
@@ -45,8 +45,8 @@ The skills are organized following the **Agile V™ Infinity Loop**:
 | build-agent-js      | Apex        | JavaScript/TypeScript/Web build agent for web apps and backends.         |
 | build-agent-python  | Apex        | Python build agent for scripts, backends, data pipelines, and ML.       |
 | build-agent-embedded| Apex        | C/C++ build agent for embedded systems, firmware, and MCU projects.     |
-| red-team-verifier   | Right Side  | Challenges build artifacts using independent verification.              |
-| compliance-auditor  | Compliance  | Automates real-time decision logging for ISO/GxP.                        |
+| red-team-verifier   | Right Side  | Challenges build artifacts; produces Validation Summary for Human Gate 2. |
+| compliance-auditor  | Compliance  | Automates decision logging, traceability matrix (ATM), and VSR for ISO/GxP.|
 
 
 ## Skill Interaction Flow
