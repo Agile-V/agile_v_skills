@@ -21,32 +21,40 @@ By deploying these skills, you move away from "unstructured prompting" and towar
 
 ## 🛠 Repository Structure
 
-The skills are organized following the **Agile V™ Infinity Loop**:
+The skills are organized following the **Agile V™ Infinity Loop**. Each skill lives at the root level (or under `domains/` for language-specific extensions) for ease of use—you can reference skills directly with simple paths like `./agile-v-core/SKILL.md` when configuring Cursor or other agent tools.
 
 ```text
-├── foundation/          # Core philosophy (The "Agile V™ Core")
-├── left-side/           # Intent & Decomposition (Requirement Architect, Logic Gatekeeper)
-├── apex/                # Synthesis & Build (Build Agent, Test Designer, Schematic Generator, domain extensions)
-├── right-side/          # Verification & Red Teaming (Red Team Verifier)
-└── compliance/          # Audit & Governance (Compliance Auditor)
+├── agile-v-core/           # Foundation: Core philosophy and operational logic
+├── requirement-architect/  # Left Side: Intent and decomposition
+├── logic-gatekeeper/       # Left Side: Ambiguity and constraint validation
+├── build-agent/            # Apex: Core build agent (language-agnostic)
+├── test-designer/          # Apex: Verification suite design
+├── schematic-generator/    # Apex: Schematics, netlists, HDL
+├── domains/                # Apex: Language-specific build agent extensions
+│   ├── build-agent-dart/
+│   ├── build-agent-embedded/
+│   ├── build-agent-js/
+│   └── build-agent-python/
+├── red-team-verifier/      # Right Side: Verification and Red Teaming
+└── compliance-auditor/     # Compliance: Audit and governance
 ```
 
 
 ## 📦 Included Skills
-| Skill               | Category    | Purpose                                                                 |
-|---------------------|-------------|-------------------------------------------------------------------------|
-| agile-v-core        | Foundation  | The baseline "operating system" for all agents.                           |
-| requirement-architect | Left Side | Converts intent into atomic, traceable requirements.                    |
-| logic-gatekeeper    | Left Side   | Validates requirements for ambiguity and physical/hardware constraints.    |
-| build-agent         | Apex        | Generates code, firmware, HDL from approved requirements (language-agnostic). |
-| test-designer       | Apex        | Designs verification suite from requirements only—runs parallel to Build Agent. |
-| schematic-generator | Apex        | Generates schematics, netlists, HDL for hardware/PCB projects.           |
-| build-agent-dart    | Apex        | Dart/Flutter build agent for mobile apps and packages.                  |
-| build-agent-js      | Apex        | JavaScript/TypeScript/Web build agent for web apps and backends.         |
-| build-agent-python  | Apex        | Python build agent for scripts, backends, data pipelines, and ML.       |
-| build-agent-embedded| Apex        | C/C++ build agent for embedded systems, firmware, and MCU projects.     |
-| red-team-verifier   | Right Side  | Challenges build artifacts; produces Validation Summary for Human Gate 2. |
-| compliance-auditor  | Compliance  | Automates decision logging, traceability matrix (ATM), and VSR for ISO/GxP.|
+| Skill               | Category    | Path                         | Purpose                                                                 |
+|---------------------|-------------|------------------------------|-------------------------------------------------------------------------|
+| agile-v-core        | Foundation  | `agile-v-core/`              | The baseline "operating system" for all agents.                           |
+| requirement-architect | Left Side | `requirement-architect/`     | Converts intent into atomic, traceable requirements.                    |
+| logic-gatekeeper    | Left Side   | `logic-gatekeeper/`          | Validates requirements for ambiguity and physical/hardware constraints.    |
+| build-agent         | Apex        | `build-agent/`               | Generates code, firmware, HDL from approved requirements (language-agnostic). |
+| test-designer       | Apex        | `test-designer/`             | Designs verification suite from requirements only—runs parallel to Build Agent. |
+| schematic-generator | Apex        | `schematic-generator/`       | Generates schematics, netlists, HDL for hardware/PCB projects.           |
+| build-agent-dart    | Apex        | `domains/build-agent-dart/`  | Dart/Flutter build agent for mobile apps and packages.                  |
+| build-agent-js      | Apex        | `domains/build-agent-js/`    | JavaScript/TypeScript/Web build agent for web apps and backends.         |
+| build-agent-python  | Apex        | `domains/build-agent-python/`| Python build agent for scripts, backends, data pipelines, and ML.       |
+| build-agent-embedded| Apex        | `domains/build-agent-embedded/`| C/C++ build agent for embedded systems, firmware, and MCU projects.     |
+| red-team-verifier   | Right Side  | `red-team-verifier/`        | Challenges build artifacts; produces Validation Summary for Human Gate 2. |
+| compliance-auditor  | Compliance  | `compliance-auditor/`        | Automates decision logging, traceability matrix (ATM), and VSR for ISO/GxP.|
 
 
 ## Skill Interaction Flow
@@ -104,7 +112,7 @@ Agile V™ is built to function as the quality layer between your team’s exper
 Thanks to Agent Skills every agent behaves according to the same engineering principles, no matter where or how it runs.
 
 ### 🧩 Encoding Company Knowledge into "Agent DNA"
-Organizations can extend the public Agile V™ foundation with private **Company Skills** that embed institutional knowledge directly into agent behavior.
+Organizations can extend the public Agile V™ skills (e.g., `agile-v-core`) with private **Company Skills** that embed institutional knowledge directly into agent behavior.
 
 * **Internal Compliance:** Wrap Agile V™ skills with company-specific safety protocols, regulatory checklists, or GxP requirements so every agent interaction is compliant by default.
 * **Legacy Wisdom:** Capture “lessons learned” from past projects in a **Gatekeeper Skill** that prevents agents from repeating known failure modes or architectural mistakes.
@@ -119,7 +127,7 @@ Agile V™ establishes a minimum quality floor across all teams and agents.
 3.  **Institutional Memory:** With Principle #9 (Decision Logging), the reasoning behind engineering choices is stored in the repository, not in individual developers’ heads, ensuring long-term maintainability.
 
 > [!TIP] 
-> Teams can maintain a private `/internal-skills` directory that inherits from the `/foundation` skills. This enables a **“Global Standard, Local Context”** workflow; shared principles with company-specific adaptations.
+> Teams can maintain a private `/internal-skills` directory that inherits from the root-level skills (e.g., `agile-v-core/`). This enables a **“Global Standard, Local Context”** workflow; shared principles with company-specific adaptations.
 
 
 
