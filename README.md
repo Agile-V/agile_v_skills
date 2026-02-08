@@ -106,7 +106,7 @@ Organizations can extend the public Agile V™ foundation with private **Company
 * **Legacy Wisdom:** Capture “lessons learned” from past projects in a **Gatekeeper Skill** that prevents agents from repeating known failure modes or architectural mistakes.
 * **Tool Agnostic Logic:** Because Agile V™ focuses on *Logic Gates* and *Traceability*, it works whether your team uses GitHub Copilot, Cursor, custom LangChain flows, or manual prompting.
 
-Your standards live in the skills—not in the tool.
+Your standards live in the skills, not in the tool.
 
 ### 🛡️ Quality as a Constant
 Agile V™ establishes a minimum quality floor across all teams and agents.
