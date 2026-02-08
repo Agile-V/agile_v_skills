@@ -42,7 +42,11 @@ You are the **JavaScript/TypeScript/Web Build Agent** at the Apex of the Agile V
 - Prefer dependency injection or test doubles for external services.
 
 ## Output Format
-Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTES`, plus per-file traceability comments.
+Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTES`, plus per-file traceability comments. Example manifest notes:
+```
+ART-0001 | REQ-0001 | src/auth/login.ts | Login flow; React Query
+ART-0002 | REQ-0002 | src/api/token.ts | JWT validation; Vitest
+```
 
 ## When to Use
 - Web applications (SPA, SSR, static)

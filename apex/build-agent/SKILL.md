@@ -47,12 +47,17 @@ ART-0002 | REQ-0002 | src/auth/token.ts | JWT validation
 ```
 
 ### Per-Artifact Header (recommended)
-At the top of each generated file, include a traceability comment:
+At the top of each generated file, include a traceability comment. Examples by language:
 ```
-// REQ-XXXX: [Brief requirement reference]
+// TypeScript/JavaScript: REQ-0001: Login flow with email/password
+# Python: REQ-0001: Login flow with email/password
+/* C/C++: REQ-0001: Login flow with email/password */
+-- HDL (VHDL/Verilog): REQ-0001: Login flow with email/password
 ```
 
 ## Halt Conditions
-- Ambiguous requirement → Ask Human for clarification.
-- Missing requirement link → Request requirement update.
-- Physical constraint violation → Flag and halt; do not emit.
+Halt and do not emit when:
+- **Ambiguous requirement:** Requirement contains subjective terms or multiple valid interpretations. Example: "Handle errors gracefully" without defining behavior.
+- **Missing requirement link:** Artifact cannot be mapped to a parent REQ-XXXX. Example: Adding a utility function with no REQ reference.
+- **Physical constraint violation:** Logic conflicts with Logic Gatekeeper constraints (I/O pins, power, thermal). Example: Assigning GPIO used by another peripheral.
+- **Conflict with approved Blueprint:** Implementing a feature not in the approved requirements.

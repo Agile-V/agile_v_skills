@@ -43,7 +43,11 @@ You are the **Dart/Flutter Build Agent** at the Apex of the Agile V infinity loo
 - Use `testWidgets` for widget tests; structure for `pumpWidget` and `find.byType` / `find.byKey` patterns.
 
 ## Output Format
-Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTES`, plus per-file traceability comments.
+Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTES`, plus per-file traceability comments. Example manifest notes:
+```
+ART-0001 | REQ-0001 | lib/auth/login.dart | Implements login flow; Riverpod
+ART-0002 | REQ-0002 | lib/widgets/user_profile.dart | Profile widget; testWidgets-ready
+```
 
 ## When to Use
 - Flutter apps (mobile, web, desktop)

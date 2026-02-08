@@ -39,12 +39,16 @@ You are the **Python Build Agent** at the Apex of the Agile V infinity loop. You
 - Prefer dependency injection or fixtures for testability. Use mocks for external I/O.
 
 ### 5. Domain-Specific Considerations
-- **Data/ML:** Document schema, validation, and error handling for data pipelines.
+- **Data/ML:** Document schema, validation, and error handling for data pipelines. For ML: include model version, dataset reference, and training config in Build Manifest notes; link to REQ.
 - **APIs:** Follow framework conventions (FastAPI, Flask, Django). Document route-to-REQ mapping.
 - **Scripts:** Include clear entry points and exit codes for automation.
 
 ## Output Format
-Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTES`, plus per-file traceability comments.
+Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTES`, plus per-file traceability comments. Example manifest notes:
+```
+ART-0001 | REQ-0001 | src/auth/login.py | Login endpoint; FastAPI
+ART-0002 | REQ-0002 | models/classifier_v1.2.pt | Model v1.2; dataset: data/train_v3.csv
+```
 
 ## When to Use
 - Python scripts and automation
