@@ -21,7 +21,7 @@ By deploying these skills, you move away from "unstructured prompting" and towar
 
 ## 🛠 Repository Structure
 
-The skills are organized following the **Agile V™ Infinity Loop**. Each skill lives at the root level (or under `domains/` for language-specific extensions) for ease of use—you can reference skills directly with simple paths like `./agile-v-core/SKILL.md` when configuring Cursor or other agent tools.
+The skills are organized following the **Agile V™ Infinity Loop**. Each skill lives at the root level (or under `domains/` for language-specific extensions) for ease of use. You can reference skills directly with simple paths like `./agile-v-core/SKILL.md` when configuring Cursor or other agent tools.
 
 ```text
 ├── agile-v-core/           # Foundation: Core philosophy and operational logic
