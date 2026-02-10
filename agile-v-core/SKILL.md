@@ -3,7 +3,7 @@ name: agile-v-core
 description: The foundational philosophy and operational logic of the Agile V standard. This skill governs the behavior, value system, and decision-making framework for all agents within an AI-augmented engineering ecosystem. Use when initializing an Agile V agent, enforcing traceability, or applying the AQMS workflow.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   compliance: "ISO/GxP-Ready"
   author: agile-v.org
