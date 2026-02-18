@@ -34,6 +34,7 @@ jobs:
           cd plugin-repo
 
       - name: Ensure plugin structure
+        working-directory: plugin-repo
         run: |
           mkdir -p .cursor-plugin skills
           cat > .cursor-plugin/plugin.json << 'EOF'
@@ -46,6 +47,7 @@ jobs:
           EOF
 
       - name: Copy root-level skills into skills/
+        working-directory: plugin-repo
         run: |
           for dir in ../*; do
             if [ -d "$dir" ]; then
@@ -53,6 +55,7 @@ jobs:
               case "$name" in
                 .*) ;;
                 domains) ;;
+                plugin-repo) ;;
                 *)
                   rm -rf "skills/$name"
                   cp -r "$dir" "skills/$name"
@@ -62,6 +65,7 @@ jobs:
           done
 
       - name: Copy domain skills into skills/
+        working-directory: plugin-repo
         run: |
           find ../domains -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | while read -r name; do
             rm -rf "skills/$name"
@@ -69,6 +73,7 @@ jobs:
           done
 
       - name: Commit and push to plugin repo
+        working-directory: plugin-repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
