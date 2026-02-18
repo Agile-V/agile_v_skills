@@ -36,7 +36,8 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 │   ├── build-agent-js/
 │   └── build-agent-python/
 ├── red-team-verifier/      # Right Side: Verification and Red Teaming
-└── compliance-auditor/     # Compliance: Audit and governance
+├── compliance-auditor/     # Compliance: Audit and governance
+└── documentation-agent/    # Documentation: Standards-based repo docs (ISO 9001, V-Model, ISO 27001)
 ```
 
 
@@ -54,7 +55,8 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 | build-agent-python  | Apex        | `domains/build-agent-python/`| Python build agent for scripts, backends, data pipelines, and ML.       |
 | build-agent-embedded| Apex        | `domains/build-agent-embedded/`| C/C++ build agent for embedded systems, firmware, and MCU projects.     |
 | red-team-verifier   | Right Side  | `red-team-verifier/`        | Challenges build artifacts; produces Validation Summary for Human Gate 2. |
-| compliance-auditor  | Compliance  | `compliance-auditor/`        | Automates decision logging, traceability matrix (ATM), and VSR for ISO/GxP.|
+| compliance-auditor  | Compliance  | `compliance-auditor/`        | Automates decision logging, traceability matrix (ATM), and VSR for ISO/GxP. |
+| documentation-agent | Compliance  | `documentation-agent/`      | Generates standards-based repo documentation (ISO 9001, V-Model, ISO 27001, optional GAMP 5) into `docs/` with hub README, cross-reference matrix, and Mermaid diagrams. |
 
 
 ## Skill Interaction Flow
@@ -68,6 +70,7 @@ sequenceDiagram
     participant TD as Test Designer
     participant RTV as Red Team Verifier
     participant CA as Compliance Auditor
+    participant DA as Documentation Agent
 
     Human->>RA: Product Intent
     RA->>RA: REQ-XXXX, Blueprint
@@ -95,10 +98,17 @@ sequenceDiagram
     RTV->>RTV: Execute Tests (independent verification)
     RTV->>Human: Human Gate 2: Validation Summary
     CA->>CA: Decision Log, ATM, VSR (throughout)
+    opt On request
+        Human->>DA: Generate or refresh docs
+        DA->>DA: docs/ suite (hub, standards, cross-ref)
+    end
 ```
 
 ### Requirements artifact (source of truth)
-The Requirement Architect exports the approved Blueprint (after Human Gate 1) to a **requirements file** (default: `REQUIREMENTS.md` in the project root). The Logic Gatekeeper then **reads** that file, validates it (ambiguity, constraints, conflicts), and **writes back** any user-approved adjustments to the same file. All downstream agents (Build Agent, Test Designer, Red Team Verifier, Schematic Generator, Compliance Auditor) **read requirements from this file**—not from in-chat handoff. Using a single persisted file as the requirements source reduces context-window pressure, avoids carrying the full Blueprint in conversation, and lets parallel or sequential agent runs (e.g. build per feature) reference the same canonical artifact.
+The Requirement Architect exports the approved Blueprint (after Human Gate 1) to a **requirements file** (default: `REQUIREMENTS.md` in the project root). The Logic Gatekeeper then **reads** that file, validates it (ambiguity, constraints, conflicts), and **writes back** any user-approved adjustments to the same file. All downstream agents (Build Agent, Test Designer, Red Team Verifier, Schematic Generator, Compliance Auditor) **read requirements from this file**, not from in-chat handoff. Using a single persisted file as the requirements source reduces context-window pressure, avoids carrying the full Blueprint in conversation, and lets parallel or sequential agent runs (e.g. build per feature) reference the same canonical artifact.
+
+### Documentation artifact (documentation-agent)
+The Documentation Agent writes all output into the project's **`docs/`** directory (created if missing). The hub **`docs/README.md`** provides the document map, quick navigation and per-standard tables, cross-reference matrix (concerns × standards), repository structure reference, and applicable standards table. One subdirectory per selected standard, e.g. **`iso9001/`**, **`iso27001/`**, **`v-model/`** by default; (optionally **`gamp5/`** or other standards when the user requests it) contains numbered markdown documents for that standard. Every generated document (except the hub) includes a header (Document ID, Version, Date, Classification, Status), navigation (Back to Documentation Hub, Previous/Next when applicable), and a footer with a Document History table; any diagrams are Mermaid only, embedded in markdown. The default standards are ISO 9001, V-Model (lifecycle), and ISO 27001; additional standards (e.g. GAMP 5) are included only when the user specifies them.
 
 > [!IMPORTANT]
 > **Maintain Rigorous Test Independence:**  
