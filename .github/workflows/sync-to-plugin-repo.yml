@@ -33,16 +33,21 @@ jobs:
           git clone "https://x-access-token:${PLUGIN_REPO_TOKEN}@github.com/Agile-V/agile_v_cursor_plugin.git" plugin-repo
           cd plugin-repo
 
-      - name: Ensure plugin structure
+      - name: Ensure Cursor plugin structure
         working-directory: plugin-repo
         run: |
           mkdir -p .cursor-plugin skills
           cat > .cursor-plugin/plugin.json << 'EOF'
           {
             "name": "agile-v-skills",
+            "displayName": "Agile V™ Skills",
             "description": "Agent skills for traceable product development: requirements, build, verification, and compliance following the Agile V™ workflow.",
-            "author": { "name": "Agile V™" },
-            "keywords": ["agile v", "v model", "product development"]
+            "author": { 
+              "name": "Agile V™",
+              "email": "info@agile-v.org"
+            },
+            "keywords": ["agile v", "v model", "product development"],
+            "license": "CC-BY-SA-4.0",
           }
           EOF
 
