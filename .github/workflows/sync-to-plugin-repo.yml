@@ -1,20 +1,20 @@
 name: Sync skills to Cursor plugin repo
 
 on:
-  # push:
-  #   branches: [main]
-  #   paths:
-  #     - '**/SKILL.md'
-  #     - 'agile-v-core/**'
-  #     - 'build-agent/**'
-  #     - 'compliance-auditor/**'
-  #     - 'documentation-agent/**'
-  #     - 'logic-gatekeeper/**'
-  #     - 'red-team-verifier/**'
-  #     - 'requirement-architect/**'
-  #     - 'schematic-generator/**'
-  #     - 'test-designer/**'
-  #     - 'domains/**'
+  push:
+    branches: [main]
+    paths:
+      - '**/SKILL.md'
+      - 'agile-v-core/**'
+      - 'build-agent/**'
+      - 'compliance-auditor/**'
+      - 'documentation-agent/**'
+      - 'logic-gatekeeper/**'
+      - 'red-team-verifier/**'
+      - 'requirement-architect/**'
+      - 'schematic-generator/**'
+      - 'test-designer/**'
+      - 'domains/**'
   workflow_dispatch:
 
 jobs:
