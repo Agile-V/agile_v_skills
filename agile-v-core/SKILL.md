@@ -3,10 +3,17 @@ name: agile-v-core
 description: The foundational philosophy and operational logic of the Agile V standard. This skill governs the behavior, value system, and decision-making framework for all agents within an AI-augmented engineering ecosystem. Use when initializing an Agile V agent, enforcing traceability, or applying the AQMS workflow.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   standard: "Agile V"
   compliance: "ISO/GxP-Ready"
   author: agile-v.org
+  adapted_from:
+    - name: "Get Shit Done (GSD)"
+      url: "https://github.com/gsd-build/get-shit-done"
+      license: "MIT"
+      copyright: "Copyright (c) 2025 Lex Christopherson"
+      sections: "Context Engineering, Orchestration Pipeline, State Persistence, Model Tier Guidance"
+      note: "Concepts adapted under the MIT License. See https://github.com/gsd-build/get-shit-done/blob/main/LICENSE"
 ---
 
 # Instructions
@@ -78,3 +85,156 @@ When presenting to a Human Gate, use this format:
 ## Interaction Protocol
 - **When challenged:** Provide the "Chain of Thought" and the specific ISO/GxP log entry. Use format: `[TIMESTAMP] | [AGENT_ID] | DECISION: [X] | RATIONALE: [Y] | LINKED_REQ: [REQ-ID]` (aligned with compliance-auditor Decision Log).
 - **When confused:** Reference Principle #12 (Simplicity) and ask the Human to clarify the "Definition of Done."
+
+---
+
+## Context Engineering
+> Adapted from [Get Shit Done (GSD)](https://github.com/gsd-build/get-shit-done) by Lex Christopherson, MIT License.
+
+AI agent output quality degrades as the context window fills. This is called **context rot**. All Agile V agents must manage context deliberately to maintain output quality throughout the workflow.
+
+### Context Quality Curve
+
+| Context Usage | Quality | Agent Behavior |
+|---|---|---|
+| 0-30% | **PEAK** | Thorough, comprehensive, highest fidelity |
+| 30-50% | **GOOD** | Reliable, solid work |
+| 50-70% | **DEGRADING** | Efficiency mode; shortcuts begin |
+| 70%+ | **POOR** | Rushed, minimal, error-prone |
+
+### Context Engineering Rules
+1. **Thin Orchestrator:** When coordinating multi-agent workflows, the orchestrating agent must stay at low context usage (~10-15%). It coordinates; it does not do heavy synthesis.
+2. **Paths, Not Content:** Pass file *paths* to sub-agents, not file *contents*. Sub-agents read files themselves in their own fresh context window.
+3. **Fresh Context Per Task:** Each sub-agent spawned for synthesis or verification gets a clean context window. Do not accumulate prior task outputs in the orchestrator.
+4. **Task Sizing:** Size tasks so they complete within ~50% of the available context window. If a task is too large, decompose it further (Principle #6: Decompositional Clarity).
+5. **Context Clearing:** Between major workflow stages (e.g., from Planning to Synthesis, from Synthesis to Verification), clear or reset context when the runtime supports it.
+
+### Applying to the V
+- **Left Side agents** (Requirement Architect, Logic Gatekeeper): Read requirements files directly; do not carry full project history in context.
+- **Apex agents** (Build Agents): Receive requirement IDs and file paths; read source material in their own context.
+- **Right Side agents** (Test Designer, Red Team Verifier): Read requirements and artifacts independently; never inherit Build Agent context.
+
+---
+
+## Orchestration Pipeline
+> Adapted from [Get Shit Done (GSD)](https://github.com/gsd-build/get-shit-done) by Lex Christopherson, MIT License.
+
+Agile V agents do not operate in isolation. The pipeline defines execution order, handoff triggers, and parallelism rules.
+
+### Pipeline Stages
+
+```
+Stage 1: Requirements     Stage 2: Validation       Stage 3: Synthesis        Stage 4: Verification     Stage 5: Acceptance
+(Left Side)               (Left Side)               (Apex)                    (Right Side)              (Human Gate)
+                                                    +-> Test Designer -+
+Requirement Architect --> Logic Gatekeeper ------+--> Build Agent -----+--> Red Team Verifier --> Human Gate 2
+                                                |                      |
+                         Human Gate 1 <---------+                      |
+                         (approve/reject)         Compliance Auditor ---+
+                                                  (observes all stages)
+```
+
+### Handoff Rules
+1. **Stage 1 -> 2:** Requirement Architect emits `REQUIREMENTS.md`. Logic Gatekeeper reads it for validation. No manual handoff needed.
+2. **Stage 2 -> Human Gate 1:** Logic Gatekeeper presents the validated Blueprint as an Evidence Summary. Human must approve before Stage 3.
+3. **Stage 3 (Parallel):** Build Agent and Test Designer run in parallel. Both read from `REQUIREMENTS.md`. They do NOT share context with each other (Principle #7: Red Team Protocol).
+4. **Stage 3 -> 4:** Build Agent emits the Build Manifest. Red Team Verifier receives the manifest and Test Designer's test cases independently.
+5. **Stage 4 -> Human Gate 2:** Red Team Verifier presents the Validation Summary. Human reviews before acceptance.
+
+### Wave-Based Parallel Execution
+When multiple independent artifacts can be built simultaneously:
+1. **Dependency Analysis:** Identify which artifacts depend on others (shared files, interface contracts, data models).
+2. **Wave Assignment:** Artifacts with no dependencies go in Wave 1. Artifacts depending on Wave 1 outputs go in Wave 2, and so on.
+3. **Parallel Within Waves:** All artifacts in the same wave can be built by parallel sub-agents, each with fresh context.
+4. **Sequential Across Waves:** Wait for all Wave N agents to complete before starting Wave N+1.
+5. **Vertical Slices Preferred:** Group by feature (model + API + UI) rather than layer (all models, then all APIs). This maximizes parallelism and minimizes cross-wave dependencies.
+
+### Checkpoint Types
+When orchestrating, classify pauses:
+- **Auto:** Agent proceeds without human input (e.g., routine synthesis within approved scope).
+- **Human-Verify:** Agent pauses for human to visually or functionally confirm output (e.g., UI layout).
+- **Human-Decision:** Agent pauses for human to choose between implementation alternatives.
+- **Human-Action:** Agent pauses for an action only a human can take (e.g., physical hardware test, external account setup).
+
+All checkpoint types except **Auto** require Human Gate protocol.
+
+---
+
+## State Persistence
+> Adapted from [Get Shit Done (GSD)](https://github.com/gsd-build/get-shit-done) by Lex Christopherson, MIT License.
+
+Agile V workflows span multiple sessions. Project state must persist on disk so agents can resume without loss of context or decisions.
+
+### Standard Project State Directory
+
+```
+.agile-v/
+  REQUIREMENTS.md           # Single source of truth (Requirement Architect output)
+  BUILD_MANIFEST.md         # Current Build Manifest (Build Agent output)
+  TEST_SPEC.md              # Test Specification (Test Designer output)
+  VALIDATION_SUMMARY.md     # Latest Validation Summary (Red Team Verifier output)
+  DECISION_LOG.md           # All design decisions with rationale (Compliance Auditor)
+  ATM.md                    # Automated Traceability Matrix (Compliance Auditor)
+  STATE.md                  # Session state: current position, blockers, accumulated decisions
+  config.json               # Project configuration (standards scope, model preferences)
+  phases/                   # Per-phase working directory
+    XX-phase-name/
+      PLAN.md               # Phase execution plan
+      SUMMARY.md            # Phase outcome summary
+      CONTEXT.md            # Human decisions and preferences for this phase
+```
+
+### STATE.md Format
+```
+# Project State
+
+## Current Position
+- Phase: [XX-name]
+- Stage: [requirements | validation | synthesis | verification | acceptance]
+- Status: [in_progress | blocked | awaiting_human_gate]
+
+## Accumulated Decisions
+| Decision | Rationale | Phase | Timestamp |
+|----------|-----------|-------|-----------|
+| [What was decided] | [Why] | [XX] | [ISO 8601] |
+
+## Active Blockers
+- [Description of blocker and what is needed to resolve it]
+
+## Session History
+| Session | Started | Stopped At | Notes |
+|---------|---------|------------|-------|
+| 1 | [timestamp] | [phase/stage] | [brief note] |
+```
+
+### Persistence Rules
+1. **Write-Through:** Agents update state files immediately after completing a stage, not in batches.
+2. **Append-Only Decisions:** The Decision Log is append-only. Decisions are never deleted, only superseded with a new entry referencing the old one.
+3. **Phase Summaries:** After completing a phase, the Build Agent writes a `SUMMARY.md` with `requires` (what it depended on), `provides` (what it built), and `affects` (what future phases should know). This enables intelligent context assembly for future planning.
+4. **Resume Protocol:** When resuming a session, read `STATE.md` first to determine current position, then load only the files relevant to the current stage. Do not load the entire state directory into context.
+
+---
+
+## Model Tier Guidance
+> Adapted from [Get Shit Done (GSD)](https://github.com/gsd-build/get-shit-done) by Lex Christopherson, MIT License.
+
+Not all agents require the same model capability. When the runtime supports model selection, use this guidance to balance quality and cost.
+
+### Tier Assignment
+
+| Agent Role | Recommended Tier | Rationale |
+|---|---|---|
+| Requirement Architect | High | Architecture and decomposition decisions |
+| Logic Gatekeeper | High | Ambiguity detection requires nuanced reasoning |
+| Build Agent (planning) | High | Design decisions have cascading impact |
+| Build Agent (synthesis) | Medium | Code generation from clear specs |
+| Test Designer | Medium | Test case generation from requirements |
+| Red Team Verifier | Medium | Execution and comparison against expected results |
+| Compliance Auditor | Low-Medium | Structured observation and logging |
+| Documentation Agent | Low-Medium | Template-driven content generation |
+| Schematic Generator | High | Hardware design errors are costly |
+
+### Tier Definitions
+- **High:** Most capable model available. Use for decisions that are expensive to reverse (architecture, hardware design, requirement decomposition).
+- **Medium:** Standard model. Use for execution of well-defined tasks with clear inputs and outputs.
+- **Low:** Lightweight model. Use for read-only observation, structured logging, and template-based generation.

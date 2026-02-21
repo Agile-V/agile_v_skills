@@ -3,7 +3,7 @@ name: build-agent-python
 description: Python build agent for scripts, backends, data pipelines, and ML projects. Extends build-agent with Python conventions. Use when building Python applications, APIs, data processing, or automation.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   standard: "Agile V"
   domain: "Python"
   extends: "build-agent"
@@ -50,6 +50,13 @@ Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTE
 ART-0001 | REQ-0001 | src/auth/login.py | Login endpoint; FastAPI
 ART-0002 | REQ-0002 | models/classifier_v1.2.pt | Model v1.2; dataset: data/train_v3.csv
 ```
+
+## Context Engineering (Python-Specific)
+Inherited from build-agent; additional Python considerations:
+- **ML datasets and model weights** must never be loaded into context. Reference by file path and metadata only.
+- **Django/FastAPI/Flask apps** should be decomposed by app/router/blueprint. Build one module per sub-agent context.
+- **Jupyter notebooks** are high-context artifacts. Convert analysis logic to `.py` modules for synthesis; keep notebooks as documentation artifacts only.
+- **Requirements files** (`requirements.txt`, `pyproject.toml`): read from disk, do not duplicate dependency lists in conversation.
 
 ## When to Use
 - Python scripts and automation

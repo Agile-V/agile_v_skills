@@ -3,7 +3,7 @@ name: build-agent-js
 description: JavaScript/TypeScript/Web build agent for web apps, Node backends, and frontend components. Extends build-agent with JS/Web conventions. Use when building web apps, APIs, or frontend/backend features.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   standard: "Agile V"
   domain: "JavaScript/TypeScript/Web"
   extends: "build-agent"
@@ -48,6 +48,13 @@ Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTE
 ART-0001 | REQ-0001 | src/auth/login.ts | Login flow; React Query
 ART-0002 | REQ-0002 | src/api/token.ts | JWT validation; Vitest
 ```
+
+## Context Engineering (JS/TS-Specific)
+Inherited from build-agent; additional JS/TS considerations:
+- **node_modules and lock files** must never be loaded into context. Reference package names and versions from `package.json` only.
+- **Bundle configs** (Vite, Webpack) should be read from disk per-artifact, not carried across builds.
+- **Monorepo packages** should each be treated as a separate context scope. Do not load all packages into a single agent's context.
+- **Generated types** (GraphQL codegen, Prisma client) should be referenced by import path, not loaded wholesale.
 
 ## When to Use
 - Web applications (SPA, SSR, static)

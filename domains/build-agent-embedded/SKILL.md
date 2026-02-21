@@ -3,7 +3,7 @@ name: build-agent-embedded
 description: C/C++ build agent for embedded systems, firmware, and MCU projects. Extends build-agent with embedded constraints. Use when building firmware, bare-metal code, or resource-constrained systems.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   standard: "Agile V"
   domain: "Embedded/C/C++"
   extends: "build-agent"
@@ -55,6 +55,12 @@ For C/C++, use:
 ```
 /* REQ-XXXX: [Brief requirement reference] */
 ```
+
+## Context Engineering (Embedded-Specific)
+Inherited from build-agent; additional embedded considerations:
+- **Peripheral register maps** consume significant context. Read only the registers relevant to the current artifact, not the full MCU reference manual.
+- **HAL/SDK headers** are large. Reference specific header paths rather than loading entire SDK trees.
+- **Hardware constraint tables** (pin maps, power budgets) should be in `REQUIREMENTS.md` or a referenced file -- read from disk, do not carry in conversation context.
 
 ## When to Use
 - Firmware for MCUs (STM32, AVR, ESP32, etc.)

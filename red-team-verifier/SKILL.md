@@ -3,9 +3,15 @@ name: red-team-verifier
 description: The Verification Agent—challenges Build Agent artifacts via independent verification. Executes tests against artifacts. Use to audit code, schematics, or firmware against requirements.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   standard: "Agile V"
   author: agile-v.org
+  adapted_from:
+    - name: "Get Shit Done (GSD)"
+      url: "https://github.com/gsd-build/get-shit-done"
+      license: "MIT"
+      copyright: "Copyright (c) 2025 Lex Christopherson"
+      sections: "Post-Verification Feedback Loop, Stub and Anti-Pattern Detection"
 ---
 
 # Instructions
@@ -75,3 +81,55 @@ Produce this summary for Human review before closing verification:
 ## Chain of Thought (Audit Excerpt)
 [TIMESTAMP] | red-team-verifier | VER-0001: Executed TC-0001; assertion passed | LINKED_REQ: REQ-0001
 ```
+
+---
+
+## Stub and Anti-Pattern Detection
+> Adapted from [Get Shit Done (GSD)](https://github.com/gsd-build/get-shit-done) by Lex Christopherson, MIT License.
+
+Beyond functional test execution, actively scan artifacts for incomplete implementations that tests may not catch:
+
+### Stub Detection Checklist
+- [ ] **Placeholder returns:** Functions that return hardcoded values, empty arrays, or `null` without logic
+- [ ] **TODO/FIXME markers:** Comments indicating unfinished work (`TODO`, `FIXME`, `HACK`, `XXX`)
+- [ ] **Empty handlers:** Event handlers, route handlers, or callbacks with no implementation body
+- [ ] **Console-only logic:** Functions whose only side effect is `console.log`, `print()`, or equivalent
+- [ ] **Static/mock data:** API responses returning hardcoded data instead of querying actual data sources
+- [ ] **Commented-out code:** Blocks of commented code that suggest incomplete refactoring
+- [ ] **Pass-through functions:** Functions that accept parameters but ignore them
+
+### Anti-Pattern Scan
+- [ ] **Missing error handling:** Try/catch blocks with empty catch, or no error handling on I/O operations
+- [ ] **Hardcoded secrets:** API keys, passwords, or tokens embedded in source (FLAG as critical)
+- [ ] **Unbounded operations:** Loops or queries with no limit, pagination, or timeout
+- [ ] **Unused imports/dependencies:** Imported modules that are never referenced
+
+Each detected stub or anti-pattern should be reported as a `FLAG` in the Verification Record with severity:
+```
+VER-0010 | — | REQ-0005 | FLAG:STUB | Empty handler in src/api/users.ts:42; returns hardcoded []
+VER-0011 | — | REQ-0003 | FLAG:ANTI | No error handling on database query in src/db/query.ts:18
+VER-0012 | — | — | FLAG:CRITICAL | Hardcoded API key in src/config.ts:7
+```
+
+## Post-Verification Feedback Protocol
+> Adapted from [Get Shit Done (GSD)](https://github.com/gsd-build/get-shit-done) by Lex Christopherson, MIT License.
+
+After producing the Validation Summary, the verification cycle is not necessarily complete. Use this protocol to drive resolution:
+
+### Severity Classification
+Classify each FAIL and FLAG result:
+- **CRITICAL:** Security vulnerability, data loss risk, hardcoded secret, safety constraint violation. Blocks release.
+- **MAJOR:** Functional failure against a REQ-XXXX. Requires Build Agent fix before Human Gate 2.
+- **MINOR:** Stub detected, anti-pattern, or cosmetic issue. Can be deferred with Human approval.
+
+### Feedback to Build Agent
+For FAIL results that require fixes:
+1. Provide the specific VER-XXXX record, the expected behavior (from REQ-XXXX), and the actual behavior observed.
+2. Do NOT provide fix suggestions -- the Build Agent must derive the fix from requirements independently (Red Team Protocol).
+3. The Build Agent has a maximum of **3 fix attempts** per FAIL. If unresolved after 3 attempts, escalate to Human Gate.
+
+### Re-Verification
+After the Build Agent re-emits fixed artifacts:
+1. Re-run only the FAIL and FLAG test cases, plus any regression tests that cover modified files.
+2. Issue new VER-XXXX records for the re-run. Do not overwrite previous records -- append with a reference to the original (e.g., `VER-0015 | TC-0002 | REQ-0001 | PASS | Re-test of VER-0002 after fix`).
+3. Update the Validation Summary with the new totals.

@@ -3,7 +3,7 @@ name: build-agent-dart
 description: Dart/Flutter build agent for mobile apps, Flutter widgets, and Dart packages. Extends build-agent with Dart-specific conventions. Use when building Flutter apps, Dart packages, or mobile (iOS/Android) features.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   standard: "Agile V"
   domain: "Dart/Flutter/Mobile"
   extends: "build-agent"
@@ -49,6 +49,12 @@ Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTE
 ART-0001 | REQ-0001 | lib/auth/login.dart | Implements login flow; Riverpod
 ART-0002 | REQ-0002 | lib/widgets/user_profile.dart | Profile widget; testWidgets-ready
 ```
+
+## Context Engineering (Dart/Flutter-Specific)
+Inherited from build-agent; additional Flutter considerations:
+- **Widget trees** can be deeply nested. Build one screen/feature per sub-agent context, not the entire app.
+- **Platform channel code** (iOS/Android native) should be synthesized in a separate context from the Dart layer to avoid cross-language context pollution.
+- **Generated code** (build_runner, freezed, json_serializable) should be referenced by path, not loaded into context. Run code generation as a build step, not inline.
 
 ## When to Use
 - Flutter apps (mobile, web, desktop)
