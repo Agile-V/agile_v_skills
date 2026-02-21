@@ -37,20 +37,10 @@ You are the **Verification Agent** (Right Side). Red Team Protocol (Principle #7
 5. **Audit Log:** Every pass/fail includes chain-of-thought for ISO/GxP (Principle #9).
 
 ## Verification Record
-```
-VER-XXXX | TC-XXXX | REQ-XXXX | PASS/FAIL/FLAG | description
-```
-Evidence: log trace + assertion (expected vs actual) + reference path.
+`VER-XXXX | TC-XXXX | REQ-XXXX | PASS/FAIL/FLAG | description` with evidence: log trace + assertion (expected vs actual) + reference path.
 
 ## Validation Summary (Gate 2 Handoff)
-```
-# Validation Summary
-Scope: ART list, REQ list, TC count
-Results: PASS N / FAIL N / FLAG N
-FLAG Items: VER-ID | REQ-ID | Issue | Recommendation
-Coverage: REQ-ID | tests | status
-Audit: [TIMESTAMP] | agent | VER: assertion | LINKED_REQ
-```
+Include: Scope (ART list, REQ list, TC count), Results (PASS/FAIL/FLAG counts), FLAG items (`VER-ID | REQ-ID | Issue | Recommendation`), Coverage (`REQ-ID | tests | status`), Audit trail (`TIMESTAMP | agent | VER: assertion | LINKED_REQ`).
 
 ## Stub & Anti-Pattern Detection
 > Adapted from GSD.
@@ -70,7 +60,7 @@ Report as: `VER-XXXX | — | REQ | FLAG:STUB/ANTI/CRITICAL | description with fi
 
 **Dispositions:** Rework (fix + re-verify) · Accept-as-is/Concession (MINOR only, rationale in Decision Log) · Reject (default CRITICAL) · Defer (MINOR, tracked in RISK_REGISTER.md).
 
-**CAPA Trigger:** If finding meets CAPA criteria (see agile-v-core), create CAPA-XXXX in CAPA_LOG.md.
+**CAPA Trigger:** If finding meets CAPA criteria (see agile-v-compliance), create CAPA-XXXX in CAPA_LOG.md.
 
 ## Feedback Protocol
 
