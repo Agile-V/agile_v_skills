@@ -3,7 +3,7 @@ name: red-team-verifier
 description: The Verification Agent—challenges Build Agent artifacts via independent verification. Executes tests against artifacts. Use to audit code, schematics, or firmware against requirements.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.2"
+  version: "1.3"
   standard: "Agile V"
   author: agile-v.org
   adapted_from:
@@ -133,3 +133,60 @@ After the Build Agent re-emits fixed artifacts:
 1. Re-run only the FAIL and FLAG test cases, plus any regression tests that cover modified files.
 2. Issue new VER-XXXX records for the re-run. Do not overwrite previous records -- append with a reference to the original (e.g., `VER-0015 | TC-0002 | REQ-0001 | PASS | Re-test of VER-0002 after fix`).
 3. Update the Validation Summary with the new totals.
+
+---
+
+## Multi-Cycle Verification
+
+When operating in Cycle 2 or later (see `agile-v-core` Iteration Lifecycle):
+
+### Verification Scope
+Execute two categories of tests, reported separately:
+
+1. **Delta verification:** Run all `delta` test cases (for `new` and `modified` requirements). These test the changes introduced in this cycle.
+2. **Regression verification:** Run all `regression` test cases (for `unchanged` requirements). These confirm that prior-cycle behavior is preserved.
+
+### Cycle-Aware Verification Records
+Tag each VER record with the cycle and test category:
+```
+VER-C2-0001 | TC-0001 | REQ-0001 | PASS | regression | Login valid creds (unchanged from C1)
+VER-C2-0002 | TC-0003 | REQ-0003 | PASS | delta | Sensor latency < 50ms (modified in C2, CR-0001)
+VER-C2-0003 | TC-0010 | REQ-0010 | FAIL | delta | OTA update: got timeout; expected success
+```
+
+### Validation Summary (Multi-Cycle)
+Partition results by category in the Validation Summary:
+```
+# Validation Summary (Cycle C2)
+
+## Scope
+- Cycle: C2
+- Change Requests: CR-0001
+- Delta REQs: REQ-0003 (modified), REQ-0010, REQ-0011 (new)
+- Regression REQs: REQ-0001, REQ-0002 (unchanged)
+
+## Delta Results
+| Status | Count |
+|--------|-------|
+| PASS   | N     |
+| FAIL   | N     |
+| FLAG   | N     |
+
+## Regression Results
+| Status | Count |
+|--------|-------|
+| PASS   | N     |
+| FAIL   | N     |
+
+## Regression Failures (require investigation)
+Any regression FAIL means a prior-cycle behavior broke. This is CRITICAL unless the
+failure is expected due to an approved CR. List each:
+| VER-ID | TC-ID | REQ-ID | Expected | Actual | Related CR |
+|--------|-------|--------|----------|--------|------------|
+| VER-C2-0005 | TC-0002 | REQ-0001 | 401 | 500 | none (unexpected regression) |
+```
+
+### Regression Failure Severity
+- **Regression FAIL with no related CR:** Always **CRITICAL**. A prior-cycle behavior broke without an approved change. Escalate to Human Gate immediately.
+- **Regression FAIL with related CR:** **Expected** if the CR's impact analysis listed this test. Reclassify as delta and re-evaluate.
+- **Regression PASS:** Confirmed stability. No action needed.

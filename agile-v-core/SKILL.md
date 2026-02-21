@@ -3,7 +3,7 @@ name: agile-v-core
 description: The foundational philosophy and operational logic of the Agile V standard. This skill governs the behavior, value system, and decision-making framework for all agents within an AI-augmented engineering ecosystem. Use when initializing an Agile V agent, enforcing traceability, or applying the AQMS workflow.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.2"
+  version: "1.3"
   standard: "Agile V"
   compliance: "ISO/GxP-Ready"
   author: agile-v.org
@@ -238,3 +238,147 @@ Not all agents require the same model capability. When the runtime supports mode
 - **High:** Most capable model available. Use for decisions that are expensive to reverse (architecture, hardware design, requirement decomposition).
 - **Medium:** Standard model. Use for execution of well-defined tasks with clear inputs and outputs.
 - **Low:** Lightweight model. Use for read-only observation, structured logging, and template-based generation.
+
+---
+
+## Iteration Lifecycle (Multi-Cycle V-Loop)
+
+The Agile V workflow is not a single pass -- real projects iterate. This section defines how to run a second (or Nth) cycle of the V-loop while preserving traceability, versioning, and audit evidence from prior cycles.
+
+### Cycle Identity
+
+Every V-loop iteration has a **Cycle ID**: `C1`, `C2`, `C3`, etc. The cycle ID is recorded in `STATE.md` and propagated to all artifact IDs produced during that cycle.
+
+**STATE.md** must include:
+```
+## Cycle
+- Current: C2
+- Started: [ISO 8601 timestamp]
+- Trigger: [What initiated this cycle -- new features, failed verification, change request]
+- Prior Cycle: C1 (completed [timestamp])
+```
+
+### Document Versioning Scheme
+
+All persisted documents in `.agile-v/` carry a **revision** tied to the cycle that produced them:
+
+| Document | Versioning Rule | Example |
+|---|---|---|
+| `REQUIREMENTS.md` | Revision header updated each cycle; inline status per REQ | `Revision: C2 / 2026-02-21` |
+| `BUILD_MANIFEST.md` | Artifact IDs include revision suffix | `ART-0001.2` (artifact 0001, revision 2) |
+| `TEST_SPEC.md` | Test cases carry origin cycle | `TC-0001 [C1]`, `TC-0010 [C2]` |
+| `VALIDATION_SUMMARY.md` | One summary per cycle; prior summaries archived | `VALIDATION_SUMMARY_C1.md` |
+| `DECISION_LOG.md` | Append-only; each entry tagged with cycle | `[C2] DECISION: ...` |
+| `ATM.md` | Partitioned by cycle; cross-cycle links explicit | See Compliance Auditor |
+
+### REQUIREMENTS.md Versioning
+
+The requirements file is the single source of truth, but it must track changes across cycles. Add a revision header and per-requirement status:
+
+```markdown
+# Requirements (Blueprint)
+<!-- Revision: C2 | Date: 2026-02-21 | Human Gate 1: C1 2026-02-10, C2 2026-02-21 -->
+
+## REQ-0001
+- **Status:** approved [C1] -- unchanged
+- **Requirement:** User shall be able to log in with email and password ...
+- **Constraint:** ...
+- **Verification Criteria:** ...
+- **Done Criteria:** ...
+
+## REQ-0003
+- **Status:** modified [C2] -- was: "10ms"; now: "50ms" per CR-0001
+- **Requirement:** Sensor reading shall complete within 50ms.
+- **Constraint:** ...
+- **Verification Criteria:** ...
+- **Done Criteria:** ...
+
+## REQ-0010
+- **Status:** new [C2]
+- **Requirement:** System shall support OTA firmware updates.
+- **Constraint:** ...
+- **Verification Criteria:** ...
+- **Done Criteria:** ...
+```
+
+#### Requirement Status Values
+- `approved [Cn]` -- approved in Cycle N, unchanged since
+- `modified [Cn]` -- changed in Cycle N; include `was: / now:` summary and CR reference
+- `new [Cn]` -- introduced in Cycle N
+- `deprecated [Cn]` -- removed in Cycle N; retained for traceability, not built or tested
+- `superseded [Cn]` -- replaced by another REQ in Cycle N; include reference to successor
+
+### Change Request Protocol
+
+Requirements do not change silently. Every modification between cycles is recorded as a **Change Request (CR)**:
+
+```
+## CR-XXXX
+- **Cycle:** C2
+- **Affected REQ:** REQ-0003
+- **Change:** Verification Criteria: "< 10ms" → "< 50ms"
+- **Rationale:** Field testing showed 10ms infeasible at 100kHz I2C
+- **Impact:** ART-0001 (sensor driver), TC-0003 (latency test), TC-0006 (saturation test)
+- **Requested by:** [Human / agent / test result]
+- **Approved:** [Human Gate 1, C2]
+```
+
+Change Requests are stored in `.agile-v/CHANGE_LOG.md` (append-only). The Requirement Architect creates CRs; the Logic Gatekeeper validates them; the Human approves them at Gate 1.
+
+### Cycle Triggers
+
+A new cycle begins when any of these occur (Human decision required):
+1. **New feature request:** Human provides new intent or requirements.
+2. **Verification failure:** Red Team Verifier reports FAIL/FLAG items that require requirement changes (not just bug fixes).
+3. **Change Request:** An approved CR modifies requirements in a way that invalidates prior artifacts.
+4. **Scheduled iteration:** Time-boxed iteration (e.g., sprint boundary).
+
+### Cycle Re-Entry Points
+
+Not every cycle starts from scratch. The re-entry point depends on the trigger:
+
+| Trigger | Re-Entry Stage | What Runs |
+|---|---|---|
+| New feature request | Stage 1 (Requirements) | Full pipeline for new REQs; regression for unchanged REQs |
+| Verification failure requiring REQ change | Stage 1 (Requirements) | CR → Gate 1 → full pipeline for affected REQs; regression for others |
+| Bug fix (no REQ change) | Stage 3 (Synthesis) | Build Agent fixes; Red Team re-verifies affected artifacts only |
+| Scheduled iteration | Stage 1 (Requirements) | Review all REQs; full pipeline for changes; regression for stable REQs |
+
+### Cycle Archival
+
+When a cycle completes (Human Gate 2 accepted), archive its evidence:
+
+```
+.agile-v/
+  cycles/
+    C1/
+      REQUIREMENTS_C1.md        # Frozen snapshot of requirements at C1 completion
+      BUILD_MANIFEST_C1.md      # Frozen manifest
+      TEST_SPEC_C1.md           # Frozen test specification
+      VALIDATION_SUMMARY_C1.md  # Frozen validation summary
+      ATM_C1.md                 # Frozen traceability matrix
+    C2/
+      ...
+  REQUIREMENTS.md               # Living document (current cycle)
+  BUILD_MANIFEST.md             # Living document (current cycle)
+  CHANGE_LOG.md                 # Append-only across all cycles
+  DECISION_LOG.md               # Append-only across all cycles
+  STATE.md                      # Current cycle state
+```
+
+**Archival Rules:**
+1. **Freeze on acceptance:** When Human Gate 2 accepts a cycle, snapshot all living documents into `.agile-v/cycles/CN/`.
+2. **Never modify archived cycles.** They are read-only evidence for audit.
+3. **Living documents continue** in the root `.agile-v/` directory for the next cycle.
+4. **Decision Log and Change Log are never archived** -- they are append-only across all cycles, providing a continuous timeline.
+
+### Impact Analysis
+
+Before starting synthesis in a new cycle, every agent must perform impact analysis:
+
+1. **Requirement Architect:** Identify which REQs are `new`, `modified`, `deprecated`, or `unchanged`. Tag each in `REQUIREMENTS.md`.
+2. **Logic Gatekeeper:** Re-validate only `new` and `modified` REQs. Unchanged REQs retain their prior validation unless a CR affects their constraints.
+3. **Build Agent:** Rebuild only artifacts linked to `new` or `modified` REQs. Unchanged artifacts carry forward with their existing ART-XXXX IDs (no revision bump).
+4. **Test Designer:** Generate new TC-XXXX for `new` REQs. Update TC-XXXX for `modified` REQs. Carry forward unchanged TC-XXXX as the **regression baseline**.
+5. **Red Team Verifier:** Execute delta tests (new + modified) and regression tests (unchanged). Report both categories separately in the Validation Summary.
+6. **Compliance Auditor:** Update the ATM with cycle tags. Flag any `modified` REQ whose linked artifacts or tests have not been updated.

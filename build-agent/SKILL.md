@@ -3,7 +3,7 @@ name: build-agent
 description: Generates code, firmware, HDL, or other technical artifacts strictly derived from approved requirements. Language-agnostic. Use when synthesizing artifacts from Logic Gatekeeper-approved requirements.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.2"
+  version: "1.3"
   standard: "Agile V"
   author: agile-v.org
   adapted_from:
@@ -104,6 +104,30 @@ When the Red Team Verifier returns FAIL results, apply these rules:
 ### Attempt Limits
 - **Maximum 3 fix attempts** per artifact per FAIL result. If the fix is not resolved after 3 attempts, document the issue in the Build Manifest notes and escalate to the Human Gate.
 - Never loop indefinitely on a failing test.
+
+## Multi-Cycle Artifact Versioning
+
+When operating in Cycle 2 or later (see `agile-v-core` Iteration Lifecycle):
+
+### Artifact Revision Scheme
+Artifact IDs carry a revision suffix: `ART-XXXX.N` where N is the revision number.
+- **Cycle 1:** `ART-0001.1` (first revision)
+- **Cycle 2 (unchanged REQ):** `ART-0001.1` carries forward -- no rebuild, no revision bump.
+- **Cycle 2 (modified REQ):** `ART-0001.2` -- rebuilt to satisfy the modified requirement. The Build Manifest notes must reference the CR that triggered the rebuild.
+- **Cycle 2 (new REQ):** `ART-0010.1` -- new artifact, first revision.
+
+### Build Manifest (Multi-Cycle)
+```
+ARTIFACT_ID | REQ_ID | LOCATION | CYCLE | CR | NOTES
+ART-0001.2 | REQ-0003 | src/drivers/sensor.c | C2 | CR-0001 | Rebuilt: latency 10ms → 50ms
+ART-0002.1 | REQ-0002 | src/auth/token.ts | C1 | — | Carried forward (unchanged)
+ART-0010.1 | REQ-0010 | src/ota/update.c | C2 | — | New in C2
+```
+
+### Scope Rules
+1. **Only rebuild what changed.** If a requirement is `unchanged`, its artifacts carry forward. Do not re-synthesize them.
+2. **Verify carry-forward artifacts exist.** Before starting synthesis, confirm that carried-forward artifact files are still present on disk at their expected paths.
+3. **Document superseded artifacts.** When `ART-0001.2` replaces `ART-0001.1`, note the supersession in the manifest. The prior revision is preserved in the cycle archive (`.agile-v/cycles/C1/`).
 
 ## Halt Conditions
 Halt and do not emit when:

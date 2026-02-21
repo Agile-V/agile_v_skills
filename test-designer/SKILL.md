@@ -3,7 +3,7 @@ name: test-designer
 description: Designs the verification suite from requirements only—never from code. Prevents success bias. Use when building test cases in parallel with the Build Agent, after requirements are approved by the Logic Gatekeeper.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.3"
   standard: "Agile V"
   author: agile-v.org
 ---
@@ -75,6 +75,49 @@ Produce a **Test Specification** the Red Team Verifier can consume directly:
 - Sensor saturation / overflow
 - Memory exhaustion
 - Bus contention / timeout
+```
+
+## Multi-Cycle Regression and Delta Testing
+
+When operating in Cycle 2 or later (see `agile-v-core` Iteration Lifecycle):
+
+### Test Categories
+Every test case must be classified as one of:
+- **`delta`** -- Tests a `new [Cn]` or `modified [Cn]` requirement. Generated fresh this cycle.
+- **`regression`** -- Tests an `unchanged` requirement. Carried forward from prior cycle's Test Specification. Not redesigned unless the requirement changed.
+
+Include the category and origin cycle in the test case table:
+
+```
+TC-ID | REQ-ID | Description | Expected | Type | Category | Origin
+TC-0001 | REQ-0001 | Login valid creds | 200 + JWT | unit | regression | C1
+TC-0003 | REQ-0003 | Sensor latency < 50ms | < 50ms | performance | delta | C2
+TC-0010 | REQ-0010 | OTA update success | Firmware updated | integration | delta | C2
+```
+
+### Regression Baseline
+The **regression baseline** is the set of all test cases from the prior cycle that mapped to `unchanged` requirements. These tests must still pass in the new cycle.
+
+1. **Carry forward** all TC-XXXX from the prior cycle's Test Specification where the parent REQ is `unchanged`.
+2. **Do not modify** regression tests. If a test needs updating, the parent REQ must be tagged `modified` with a CR.
+3. **Retire** test cases whose parent REQ is `deprecated` or `superseded`. Mark them as `retired [Cn]` in the Test Specification but do not delete them.
+
+### Delta Test Generation
+For `new` and `modified` requirements:
+1. Generate fresh TC-XXXX following all standard procedures (requirement-only input, positive/negative/boundary/edge).
+2. For `modified` requirements, explicitly verify the **changed behavior** -- not just the current spec, but the delta. Example: If REQ-0003 changed from 10ms to 50ms, include a test that verifies the new 50ms threshold and a note that the old 10ms test (TC-0003 from C1) is superseded.
+
+### Test Specification Header (Multi-Cycle)
+```
+# Test Specification
+
+## Overview
+- Cycle: C2
+- Scope: REQ-0003 (modified), REQ-0010, REQ-0011 (new)
+- Regression baseline: C1 (REQ-0001, REQ-0002 unchanged)
+- Delta test cases: N
+- Regression test cases: M
+- Retired test cases: K
 ```
 
 ## Deliverable

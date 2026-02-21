@@ -3,7 +3,7 @@ name: requirement-architect
 description: Converts high-level product intent into traceable PRDs and User Stories. Use when the user provides product intent, feature concept, system goal, or PRD input.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.3"
   standard: "Agile V"
   author: agile-v.org
 ---
@@ -50,6 +50,51 @@ After the Human explicitly approves the Blueprint:
 
 ## REQ-0002
 ...
+```
+
+### Multi-Cycle Requirements Management
+
+When operating in Cycle 2 or later (see `agile-v-core` Iteration Lifecycle), the Requirement Architect has additional responsibilities:
+
+#### 1. Requirement Status Tagging
+On each cycle, tag every requirement with its status:
+- `approved [Cn]` -- unchanged since Cycle N approval
+- `modified [Cn]` -- changed in Cycle N (include `was: / now:` summary)
+- `new [Cn]` -- introduced in Cycle N
+- `deprecated [Cn]` -- removed in Cycle N, retained for traceability
+- `superseded [Cn]` -- replaced by another REQ in Cycle N
+
+#### 2. Change Request (CR) Creation
+Requirements must never change silently between cycles. For every modification:
+
+1. **Create a CR** in `.agile-v/CHANGE_LOG.md` before modifying `REQUIREMENTS.md`:
+```
+## CR-XXXX
+- **Cycle:** C2
+- **Affected REQ:** REQ-0003
+- **Change:** "< 10ms" → "< 50ms"
+- **Rationale:** Field testing showed 10ms infeasible at 100kHz I2C
+- **Impact:** ART-0001, TC-0003, TC-0006
+- **Requested by:** [Human / test failure VER-XXXX / new intent]
+- **Approved:** [Pending Human Gate 1, C2]
+```
+2. **Wait for Human Gate 1 approval** of the CR before applying changes to `REQUIREMENTS.md`.
+3. **Update the requirement** in `REQUIREMENTS.md` with the new status tag and CR reference.
+
+#### 3. Impact Summary
+After tagging all requirements for a new cycle, present an **Impact Summary** at Human Gate 1:
+```
+## Cycle C2 Impact Summary
+- Unchanged: REQ-0001, REQ-0002 (no rebuild needed)
+- Modified: REQ-0003 (CR-0001) — affects ART-0001, TC-0003, TC-0006
+- New: REQ-0010, REQ-0011 — new artifacts and tests required
+- Deprecated: none
+```
+
+#### 4. Revision Header
+Update the `REQUIREMENTS.md` revision header each cycle:
+```markdown
+<!-- Revision: C2 | Date: 2026-02-21 | Human Gate 1: C1 2026-02-10, C2 2026-02-21 -->
 ```
 
 ### Blueprint Example (same structure as REQUIREMENTS.md)

@@ -3,7 +3,7 @@ name: logic-gatekeeper
 description: Validates requirements for ambiguity and physical hardware constraints. Use this after requirements are generated but before code/hardware synthesis begins.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.3"
   standard: "Agile V"
   author: agile-v.org
 ---
@@ -33,6 +33,34 @@ You are the **Verification shadow** for the Requirement Architect. Your goal is 
    - **Status:** HALTED — awaiting Human decision
    ```
 5. **Halt and Ask:** When constraints cannot be validated, halt and request Human clarification. Do not assume or infer, this prevents hallucination (Contribution Rule #3).
+
+### Multi-Cycle Re-Validation
+
+When operating in Cycle 2 or later (see `agile-v-core` Iteration Lifecycle):
+
+#### Scope of Re-Validation
+- **`new [Cn]` requirements:** Full validation (all 5 procedures above).
+- **`modified [Cn]` requirements:** Full validation. Additionally, verify the Change Request (CR-XXXX) rationale is sound and the impact analysis is complete.
+- **`approved [Cn-1]` unchanged requirements:** Skip validation unless a CR affects their constraints (e.g., a shared hardware resource changed).
+
+#### CR Validation
+For each Change Request, verify:
+1. **Rationale is quantitative:** The CR explains *why* the change is needed with measurable justification (not "we decided to change it").
+2. **Impact is complete:** All downstream artifacts (ART-XXXX) and test cases (TC-XXXX) affected by the change are listed.
+3. **No new conflicts:** The modified requirement does not conflict with other approved requirements.
+4. **Constraints still valid:** Physical/hardware constraints still hold after the change.
+
+If any CR fails validation, halt and request Human clarification before updating `REQUIREMENTS.md`.
+
+#### Re-Validation Output
+After validating a new cycle's requirements, confirm:
+```
+## Logic Gatekeeper Re-Validation (Cycle C2)
+- Validated: REQ-0003 (modified, CR-0001), REQ-0010 (new), REQ-0011 (new)
+- Skipped (unchanged): REQ-0001, REQ-0002
+- Issues: [none | list of flags]
+- File updated: REQUIREMENTS.md
+```
 
 ### Halt Conditions
 Halt and request Human clarification when:
