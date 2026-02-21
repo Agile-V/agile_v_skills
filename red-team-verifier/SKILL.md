@@ -122,6 +122,26 @@ Classify each FAIL and FLAG result:
 - **MAJOR:** Functional failure against a REQ-XXXX. Requires Build Agent fix before Human Gate 2.
 - **MINOR:** Stub detected, anti-pattern, or cosmetic issue. Can be deferred with Human approval.
 
+### Nonconformity Disposition (ISO 9001 8.7 / ISO 13485 8.3)
+Every FAIL and FLAG must receive a formal disposition:
+- **Rework:** Build Agent fixes and re-emits. Re-verification required. (Default for MAJOR.)
+- **Accept-as-is (Concession):** Human approves the nonconformity with documented rationale. Only valid for MINOR findings. Record in Decision Log with justification.
+- **Reject:** Artifact is not accepted. Requirement must be re-evaluated or CR issued. (Default for CRITICAL.)
+- **Defer:** Issue tracked for resolution in next cycle. Only valid for MINOR with Human approval. Record in RISK_REGISTER.md as an accepted risk.
+
+Include disposition in the Validation Summary:
+```
+## Nonconformity Disposition
+| VER-ID | Severity | Disposition | Rationale | Approver |
+|--------|----------|-------------|-----------|----------|
+| VER-0002 | MAJOR | Rework | — | — |
+| VER-0010 | MINOR | Accept-as-is | Cosmetic; no functional impact | [Name] |
+| VER-0012 | CRITICAL | Reject | Hardcoded API key | — |
+```
+
+### CAPA Trigger
+If a finding meets CAPA criteria (see `agile-v-core` CAPA Protocol), create a CAPA-XXXX entry in `.agile-v/CAPA_LOG.md` and reference it in the Validation Summary.
+
 ### Feedback to Build Agent
 For FAIL results that require fixes:
 1. Provide the specific VER-XXXX record, the expected behavior (from REQ-XXXX), and the actual behavior observed.

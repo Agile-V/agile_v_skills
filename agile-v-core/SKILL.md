@@ -5,7 +5,7 @@ license: CC-BY-SA-4.0
 metadata:
   version: "1.3"
   standard: "Agile V"
-  compliance: "ISO/GxP-Ready"
+  compliance: "ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"
   author: agile-v.org
   adapted_from:
     - name: "Get Shit Done (GSD)"
@@ -176,12 +176,20 @@ Agile V workflows span multiple sessions. Project state must persist on disk so 
   DECISION_LOG.md           # All design decisions with rationale (Compliance Auditor)
   ATM.md                    # Automated Traceability Matrix (Compliance Auditor)
   STATE.md                  # Session state: current position, blockers, accumulated decisions
-  config.json               # Project configuration (standards scope, model preferences)
+  CHANGE_LOG.md             # Change Requests across all cycles (append-only)
+  RISK_REGISTER.md          # Project risk register (append-only, cycle-tagged)
+  CAPA_LOG.md               # Corrective and Preventive Action records (append-only)
+  APPROVALS.md              # Human Gate approval records (append-only)
+  REVALIDATION_LOG.md       # Periodic revalidation records
+  config.json               # Project configuration (standards, model preferences, LLM providers)
   phases/                   # Per-phase working directory
     XX-phase-name/
       PLAN.md               # Phase execution plan
       SUMMARY.md            # Phase outcome summary
       CONTEXT.md            # Human decisions and preferences for this phase
+  cycles/                   # Archived cycle snapshots (frozen, read-only)
+    C1/                     # Cycle 1 archive
+    C2/                     # Cycle 2 archive
 ```
 
 ### STATE.md Format
@@ -382,3 +390,222 @@ Before starting synthesis in a new cycle, every agent must perform impact analys
 4. **Test Designer:** Generate new TC-XXXX for `new` REQs. Update TC-XXXX for `modified` REQs. Carry forward unchanged TC-XXXX as the **regression baseline**.
 5. **Red Team Verifier:** Execute delta tests (new + modified) and regression tests (unchanged). Report both categories separately in the Validation Summary.
 6. **Compliance Auditor:** Update the ATM with cycle tags. Flag any `modified` REQ whose linked artifacts or tests have not been updated.
+
+---
+
+## Risk Management (ISO 9001 6.1 / AS9100D 8.1.1)
+
+All Agile V projects must identify and manage risks. The Logic Gatekeeper validates technical constraints, but project-level and process-level risks also require attention.
+
+### Risk Register
+
+Maintain a risk register in `.agile-v/RISK_REGISTER.md` (append-only, cycle-tagged):
+
+```
+# Risk Register
+
+| RISK-ID | Cycle | Category | Description | Likelihood | Impact | Severity | Mitigation | Owner | Status |
+|---------|-------|----------|-------------|------------|--------|----------|------------|-------|--------|
+| RISK-0001 | C1 | Technical | I2C bus contention under load | Medium | High | High | Add bus arbitration; test under load (TC-0005) | Build Agent | Mitigated |
+| RISK-0002 | C1 | Process | Single model provider dependency | Low | High | Medium | Document fallback model tier | Human | Accepted |
+```
+
+### Risk Categories
+- **Technical:** Hardware constraints, software complexity, integration risks, performance risks.
+- **Process:** Resource availability, tool dependencies, model provider reliability, schedule risks.
+- **Compliance:** Regulatory gaps, traceability breaks, audit readiness risks.
+- **Security:** Data exposure, prompt injection, unauthorized access, model data leakage.
+
+### Risk Assessment Rules
+1. **At Stage 1 (Requirements):** The Requirement Architect identifies technical and compliance risks during decomposition. Record in the risk register.
+2. **At Stage 2 (Validation):** The Logic Gatekeeper flags constraint-related risks. Unresolved risks must be presented at Human Gate 1.
+3. **At Stage 4 (Verification):** The Red Team Verifier identifies residual risks from FAIL/FLAG results. New risks are added to the register.
+4. **At Cycle Boundary:** The Compliance Auditor reviews the risk register for completeness and flags any unmitigated HIGH severity risks to the Human.
+
+### Severity Matrix
+| | Low Impact | Medium Impact | High Impact |
+|---|---|---|---|
+| **High Likelihood** | Medium | High | Critical |
+| **Medium Likelihood** | Low | Medium | High |
+| **Low Likelihood** | Low | Low | Medium |
+
+Critical risks must be resolved or accepted by the Human before Human Gate 2. Accepted risks must include documented rationale in the Decision Log.
+
+---
+
+## CAPA Protocol (ISO 13485 8.5 / ISO 9001 10.1-10.2)
+
+When nonconformities are found (FAIL or FLAG results), the system must go beyond fixing symptoms. The CAPA (Corrective and Preventive Action) protocol ensures root causes are addressed and systemic improvements are captured.
+
+### When CAPA Applies
+- Any **CRITICAL** severity finding (security vulnerability, safety constraint violation, data loss risk).
+- Any nonconformity that recurs across cycles (same REQ or same artifact type fails in C1 and C2).
+- Any regression failure with no related CR (unexpected breakage of prior-cycle behavior).
+- Any finding escalated to Human Gate after 3 fix attempts.
+
+### CAPA Record Format
+
+Store in `.agile-v/CAPA_LOG.md` (append-only):
+
+```
+## CAPA-XXXX
+- **Cycle:** C2
+- **Trigger:** VER-C2-0003 (FAIL, CRITICAL) / Recurring NC from C1
+- **Nonconformity:** [Description of what failed and the impact]
+- **Root Cause Analysis:** [Why did it fail? Use 5-Whys or equivalent]
+  1. Why: [immediate cause]
+  2. Why: [underlying cause]
+  3. Why: [systemic cause]
+- **Corrective Action:** [What was done to fix this specific instance]
+  - ART-XXXX.N rebuilt: [description]
+  - VER-XXXX re-verified: PASS
+- **Preventive Action:** [What was done to prevent recurrence]
+  - [e.g., Added validation rule to Logic Gatekeeper, updated requirement template, added test type]
+- **Effectiveness Verification:** [How will we confirm the preventive action works?]
+  - [e.g., Monitor next 2 cycles for recurrence; add regression test TC-XXXX]
+- **Status:** [open | corrective-complete | preventive-complete | verified-effective | closed]
+- **Owner:** [Human / agent role]
+```
+
+### CAPA Workflow
+1. **Detect:** Red Team Verifier or Compliance Auditor identifies a CAPA-triggering event.
+2. **Record:** Create CAPA-XXXX entry in CAPA_LOG.md with nonconformity description.
+3. **Analyze:** Build Agent (or Human) performs root cause analysis. Document in the CAPA record.
+4. **Correct:** Build Agent fixes the specific instance. Red Team Verifier re-verifies.
+5. **Prevent:** Identify systemic fix (new rule, updated constraint, additional test type). Apply to relevant skill or requirement.
+6. **Verify Effectiveness:** In subsequent cycles, monitor for recurrence. Close CAPA only after effectiveness is confirmed.
+
+### Compliance Auditor Responsibilities
+The Compliance Auditor must:
+- Track all open CAPAs and report status at each Human Gate 2.
+- Flag overdue CAPAs (open longer than 2 cycles without corrective action).
+- Verify that preventive actions are actually implemented (not just documented).
+
+---
+
+## Human Gate Approval Records (21 CFR Part 11 / Annex 11)
+
+For regulated environments, Human Gate approvals must be attributable, non-repudiable, and time-stamped. This section defines the minimum evidence required for audit-ready approval records.
+
+### Approval Record Format
+
+Every Human Gate approval must be recorded in `.agile-v/APPROVALS.md` (append-only):
+
+```
+## GATE-XXXX
+- **Gate:** Gate 1 (Blueprint) | Gate 2 (Validation) | CR Approval
+- **Cycle:** C1
+- **Scope:** REQ-0001 through REQ-0009 | CR-0001 | Validation Summary C2
+- **Decision:** Approved | Approved with conditions | Rejected
+- **Conditions:** [If applicable: list conditions that must be met]
+- **Approver:** [Full name of the authorized individual]
+- **Role/Authority:** [e.g., Project Lead, QA Manager, System Owner]
+- **Timestamp:** [ISO 8601, e.g., 2026-02-21T14:30:00Z]
+- **Signature Method:** [e.g., Git signed commit, digital signature, documented verbal with witness]
+- **Evidence Reference:** [Git commit hash, signed document path, or other verifiable reference]
+```
+
+### Approval Rules
+1. **Identity required:** "Human" is not sufficient. The approver's name and role must be recorded.
+2. **Authority verification:** The approver must have documented authority to approve the scope. For regulated environments, maintain an authority matrix in `.agile-v/config.json`.
+3. **Non-repudiation:** Where the environment supports it, use Git signed commits (`git commit -S`), GPG signatures, or equivalent. Where not available, document the signature method used.
+4. **Conditions tracking:** If approved with conditions, the conditions must be resolved and verified before the next stage proceeds. The Compliance Auditor tracks open conditions.
+5. **Rejection handling:** If rejected, document the reason. The pipeline halts until the rejection is resolved and a new approval is obtained.
+
+### Minimum Requirements by Regulatory Context
+| Context | Minimum Signature Method |
+|---|---|
+| Non-regulated | Documented approval in APPROVALS.md with name and timestamp |
+| ISO 9001 / ISO 27001 | Documented approval + Git commit attribution |
+| GxP / 21 CFR Part 11 | Git signed commit or digital signature + authority verification |
+| ISO 13485 (medical) | Digital signature + authority matrix + retention per 4.2.5 |
+
+---
+
+## AI Agent Security Controls (ISO 27001 A.5.23 / A.8.3)
+
+Agile V agents execute via LLM providers (cloud or local). This section defines security controls for the AI infrastructure.
+
+### LLM Provider Requirements
+Before using an LLM provider in an Agile V workflow, document the following in `.agile-v/config.json`:
+
+```json
+{
+  "llm_providers": [
+    {
+      "name": "Provider Name",
+      "models": ["model-id-1", "model-id-2"],
+      "data_residency": "EU / US / other",
+      "data_retention": "none / 30 days / unknown",
+      "api_data_usage": "not used for training / used for training / unknown",
+      "confidentiality": "SOC 2 / ISO 27001 / none / unknown",
+      "approved_for": ["non-confidential", "internal", "confidential"],
+      "approved_by": "Name, Date",
+      "review_date": "YYYY-MM-DD"
+    }
+  ]
+}
+```
+
+### Data Classification Rules
+1. **Before sending to any LLM:** Verify the data classification of the input against the provider's `approved_for` level.
+2. **Requirements and source code** are at minimum `internal`. If the project contains trade secrets, patents, or regulated data, classify as `confidential`.
+3. **Never send** credentials, API keys, patient data, or classified information to LLM providers unless the provider is approved for that classification level.
+4. **The Build Manifest** contains file paths that reveal internal architecture. Treat manifests as `internal` minimum.
+
+### Agent Access Controls
+1. **Principle of least privilege:** Agents should only read files relevant to their role. The Test Designer should not read Build Agent artifacts (enforced by protocol, documented as a control).
+2. **No cross-project access:** Agents working on one project must not access files from other projects in the same environment.
+3. **Context sanitization:** When a session ends or context is cleared between phases, ensure no sensitive data persists in the runtime's memory or logs beyond what is captured in the controlled `.agile-v/` files.
+
+### File Integrity
+Before ingesting `REQUIREMENTS.md` or any file from disk, agents should verify the file has not been tampered with since the last Human Gate approval:
+1. **Git-tracked files:** Verify the file's git status is clean (no uncommitted modifications since the approved commit).
+2. **Hash verification:** When the environment supports it, store file hashes in `STATE.md` at each Human Gate and verify before subsequent stages.
+3. **If integrity cannot be verified:** Flag to the Human before proceeding. Do not silently consume potentially tampered input.
+
+---
+
+## Periodic Review and Revalidation (GxP / GAMP 5)
+
+The validated state of the Agile V workflow must be periodically reviewed to confirm it remains suitable.
+
+### Revalidation Triggers
+A revalidation review is required when:
+1. **LLM model change:** The underlying model for any agent is updated or switched to a different model. Different models produce different outputs -- prior verification results may not hold.
+2. **Runtime/platform change:** The AI coding environment (OpenCode, Claude Code, etc.) is updated to a new major version.
+3. **Skill file change:** Any SKILL.md file is modified (version bump or content change).
+4. **Accumulated changes:** More than 5 CRs have been processed since the last revalidation.
+5. **Scheduled interval:** At minimum every 12 months, or per the organization's quality policy.
+
+### Revalidation Procedure
+1. **Review scope:** Identify what changed since the last revalidation (model versions, skill versions, runtime versions, accumulated CRs).
+2. **Impact assessment:** Determine which agents and outputs are affected by the changes.
+3. **Re-execute verification:** Run the regression test baseline from the most recent cycle against the updated environment.
+4. **Document results:** Record the revalidation in `.agile-v/REVALIDATION_LOG.md`:
+```
+## REVAL-XXXX
+- **Date:** 2026-08-21
+- **Trigger:** Model update (Sonnet v3 → v4)
+- **Scope:** All agents using Medium tier
+- **Regression Results:** 42/42 PASS
+- **Decision:** Validated state confirmed
+- **Reviewer:** [Name, Role]
+```
+5. **If regression fails:** Treat as a new cycle trigger. Open CRs for affected requirements and run the full iteration lifecycle.
+
+### Model Version Tracking
+Record the active model versions in `.agile-v/config.json`:
+```json
+{
+  "model_versions": {
+    "high_tier": "claude-opus-4-20250514",
+    "medium_tier": "claude-sonnet-4-20250514",
+    "low_tier": "claude-haiku-3-20250307",
+    "last_validated": "2026-02-21",
+    "validated_by": "Name"
+  }
+}
+```
+
+Any model version change must trigger the revalidation procedure above before the new model is used in production workflows.

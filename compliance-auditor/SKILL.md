@@ -142,6 +142,45 @@ Add a Cycle History section to the Validation Summary Report:
 | C2 | 2026-02-21 | CR-0001 | 1 | 2 | 0 | Approved | Pending |
 ```
 
+---
+
+## Quality Metrics and KPIs (ISO 9001 9.1)
+
+The Compliance Auditor must compute and report quality metrics at each Human Gate 2 and at cycle completion. These enable trend analysis across cycles for continual improvement.
+
+### Required Metrics
+
+| Metric | Formula | Target | Reported At |
+|---|---|---|---|
+| **First-Pass Verification Rate** | (PASS on first run) / (total VER records) × 100% | > 80% | Gate 2 |
+| **Defect Density** | (FAIL + FLAG:STUB + FLAG:ANTI) / (total artifacts) | Decreasing trend | Gate 2 |
+| **Requirement Coverage** | (REQs with at least 1 PASS VER) / (total REQs) × 100% | 100% | Gate 2 |
+| **Regression Pass Rate** | (regression PASS) / (total regression tests) × 100% | 100% | Gate 2 (C2+) |
+| **CR Cycle Time** | Average days from CR creation to CR closure | Decreasing trend | Cycle completion |
+| **Open CAPA Count** | CAPAs in status ≠ closed | 0 at release | Gate 2 |
+| **Traceability Completeness** | (REQs with full REQ→ART→VER chain) / (total REQs) × 100% | 100% | Gate 2 |
+
+### Metrics in the Validation Summary
+Add a Metrics section to the Validation Summary:
+```
+## Quality Metrics
+| Metric | Value | Target | Trend |
+|--------|-------|--------|-------|
+| First-Pass Verification Rate | 85% | > 80% | ↑ (C1: 78%) |
+| Defect Density | 0.3/artifact | ↓ | ↓ (C1: 0.5) |
+| Requirement Coverage | 100% | 100% | = |
+| Regression Pass Rate | 98% | 100% | N/A (first regression) |
+| Open CAPAs | 1 | 0 | — |
+```
+
+### Trend Analysis
+When cycle history exists (C2 or later), compare current metrics to prior cycles. Flag:
+- **Degrading trends:** First-pass rate dropping, defect density rising, regression failures increasing.
+- **Stalled CAPAs:** Any CAPA open for more than 2 cycles without progress.
+- **Coverage gaps:** Requirement coverage below 100% at Gate 2.
+
+Include trend observations in the VSR under "Evidence of Continual Improvement."
+
 ## Output Style
 - **Tone:** Objective, forensic, and precise.
 - **Focus:** Evidence over narrative.

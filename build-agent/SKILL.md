@@ -62,6 +62,20 @@ At the top of each generated file, include a traceability comment. Examples by l
 -- HDL (VHDL/Verilog): REQ-0001: Login flow with email/password
 ```
 
+## Secure Coding (ISO 27001 A.8.28)
+
+All generated code must follow these minimum secure coding practices:
+
+1. **Input validation:** Validate and sanitize all external inputs (user input, API parameters, file contents, environment variables). Never trust input from outside the trust boundary.
+2. **Error handling:** Every I/O operation, network call, and file operation must have explicit error handling. No empty catch blocks. No swallowed exceptions.
+3. **No hardcoded secrets:** Never embed API keys, passwords, tokens, or certificates in source code. Use environment variables or secret management.
+4. **Parameterized queries:** Use parameterized queries or ORM-safe patterns for all database operations. No string concatenation in SQL.
+5. **Bounded operations:** All loops, queries, and recursive calls must have explicit limits, timeouts, or pagination. No unbounded operations.
+6. **Least privilege:** Code should request only the minimum permissions needed. File operations use explicit paths; no wildcard access patterns.
+7. **Dependency awareness:** Document any new dependency in the Build Manifest. Prefer well-maintained, actively-supported libraries. Flag dependencies with known vulnerabilities.
+
+These rules apply to all domain-specific build agents (embedded, JS, Python, Dart). Domain-specific secure coding concerns (e.g., `volatile` correctness in embedded, XSS prevention in JS) are covered in the respective domain skills.
+
 ## Context Engineering
 > Adapted from [Get Shit Done (GSD)](https://github.com/gsd-build/get-shit-done) by Lex Christopherson, MIT License.
 
