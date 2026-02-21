@@ -44,20 +44,36 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 ## 📦 Included Skills
 | Skill               | Category    | Path                         | Purpose                                                                 |
 |---------------------|-------------|------------------------------|-------------------------------------------------------------------------|
-| agile-v-core        | Foundation  | `agile-v-core/`              | The baseline "operating system" for all agents.                           |
+| agile-v-core        | Foundation  | `agile-v-core/`              | The baseline "operating system" for all agents. Includes context engineering, orchestration pipeline, state persistence, and model tier guidance.                           |
 | requirement-architect | Left Side | `requirement-architect/`     | Converts intent into atomic, traceable requirements.                    |
 | logic-gatekeeper    | Left Side   | `logic-gatekeeper/`          | Validates requirements for ambiguity and physical/hardware constraints.    |
-| build-agent         | Apex        | `build-agent/`               | Generates code, firmware, HDL from approved requirements (language-agnostic). |
+| build-agent         | Apex        | `build-agent/`               | Generates code, firmware, HDL from approved requirements (language-agnostic). Includes context engineering, pre-execution validation, and post-verification feedback loop. |
 | test-designer       | Apex        | `test-designer/`             | Designs verification suite from requirements only—runs parallel to Build Agent. |
 | schematic-generator | Apex        | `schematic-generator/`       | Generates schematics, netlists, HDL for hardware/PCB projects.           |
 | build-agent-dart    | Apex        | `domains/build-agent-dart/`  | Dart/Flutter build agent for mobile apps and packages.                  |
 | build-agent-js      | Apex        | `domains/build-agent-js/`    | JavaScript/TypeScript/Web build agent for web apps and backends.         |
 | build-agent-python  | Apex        | `domains/build-agent-python/`| Python build agent for scripts, backends, data pipelines, and ML.       |
 | build-agent-embedded| Apex        | `domains/build-agent-embedded/`| C/C++ build agent for embedded systems, firmware, and MCU projects.     |
-| red-team-verifier   | Right Side  | `red-team-verifier/`        | Challenges build artifacts; produces Validation Summary for Human Gate 2. |
+| red-team-verifier   | Right Side  | `red-team-verifier/`        | Challenges build artifacts; produces Validation Summary for Human Gate 2. Includes stub/anti-pattern detection and post-verification feedback protocol. |
 | compliance-auditor  | Compliance  | `compliance-auditor/`        | Automates decision logging, traceability matrix (ATM), and VSR for ISO/GxP. |
-| documentation-agent | Compliance  | `documentation-agent/`      | Generates standards-based repo documentation (ISO 9001, V-Model, ISO 27001, optional GAMP 5) into `docs/` with hub README, cross-reference matrix, and Mermaid diagrams. |
+| documentation-agent | Compliance  | `documentation-agent/`      | Generates standards-based repo documentation (ISO 9001, V-Model, ISO 27001, optional GAMP 5) into `docs/` with hub README, cross-reference matrix, Mermaid diagrams, and compliance posture documentation. |
 
+## Compliance Documentation
+
+The repository includes a full compliance posture assessment under [`docs/compliance/`](docs/compliance/). This documentation was generated from a clause-by-clause audit of the v1.3 skills against ISO 9001:2015, ISO 13485:2016, AS9100D, ISO 27001:2022, and GxP/GAMP 5.
+
+| Document | Purpose |
+|----------|---------|
+| [Compliance Posture Overview](docs/compliance/01_COMPLIANCE_POSTURE.md) | What the skills cover, what they don't, and the honest scope |
+| [ISO 9001 Matrix](docs/compliance/02_ISO_9001_MATRIX.md) | Clause-by-clause status for quality management |
+| [ISO 13485 Matrix](docs/compliance/03_ISO_13485_MATRIX.md) | Clause-by-clause status for medical devices |
+| [AS9100D Matrix](docs/compliance/04_AS9100D_MATRIX.md) | Clause-by-clause status for aerospace |
+| [ISO 27001 Matrix](docs/compliance/05_ISO_27001_MATRIX.md) | Control-by-control status for information security |
+| [GxP / GAMP 5 Matrix](docs/compliance/06_GXP_GAMP5_MATRIX.md) | Requirement-by-requirement status for pharma/life sciences |
+| [Gap Roadmap](docs/compliance/07_GAP_ROADMAP.md) | Prioritized action plan with 18 gaps, owners, and Gantt chart |
+
+> [!NOTE]
+> The skills claim `"ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"`. This is an honest scope -- the skills cover design and development controls, not production, manufacturing, or full organizational QMS. The compliance documentation tells you exactly what you get and what you still need to do for your regulatory context.
 
 ## Skill Interaction Flow
 
@@ -110,13 +126,80 @@ The Requirement Architect exports the approved Blueprint (after Human Gate 1) to
 ### Documentation artifact (documentation-agent)
 The Documentation Agent writes all output into the project's **`docs/`** directory (created if missing). The hub **`docs/README.md`** provides the document map, quick navigation and per-standard tables, cross-reference matrix (concerns × standards), repository structure reference, and applicable standards table. One subdirectory per selected standard, e.g. **`iso9001/`**, **`iso27001/`**, **`v-model/`** by default; (optionally **`gamp5/`** or other standards when the user requests it) contains numbered markdown documents for that standard. Every generated document (except the hub) includes a header (Document ID, Version, Date, Classification, Status), navigation (Back to Documentation Hub, Previous/Next when applicable), and a footer with a Document History table; any diagrams are Mermaid only, embedded in markdown. The default standards are ISO 9001, V-Model (lifecycle), and ISO 27001; additional standards (e.g. GAMP 5) are included only when the user specifies them.
 
+### Context Engineering and Orchestration (v1.2)
+
+Version 1.2 introduces **context engineering**, **orchestration pipeline**, **state persistence**, and **post-verification feedback** patterns adapted from [Get Shit Done (GSD)](https://github.com/gsd-build/get-shit-done) by Lex Christopherson ([MIT License](https://github.com/gsd-build/get-shit-done/blob/main/LICENSE)). These additions address how agents manage context windows, coordinate handoffs, persist project state across sessions, and iterate after verification failures.
+
+**Key additions:**
+- **Context Engineering** (`agile-v-core`, `build-agent`, all domain agents): Rules for managing context window quality -- thin orchestrator pattern, fresh context per task, task sizing to 50% of context, passing file paths instead of contents.
+- **Orchestration Pipeline** (`agile-v-core`): Defines pipeline stages, handoff rules, wave-based parallel execution with dependency analysis, and checkpoint types (auto, human-verify, human-decision, human-action).
+- **State Persistence** (`agile-v-core`): Standard `.agile-v/` project directory structure for persisting requirements, build manifests, decision logs, traceability matrices, and session state across sessions.
+- **Pre-Execution Validation** (`build-agent`): 5-dimension check before synthesis -- requirement coverage, artifact completeness, dependency order, scope sanity, and interface contracts.
+- **Post-Verification Feedback Loop** (`build-agent`, `red-team-verifier`): Auto-fix rules, severity classification (CRITICAL/MAJOR/MINOR), 3-attempt limit per failure, and re-verification protocol with append-only records.
+- **Stub and Anti-Pattern Detection** (`red-team-verifier`): 11-item detection checklist for placeholder returns, TODO markers, empty handlers, hardcoded secrets, and more.
+- **Model Tier Guidance** (`agile-v-core`): Recommended model capability tiers per agent role (High for architecture decisions, Medium for code generation, Low for structured logging).
+
+### Iteration Lifecycle and Document Versioning (v1.3)
+
+Version 1.3 introduces the **multi-cycle V-loop** -- the ability to run second and subsequent iterations while preserving full traceability, versioned documents, and audit evidence from prior cycles.
+
+**Key additions:**
+- **Iteration Lifecycle** (`agile-v-core`): Defines Cycle IDs (`C1`, `C2`, ...), cycle triggers, re-entry points, document versioning scheme, and cycle archival to `.agile-v/cycles/CN/`. Requirements carry per-REQ status tags (`approved`, `modified`, `new`, `deprecated`, `superseded`) with cycle references.
+- **Change Request Protocol** (`agile-v-core`, `requirement-architect`): `CR-XXXX` records in `.agile-v/CHANGE_LOG.md` that formally track every requirement modification between cycles with rationale, impact analysis, and Human Gate approval.
+- **Multi-Cycle Re-Validation** (`logic-gatekeeper`): Scoped re-validation -- only `new` and `modified` requirements go through full validation; unchanged requirements are skipped unless constraints shifted.
+- **Artifact Versioning** (`build-agent`): `ART-XXXX.N` revision scheme -- unchanged artifacts carry forward without rebuild; modified artifacts get a revision bump with CR reference.
+- **Regression and Delta Testing** (`test-designer`): Test cases classified as `delta` (new/modified REQs) or `regression` (unchanged REQs). Regression baseline carried forward from prior cycle. Retired tests preserved for traceability.
+- **Cycle-Aware Verification** (`red-team-verifier`): Delta and regression results reported separately. Unexpected regression failures (no related CR) are automatically **CRITICAL**.
+- **Cycle-Aware ATM** (`compliance-auditor`): Traceability matrix partitioned by cycle. CR end-to-end chain validation. Cycle boundary audit checklist. VSR extended with Cycle History table.
+
+### Compliance Hardening (v1.3)
+
+Version 1.3 also includes compliance hardening based on a clause-by-clause audit against ISO 9001:2015, ISO 13485:2016, AS9100D, ISO 27001:2022, and GxP/GAMP 5. The compliance metadata has been updated from `"ISO/GxP-Ready"` to `"ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"` to accurately reflect the scope.
+
+**Key additions:**
+- **Risk Management** (`agile-v-core`): `RISK_REGISTER.md` with severity matrix, risk categories (technical, process, compliance, security), and assessment rules per pipeline stage. Addresses ISO 9001 6.1, AS9100D 8.1.1.
+- **CAPA Protocol** (`agile-v-core`): `CAPA_LOG.md` with root cause analysis (5-Whys), corrective action, preventive action, and effectiveness verification. Addresses ISO 13485 8.5, ISO 9001 10.1/10.2.
+- **Human Gate Approval Records** (`agile-v-core`): `APPROVALS.md` with approver identity, role/authority, signature method, and evidence reference. Minimum requirements by regulatory context (non-regulated through ISO 13485). Addresses 21 CFR Part 11, Annex 11.
+- **AI Agent Security Controls** (`agile-v-core`): LLM provider documentation in `config.json` (data residency, retention, training usage, confidentiality certification), data classification rules, agent access controls, and file integrity verification. Addresses ISO 27001 A.5.23, A.8.3.
+- **Periodic Review and Revalidation** (`agile-v-core`): `REVALIDATION_LOG.md` with defined triggers (model change, runtime change, skill change, accumulated CRs, 12-month interval). Model version tracking in `config.json`. Addresses GxP/GAMP 5 periodic review.
+- **Quality Metrics and KPIs** (`compliance-auditor`): 7 defined metrics (first-pass verification rate, defect density, requirement coverage, regression pass rate, CR cycle time, open CAPA count, traceability completeness) with trend analysis. Addresses ISO 9001 9.1, AS9100D 9.1.1.
+- **Secure Coding** (`build-agent`): 7 minimum secure coding rules (input validation, error handling, no hardcoded secrets, parameterized queries, bounded operations, least privilege, dependency awareness). Addresses ISO 27001 A.8.28.
+- **Nonconformity Disposition** (`red-team-verifier`): Formal disposition categories (rework, accept-as-is, reject, defer) with CAPA trigger criteria. Addresses ISO 9001 8.7, ISO 13485 8.3.
+
+### Context Optimization (v1.3)
+
+All 8 core skill files have been rewritten for minimal context window consumption. Total reduction: **1,670 → 670 lines (60%)**, with zero information loss.
+
+| Skill | Before | After | Reduction |
+|---|---|---|---|
+| agile-v-core | 610 lines / 33 KB | 227 lines / 12 KB | 63% |
+| build-agent | 151 lines / 9.6 KB | 74 lines / 3.8 KB | 51% |
+| red-team-verifier | 212 lines / 10.5 KB | 89 lines / 4.2 KB | 58% |
+| compliance-auditor | 186 lines / 8.4 KB | 77 lines / 3.3 KB | 59% |
+| requirement-architect | 119 lines | 50 lines | 58% |
+| logic-gatekeeper | 71 lines | 38 lines | 46% |
+| test-designer | 124 lines | 53 lines | 57% |
+| documentation-agent | 197 lines | 62 lines | 69% |
+
+**Techniques used:**
+- **`sections_index` in YAML frontmatter** -- agents jump to the section they need without scanning the full document.
+- **Directive tables** replace prose paragraphs -- 6 core directives fit in one table instead of 6 subsections.
+- **Inline notation** (`;` and `·` separators, numbered items on single lines) replaces verbose multi-line bullets.
+- **Format templates show structure only** -- one example is sufficient; agents know how to repeat a pattern.
+- **Cross-references** replace duplication -- "see agile-v-core" instead of re-explaining shared concepts.
+
+**Impact on agent execution:**
+- `agile-v-core` consumes ~12 KB (~3% of a 200K context window) instead of 33 KB (~8%).
+- A typical workflow loads core + one role skill: ~16 KB total vs ~43 KB before.
+- The `sections_index` enables immediate section lookup, reducing scanning overhead.
+
 > [!IMPORTANT]
 > **Maintain Rigorous Test Independence:**  
 > When running the workflow within a **single chat** or environment, **always execute the Test Designer *before* launching the Build Agent**. This ensures the Test Designer derives its test suite solely from the requirements and not from any artifacts, code, or outputs generated by the Build Agent.  
 > By preserving this strict order, you safeguard the impartiality of the verification process and prevent accidental cross-contamination, thereby maximizing the integrity and trustworthiness of your independent test coverage.
 
 > [!TIP]
-> **Scaling the build phase:** With a large number of features or requirements, consider running the build agent **per feature or per small subset** (sequentially) to improve focus and quality. Running **multiple build-agent instances in parallel** can speed things up but may introduce race conditions (e.g. concurrent edits to the same files); use with care and plan your merge or review strategy accordingly.
+> **Scaling the build phase:** With a large number of features or requirements, consider running the build agent **per feature or per small subset** (sequentially) to improve focus and quality. Running **multiple build-agent instances in parallel** can speed things up but may introduce race conditions (e.g. concurrent edits to the same files); use with care and plan your merge or review strategy accordingly. See the **Wave-Based Parallel Execution** section in `agile-v-core` for dependency-aware parallelism guidance.
 
 ## How to Use
 Below are practical ways to use these skills in common editors and agents.
