@@ -3,7 +3,7 @@ name: documentation-agent
 description: Generates standards-based repository documentation for GitHub or any project. Writes a docs suite into the project's docs/ directory covering ISO 9001, V-Model, ISO 27001, and optionally GAMP 5 or other standards. Use when the user asks for repo documentation, compliance docs, quality docs, or to create/refresh the docs/ suite.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.3"
   standard: "Agile V"
   author: agile-v.org
 ---
@@ -160,6 +160,35 @@ Sections and content appropriate to the document. Use Mermaid for any diagrams.
 Assign sequential numbers based on the ordered list of files in each subdirectory. Generate correct **Previous/Next** links from that order.
 
 ---
+
+## Compliance Documentation
+
+In addition to the per-standard documentation above, generate a **compliance posture assessment** under `docs/compliance/`. This suite documents what the Agile V skills cover, what they do not cover, and what users must implement to achieve full certification.
+
+**Compliance** (`docs/compliance/`): 01_COMPLIANCE_POSTURE, 02_ISO_9001_MATRIX, 03_ISO_13485_MATRIX, 04_AS9100D_MATRIX, 05_ISO_27001_MATRIX, 06_GXP_GAMP5_MATRIX, 07_GAP_ROADMAP.
+
+**Document ID prefix:** COMP- (e.g. COMP-001 through COMP-007).
+
+### Compliance Document Contents
+
+Each compliance matrix document (COMP-002 through COMP-006) must include:
+1. **Scope statement:** Which clauses are assessed, which are excluded and why.
+2. **Compliance matrix table:** Every assessed clause with Status (COMPLIANT / PARTIAL / NOT COVERED), Evidence (which skill and section), and Gap / User Action Required.
+3. **Summary counts:** Total COMPLIANT, PARTIAL, NOT COVERED.
+4. **Key message:** A plain-language summary of what users of that standard need to know.
+
+The Gap Roadmap (COMP-007) must include:
+1. **Priority levels:** P1 Blocking, P2 Significant, P3 Enhancement, P4 Advisory.
+2. **Consolidated gap register:** Each gap with standards affected, current state, action required, suggested owner, and verification criteria.
+3. **Roadmap visualization:** Mermaid Gantt chart showing gap-closing timeline.
+4. **Usage guidance:** How to use the roadmap based on regulatory context.
+
+### When to Regenerate Compliance Docs
+Regenerate compliance documentation when:
+- Skill versions change (version bump in any SKILL.md frontmatter).
+- New standards are added to the compliance scope.
+- A compliance audit identifies new findings.
+- Gaps are closed and status needs updating.
 
 ## Alignment with Agile V
 

@@ -56,8 +56,24 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 | build-agent-embedded| Apex        | `domains/build-agent-embedded/`| C/C++ build agent for embedded systems, firmware, and MCU projects.     |
 | red-team-verifier   | Right Side  | `red-team-verifier/`        | Challenges build artifacts; produces Validation Summary for Human Gate 2. Includes stub/anti-pattern detection and post-verification feedback protocol. |
 | compliance-auditor  | Compliance  | `compliance-auditor/`        | Automates decision logging, traceability matrix (ATM), and VSR for ISO/GxP. |
-| documentation-agent | Compliance  | `documentation-agent/`      | Generates standards-based repo documentation (ISO 9001, V-Model, ISO 27001, optional GAMP 5) into `docs/` with hub README, cross-reference matrix, and Mermaid diagrams. |
+| documentation-agent | Compliance  | `documentation-agent/`      | Generates standards-based repo documentation (ISO 9001, V-Model, ISO 27001, optional GAMP 5) into `docs/` with hub README, cross-reference matrix, Mermaid diagrams, and compliance posture documentation. |
 
+## Compliance Documentation
+
+The repository includes a full compliance posture assessment under [`docs/compliance/`](docs/compliance/). This documentation was generated from a clause-by-clause audit of the v1.3 skills against ISO 9001:2015, ISO 13485:2016, AS9100D, ISO 27001:2022, and GxP/GAMP 5.
+
+| Document | Purpose |
+|----------|---------|
+| [Compliance Posture Overview](docs/compliance/01_COMPLIANCE_POSTURE.md) | What the skills cover, what they don't, and the honest scope |
+| [ISO 9001 Matrix](docs/compliance/02_ISO_9001_MATRIX.md) | Clause-by-clause status for quality management |
+| [ISO 13485 Matrix](docs/compliance/03_ISO_13485_MATRIX.md) | Clause-by-clause status for medical devices |
+| [AS9100D Matrix](docs/compliance/04_AS9100D_MATRIX.md) | Clause-by-clause status for aerospace |
+| [ISO 27001 Matrix](docs/compliance/05_ISO_27001_MATRIX.md) | Control-by-control status for information security |
+| [GxP / GAMP 5 Matrix](docs/compliance/06_GXP_GAMP5_MATRIX.md) | Requirement-by-requirement status for pharma/life sciences |
+| [Gap Roadmap](docs/compliance/07_GAP_ROADMAP.md) | Prioritized action plan with 18 gaps, owners, and Gantt chart |
+
+> [!NOTE]
+> The skills claim `"ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"`. This is an honest scope -- the skills cover design and development controls, not production, manufacturing, or full organizational QMS. The compliance documentation tells you exactly what you get and what you still need to do for your regulatory context.
 
 ## Skill Interaction Flow
 
