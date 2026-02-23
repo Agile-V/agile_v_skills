@@ -3,7 +3,7 @@ name: agile-v-core
 description: Foundational values, directives, and context engineering rules for all Agile V agents. Load this skill first in any Agile V session. For pipeline orchestration, multi-cycle lifecycle, or compliance protocols, load the corresponding agile-v-* skill on demand.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.0"
+  version: "1.3"
   standard: "Agile V"
   compliance: "ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"
   author: agile-v.org

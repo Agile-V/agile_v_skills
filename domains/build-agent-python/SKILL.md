@@ -3,7 +3,7 @@ name: build-agent-python
 description: Python build agent for scripts, backends, data pipelines, and ML projects. Extends build-agent with Python conventions. Use when building Python applications, APIs, data processing, or automation.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.2"
+  version: "1.3"
   standard: "Agile V"
   domain: "Python"
   extends: "build-agent"

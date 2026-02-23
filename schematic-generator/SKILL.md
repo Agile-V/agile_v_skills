@@ -3,10 +3,16 @@ name: schematic-generator
 description: Generates schematics, netlists, or HDL from requirements for hardware/PCB projects. Validates physical constraints. Use when building PCB, HDL, or hardware designs from approved requirements.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.3"
   standard: "Agile V"
   domain: "Hardware/EE"
   author: agile-v.org
+  sections_index:
+    - Prerequisites
+    - Procedures
+    - Output Format
+    - Multi-Cycle Artifact Versioning
+    - Halt Conditions
 ---
 
 # Instructions
@@ -56,9 +62,13 @@ Before emitting any artifact, verify: (1) GPIO pin count/assignment match datash
 
 ## Output Format
 
-**Hardware Build Manifest:** `ART-HXXX | REQ-XXXX | path | notes` (one row per artifact).
+**Hardware Build Manifest:** `ART-HXXX | REQ-XXXX | path | notes` (one row per artifact). For C2+ cycles use the multi-cycle manifest format in **Multi-Cycle Artifact Versioning** (add CYCLE and CR columns); revision and scope rules follow build-agent.
 **Per-artifact header:** `-- REQ-XXXX: [brief reference]` at top of each generated file.
 **Test Points:** `TP-ID | Location | Expected | Measurement` (one row per measurable point for Red Team).
+
+## Multi-Cycle Artifact Versioning (C2+)
+
+Apply the same revision and carry-forward rules as **build-agent** (see build-agent Multi-Cycle Artifact Versioning). Hardware-specific: use `ART-HXXX.N` for artifact IDs; multi-cycle manifest format: `ART-HXXX.N | REQ-XXXX | path | CYCLE | CR | notes` (CR empty when carry-forward or new). Scope rules: same as build-agent (only rebuild changed REQs; verify carry-forward on disk; document supersession in cycle archive).
 
 ## Halt Conditions
 - Ambiguous requirement → Ask Human for clarification.

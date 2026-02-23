@@ -3,7 +3,7 @@ name: build-agent-embedded
 description: C/C++ build agent for embedded systems, firmware, and MCU projects. Extends build-agent with embedded constraints. Use when building firmware, bare-metal code, or resource-constrained systems.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.2"
+  version: "1.3"
   standard: "Agile V"
   domain: "Embedded/C/C++"
   extends: "build-agent"

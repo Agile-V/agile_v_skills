@@ -3,7 +3,7 @@ name: build-agent-dart
 description: Dart/Flutter build agent for mobile apps, Flutter widgets, and Dart packages. Extends build-agent with Dart-specific conventions. Use when building Flutter apps, Dart packages, or mobile (iOS/Android) features.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.2"
+  version: "1.3"
   standard: "Agile V"
   domain: "Dart/Flutter/Mobile"
   extends: "build-agent"

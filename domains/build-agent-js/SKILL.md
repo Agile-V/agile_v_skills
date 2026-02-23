@@ -3,7 +3,7 @@ name: build-agent-js
 description: JavaScript/TypeScript/Web build agent for web apps, Node backends, and frontend components. Extends build-agent with JS/Web conventions. Use when building web apps, APIs, or frontend/backend features.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.2"
+  version: "1.3"
   standard: "Agile V"
   domain: "JavaScript/TypeScript/Web"
   extends: "build-agent"

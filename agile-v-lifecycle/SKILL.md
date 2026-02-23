@@ -3,7 +3,7 @@ name: agile-v-lifecycle
 description: Multi-cycle iteration management, document versioning, change requests, re-entry points, archival, and impact analysis. Load when starting a new cycle (C2+), processing change requests, or managing cross-cycle traceability.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.0"
+  version: "1.3"
   standard: "Agile V"
   author: agile-v.org
 ---

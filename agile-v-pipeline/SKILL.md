@@ -3,7 +3,7 @@ name: agile-v-pipeline
 description: Orchestration pipeline, wave execution, handoff protocols, and checkpoint types for the Agile V 5-stage workflow. Load when orchestrating multi-agent pipelines or managing stage transitions.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.0"
+  version: "1.3"
   standard: "Agile V"
   author: agile-v.org
   adapted_from:
