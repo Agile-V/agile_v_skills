@@ -3,10 +3,16 @@ name: schematic-generator
 description: Generates schematics, netlists, or HDL from requirements for hardware/PCB projects. Validates physical constraints. Use when building PCB, HDL, or hardware designs from approved requirements.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.3"
   standard: "Agile V"
   domain: "Hardware/EE"
   author: agile-v.org
+  sections_index:
+    - Prerequisites
+    - Procedures
+    - Output Format
+    - Multi-Cycle Artifact Versioning
+    - Halt Conditions
 ---
 
 # Instructions
@@ -51,40 +57,18 @@ You are the **Hardware Synthesis Agent** at the Apex of the Agile V infinity loo
 - Structure outputs so the Verification Agent can challenge them independently.
 - Include expected behavior and **test points** for verification (see format below).
 
-### Physical Constraint Validation Checklist
-Before emitting any hardware artifact, verify:
-- [ ] **GPIO:** Pin count and assignment match MCU/FPGA datasheet; no double-assignment.
-- [ ] **Power:** Total draw within supply capacity; voltage levels compatible.
-- [ ] **Thermal:** Component power dissipation within rated limits.
-- [ ] **Bus speed:** I2C/SPI/UART speeds achievable with clock configuration.
-
-Example failure modes to catch: Pin already used by another peripheral; 5V output on 3.3V-tolerant pin; I2C 400kHz with 8MHz MCU clock (may not meet timing).
+### Physical Constraint Checklist
+Before emitting any artifact, verify: (1) GPIO pin count/assignment match datasheet, no double-assignment. (2) Total power draw within supply, voltage levels compatible. (3) Thermal dissipation within rated limits. (4) Bus speeds achievable with clock config. Catch: pin reuse, voltage mismatch (e.g. 5V on 3.3V-tolerant), timing violations.
 
 ## Output Format
 
-### Hardware Build Manifest (required)
-```
-ARTIFACT_ID | REQ_ID | LOCATION | NOTES
-ART-H001 | REQ-0001 | schematics/power-supply.kicad_sch | 3.3V rail
-ART-H002 | REQ-0002 | rtl/sensor_interface.v | I2C sensor driver
-```
+**Hardware Build Manifest:** `ART-HXXX | REQ-XXXX | path | notes` (one row per artifact). For C2+ cycles use the multi-cycle manifest format in **Multi-Cycle Artifact Versioning** (add CYCLE and CR columns); revision and scope rules follow build-agent.
+**Per-artifact header:** `-- REQ-XXXX: [brief reference]` at top of each generated file.
+**Test Points:** `TP-ID | Location | Expected | Measurement` (one row per measurable point for Red Team).
 
-### Per-Artifact Header (recommended)
-At the top of each generated file:
-```
--- REQ-XXXX: [Brief requirement reference]
-```
+## Multi-Cycle Artifact Versioning (C2+)
 
-### Test Points for Red Team Verification
-Include measurable test points for each artifact:
-```
-## Test Points (REQ-XXXX)
-| TP-ID | Location | Expected | Measurement |
-|-------|----------|----------|-------------|
-| TP-001 | 3.3V rail | 3.3V ±5% | DMM at test pad |
-| TP-002 | I2C SDA | ACK on 0x48 read | Logic analyzer |
-| TP-003 | Sensor output | 0–3.3V range | Oscilloscope |
-```
+Apply the same revision and carry-forward rules as **build-agent** (see build-agent Multi-Cycle Artifact Versioning). Hardware-specific: use `ART-HXXX.N` for artifact IDs; multi-cycle manifest format: `ART-HXXX.N | REQ-XXXX | path | CYCLE | CR | notes` (CR empty when carry-forward or new). Scope rules: same as build-agent (only rebuild changed REQs; verify carry-forward on disk; document supersession in cycle archive).
 
 ## Halt Conditions
 - Ambiguous requirement → Ask Human for clarification.
