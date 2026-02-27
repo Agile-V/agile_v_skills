@@ -585,12 +585,9 @@ def main():
     if args.skills_dir:
         skills_dir = args.skills_dir.resolve()
     else:
-        # Default: relative to this script
+        # Default: relative to this script (tests/ -> repo root -> domains/eda/)
         script_dir = Path(__file__).resolve().parent
-        skills_dir = script_dir.parent.parent / "domains" / "eda"
-        if not skills_dir.exists():
-            # Try from repo root
-            skills_dir = script_dir.parent / "domains" / "eda"
+        skills_dir = script_dir.parent / "domains" / "eda"
 
     if not skills_dir.exists():
         print(f"ERROR: Skills directory not found: {skills_dir}", file=sys.stderr)
