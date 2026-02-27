@@ -1,6 +1,6 @@
 ---
 name: eda-support-passives
-description: Automatically adds and validates support passive components: decoupling capacitors, pull-up/down resistors, boot straps, series resistors, and RC filters. Completeness pass for the schematic.
+description: "Automatically adds and validates support passive components: decoupling capacitors, pull-up/down resistors, boot straps, series resistors, and RC filters. Completeness pass for the schematic."
 license: CC-BY-SA-4.0
 metadata:
   version: "1.0"
