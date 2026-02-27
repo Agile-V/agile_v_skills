@@ -27,7 +27,7 @@ jobs:
 
       - name: Configure git
         run: |
-          git fetch --prune --unshallow
+          git fetch --prune
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
