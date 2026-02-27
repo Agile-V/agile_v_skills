@@ -1,0 +1,58 @@
+# On every push to main: run standard-version to compute the next version from Conventional
+# Commits since last tag, update package.json (and CHANGELOG if present), commit, and tag.
+# Skips when the push contains [skip ci] (our own release commit) to avoid a loop.
+
+name: Version and tag
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  version-and-tag:
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.head_commit || !contains(github.event.head_commit.message, '[skip ci]') }}
+    outputs:
+      version: ${{ steps.get_new_version.outputs.result }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git fetch --prune --unshallow
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run standard-version
+        run: npx standard-version --skip.tag --skip.commit
+
+      - name: Get new version
+        id: get_new_version
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            return pkg.version;
+
+      - name: Commit release and push
+        run: |
+          git add .
+          git commit -m "chore(release): ${{ steps.get_new_version.outputs.result }}"
+          git commit --allow-empty -m "chore(release): ${{ steps.get_new_version.outputs.result }} [skip ci]"
+          git push origin main
+
+      - name: Create and push tag
+        run: |
+          TAG="v${{ steps.get_new_version.outputs.result }}"
+          git tag "$TAG"
+          git push origin "$TAG"

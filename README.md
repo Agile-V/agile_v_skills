@@ -255,6 +255,11 @@ Agile V™ establishes a minimum quality floor across all teams and agents.
 
 
 
+## Versioning
+
+- **Repository:** The repo uses [semantic versioning](https://semver.org/) driven by [Conventional Commits](https://www.conventionalcommits.org/). On each push to `main`, a GitHub Action reads the commit message and bumps the version accordingly: `feat:` → minor, `fix:` (and `chore:`, `docs:`, etc.) → patch, `BREAKING CHANGE` or `type!:` → major. It then creates a new git tag (e.g. `v1.5.1`) and updates the root [`package.json`](package.json). The version field and tag are maintained by the workflow; do not edit `package.json` version by hand for releases. The same file holds repo metadata (name, description, author, repository, license).
+- **Skills:** Each skill is versioned independently via `metadata.version` in its `SKILL.md` frontmatter ([agentskills.io](https://agentskills.io/specification) style). Skills are not version-locked to each other; bump a skill’s version only when that skill’s content or contract changes.
+
 ## 🤝 Contributing New Skills
 We welcome contributions! To add a new skill to the Agile V™ ecosystem, it must adhere to the following rules:
 
@@ -268,7 +273,7 @@ We welcome contributions! To add a new skill to the Agile V™ ecosystem, it mus
 
 5. **License:** The skill must be licensed under **CC-BY-SA-4.0** (Creative Commons Attribution-ShareAlike 4.0). Include `license: CC-BY-SA-4.0` in the frontmatter.
 
-6. **Metadata:** The skill must include `metadata.author` (e.g., `agile-v.org`) and `metadata.version` (e.g., `"1.0"`).
+6. **Metadata:** The skill must include `metadata.author` (e.g., `agile-v.org`) and `metadata.version` (e.g., `"1.0"`). Each skill has its own version; maintainers bump it when that skill changes.
 
 > [!NOTE]
 > **Contribution guidelines in progress:** We are currently developing comprehensive contribution guidelines for the community. The rules above are the current minimum requirements. A full spec, including review process, quality checklist, and community standards, will be published soon. Watch this space or check [agile-v.org](https://agile-v.org) for updates.
