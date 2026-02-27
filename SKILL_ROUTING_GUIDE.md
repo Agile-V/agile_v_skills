@@ -21,6 +21,11 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 | Generate repository documentation | `documentation-agent` | "Generate docs", "Create README", "Document architecture", "ISO 9001 docs" |
 | Orchestrate full pipeline | `agile-v-pipeline` + others | "Run full workflow", "Execute pipeline", "End-to-end process" |
 | Multi-cycle management | `agile-v-lifecycle` | "Start Cycle 2", "Manage iterations", "Change requests", "Version requirements" |
+| PCB schematic from requirements | EDA domain skills (Groups A-F) | "Design a PCB", "Generate schematic", "KiCad schematic", "Hardware design" |
+| Component selection for PCB | `power-path-selector`, `controller-selector`, `interface-selector`, etc. | "Select regulator", "Pick MCU", "Choose connector", "BOM risk check" |
+| KiCad library creation | `symbol-builder`, `footprint-builder`, `symbol-footprint-mapper` | "Create KiCad symbol", "Build footprint", "Map symbol to footprint" |
+| Schematic validation | `kicad-erc-gate`, `protocol-rule-checks`, `file-integrity-check` | "Run ERC", "Validate schematic", "Check USB-C CC resistors", "Protocol checks" |
+| BOM & layout handoff | `bom-generator`, `documentation-packager`, `layout-handoff-exporter` | "Generate BOM", "Export for layout", "Create handoff package" |
 
 ## Detailed Skill Triggers
 
@@ -178,6 +183,171 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 - "Incident detection"
 - "Error budget tracking"
 
+### EDA Domain — PCB Schematic Generation
+
+**Group A — Spec & Architecture**
+
+**`requirements-normalizer`**
+- "Normalize hardware requirements"
+- "Convert spec to structured format"
+- "Parse interface list and constraints"
+- "Define power rails and budgets"
+
+**`schematic-sheet-plan`**
+- "Plan schematic sheets"
+- "Define sheet hierarchy"
+- "How many sheets for this design?"
+- "Organize schematic structure"
+
+**`power-tree-plan`**
+- "Design power tree"
+- "Plan power distribution"
+- "Define rail sequencing"
+- "Calculate power budget"
+
+**Group B — Component Research & Selection**
+
+**`power-path-selector`**
+- "Select voltage regulator"
+- "Choose buck/boost/LDO"
+- "Design power path"
+- "Derating analysis for regulator"
+
+**`controller-selector`**
+- "Select MCU"
+- "Pick microcontroller"
+- "Choose SoC for this design"
+- "MCU pin strategy"
+
+**`interface-selector`**
+- "Select connector for USB-C"
+- "Choose I2C level shifter"
+- "Design CAN interface circuit"
+- "SPI/UART/Ethernet interface"
+
+**`protection-emc-selector`**
+- "Add ESD protection"
+- "Select TVS diodes"
+- "Design EMC filtering"
+- "Reverse polarity protection"
+
+**`analog-frontend-selector`**
+- "Design analog frontend"
+- "Select op-amp"
+- "ADC conditioning circuit"
+- "Sensor interface topology"
+
+**`bom-risk-check`**
+- "Check BOM risk"
+- "Single source parts?"
+- "Component lifecycle status"
+- "AVL recommendations"
+
+**Group C — Library Build**
+
+**`symbol-builder`**
+- "Create KiCad symbol"
+- "Build .kicad_sym"
+- "Generate symbol from datasheet"
+- "Pin mapping for new part"
+
+**`footprint-builder`**
+- "Create KiCad footprint"
+- "Build .kicad_mod"
+- "Generate footprint from datasheet"
+- "Pad layout for QFN/BGA"
+
+**`symbol-footprint-mapper`**
+- "Map symbol to footprint"
+- "Link library entries"
+- "Set MPN and metadata"
+
+**`library-qa`**
+- "Validate library entries"
+- "Check pin/pad consistency"
+- "Library quality check"
+- "Multi-unit symbol validation"
+
+**Group D — Schematic Generation**
+
+**`template-instantiator`**
+- "Create new KiCad project"
+- "Scaffold schematic from template"
+- "Initialize hardware project"
+
+**`placement-engine`**
+- "Place components on schematic"
+- "Run ELK layout"
+- "Deterministic placement"
+- "Grid-aligned component positions"
+
+**`connectivity-synthesizer`**
+- "Wire the schematic"
+- "Connect components"
+- "Add net labels and sheet pins"
+- "Route schematic connections"
+
+**`support-passives`**
+- "Add decoupling caps"
+- "Place pull-up resistors"
+- "Bootstrap circuit passives"
+- "RC filter components"
+
+**`net-naming-hygiene`**
+- "Normalize net names"
+- "Clean up net labels"
+- "Name differential pairs"
+- "Bus naming convention"
+
+**Group E — Validation**
+
+**`file-integrity-check`**
+- "Check .kicad_sch file integrity"
+- "Validate S-expression structure"
+- "UTF-8 and syntax check"
+
+**`kicad-render-test`**
+- "Render schematic to PDF"
+- "Export SVG from KiCad"
+- "KiCad CLI parse check"
+
+**`kicad-erc-gate`**
+- "Run ERC"
+- "Electrical rules check"
+- "ERC violations report"
+- "Fatal vs warning classification"
+
+**`protocol-rule-checks`**
+- "Check USB-C CC resistors"
+- "Verify I2C pull-ups"
+- "CAN termination check"
+- "Protocol compliance verification"
+
+**`library-resolution-check`**
+- "Missing symbols or footprints?"
+- "Resolve library references"
+- "Check all parts are linked"
+
+**Group F — Release & Handoff**
+
+**`bom-generator`**
+- "Generate BOM"
+- "Export bill of materials"
+- "BOM with alternates"
+- "DNP handling"
+
+**`documentation-packager`**
+- "Package schematic docs"
+- "Create design notes"
+- "Bring-up checklist"
+- "Export schematic PDF"
+
+**`layout-handoff-exporter`**
+- "Export netlist for layout"
+- "Critical placement notes"
+- "Testpoint list"
+- "Hand off to PCB layout"
+
 ### Orchestration & Lifecycle
 
 **`agile-v-core`**
@@ -282,11 +452,13 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 - **Release:** `release-manager`, `observability-planner`
 - **Compliance:** `compliance-auditor`, `documentation-agent`
 - **Agile Delivery:** `agile-v-product-owner`
+- **EDA (PCB):** See EDA Domain skills (Groups A-F, 26 skills)
 
 ### On Demand
 - `agile-v-pipeline` — When orchestrating multi-agent workflows
 - `agile-v-lifecycle` — When managing multi-cycle iterations
 - `agile-v-compliance` — When risk/CAPA/revalidation needed
+- **EDA domain** — When designing PCB schematics (see EDA workflows below)
 
 ## Skill Compatibility Matrix
 
@@ -308,6 +480,39 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 | `agile-v-product-owner` | No (requires REQs) | No (orchestrates sprints) | `requirement-architect` |
 | `agile-v-pipeline` | No (orchestrates others) | N/A | `agile-v-core` |
 | `agile-v-lifecycle` | No (manages cycles) | N/A | `agile-v-core` |
+| EDA Group A (spec) | Yes | No (sequential) | None |
+| EDA Group B (components) | No (requires spec) | Yes (skills 4-8 parallel) | Group A |
+| EDA Group C (library) | No (requires components) | Partial (10-11 parallel) | Group B |
+| EDA Group D (schematic) | No (requires library) | No (sequential) | Group C |
+| EDA Group E (validation) | No (requires schematic) | Yes (19-23 parallel) | Group D |
+| EDA Group F (handoff) | No (requires Gate 2) | Yes (24-26 parallel) | Group E |
+
+### Workflow 6: PCB Schematic — Fast Path (13 Skills)
+
+1. **`requirements-normalizer`** — Structured spec from free text
+2. **`schematic-sheet-plan`** — Sheet hierarchy
+3. **`power-path-selector`** — Regulator selection
+4. **`interface-selector`** — Per-interface circuits
+5. **`symbol-builder`** + **`footprint-builder`** — Library entries (parallel)
+6. **`symbol-footprint-mapper`** — Link symbols to footprints
+7. **`template-instantiator`** — Scaffold KiCad project
+8. **`placement-engine`** — Place components
+9. **`connectivity-synthesizer`** — Wire everything
+10. **`kicad-render-test`** — PDF export (parse check)
+11. **`kicad-erc-gate`** — ERC validation
+12. **`bom-generator`** — Bill of materials
+
+### Workflow 7: PCB Schematic — Full Path (26 Skills)
+
+1. **Group A** — `requirements-normalizer` → `schematic-sheet-plan` → `power-tree-plan`
+2. **Human Gate 1** — Approve architecture
+3. **Group B** — Component research (skills 4-9, parallelizable)
+4. **`bom-risk-check`** — Lifecycle/AVL check
+5. **Group C** — Library build (`symbol-builder` + `footprint-builder` parallel, then `symbol-footprint-mapper` → `library-qa`)
+6. **Group D** — Schematic generation (`template-instantiator` → `placement-engine` → `connectivity-synthesizer` → `support-passives` → `net-naming-hygiene`)
+7. **Group E** — Full validation (skills 19-23)
+8. **Human Gate 2** — Approve validated schematic
+9. **Group F** — Release & handoff (`bom-generator` + `documentation-packager` + `layout-handoff-exporter`, parallel)
 
 ## Tips for Effective Skill Use
 
