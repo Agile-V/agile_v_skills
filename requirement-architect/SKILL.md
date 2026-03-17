@@ -11,6 +11,98 @@ metadata:
     - Human Gate 1 Handoff
     - Requirements File Convention
     - Multi-Cycle Management
+
+orchestration:
+  stage: requirements
+  phase: design
+  execution_mode: sequential
+  wave_priority: 1
+  
+  dependencies:
+    - type: agent
+      name: research-planner
+      required: false
+      reason: Research provides context but is optional
+    - type: gate
+      name: Research Questions Gate
+      required: true
+      reason: User must resolve planner questions before formalizing requirements
+    - type: agent
+      name: discovery-analyst
+      required: false
+      reason: Discovery artifacts enrich requirements
+    - type: agent
+      name: ux-spec-author
+      required: false
+      reason: UX specs provide design requirements
+    - type: agent
+      name: threat-modeler
+      required: false
+      reason: Security requirements from threat model
+    - type: agent
+      name: observability-planner
+      required: false
+      reason: Observability requirements from metrics plan
+  
+  triggers:
+    - project_created
+    - product_intent_updated
+    - research_completed
+    - discovery_completed
+  
+  inputs:
+    - type: database
+      name: project.productIntent
+      required: true
+    - type: database
+      name: researchSession
+      required: false
+    - type: database
+      name: researchQuestions[]
+      required: false
+    - type: database
+      name: observations[]
+      required: false
+    - type: database
+      name: candidateRequirements[]
+      required: false
+    - type: database
+      name: userFlows[]
+      required: false
+    - type: database
+      name: threats[]
+      required: false
+  
+  outputs:
+    - type: artifact
+      name: REQUIREMENTS.md
+      destination: project_root
+    - type: database
+      name: requirements[]
+      destination: db.requirements
+    - type: event
+      name: requirements_generated
+  
+  gates: []
+  
+  conditions:
+    enabled_when:
+      - project.productIntent != null
+  
+  resources:
+    timeout_ms: 300000
+    max_tokens: 16000
+    batch_size: 5
+  
+  error_handling:
+    retry_strategy: exponential
+    max_retries: 3
+    fallback_behavior: halt
+    critical: true
+  
+  implementation:
+    type: llm-agent
+    required: true
 ---
 
 # Instructions

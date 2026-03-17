@@ -21,6 +21,84 @@ metadata:
     - Post-Verification Feedback Loop
     - Multi-Cycle Artifact Versioning
     - Halt Conditions
+
+orchestration:
+  stage: synthesis
+  phase: build
+  execution_mode: parallel  # Runs in parallel with test-designer
+  wave_priority: 3
+  
+  dependencies:
+    - type: agent
+      name: logic-gatekeeper
+      required: true
+      reason: Must have validated requirements
+    - type: gate
+      name: Human Gate 1
+      required: true
+      reason: Cannot build without approved requirements
+  
+  triggers:
+    - requirements_validated
+    - gate_1_approved
+  
+  inputs:
+    - type: artifact
+      name: REQUIREMENTS.md
+      required: true
+    - type: database
+      name: requirements[]
+      required: true
+  
+  outputs:
+    - type: artifact
+      name: BUILD_MANIFEST.md
+      destination: project_root
+    - type: artifact
+      name: source_code
+      destination: src/
+    - type: database
+      name: artifacts[]
+      destination: db.artifacts
+    - type: event
+      name: build_completed
+  
+  gates: []
+  
+  variants:
+    - name: build-agent-js
+      enabled_when:
+        - project.primaryLanguage == "javascript"
+        - project.primaryLanguage == "typescript"
+      skill_extends: build-agent
+    - name: build-agent-python
+      enabled_when:
+        - project.primaryLanguage == "python"
+      skill_extends: build-agent
+    - name: build-agent-dart
+      enabled_when:
+        - project.primaryLanguage == "dart"
+      skill_extends: build-agent
+    - name: build-agent-embedded
+      enabled_when:
+        - project.type == "embedded"
+      skill_extends: build-agent
+  
+  resources:
+    timeout_ms: 1200000  # 20 minutes
+    max_tokens: 16000
+    memory_intensive: true
+    batch_size: 5
+  
+  error_handling:
+    retry_strategy: exponential
+    max_retries: 3
+    fallback_behavior: halt
+    critical: true
+  
+  implementation:
+    type: llm-agent
+    required: true
 ---
 
 # Instructions

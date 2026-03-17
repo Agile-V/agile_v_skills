@@ -10,6 +10,64 @@ metadata:
     - Discovery Procedures
     - Output Format
     - Multi-Cycle Research
+
+orchestration:
+  stage: requirements
+  phase: discovery
+  execution_mode: sequential
+  wave_priority: 0
+  
+  dependencies: []
+  
+  triggers:
+    - project_created
+    - cycle_started
+    - research_requested
+  
+  inputs:
+    - type: database
+      name: project.description
+      required: true
+    - type: database
+      name: project.constraints
+      required: false
+    - type: database
+      name: requirements[]
+      required: false  # From previous cycles
+  
+  outputs:
+    - type: database
+      name: researchSession
+      destination: db.research_sessions
+    - type: database
+      name: researchQuestions[]
+      destination: db.research_questions
+    - type: event
+      name: research_completed
+  
+  gates:
+    - name: Research Questions Gate
+      type: human-action
+      position: after
+      required: true
+      phase: clarification
+      wave_priority: 1
+      description: User answers or skips planner questions before requirements are finalized
+  
+  resources:
+    timeout_ms: 180000  # 3 minutes
+    max_tokens: 8000
+    batch_size: 10
+  
+  error_handling:
+    retry_strategy: exponential
+    max_retries: 2
+    fallback_behavior: skip
+    critical: false
+  
+  implementation:
+    type: llm-agent
+    required: false  # Optional - can skip if project description is already clear
 ---
 
 # Instructions

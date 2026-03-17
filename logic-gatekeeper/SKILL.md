@@ -10,6 +10,60 @@ metadata:
     - Requirements Source & Procedures
     - Multi-Cycle Re-Validation
     - Halt Conditions
+
+orchestration:
+  stage: validation
+  phase: validation
+  execution_mode: sequential
+  wave_priority: 2
+  visible_in_plan: false  # Internal validation agent
+  
+  dependencies:
+    - type: agent
+      name: requirement-architect
+      required: true
+      reason: Must have requirements to validate
+  
+  triggers:
+    - requirements_generated
+  
+  inputs:
+    - type: artifact
+      name: REQUIREMENTS.md
+      required: true
+    - type: database
+      name: requirements[]
+      required: true
+  
+  outputs:
+    - type: database
+      name: validationResults[]
+      destination: db.validation_results
+    - type: event
+      name: requirements_validated
+  
+  gates:
+    - name: Human Gate 1
+      type: human-verify
+      position: after
+      required: true
+      phase: gate-1
+      wave_priority: 5
+      description: User approves the requirements package before synthesis starts
+  
+  resources:
+    timeout_ms: 600000  # 10 minutes
+    batch_size: 10
+  
+  error_handling:
+    retry_strategy: exponential
+    max_retries: 3
+    fallback_behavior: halt
+    critical: true
+  
+  implementation:
+    type: llm-agent
+    required: true
 ---
 
 # Instructions
