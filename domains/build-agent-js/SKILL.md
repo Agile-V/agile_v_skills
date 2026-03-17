@@ -8,6 +8,61 @@ metadata:
   domain: "JavaScript/TypeScript/Web"
   extends: "build-agent"
   author: agile-v.org
+orchestration:
+  stage: synthesis
+  phase: build
+  execution_mode: parallel
+  wave_priority: 3
+  
+  dependencies:
+    - type: agent
+      name: logic-gatekeeper
+      required: true
+      reason: Requirements must be validated before code synthesis
+    - type: gate
+      name: Human Gate 1
+      required: true
+      reason: Requirements must be approved before code synthesis
+  
+  inputs:
+    - name: REQUIREMENTS.md
+      type: artifact
+      required: true
+      query: "filename = 'REQUIREMENTS.md'"
+    - name: architecture_decisions
+      type: database
+      required: false
+      query: "SELECT * FROM architecture_decisions WHERE project_id = $1"
+    - name: project
+      type: context
+      required: true
+    - name: cycle
+      type: context
+      required: true
+  outputs:
+    - name: BUILD_MANIFEST.md
+      type: artifact
+      format: markdown
+      template: "# Build Manifest (JS/TS)\\n\\n## Cycle {cycle}\\n\\n| ART-ID | REQ-ID | Location | Notes |\\n|--------|--------|----------|-------|\\n{manifest_rows}"
+    - name: source_code
+      type: artifact
+      format: code
+    - name: build_completed
+      type: event
+  gates: []
+  
+  resources:
+    max_tokens: 16000
+    timeout_ms: 300000
+  error_handling:
+    retry_strategy: exponential
+    max_retries: 2
+    fallback_behavior: halt
+    critical: true
+  
+  implementation:
+    type: llm-agent
+    required: true
 ---
 
 # Instructions

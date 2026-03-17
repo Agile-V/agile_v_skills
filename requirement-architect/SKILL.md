@@ -52,7 +52,7 @@ orchestration:
   
   inputs:
     - type: database
-      name: project.productIntent
+      name: project.description
       required: true
     - type: database
       name: researchSession
@@ -87,7 +87,7 @@ orchestration:
   
   conditions:
     enabled_when:
-      - project.productIntent != null
+      - project.description != null
   
   resources:
     timeout_ms: 300000

@@ -14,6 +14,24 @@ metadata:
       copyright: "Copyright (c) 2025 Lex Christopherson"
       sections: "Context Engineering"
       note: "Concepts adapted under the MIT License."
+orchestration:
+  dependencies: []
+  inputs:
+    - name: project
+      type: context
+      required: true
+  outputs: []
+  gates: []
+  implementation:
+    type: reference-only
+  resources:
+    max_tokens: 0
+    timeout_ms: 0
+  error_handling:
+    retry_strategy: none
+    max_retries: 0
+    fallback_behavior: skip
+    critical: false
 ---
 
 # Instructions

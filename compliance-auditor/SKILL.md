@@ -14,6 +14,73 @@ metadata:
     - Validation Summary Report (VSR)
     - Multi-Cycle Traceability
     - Quality Metrics & KPIs
+orchestration:
+  stage: compliance
+  phase: audit
+  execution_mode: sequential
+  wave_priority: 5
+  
+  dependencies:
+    - type: agent
+      name: red-team-verifier
+      required: true
+      reason: Must audit verification results and traceability
+    - type: gate
+      name: Human Gate 2
+      required: false
+      reason: Run after gate approval or independently for audits
+  
+  inputs:
+    - name: REQUIREMENTS.md
+      type: artifact
+      required: true
+      query: "filename = 'REQUIREMENTS.md'"
+    - name: source_code
+      type: artifact
+      required: false
+      query: "filename LIKE '%.py' OR filename LIKE '%.js' OR filename LIKE '%.ts'"
+    - name: TEST_SPECIFICATION.md
+      type: artifact
+      required: false
+      query: "filename = 'TEST_SPECIFICATION.md'"
+    - name: verification_results
+      type: database
+      required: false
+      query: "SELECT * FROM test_results WHERE project_id = $1 ORDER BY created_at DESC"
+    - name: agent_runs
+      type: database
+      required: false
+      query: "SELECT * FROM agent_runs WHERE project_id = $1 ORDER BY started_at DESC"
+    - name: project
+      type: context
+      required: true
+    - name: cycle
+      type: context
+      required: true
+  outputs:
+    - name: COMPLIANCE_REPORT.md
+      type: artifact
+      format: markdown
+      template: "# Compliance Audit Report\\n\\nCycle: {cycle}\\nDate: {timestamp}\\n\\n## ATM\\n{atm}\\n\\n## Decision Log\\n{decisions}\\n\\n## Metrics\\n{metrics}"
+    - name: TRACEABILITY_MATRIX.md
+      type: artifact
+      format: markdown
+    - name: compliance_completed
+      type: event
+  gates: []
+  
+  resources:
+    max_tokens: 8000
+    timeout_ms: 180000
+  error_handling:
+    retry_strategy: exponential
+    max_retries: 3
+    fallback_behavior: skip
+    critical: false
+  
+  implementation:
+    type: llm-agent
+    required: true
 ---
 
 # Instructions

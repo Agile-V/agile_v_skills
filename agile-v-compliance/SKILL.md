@@ -7,6 +7,27 @@ metadata:
   standard: "Agile V"
   compliance: "ISO 9001 6.1, ISO 13485 8.5, ISO 27001 A.5.23/A.8.3, 21 CFR Part 11, GxP/GAMP 5"
   author: agile-v.org
+orchestration:
+  dependencies: []
+  inputs:
+    - name: project
+      type: context
+      required: true
+    - name: cycle
+      type: context
+      required: true
+  outputs: []
+  gates: []
+  implementation:
+    type: reference-only
+  resources:
+    max_tokens: 0
+    timeout_ms: 0
+  error_handling:
+    retry_strategy: none
+    max_retries: 0
+    fallback_behavior: skip
+    critical: false
 ---
 
 # Instructions
