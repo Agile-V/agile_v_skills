@@ -11,6 +11,61 @@ metadata:
     - Output Format
     - Test Specification Structure
     - Multi-Cycle Regression & Delta
+
+orchestration:
+  stage: synthesis
+  phase: test
+  execution_mode: parallel  # Runs in parallel with build-agent
+  wave_priority: 3
+  
+  dependencies:
+    - type: agent
+      name: logic-gatekeeper
+      required: true
+      reason: Must have validated requirements
+    - type: gate
+      name: Human Gate 1
+      required: true
+      reason: Cannot design tests without approved requirements
+  
+  triggers:
+    - requirements_validated
+    - gate_1_approved
+  
+  inputs:
+    - type: artifact
+      name: REQUIREMENTS.md
+      required: true
+    - type: database
+      name: requirements[]
+      required: true
+  
+  outputs:
+    - type: artifact
+      name: TEST_SPECIFICATION.md
+      destination: project_root
+    - type: database
+      name: testCases[]
+      destination: db.test_cases
+    - type: event
+      name: tests_designed
+  
+  gates: []
+  
+  resources:
+    timeout_ms: 600000  # 10 minutes
+    max_tokens: 16000
+    batch_size: 10
+  
+  error_handling:
+    retry_strategy: exponential
+    max_retries: 3
+    fallback_behavior: halt
+    critical: true
+  
+  implementation:
+    type: llm-agent
+    required: true
 ---
 
 # Instructions

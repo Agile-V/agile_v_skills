@@ -11,6 +11,69 @@ metadata:
     - Procedures
     - Per-Document Structure
     - Compliance Documentation
+
+orchestration:
+  stage: acceptance
+  phase: documentation
+  execution_mode: sequential
+  wave_priority: 5
+  
+  dependencies:
+    - type: agent
+      name: red-team-verifier
+      required: true
+      reason: Must have verification results
+    - type: gate
+      name: Human Gate 2
+      required: true
+      reason: Cannot document without acceptance
+  
+  triggers:
+    - verification_completed
+    - gate_2_approved
+  
+  inputs:
+    - type: artifact
+      name: REQUIREMENTS.md
+      required: true
+    - type: artifact
+      name: BUILD_MANIFEST.md
+      required: true
+    - type: database
+      name: requirements[]
+      required: true
+    - type: database
+      name: artifacts[]
+      required: true
+  
+  outputs:
+    - type: artifact
+      name: README.md
+      destination: project_root
+    - type: artifact
+      name: CHANGELOG.md
+      destination: project_root
+    - type: database
+      name: documentation[]
+      destination: db.documentation
+    - type: event
+      name: documentation_completed
+  
+  gates: []
+  
+  resources:
+    timeout_ms: 300000  # 5 minutes
+    max_tokens: 8000
+  
+  error_handling:
+    retry_strategy: exponential
+    max_retries: 3
+    fallback_behavior: skip  # Non-critical
+    critical: false
+  
+  implementation:
+    type: llm-agent
+    required: true
 ---
 
 # Instructions
