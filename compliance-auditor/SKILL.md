@@ -1,11 +1,14 @@
 ---
 name: compliance-auditor
-description: Automates Principle No. 9 (Decision Logging) and Principle No. 5 (Regulatory Readiness). The 'Chronicler' ensuring every choice is backed by a 'Why' and mapped to a requirement for ISO/GxP auditability.
+description: >-
+  Automates Principle No. 9 (Decision Logging) and Principle No. 5 (Regulatory
+  Readiness). The 'Chronicler' ensuring every choice is backed by a 'Why' and
+  mapped to a requirement for ISO/GxP auditability.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
-  standard: "Agile V"
-  compliance_scope: "ISO 9001, ISO 13485, AS9100, GxP"
+  version: '1.3'
+  standard: Agile V
+  compliance_scope: 'ISO 9001, ISO 13485, AS9100, GxP'
   author: agile-v.org
   sections_index:
     - Decision Capture
@@ -14,12 +17,26 @@ metadata:
     - Validation Summary Report (VSR)
     - Multi-Cycle Traceability
     - Quality Metrics & KPIs
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: medium
+    minContextWindow: 16000
+    estimatedOutputTokens: 6000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: compliance
   phase: audit
   execution_mode: sequential
   wave_priority: 5
-  
   dependencies:
     - type: agent
       name: red-team-verifier
@@ -29,28 +46,29 @@ orchestration:
       name: Human Gate 2
       required: false
       reason: Run after gate approval or independently for audits
-  
   inputs:
     - name: REQUIREMENTS.md
       type: artifact
       required: true
-      query: "filename = 'REQUIREMENTS.md'"
+      query: filename = 'REQUIREMENTS.md'
     - name: source_code
       type: artifact
       required: false
-      query: "filename LIKE '%.py' OR filename LIKE '%.js' OR filename LIKE '%.ts'"
+      query: filename LIKE '%.py' OR filename LIKE '%.js' OR filename LIKE '%.ts'
     - name: TEST_SPECIFICATION.md
       type: artifact
       required: false
-      query: "filename = 'TEST_SPECIFICATION.md'"
+      query: filename = 'TEST_SPECIFICATION.md'
     - name: verification_results
       type: database
       required: false
-      query: "SELECT * FROM test_results WHERE project_id = $1 ORDER BY created_at DESC"
+      query: >-
+        SELECT * FROM test_results WHERE project_id = $1 ORDER BY created_at
+        DESC
     - name: agent_runs
       type: database
       required: false
-      query: "SELECT * FROM agent_runs WHERE project_id = $1 ORDER BY started_at DESC"
+      query: SELECT * FROM agent_runs WHERE project_id = $1 ORDER BY started_at DESC
     - name: project
       type: context
       required: true
@@ -61,14 +79,15 @@ orchestration:
     - name: COMPLIANCE_REPORT.md
       type: artifact
       format: markdown
-      template: "# Compliance Audit Report\\n\\nCycle: {cycle}\\nDate: {timestamp}\\n\\n## ATM\\n{atm}\\n\\n## Decision Log\\n{decisions}\\n\\n## Metrics\\n{metrics}"
+      template: >-
+        # Compliance Audit Report\n\nCycle: {cycle}\nDate: {timestamp}\n\n##
+        ATM\n{atm}\n\n## Decision Log\n{decisions}\n\n## Metrics\n{metrics}
     - name: TRACEABILITY_MATRIX.md
       type: artifact
       format: markdown
     - name: compliance_completed
       type: event
   gates: []
-  
   resources:
     max_tokens: 8000
     timeout_ms: 180000
@@ -77,7 +96,6 @@ orchestration:
     max_retries: 3
     fallback_behavior: skip
     critical: false
-  
   implementation:
     type: llm-agent
     required: true

@@ -1,25 +1,40 @@
 ---
 name: discovery-analyst
-description: Conducts user research, stakeholder interviews, and domain analysis to inform requirements. Produces discovery artifacts enriching requirement-architect inputs.
+description: >-
+  Conducts user research, stakeholder interviews, and domain analysis to inform
+  requirements. Produces discovery artifacts enriching requirement-architect
+  inputs.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
-  standard: "Agile V"
+  version: '1.0'
+  standard: Agile V
   author: agile-v.org
-  status: "placeholder"
-
+  status: placeholder
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: medium
+    minContextWindow: 16000
+    estimatedOutputTokens: 6000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: requirements
   phase: discovery
   execution_mode: sequential
   wave_priority: 1
-  
   dependencies:
     - type: agent
       name: research-planner
       required: false
       reason: Research questions can guide discovery focus
-  
   inputs:
     - type: context
       name: project
@@ -27,28 +42,27 @@ orchestration:
     - type: database
       name: researchSession
       required: false
-      query: "SELECT * FROM research_sessions WHERE project_id = $1 ORDER BY created_at DESC LIMIT 1"
-  
+      query: >-
+        SELECT * FROM research_sessions WHERE project_id = $1 ORDER BY
+        created_at DESC LIMIT 1
   outputs:
     - type: artifact
       name: DISCOVERY_REPORT.md
       format: markdown
-      template: "# Discovery Analysis\\n\\n## Stakeholders\\n{stakeholders}\\n\\n## Domain Insights\\n{insights}\\n\\n## Recommendations\\n{recommendations}"
+      template: >-
+        # Discovery Analysis\n\n## Stakeholders\n{stakeholders}\n\n## Domain
+        Insights\n{insights}\n\n## Recommendations\n{recommendations}
     - type: event
       name: discovery_completed
-  
   gates: []
-  
   resources:
     timeout_ms: 300000
     max_tokens: 8000
-  
   error_handling:
     retry_strategy: exponential
     max_retries: 2
     fallback_behavior: skip
     critical: false
-  
   implementation:
     type: llm-agent
     required: false

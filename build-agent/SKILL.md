@@ -1,17 +1,22 @@
 ---
 name: build-agent
-description: Generates code, firmware, HDL, or other technical artifacts strictly derived from approved requirements. Language-agnostic. Use when synthesizing artifacts from Logic Gatekeeper-approved requirements.
+description: >-
+  Generates code, firmware, HDL, or other technical artifacts strictly derived
+  from approved requirements. Language-agnostic. Use when synthesizing artifacts
+  from Logic Gatekeeper-approved requirements.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
-  standard: "Agile V"
+  version: '1.3'
+  standard: Agile V
   author: agile-v.org
   adapted_from:
-    - name: "Get Shit Done (GSD)"
-      url: "https://github.com/gsd-build/get-shit-done"
-      license: "MIT"
-      copyright: "Copyright (c) 2025 Lex Christopherson"
-      sections: "Context Engineering, Pre-Execution Validation, Post-Verification Feedback"
+    - name: Get Shit Done (GSD)
+      url: 'https://github.com/gsd-build/get-shit-done'
+      license: MIT
+      copyright: Copyright (c) 2025 Lex Christopherson
+      sections: >-
+        Context Engineering, Pre-Execution Validation, Post-Verification
+        Feedback
   sections_index:
     - Prerequisites & Procedures
     - Build Manifest Format
@@ -21,13 +26,26 @@ metadata:
     - Post-Verification Feedback Loop
     - Multi-Cycle Artifact Versioning
     - Halt Conditions
-
+  languages: []
+  projectTypes: []
+  artifactType: software
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: high
+    minContextWindow: 32000
+    estimatedOutputTokens: 12000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: synthesis
   phase: build
-  execution_mode: parallel  # Runs in parallel with test-designer
+  execution_mode: parallel
   wave_priority: 3
-  
   dependencies:
     - type: agent
       name: logic-gatekeeper
@@ -37,19 +55,16 @@ orchestration:
       name: Human Gate 1
       required: true
       reason: Cannot build without approved requirements
-  
   triggers:
     - requirements_validated
     - gate_1_approved
-  
   inputs:
     - type: artifact
       name: REQUIREMENTS.md
       required: true
     - type: database
-      name: requirements[]
+      name: 'requirements[]'
       required: true
-  
   outputs:
     - type: artifact
       name: BUILD_MANIFEST.md
@@ -58,13 +73,11 @@ orchestration:
       name: source_code
       destination: src/
     - type: database
-      name: artifacts[]
+      name: 'artifacts[]'
       destination: db.artifacts
     - type: event
       name: build_completed
-  
   gates: []
-  
   variants:
     - name: build-agent-js
       enabled_when:
@@ -83,19 +96,16 @@ orchestration:
       enabled_when:
         - project.type == "embedded"
       skill_extends: build-agent
-  
   resources:
-    timeout_ms: 1200000  # 20 minutes
+    timeout_ms: 1200000
     max_tokens: 16000
     memory_intensive: true
     batch_size: 5
-  
   error_handling:
     retry_strategy: exponential
     max_retries: 3
     fallback_behavior: halt
     critical: true
-  
   implementation:
     type: llm-agent
     required: true

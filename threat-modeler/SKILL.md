@@ -1,20 +1,36 @@
 ---
 name: threat-modeler
-description: Performs threat modeling and security analysis using STRIDE or similar frameworks. Produces threat model and security requirements for requirement-architect.
+description: >-
+  Performs threat modeling and security analysis using STRIDE or similar
+  frameworks. Produces threat model and security requirements for
+  requirement-architect.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
-  standard: "Agile V"
+  version: '1.0'
+  standard: Agile V
   author: agile-v.org
-  status: "placeholder"
-  compliance: "ISO 27001, NIST CSF"
-
+  status: placeholder
+  compliance: 'ISO 27001, NIST CSF'
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: true
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: high
+    minContextWindow: 32000
+    estimatedOutputTokens: 8000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: requirements
   phase: security
   execution_mode: sequential
   wave_priority: 1
-  
   dependencies:
     - type: agent
       name: discovery-analyst
@@ -24,7 +40,6 @@ orchestration:
       name: ux-spec-author
       required: false
       reason: User flows reveal attack vectors
-  
   inputs:
     - type: context
       name: project
@@ -32,39 +47,36 @@ orchestration:
     - type: artifact
       name: DISCOVERY_REPORT.md
       required: false
-      query: "filename = 'DISCOVERY_REPORT.md'"
+      query: filename = 'DISCOVERY_REPORT.md'
     - type: artifact
       name: UX_SPECIFICATION.md
       required: false
-      query: "filename = 'UX_SPECIFICATION.md'"
+      query: filename = 'UX_SPECIFICATION.md'
     - type: database
       name: architectureDiagrams
       required: false
-      query: "SELECT * FROM architecture_diagrams WHERE project_id = $1"
-  
+      query: SELECT * FROM architecture_diagrams WHERE project_id = $1
   outputs:
     - type: artifact
       name: THREAT_MODEL.md
       format: markdown
-      template: "# Threat Model\\n\\n## Assets\\n{assets}\\n\\n## Threats (STRIDE)\\n{threats}\\n\\n## Mitigations\\n{mitigations}"
+      template: >-
+        # Threat Model\n\n## Assets\n{assets}\n\n## Threats
+        (STRIDE)\n{threats}\n\n## Mitigations\n{mitigations}
     - type: artifact
       name: SECURITY_REQUIREMENTS.md
       format: markdown
     - type: event
       name: threat_modeling_completed
-  
   gates: []
-  
   resources:
     timeout_ms: 300000
     max_tokens: 12000
-  
   error_handling:
     retry_strategy: exponential
     max_retries: 2
     fallback_behavior: skip
     critical: false
-  
   implementation:
     type: llm-agent
     required: false

@@ -1,47 +1,59 @@
 ---
 name: logic-gatekeeper
-description: Validates requirements for ambiguity and physical hardware constraints. Use this after requirements are generated but before code/hardware synthesis begins.
+description: >-
+  Validates requirements for ambiguity and physical hardware constraints. Use
+  this after requirements are generated but before code/hardware synthesis
+  begins.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
-  standard: "Agile V"
+  version: '1.3'
+  standard: Agile V
   author: agile-v.org
   sections_index:
     - Requirements Source & Procedures
     - Multi-Cycle Re-Validation
     - Halt Conditions
-
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: high
+    minContextWindow: 32000
+    estimatedOutputTokens: 8000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: validation
   phase: validation
   execution_mode: sequential
   wave_priority: 2
-  visible_in_plan: false  # Internal validation agent
-  
+  visible_in_plan: false
   dependencies:
     - type: agent
       name: requirement-architect
       required: true
       reason: Must have requirements to validate
-  
   triggers:
     - requirements_generated
-  
   inputs:
     - type: artifact
       name: REQUIREMENTS.md
       required: true
     - type: database
-      name: requirements[]
+      name: 'requirements[]'
       required: true
-  
   outputs:
     - type: database
-      name: validationResults[]
+      name: 'validationResults[]'
       destination: db.validation_results
     - type: event
       name: requirements_validated
-  
   gates:
     - name: Human Gate 1
       type: human-verify
@@ -50,17 +62,14 @@ orchestration:
       phase: gate-1
       wave_priority: 5
       description: User approves the requirements package before synthesis starts
-  
   resources:
-    timeout_ms: 600000  # 10 minutes
+    timeout_ms: 600000
     batch_size: 10
-  
   error_handling:
     retry_strategy: exponential
     max_retries: 3
     fallback_behavior: halt
     critical: true
-  
   implementation:
     type: llm-agent
     required: true

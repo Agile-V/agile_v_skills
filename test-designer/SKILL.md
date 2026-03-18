@@ -1,23 +1,39 @@
 ---
 name: test-designer
-description: Designs the verification suite from requirements only — never from code. Prevents success bias. Use when building test cases in parallel with the Build Agent, after requirements are approved by the Logic Gatekeeper.
+description: >-
+  Designs the verification suite from requirements only — never from code.
+  Prevents success bias. Use when building test cases in parallel with the Build
+  Agent, after requirements are approved by the Logic Gatekeeper.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
-  standard: "Agile V"
+  version: '1.3'
+  standard: Agile V
   author: agile-v.org
   sections_index:
     - Critical Rule & Procedures
     - Output Format
     - Test Specification Structure
     - Multi-Cycle Regression & Delta
-
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: high
+    minContextWindow: 32000
+    estimatedOutputTokens: 10000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: synthesis
   phase: test
-  execution_mode: parallel  # Runs in parallel with build-agent
+  execution_mode: parallel
   wave_priority: 3
-  
   dependencies:
     - type: agent
       name: logic-gatekeeper
@@ -27,42 +43,35 @@ orchestration:
       name: Human Gate 1
       required: true
       reason: Cannot design tests without approved requirements
-  
   triggers:
     - requirements_validated
     - gate_1_approved
-  
   inputs:
     - type: artifact
       name: REQUIREMENTS.md
       required: true
     - type: database
-      name: requirements[]
+      name: 'requirements[]'
       required: true
-  
   outputs:
     - type: artifact
       name: TEST_SPECIFICATION.md
       destination: project_root
     - type: database
-      name: testCases[]
+      name: 'testCases[]'
       destination: db.test_cases
     - type: event
       name: tests_designed
-  
   gates: []
-  
   resources:
-    timeout_ms: 600000  # 10 minutes
+    timeout_ms: 600000
     max_tokens: 16000
     batch_size: 10
-  
   error_handling:
     retry_strategy: exponential
     max_retries: 3
     fallback_behavior: halt
     critical: true
-  
   implementation:
     type: llm-agent
     required: true

@@ -1,19 +1,37 @@
 ---
 name: ux-spec-author
-description: Creates UX/UI specifications from user needs and design requirements. Produces wireframes, user flows, and interaction patterns to inform requirement-architect.
+description: >-
+  Creates UX/UI specifications from user needs and design requirements. Produces
+  wireframes, user flows, and interaction patterns to inform
+  requirement-architect.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
-  standard: "Agile V"
+  version: '1.0'
+  standard: Agile V
   author: agile-v.org
-  status: "placeholder"
-
+  status: placeholder
+  languages: []
+  projectTypes:
+    - web-app
+    - mobile
+  artifactType: documentation
+  requiresUI: true
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: high
+    minContextWindow: 32000
+    estimatedOutputTokens: 8000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: requirements
   phase: design
   execution_mode: sequential
   wave_priority: 1
-  
   dependencies:
     - type: agent
       name: discovery-analyst
@@ -23,7 +41,6 @@ orchestration:
       name: research-planner
       required: false
       reason: Research questions can highlight UX concerns
-  
   inputs:
     - type: context
       name: project
@@ -31,35 +48,32 @@ orchestration:
     - type: artifact
       name: DISCOVERY_REPORT.md
       required: false
-      query: "filename = 'DISCOVERY_REPORT.md'"
+      query: filename = 'DISCOVERY_REPORT.md'
     - type: database
       name: userPersonas
       required: false
-      query: "SELECT * FROM user_personas WHERE project_id = $1"
-  
+      query: SELECT * FROM user_personas WHERE project_id = $1
   outputs:
     - type: artifact
       name: UX_SPECIFICATION.md
       format: markdown
-      template: "# UX Specification\\n\\n## User Flows\\n{flows}\\n\\n## Wireframes\\n{wireframes}\\n\\n## Interaction Patterns\\n{patterns}"
+      template: >-
+        # UX Specification\n\n## User Flows\n{flows}\n\n##
+        Wireframes\n{wireframes}\n\n## Interaction Patterns\n{patterns}
     - type: artifact
       name: USER_FLOWS.md
       format: markdown
     - type: event
       name: ux_spec_completed
-  
   gates: []
-  
   resources:
     timeout_ms: 300000
     max_tokens: 12000
-  
   error_handling:
     retry_strategy: exponential
     max_retries: 2
     fallback_behavior: skip
     critical: false
-  
   implementation:
     type: llm-agent
     required: false

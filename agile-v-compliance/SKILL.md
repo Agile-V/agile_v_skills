@@ -1,12 +1,32 @@
 ---
 name: agile-v-compliance
-description: Risk management, CAPA protocol, human gate approval records, AI agent security controls, and periodic revalidation. Load when running gates, auditing risks, handling CAPAs, or reviewing security posture.
+description: >-
+  Risk management, CAPA protocol, human gate approval records, AI agent security
+  controls, and periodic revalidation. Load when running gates, auditing risks,
+  handling CAPAs, or reviewing security posture.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
-  standard: "Agile V"
-  compliance: "ISO 9001 6.1, ISO 13485 8.5, ISO 27001 A.5.23/A.8.3, 21 CFR Part 11, GxP/GAMP 5"
+  version: '1.3'
+  standard: Agile V
+  compliance: >-
+    ISO 9001 6.1, ISO 13485 8.5, ISO 27001 A.5.23/A.8.3, 21 CFR Part 11,
+    GxP/GAMP 5
   author: agile-v.org
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: medium
+    minContextWindow: 16000
+    estimatedOutputTokens: 6000
+    requiresVision: false
+    requiresCodeExecution: false
 ---
 
 # Instructions

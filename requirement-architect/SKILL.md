@@ -1,23 +1,39 @@
 ---
 name: requirement-architect
-description: Converts high-level product intent into traceable PRDs and User Stories. Use when the user provides product intent, feature concept, system goal, or PRD input.
+description: >-
+  Converts high-level product intent into traceable PRDs and User Stories. Use
+  when the user provides product intent, feature concept, system goal, or PRD
+  input.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
-  standard: "Agile V"
+  version: '1.3'
+  standard: Agile V
   author: agile-v.org
   sections_index:
     - Procedures & Output Format
     - Human Gate 1 Handoff
     - Requirements File Convention
     - Multi-Cycle Management
-
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: high
+    minContextWindow: 32000
+    estimatedOutputTokens: 8000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: requirements
   phase: design
   execution_mode: sequential
   wave_priority: 1
-  
   dependencies:
     - type: agent
       name: research-planner
@@ -43,13 +59,11 @@ orchestration:
       name: observability-planner
       required: false
       reason: Observability requirements from metrics plan
-  
   triggers:
     - project_created
     - product_intent_updated
     - research_completed
     - discovery_completed
-  
   inputs:
     - type: database
       name: project.description
@@ -58,48 +72,42 @@ orchestration:
       name: researchSession
       required: false
     - type: database
-      name: researchQuestions[]
+      name: 'researchQuestions[]'
       required: false
     - type: database
-      name: observations[]
+      name: 'observations[]'
       required: false
     - type: database
-      name: candidateRequirements[]
+      name: 'candidateRequirements[]'
       required: false
     - type: database
-      name: userFlows[]
+      name: 'userFlows[]'
       required: false
     - type: database
-      name: threats[]
+      name: 'threats[]'
       required: false
-  
   outputs:
     - type: artifact
       name: REQUIREMENTS.md
       destination: project_root
     - type: database
-      name: requirements[]
+      name: 'requirements[]'
       destination: db.requirements
     - type: event
       name: requirements_generated
-  
   gates: []
-  
   conditions:
     enabled_when:
       - project.description != null
-  
   resources:
     timeout_ms: 300000
     max_tokens: 16000
     batch_size: 5
-  
   error_handling:
     retry_strategy: exponential
     max_retries: 3
     fallback_behavior: halt
     critical: true
-  
   implementation:
     type: llm-agent
     required: true

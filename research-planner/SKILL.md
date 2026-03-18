@@ -1,29 +1,43 @@
 ---
 name: research-planner
-description: Conducts discovery research and generates clarifying questions BEFORE formal requirements. Use when starting a new project or cycle to identify gaps, ambiguities, and open questions.
+description: >-
+  Conducts discovery research and generates clarifying questions BEFORE formal
+  requirements. Use when starting a new project or cycle to identify gaps,
+  ambiguities, and open questions.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
-  standard: "Agile V"
+  version: '1.0'
+  standard: Agile V
   author: agile-v.org
   sections_index:
     - Discovery Procedures
     - Output Format
     - Multi-Cycle Research
-
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: medium
+    minContextWindow: 16000
+    estimatedOutputTokens: 4000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: requirements
   phase: discovery
   execution_mode: sequential
   wave_priority: 0
-  
   dependencies: []
-  
   triggers:
     - project_created
     - cycle_started
     - research_requested
-  
   inputs:
     - type: database
       name: project.description
@@ -32,19 +46,17 @@ orchestration:
       name: project.constraints
       required: false
     - type: database
-      name: requirements[]
-      required: false  # From previous cycles
-  
+      name: 'requirements[]'
+      required: false
   outputs:
     - type: database
       name: researchSession
       destination: db.research_sessions
     - type: database
-      name: researchQuestions[]
+      name: 'researchQuestions[]'
       destination: db.research_questions
     - type: event
       name: research_completed
-  
   gates:
     - name: Research Questions Gate
       type: human-action
@@ -52,22 +64,21 @@ orchestration:
       required: true
       phase: clarification
       wave_priority: 1
-      description: User answers or skips planner questions before requirements are finalized
-  
+      description: >-
+        User answers or skips planner questions before requirements are
+        finalized
   resources:
-    timeout_ms: 180000  # 3 minutes
+    timeout_ms: 180000
     max_tokens: 8000
     batch_size: 10
-  
   error_handling:
     retry_strategy: exponential
     max_retries: 2
     fallback_behavior: halt
     critical: true
-  
   implementation:
     type: llm-agent
-    required: false  # Optional - won't be included in plan if project description is clear, but if included, it's critical
+    required: false
 ---
 
 # Instructions

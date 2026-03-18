@@ -1,30 +1,43 @@
 ---
 name: execution-planner
-description: Auto-generates execution plans by discovering available skills and analyzing project requirements. Creates a dependency graph and execution order.
+description: >-
+  Auto-generates execution plans by discovering available skills and analyzing
+  project requirements. Creates a dependency graph and execution order.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
-  standard: "Agile V"
+  version: '1.0'
+  standard: Agile V
   author: agile-v.org
   sections_index:
     - Discovery & Analysis
     - Plan Generation
     - Version Locking
-
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: high
+    minContextWindow: 32000
+    estimatedOutputTokens: 6000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: requirements
   phase: planning
   execution_mode: sequential
-  wave_priority: 0  # Runs first
-  visible_in_plan: false  # Internal planning agent
-  
-  dependencies: []  # No dependencies - runs first
-  
+  wave_priority: 0
+  visible_in_plan: false
+  dependencies: []
   triggers:
     - project_created
     - cycle_started
     - plan_regeneration_requested
-  
   inputs:
     - type: database
       name: project.description
@@ -44,26 +57,21 @@ orchestration:
     - type: context
       name: cycle
       required: true
-  
   outputs:
     - type: database
       name: executionPlan
       destination: project.constraints.executionPlan
     - type: event
       name: execution_plan_generated
-  
   gates: []
-  
   resources:
-    timeout_ms: 60000  # 1 minute
+    timeout_ms: 60000
     max_tokens: 4000
-  
   error_handling:
     retry_strategy: exponential
     max_retries: 3
-    fallback_behavior: halt  # Planning is critical
+    fallback_behavior: halt
     critical: true
-  
   implementation:
     type: llm-agent
     required: true

@@ -1,19 +1,40 @@
 ---
 name: build-agent-embedded
-description: C/C++ build agent for embedded systems, firmware, and MCU projects. Extends build-agent with embedded constraints. Use when building firmware, bare-metal code, or resource-constrained systems.
+description: >-
+  C/C++ build agent for embedded systems, firmware, and MCU projects. Extends
+  build-agent with embedded constraints. Use when building firmware, bare-metal
+  code, or resource-constrained systems.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
-  standard: "Agile V"
-  domain: "Embedded/C/C++"
-  extends: "build-agent"
+  version: '1.3'
+  standard: Agile V
+  domain: Embedded/C/C++
+  extends: build-agent
   author: agile-v.org
+  languages:
+    - c
+    - cpp
+  projectTypes:
+    - embedded
+    - hardware
+  artifactType: hybrid
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: high
+    minContextWindow: 32000
+    estimatedOutputTokens: 10000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: synthesis
   phase: build
   execution_mode: parallel
   wave_priority: 3
-  
   dependencies:
     - type: agent
       name: logic-gatekeeper
@@ -23,16 +44,15 @@ orchestration:
       name: Human Gate 1
       required: true
       reason: Requirements must be approved before firmware synthesis
-  
   inputs:
     - name: REQUIREMENTS.md
       type: artifact
       required: true
-      query: "filename = 'REQUIREMENTS.md'"
+      query: filename = 'REQUIREMENTS.md'
     - name: hardware_constraints
       type: database
       required: false
-      query: "SELECT * FROM hardware_constraints WHERE project_id = $1"
+      query: SELECT * FROM hardware_constraints WHERE project_id = $1
     - name: project
       type: context
       required: true
@@ -43,14 +63,16 @@ orchestration:
     - name: BUILD_MANIFEST.md
       type: artifact
       format: markdown
-      template: "# Build Manifest (Embedded C/C++)\\n\\n## Cycle {cycle}\\n\\n| ART-ID | REQ-ID | Location | Notes |\\n|--------|--------|----------|-------|\\n{manifest_rows}"
+      template: >-
+        # Build Manifest (Embedded C/C++)\n\n## Cycle {cycle}\n\n| ART-ID |
+        REQ-ID | Location | Notes
+        |\n|--------|--------|----------|-------|\n{manifest_rows}
     - name: source_code
       type: artifact
       format: code
     - name: build_completed
       type: event
   gates: []
-  
   resources:
     max_tokens: 16000
     timeout_ms: 300000
@@ -59,7 +81,6 @@ orchestration:
     max_retries: 2
     fallback_behavior: halt
     critical: true
-  
   implementation:
     type: llm-agent
     required: true

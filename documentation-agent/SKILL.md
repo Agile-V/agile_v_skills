@@ -1,23 +1,41 @@
 ---
 name: documentation-agent
-description: Generates standards-based repository documentation for GitHub or any project. Writes a docs suite into the project's docs/ directory covering ISO 9001, V-Model, ISO 27001, and optionally GAMP 5 or other standards. Use when the user asks for repo documentation, compliance docs, quality docs, or to create/refresh the docs/ suite.
+description: >-
+  Generates standards-based repository documentation for GitHub or any project.
+  Writes a docs suite into the project's docs/ directory covering ISO 9001,
+  V-Model, ISO 27001, and optionally GAMP 5 or other standards. Use when the
+  user asks for repo documentation, compliance docs, quality docs, or to
+  create/refresh the docs/ suite.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
-  standard: "Agile V"
+  version: '1.3'
+  standard: Agile V
   author: agile-v.org
   sections_index:
     - Output Contract
     - Procedures
     - Per-Document Structure
     - Compliance Documentation
-
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: medium
+    minContextWindow: 16000
+    estimatedOutputTokens: 8000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: acceptance
   phase: documentation
   execution_mode: sequential
   wave_priority: 5
-  
   dependencies:
     - type: agent
       name: red-team-verifier
@@ -27,11 +45,9 @@ orchestration:
       name: Human Gate 2
       required: true
       reason: Cannot document without acceptance
-  
   triggers:
     - verification_completed
     - gate_2_approved
-  
   inputs:
     - type: artifact
       name: REQUIREMENTS.md
@@ -40,12 +56,11 @@ orchestration:
       name: BUILD_MANIFEST.md
       required: true
     - type: database
-      name: requirements[]
+      name: 'requirements[]'
       required: true
     - type: database
-      name: artifacts[]
+      name: 'artifacts[]'
       required: true
-  
   outputs:
     - type: artifact
       name: README.md
@@ -54,23 +69,19 @@ orchestration:
       name: CHANGELOG.md
       destination: project_root
     - type: database
-      name: documentation[]
+      name: 'documentation[]'
       destination: db.documentation
     - type: event
       name: documentation_completed
-  
   gates: []
-  
   resources:
-    timeout_ms: 300000  # 5 minutes
+    timeout_ms: 300000
     max_tokens: 8000
-  
   error_handling:
     retry_strategy: exponential
     max_retries: 3
-    fallback_behavior: skip  # Non-critical
+    fallback_behavior: skip
     critical: false
-  
   implementation:
     type: llm-agent
     required: true

@@ -1,17 +1,35 @@
 ---
 name: agile-v-pipeline
-description: Orchestration pipeline, wave execution, handoff protocols, and checkpoint types for the Agile V 5-stage workflow. Load when orchestrating multi-agent pipelines or managing stage transitions.
+description: >-
+  Orchestration pipeline, wave execution, handoff protocols, and checkpoint
+  types for the Agile V 5-stage workflow. Load when orchestrating multi-agent
+  pipelines or managing stage transitions.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
-  standard: "Agile V"
+  version: '1.3'
+  standard: Agile V
   author: agile-v.org
   adapted_from:
-    - name: "Get Shit Done (GSD)"
-      url: "https://github.com/gsd-build/get-shit-done"
-      license: "MIT"
-      copyright: "Copyright (c) 2025 Lex Christopherson"
-      sections: "Orchestration Pipeline"
+    - name: Get Shit Done (GSD)
+      url: 'https://github.com/gsd-build/get-shit-done'
+      license: MIT
+      copyright: Copyright (c) 2025 Lex Christopherson
+      sections: Orchestration Pipeline
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: low
+    minContextWindow: 8000
+    estimatedOutputTokens: 0
+    requiresVision: false
+    requiresCodeExecution: false
 ---
 
 # Instructions

@@ -1,19 +1,35 @@
 ---
 name: observability-planner
-description: Defines observability strategy including logging, metrics, tracing, and alerting requirements. Produces observability plan for requirement-architect and build-agent.
+description: >-
+  Defines observability strategy including logging, metrics, tracing, and
+  alerting requirements. Produces observability plan for requirement-architect
+  and build-agent.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
-  standard: "Agile V"
+  version: '1.0'
+  standard: Agile V
   author: agile-v.org
-  status: "placeholder"
-
+  status: placeholder
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: medium
+    minContextWindow: 16000
+    estimatedOutputTokens: 6000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: requirements
   phase: operations
   execution_mode: sequential
   wave_priority: 1
-  
   dependencies:
     - type: agent
       name: discovery-analyst
@@ -23,7 +39,6 @@ orchestration:
       name: threat-modeler
       required: false
       reason: Security events require logging and alerting
-  
   inputs:
     - type: context
       name: project
@@ -31,39 +46,38 @@ orchestration:
     - type: artifact
       name: DISCOVERY_REPORT.md
       required: false
-      query: "filename = 'DISCOVERY_REPORT.md'"
+      query: filename = 'DISCOVERY_REPORT.md'
     - type: artifact
       name: THREAT_MODEL.md
       required: false
-      query: "filename = 'THREAT_MODEL.md'"
+      query: filename = 'THREAT_MODEL.md'
     - type: database
       name: serviceArchitecture
       required: false
-      query: "SELECT * FROM architecture_diagrams WHERE project_id = $1 AND type = 'service'"
-  
+      query: >-
+        SELECT * FROM architecture_diagrams WHERE project_id = $1 AND type =
+        'service'
   outputs:
     - type: artifact
       name: OBSERVABILITY_PLAN.md
       format: markdown
-      template: "# Observability Plan\\n\\n## Metrics\\n{metrics}\\n\\n## Logging\\n{logging}\\n\\n## Tracing\\n{tracing}\\n\\n## Alerts\\n{alerts}"
+      template: >-
+        # Observability Plan\n\n## Metrics\n{metrics}\n\n##
+        Logging\n{logging}\n\n## Tracing\n{tracing}\n\n## Alerts\n{alerts}
     - type: artifact
       name: SLO_REQUIREMENTS.md
       format: markdown
     - type: event
       name: observability_planned
-  
   gates: []
-  
   resources:
     timeout_ms: 300000
     max_tokens: 10000
-  
   error_handling:
     retry_strategy: exponential
     max_retries: 2
     fallback_behavior: skip
     critical: false
-  
   implementation:
     type: llm-agent
     required: false

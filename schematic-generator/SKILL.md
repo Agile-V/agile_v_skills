@@ -1,11 +1,14 @@
 ---
 name: schematic-generator
-description: Generates schematics, netlists, or HDL from requirements for hardware/PCB projects. Validates physical constraints. Use when building PCB, HDL, or hardware designs from approved requirements.
+description: >-
+  Generates schematics, netlists, or HDL from requirements for hardware/PCB
+  projects. Validates physical constraints. Use when building PCB, HDL, or
+  hardware designs from approved requirements.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
-  standard: "Agile V"
-  domain: "Hardware/EE"
+  version: '1.3'
+  standard: Agile V
+  domain: Hardware/EE
   author: agile-v.org
   sections_index:
     - Prerequisites
@@ -13,31 +16,48 @@ metadata:
     - Output Format
     - Multi-Cycle Artifact Versioning
     - Halt Conditions
+  languages:
+    - verilog
+    - vhdl
+    - systemverilog
+  projectTypes:
+    - hardware
+    - embedded
+  artifactType: hardware
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - medium
+    - complex
+  llm:
+    modelTier: high
+    minContextWindow: 32000
+    estimatedOutputTokens: 10000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: synthesis
   phase: hardware
   execution_mode: sequential
   wave_priority: 3
-  
   dependencies:
     - type: agent
       name: logic-gatekeeper
       required: true
-      reason: Must have validated physical constraints (GPIO, power, thermal)
+      reason: 'Must have validated physical constraints (GPIO, power, thermal)'
     - type: gate
       name: Human Gate 1
       required: true
       reason: Requirements must be approved before hardware synthesis
-  
   inputs:
     - name: REQUIREMENTS.md
       type: artifact
       required: true
-      query: "filename = 'REQUIREMENTS.md'"
+      query: filename = 'REQUIREMENTS.md'
     - name: hardware_constraints
       type: database
       required: false
-      query: "SELECT * FROM hardware_constraints WHERE project_id = $1"
+      query: SELECT * FROM hardware_constraints WHERE project_id = $1
     - name: project
       type: context
       required: true
@@ -48,7 +68,10 @@ orchestration:
     - name: HARDWARE_BUILD_MANIFEST.md
       type: artifact
       format: markdown
-      template: "# Hardware Build Manifest\\n\\n## Cycle {cycle}\\n\\n| ART-ID | REQ-ID | Location | Notes |\\n|--------|--------|----------|-------|\\n{manifest_rows}"
+      template: >-
+        # Hardware Build Manifest\n\n## Cycle {cycle}\n\n| ART-ID | REQ-ID |
+        Location | Notes
+        |\n|--------|--------|----------|-------|\n{manifest_rows}
     - name: schematics
       type: artifact
       format: hardware
@@ -58,7 +81,6 @@ orchestration:
     - name: hardware_synthesis_completed
       type: event
   gates: []
-  
   resources:
     max_tokens: 16000
     timeout_ms: 300000
@@ -67,7 +89,6 @@ orchestration:
     max_retries: 2
     fallback_behavior: halt
     critical: true
-  
   implementation:
     type: llm-agent
     required: true

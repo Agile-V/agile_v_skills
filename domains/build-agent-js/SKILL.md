@@ -1,19 +1,41 @@
 ---
 name: build-agent-js
-description: JavaScript/TypeScript/Web build agent for web apps, Node backends, and frontend components. Extends build-agent with JS/Web conventions. Use when building web apps, APIs, or frontend/backend features.
+description: >-
+  JavaScript/TypeScript/Web build agent for web apps, Node backends, and
+  frontend components. Extends build-agent with JS/Web conventions. Use when
+  building web apps, APIs, or frontend/backend features.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
-  standard: "Agile V"
-  domain: "JavaScript/TypeScript/Web"
-  extends: "build-agent"
+  version: '1.3'
+  standard: Agile V
+  domain: JavaScript/TypeScript/Web
+  extends: build-agent
   author: agile-v.org
+  languages:
+    - javascript
+    - typescript
+  projectTypes:
+    - web-app
+    - api
+    - cli
+  artifactType: software
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: high
+    minContextWindow: 32000
+    estimatedOutputTokens: 12000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: synthesis
   phase: build
   execution_mode: parallel
   wave_priority: 3
-  
   dependencies:
     - type: agent
       name: logic-gatekeeper
@@ -23,16 +45,15 @@ orchestration:
       name: Human Gate 1
       required: true
       reason: Requirements must be approved before code synthesis
-  
   inputs:
     - name: REQUIREMENTS.md
       type: artifact
       required: true
-      query: "filename = 'REQUIREMENTS.md'"
+      query: filename = 'REQUIREMENTS.md'
     - name: architecture_decisions
       type: database
       required: false
-      query: "SELECT * FROM architecture_decisions WHERE project_id = $1"
+      query: SELECT * FROM architecture_decisions WHERE project_id = $1
     - name: project
       type: context
       required: true
@@ -43,14 +64,16 @@ orchestration:
     - name: BUILD_MANIFEST.md
       type: artifact
       format: markdown
-      template: "# Build Manifest (JS/TS)\\n\\n## Cycle {cycle}\\n\\n| ART-ID | REQ-ID | Location | Notes |\\n|--------|--------|----------|-------|\\n{manifest_rows}"
+      template: >-
+        # Build Manifest (JS/TS)\n\n## Cycle {cycle}\n\n| ART-ID | REQ-ID |
+        Location | Notes
+        |\n|--------|--------|----------|-------|\n{manifest_rows}
     - name: source_code
       type: artifact
       format: code
     - name: build_completed
       type: event
   gates: []
-  
   resources:
     max_tokens: 16000
     timeout_ms: 300000
@@ -59,7 +82,6 @@ orchestration:
     max_retries: 2
     fallback_behavior: halt
     critical: true
-  
   implementation:
     type: llm-agent
     required: true

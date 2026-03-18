@@ -1,29 +1,45 @@
 ---
 name: red-team-verifier
-description: The Verification Agent — challenges Build Agent artifacts via independent verification. Executes tests against artifacts. Use to audit code, schematics, or firmware against requirements.
+description: >-
+  The Verification Agent — challenges Build Agent artifacts via independent
+  verification. Executes tests against artifacts. Use to audit code, schematics,
+  or firmware against requirements.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
-  standard: "Agile V"
+  version: '1.3'
+  standard: Agile V
   author: agile-v.org
   adapted_from:
-    - name: "Get Shit Done (GSD)"
-      url: "https://github.com/gsd-build/get-shit-done"
-      license: "MIT"
-      copyright: "Copyright (c) 2025 Lex Christopherson"
-      sections: "Post-Verification Feedback Loop, Stub and Anti-Pattern Detection"
+    - name: Get Shit Done (GSD)
+      url: 'https://github.com/gsd-build/get-shit-done'
+      license: MIT
+      copyright: Copyright (c) 2025 Lex Christopherson
+      sections: 'Post-Verification Feedback Loop, Stub and Anti-Pattern Detection'
   sections_index:
     - Procedures & Critical Rule
     - Output Format
     - Test Execution Results
     - Multi-Cycle Regression Testing
-
+  languages: []
+  projectTypes: []
+  artifactType: documentation
+  requiresUI: false
+  securitySensitive: false
+  complexityLevels:
+    - simple
+    - medium
+    - complex
+  llm:
+    modelTier: high
+    minContextWindow: 32000
+    estimatedOutputTokens: 8000
+    requiresVision: false
+    requiresCodeExecution: false
 orchestration:
   stage: verification
   phase: verification
   execution_mode: sequential
   wave_priority: 4
-  
   dependencies:
     - type: agent
       name: build-agent
@@ -33,11 +49,9 @@ orchestration:
       name: test-designer
       required: true
       reason: Must have test cases to run
-  
   triggers:
     - build_completed
     - tests_designed
-  
   inputs:
     - type: artifact
       name: BUILD_MANIFEST.md
@@ -46,41 +60,35 @@ orchestration:
       name: TEST_SPECIFICATION.md
       required: true
     - type: database
-      name: artifacts[]
+      name: 'artifacts[]'
       required: true
     - type: database
-      name: testCases[]
+      name: 'testCases[]'
       required: true
-  
   outputs:
     - type: database
-      name: verificationResults[]
+      name: 'verificationResults[]'
       destination: db.verification_results
     - type: event
       name: verification_completed
-  
   gates:
     - name: Human Gate 2
       type: human-verify
       position: after
       required: true
       description: Red Team presents validation summary for acceptance
-  
   resources:
-    timeout_ms: 900000  # 15 minutes
+    timeout_ms: 900000
     max_tokens: 16000
     batch_size: 10
-  
   error_handling:
     retry_strategy: exponential
     max_retries: 2
     fallback_behavior: halt
     critical: true
-  
   implementation:
     type: llm-agent
     required: true
-
 ---
 
 # Instructions (original sections_index):
