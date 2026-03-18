@@ -150,3 +150,21 @@ Multi-cycle manifest: `ART-XXXX.N | REQ-XXXX | path | CYCLE | CR | notes`
 
 ## Halt Conditions
 Halt and do not emit when: ambiguous REQ · missing REQ link · physical constraint violation · conflict with approved Blueprint.
+
+## Output Format
+
+Return a JSON array of artifacts. Each artifact must include:
+
+```json
+[
+  {
+    "filename": "path/to/file.ext",
+    "content": "file contents here",
+    "type": "source_code",
+    "language": "python",
+    "requirementCodes": ["REQ-0001", "REQ-0002"]
+  }
+]
+```
+
+**Critical**: Return ONLY the JSON array, wrapped in a ```json code block. No explanations, no plans, no markdown outside the code block. The JSON array is the complete output.
