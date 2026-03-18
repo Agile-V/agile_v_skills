@@ -62,12 +62,12 @@ orchestration:
   error_handling:
     retry_strategy: exponential
     max_retries: 2
-    fallback_behavior: skip
-    critical: false
+    fallback_behavior: halt
+    critical: true
   
   implementation:
     type: llm-agent
-    required: false  # Optional - can skip if project description is already clear
+    required: false  # Optional - won't be included in plan if project description is clear, but if included, it's critical
 ---
 
 # Instructions
@@ -112,15 +112,17 @@ Generate a research session with:
 
 ```json
 {
-  "summary": "2-4 sentence summary of findings",
-  "risks": [
-    { "description": "...", "severity": "Low|Medium|High|Critical" }
-  ],
-  "dependencies": [
-    { "name": "...", "type": "System|Module|API|Library", "impact": "..." }
-  ],
-  "complexity": "Simple|Medium|Complex",
-  "questions": [
+  "researchSession": {
+    "summary": "2-4 sentence summary of findings",
+    "risks": [
+      { "description": "...", "severity": "Low|Medium|High|Critical" }
+    ],
+    "dependencies": [
+      { "name": "...", "type": "System|Module|API|Library", "impact": "..." }
+    ],
+    "complexity": "Simple|Medium|Complex"
+  },
+  "researchQuestions": [
     {
       "category": "SCOPE_REQUIREMENTS",
       "priority": "CRITICAL",
