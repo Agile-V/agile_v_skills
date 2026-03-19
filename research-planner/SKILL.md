@@ -55,8 +55,6 @@ orchestration:
     - type: database
       name: 'researchQuestions[]'
       destination: db.research_questions
-    - type: event
-      name: research_completed
   gates:
     - name: Research Questions Gate
       type: human-action
