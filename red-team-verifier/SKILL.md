@@ -77,6 +77,9 @@ orchestration:
       position: after
       required: true
       description: Red Team presents validation summary for acceptance
+      kind: verification-review
+      label: Verification Gate Review
+      promotes_requirements: false
   resources:
     timeout_ms: 900000
     max_tokens: 16000

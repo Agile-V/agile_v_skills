@@ -62,6 +62,9 @@ orchestration:
       phase: gate-1
       wave_priority: 5
       description: User approves the requirements package before synthesis starts
+      kind: requirements-review
+      label: Requirements Gate Review
+      promotes_requirements: true
   resources:
     timeout_ms: 600000
     batch_size: 10

@@ -34,13 +34,13 @@ orchestration:
   wave_priority: 1
   dependencies:
     - type: agent
+      name: research-planner
+      required: true
+      reason: Research findings inform user needs and UX design decisions
+    - type: agent
       name: discovery-analyst
       required: false
-      reason: Discovery insights inform UX design
-    - type: agent
-      name: research-planner
-      required: false
-      reason: Research questions can highlight UX concerns
+      reason: Discovery insights can further enrich UX design
   inputs:
     - type: context
       name: project

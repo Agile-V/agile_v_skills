@@ -37,8 +37,8 @@ orchestration:
   dependencies:
     - type: agent
       name: research-planner
-      required: false
-      reason: Research provides context but is optional
+      required: true
+      reason: Research findings inform and guide requirements definition
     - type: gate
       name: Research Questions Gate
       required: true
@@ -96,6 +96,8 @@ orchestration:
     - type: event
       name: requirements_generated
   gates: []
+  persist:
+    - type: requirements
   conditions:
     enabled_when:
       - project.description != null

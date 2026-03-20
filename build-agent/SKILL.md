@@ -96,6 +96,9 @@ orchestration:
       enabled_when:
         - project.type == "embedded"
       skill_extends: build-agent
+  gates: []
+  persist:
+    - type: artifacts
   resources:
     timeout_ms: 1200000
     max_tokens: 16000
