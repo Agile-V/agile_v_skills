@@ -21,6 +21,10 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 | Generate repository documentation | `documentation-agent` | "Generate docs", "Create README", "Document architecture", "ISO 9001 docs" |
 | Orchestrate full pipeline | `agile-v-pipeline` + others | "Run full workflow", "Execute pipeline", "End-to-end process" |
 | Multi-cycle management | `agile-v-lifecycle` | "Start Cycle 2", "Manage iterations", "Change requests", "Version requirements" |
+| Business strategy & vision | `venture-strategist` | "Define vision", "Business model", "Product portfolio", "Competitive analysis", "Fundraising" |
+| R&D & innovation pipeline | `rd-innovator` | "Evaluate technology", "Prototype", "R&D pipeline", "Technology radar", "Patent tracking" |
+| Go-to-market & marketing | `gtm-executor` | "Launch plan", "Marketing strategy", "Growth experiments", "Sales enablement", "Channel strategy" |
+| Financial & operational planning | `business-operations` | "Budget", "OKRs", "Vendor management", "Resource planning", "Runway" |
 
 ## Detailed Skill Triggers
 
@@ -178,6 +182,48 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 - "Incident detection"
 - "Error budget tracking"
 
+### Business Track (Strategy, R&D, GTM, Operations)
+
+**`venture-strategist`**
+- "Define the product vision"
+- "Create business model"
+- "Build product portfolio"
+- "Competitive analysis"
+- "Market positioning"
+- "Fundraising strategy"
+- "Investor pitch materials"
+- "Strategic OKRs"
+
+**`rd-innovator`**
+- "Evaluate this technology"
+- "Create technology radar"
+- "Start R&D initiative"
+- "Build a prototype"
+- "Track patents and IP"
+- "Transfer prototype to engineering"
+- "Technology scouting"
+- "Innovation pipeline"
+
+**`gtm-executor`**
+- "Plan product launch"
+- "Marketing strategy"
+- "Define ideal customer profile"
+- "Channel strategy"
+- "Growth experiments"
+- "Sales battle cards"
+- "Pricing strategy"
+- "Customer acquisition plan"
+
+**`business-operations`**
+- "Create budget"
+- "Financial planning"
+- "Set up OKRs"
+- "Vendor evaluation"
+- "Resource planning"
+- "Team capacity"
+- "Operational risk assessment"
+- "Track burn rate and runway"
+
 ### Orchestration & Lifecycle
 
 **`agile-v-core`**
@@ -269,6 +315,41 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 7. **`logic-gatekeeper`** — Re-validate
 8. Re-enter pipeline for fix
 
+### Workflow 6: Business Track — New Venture
+
+1. **`venture-strategist`** — Vision, business model, product portfolio
+2. **Business Gate 0** — Approve strategy
+3. **`rd-innovator`** — Technology assessment, R&D initiatives, prototyping
+4. **`gtm-executor`** — Go-to-market strategy, channel planning
+5. **Business Gate 1** — Approve R&D portfolio + GTM strategy
+6. **`business-operations`** — Financial plan, OKRs, resource allocation
+7. **Business Gate 2** — Approve budget + operational plan
+8. **Enter Engineering Pipeline** — `discovery-analyst` (portfolio → product intent)
+9. Continue: Requirements → Build → Verify → Release → Monitor
+10. **Feedback** — Production metrics + growth data → inform next business cycle
+
+### Workflow 7: Business Track — Product Launch
+
+1. **`venture-strategist`** — Confirm PORT-XXXX launch decision
+2. **`gtm-executor`** — Launch plan (MKT-XXXX), marketing materials, campaigns
+3. **`business-operations`** — Budget allocation (FIN-XXXX)
+4. **`release-manager`** — Engineering deployment coordination
+5. **`gtm-executor`** — Execute launch phases (pre-launch → launch → post-launch)
+6. **`observability-planner`** — Monitor production metrics
+7. **`gtm-executor`** — Growth experiments (GROW-XXXX), iterate
+8. **Feedback** — Results → `venture-strategist` (portfolio updates), `discovery-analyst` (next cycle)
+
+### Workflow 8: Business Track — R&D to Product
+
+1. **`venture-strategist`** — Strategic direction (VIS-XXXX, PORT-XXXX)
+2. **`rd-innovator`** — Technology scouting (TECH-XXXX), R&D initiative (RDI-XXXX)
+3. **`rd-innovator`** — Prototype (PROTO-XXXX), validate against success criteria
+4. **Business Gate 1 (R&D)** — Approve transfer to engineering
+5. **`rd-innovator`** — Create Transfer Package
+6. **`discovery-analyst`** — Convert transfer package → OBS/INS/HYP entries
+7. Continue: Requirements → Build → Verify → Release
+8. **`rd-innovator`** — Production feedback updates TECH_RADAR.md
+
 ## Skill Loading Recommendations
 
 ### Essential Core (Load First)
@@ -282,6 +363,12 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 - **Release:** `release-manager`, `observability-planner`
 - **Compliance:** `compliance-auditor`, `documentation-agent`
 - **Agile Delivery:** `agile-v-product-owner`
+
+### By Business Phase
+- **Strategy:** `venture-strategist`
+- **Innovation:** `rd-innovator`
+- **Market Execution:** `gtm-executor`
+- **Operations:** `business-operations`
 
 ### On Demand
 - `agile-v-pipeline` — When orchestrating multi-agent workflows
@@ -308,6 +395,10 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 | `agile-v-product-owner` | No (requires REQs) | No (orchestrates sprints) | `requirement-architect` |
 | `agile-v-pipeline` | No (orchestrates others) | N/A | `agile-v-core` |
 | `agile-v-lifecycle` | No (manages cycles) | N/A | `agile-v-core` |
+| `venture-strategist` | Yes | No (upstream of all business skills) | `agile-v-core` |
+| `rd-innovator` | Yes | Yes (parallel with gtm-executor) | `venture-strategist` |
+| `gtm-executor` | No (requires PORTFOLIO.md) | Yes (parallel with rd-innovator) | `venture-strategist` |
+| `business-operations` | No (requires strategic OKRs) | Yes (parallel with rd-innovator, gtm-executor) | `venture-strategist` |
 
 ## Tips for Effective Skill Use
 
@@ -331,6 +422,12 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 
 10. **Context optimization** — Load only the skills you need for the current stage; use file paths in handoffs (not full file contents).
 
+11. **Business before engineering** — Run `venture-strategist` before `discovery-analyst` when starting a new product. Strategy defines *what* to build; engineering defines *how*.
+
+12. **Traceable marketing** — Always run `gtm-executor` with access to `VALIDATION_SUMMARY.md` — marketing claims must trace to verified capabilities.
+
+13. **R&D is not engineering** — Prototypes from `rd-innovator` are *not* production code. Transfer to engineering means fresh build from requirements.
+
 ## Troubleshooting
 
 **"I'm not sure which skill to use"**
@@ -353,6 +450,10 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 - `build-agent` (core) vs `build-agent-python`: Core is language-agnostic; domain-specific extends it
 - `release-manager` vs `observability-planner`: Release handles deployment; Observability handles monitoring
 - `agile-v-pipeline` vs `agile-v-lifecycle`: Pipeline orchestrates stages within a cycle; Lifecycle manages multiple cycles
+- `venture-strategist` vs `discovery-analyst`: Venture Strategist defines *what product to build* (business); Discovery Analyst converts *user research into requirements* (engineering)
+- `gtm-executor` vs `release-manager`: GTM handles market launch (marketing, campaigns); Release Manager handles technical deployment
+- `rd-innovator` vs `build-agent`: R&D explores and prototypes (disposable); Build Agent creates production artifacts from requirements
+- `business-operations` vs `compliance-auditor`: Business Operations manages financial/operational compliance; Compliance Auditor manages engineering/regulatory compliance
 
 **"How do I know when to move to the next skill?"**
 - Each skill produces a **handoff artifact** (REQUIREMENTS.md, BUILD_MANIFEST.md, VALIDATION_SUMMARY.md, etc.)

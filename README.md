@@ -37,7 +37,11 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 │   └── build-agent-python/
 ├── red-team-verifier/      # Right Side: Verification and Red Teaming
 ├── compliance-auditor/     # Compliance: Audit and governance
-└── documentation-agent/    # Documentation: Standards-based repo docs (ISO 9001, V-Model, ISO 27001)
+├── documentation-agent/    # Documentation: Standards-based repo docs (ISO 9001, V-Model, ISO 27001)
+├── venture-strategist/     # Business Track: Vision, business model, product portfolio
+├── rd-innovator/           # Business Track: R&D pipeline, technology radar, prototyping
+├── gtm-executor/           # Business Track: Go-to-market, marketing, growth experiments
+└── business-operations/    # Business Track: Finance, OKRs, vendors, operational risk
 ```
 
 
@@ -57,6 +61,10 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 | red-team-verifier   | Right Side  | `red-team-verifier/`        | Challenges build artifacts; produces Validation Summary for Human Gate 2. Includes stub/anti-pattern detection and post-verification feedback protocol. |
 | compliance-auditor  | Compliance  | `compliance-auditor/`        | Automates decision logging, traceability matrix (ATM), and VSR for ISO/GxP. |
 | documentation-agent | Compliance  | `documentation-agent/`      | Generates standards-based repo documentation (ISO 9001, V-Model, ISO 27001, optional GAMP 5) into `docs/` with hub README, cross-reference matrix, Mermaid diagrams, and compliance posture documentation. |
+| venture-strategist  | Business Track | `venture-strategist/`    | Converts vision and market opportunity into traceable business models, product portfolios, and strategic plans. Feeds product intent to discovery-analyst. |
+| rd-innovator        | Business Track | `rd-innovator/`          | Manages R&D pipeline, technology radar, prototyping, and IP tracking. Transfers validated innovations to the engineering pipeline. |
+| gtm-executor        | Business Track | `gtm-executor/`          | Converts product portfolio into go-to-market strategies, marketing plans, launch campaigns, and growth experiments. Coordinates with release-manager for launch timing. |
+| business-operations | Business Track | `business-operations/`   | Manages financial planning, OKRs, team resources, vendor relationships, and operational compliance. The operational backbone for all business track skills. |
 
 ## Compliance Documentation
 
@@ -120,6 +128,57 @@ sequenceDiagram
     end
 ```
 
+## Business Track Interaction Flow (v2.0)
+
+The Business Track operates as a **parallel lifecycle** alongside the Engineering Track, with defined integration points:
+
+```mermaid
+sequenceDiagram
+    participant Human
+    participant VS as Venture Strategist
+    participant RDI as R&D Innovator
+    participant GTM as GTM Executor
+    participant BOP as Business Operations
+    participant DA as Discovery Analyst
+    participant RA as Requirement Architect
+    participant RM as Release Manager
+    participant OP as Observability Planner
+
+    Human->>VS: Vision & Market Opportunity
+    VS->>VS: VISION.md, BUSINESS_MODEL.md, PORTFOLIO.md
+    VS->>Human: Business Gate 0: Approve Strategy
+
+    par Business Execution
+        Human->>RDI: R&D Direction (from PORTFOLIO.md)
+        RDI->>RDI: TECH_RADAR.md, PROTOTYPE_LOG.md
+        RDI->>Human: Business Gate 1 (R&D): Approve Portfolio
+
+        Human->>GTM: GTM Direction (from BUSINESS_MODEL.md)
+        GTM->>GTM: GTM_PLAN.md, CHANNEL_STRATEGY.md
+        GTM->>Human: Business Gate 1 (GTM): Approve Strategy
+
+        Human->>BOP: Operational Planning
+        BOP->>BOP: FINANCIAL_PLAN.md, OKR.md
+        BOP->>Human: Business Gate 2: Approve Budget
+    end
+
+    Note over RDI,DA: Product Transfer
+    RDI->>DA: Transfer Package (validated prototypes)
+    VS->>DA: PORTFOLIO.md (product intent)
+    DA->>RA: Candidate Requirements
+
+    Note over GTM,RM: Launch Coordination
+    RM->>GTM: Deployment Confirmation
+    GTM->>GTM: Execute Launch Plan
+
+    Note over OP,VS: Feedback Loop
+    OP->>VS: Production Metrics → Portfolio Decisions
+    GTM->>DA: Market Feedback → Next Cycle Discovery
+```
+
+### Business Track artifacts (state persistence)
+Business Track state lives in `.agile-v/business/`: VISION.md, BUSINESS_MODEL.md, PORTFOLIO.md, INVESTOR_LOG.md, RD_PIPELINE.md, TECH_RADAR.md, PROTOTYPE_LOG.md, IP_REGISTER.md, GTM_PLAN.md, LAUNCH_PLAN.md, CHANNEL_STRATEGY.md, GROWTH_METRICS.md, FINANCIAL_PLAN.md, OKR.md, OPERATIONS_LOG.md, VENDOR_REGISTER.md, BUSINESS_DECISION_LOG.md. Business Track skills read engineering artifacts by file path (REQUIREMENTS.md, RELEASE_PLAN, VALIDATION_SUMMARY, MET-XXXX); engineering skills read business artifacts by file path (PORTFOLIO.md for product intent, TECH_RADAR.md for technical constraints).
+
 ### Requirements artifact (source of truth)
 The Requirement Architect exports the approved Blueprint (after Human Gate 1) to a **requirements file** (default: `REQUIREMENTS.md` in the project root). The Logic Gatekeeper then **reads** that file, validates it (ambiguity, constraints, conflicts), and **writes back** any user-approved adjustments to the same file. All downstream agents (Build Agent, Test Designer, Red Team Verifier, Schematic Generator, Compliance Auditor) **read requirements from this file**, not from in-chat handoff. Using a single persisted file as the requirements source reduces context-window pressure, avoids carrying the full Blueprint in conversation, and lets parallel or sequential agent runs (e.g. build per feature) reference the same canonical artifact.
 
@@ -165,6 +224,18 @@ Version 1.3 also includes compliance hardening based on a clause-by-clause audit
 - **Quality Metrics and KPIs** (`compliance-auditor`): 7 defined metrics (first-pass verification rate, defect density, requirement coverage, regression pass rate, CR cycle time, open CAPA count, traceability completeness) with trend analysis. Addresses ISO 9001 9.1, AS9100D 9.1.1.
 - **Secure Coding** (`build-agent`): 7 minimum secure coding rules (input validation, error handling, no hardcoded secrets, parameterized queries, bounded operations, least privilege, dependency awareness). Addresses ISO 27001 A.8.28.
 - **Nonconformity Disposition** (`red-team-verifier`): Formal disposition categories (rework, accept-as-is, reject, defer) with CAPA trigger criteria. Addresses ISO 9001 8.7, ISO 13485 8.3.
+
+### Business Track: Parallel Business Lifecycle (v2.0)
+
+Version 2.0 introduces the **Agile V Business Track** -- four new skills that extend Agile V's traceability and verification rigor into business strategy, R&D innovation, go-to-market execution, and business operations.
+
+**Key additions:**
+- **Venture Strategist** (`venture-strategist`): Converts vision and market opportunity into traceable business models (BM-XXXX), product portfolios (PORT-XXXX), and strategic plans (VIS-XXXX). Introduces **Business Gate 0** (Strategy Approval). Portfolio items feed discovery-analyst as product intent.
+- **R&D Innovator** (`rd-innovator`): Manages R&D pipeline (RDI-XXXX) from technology scouting (TECH-XXXX) through prototyping (PROTO-XXXX) to formal product transfer. Technology Radar framework (Assess/Trial/Adopt/Hold). IP tracking (IPR-XXXX). Introduces **Business Gate 1 (R&D)**.
+- **GTM Executor** (`gtm-executor`): Converts business model + portfolio into go-to-market strategies (GTM-XXXX), channel strategies (CHAN-XXXX), launch plans (MKT-XXXX), and growth experiments (GROW-XXXX). Marketing claims must trace to verified REQs. Introduces **Business Gate 1 (GTM)**.
+- **Business Operations** (`business-operations`): Financial planning (FIN-XXXX), OKR cascade (OKR-XXXX), vendor management (VENDOR-XXXX), operational risk (OPS-XXXX). Every budget line traces to strategic rationale. Introduces **Business Gate 2** (Operational Plan Approval).
+
+**Architecture:** The Business Track runs as a parallel lifecycle with its own gates, artifact IDs, and state directory (`.agile-v/business/`). Integration with the Engineering Track occurs through defined handoff points: portfolio → discovery, prototypes → discovery, tech radar → requirements, launch → release coordination, production metrics → business decisions.
 
 ### Context Optimization (v1.3)
 

@@ -1,7 +1,7 @@
 {
   "name": "agile-v-skills",
-  "version": "1.5.0",
-  "description": "Official Agent Skills for the Agile V™ framework. Traceable product development: requirements, build, verification, and compliance.",
+  "version": "2.0.0",
+  "description": "Official Agent Skills for the Agile V™ framework. Traceable product development: strategy, R&D, requirements, build, verification, go-to-market, and operations.",
   "author": "Agile V™ <info@agile-v.org>",
   "repository": {
     "type": "git",
