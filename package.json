@@ -1,7 +1,7 @@
 {
   "name": "agile-v-skills",
-  "version": "2.0.0",
-  "description": "Official Agent Skills for the Agile V™ framework. Traceable product development: strategy, R&D, requirements, build, verification, go-to-market, and operations.",
+  "version": "2.0.0-dev.1",
+  "description": "Agent Skills for the Agile V™ framework (development branch: business track). Traceable product development: requirements, build, verification, and compliance. Business track skills (strategy, R&D, go-to-market, operations) are in development.",
   "author": "Agile V™ <info@agile-v.org>",
   "repository": {
     "type": "git",

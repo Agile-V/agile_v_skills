@@ -8,6 +8,9 @@
 
 This repository contains the official collection of **Agent Skills** for the Agile V™ framework. These skills are designed to transform standard LLMs into specialized engineering agents capable of building, verifying, and auditing complex systems with mathematical rigor.
 
+> [!CAUTION]
+> **Development Branch (`feature-business`):** This branch is a development fork of the official Agile V engineering framework (v1.5.0 on `main`). It contains **draft Business Track skills** (venture-strategist, rd-innovator, gtm-executor, business-operations) that are under active development and have **not been officially released**. The official, stable release is on the `main` branch. Business Track content below is marked with **[Draft]**.
+
 
 ## The Vision: From Manifesto to Execution
 
@@ -38,10 +41,10 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 ├── red-team-verifier/      # Right Side: Verification and Red Teaming
 ├── compliance-auditor/     # Compliance: Audit and governance
 ├── documentation-agent/    # Documentation: Standards-based repo docs (ISO 9001, V-Model, ISO 27001)
-├── venture-strategist/     # Business Track: Vision, business model, product portfolio
-├── rd-innovator/           # Business Track: R&D pipeline, technology radar, prototyping
-├── gtm-executor/           # Business Track: Go-to-market, marketing, growth experiments
-└── business-operations/    # Business Track: Finance, OKRs, vendors, operational risk
+├── venture-strategist/     # [Draft] Business Track: Vision, business model, product portfolio
+├── rd-innovator/           # [Draft] Business Track: R&D pipeline, technology radar, prototyping
+├── gtm-executor/           # [Draft] Business Track: Go-to-market, marketing, growth experiments
+└── business-operations/    # [Draft] Business Track: Finance, OKRs, vendors, operational risk
 ```
 
 
@@ -61,10 +64,10 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 | red-team-verifier   | Right Side  | `red-team-verifier/`        | Challenges build artifacts; produces Validation Summary for Human Gate 2. Includes stub/anti-pattern detection and post-verification feedback protocol. |
 | compliance-auditor  | Compliance  | `compliance-auditor/`        | Automates decision logging, traceability matrix (ATM), and VSR for ISO/GxP. |
 | documentation-agent | Compliance  | `documentation-agent/`      | Generates standards-based repo documentation (ISO 9001, V-Model, ISO 27001, optional GAMP 5) into `docs/` with hub README, cross-reference matrix, Mermaid diagrams, and compliance posture documentation. |
-| venture-strategist  | Business Track | `venture-strategist/`    | Converts vision and market opportunity into traceable business models, product portfolios, and strategic plans. Feeds product intent to discovery-analyst. |
-| rd-innovator        | Business Track | `rd-innovator/`          | Manages R&D pipeline, technology radar, prototyping, and IP tracking. Transfers validated innovations to the engineering pipeline. |
-| gtm-executor        | Business Track | `gtm-executor/`          | Converts product portfolio into go-to-market strategies, marketing plans, launch campaigns, and growth experiments. Coordinates with release-manager for launch timing. |
-| business-operations | Business Track | `business-operations/`   | Manages financial planning, OKRs, team resources, vendor relationships, and operational compliance. The operational backbone for all business track skills. |
+| venture-strategist  | Business Track **[Draft]** | `venture-strategist/`    | Converts vision and market opportunity into traceable business models, product portfolios, and strategic plans. Feeds product intent to discovery-analyst. |
+| rd-innovator        | Business Track **[Draft]** | `rd-innovator/`          | Manages R&D pipeline, technology radar, prototyping, and IP tracking. Transfers validated innovations to the engineering pipeline. |
+| gtm-executor        | Business Track **[Draft]** | `gtm-executor/`          | Converts product portfolio into go-to-market strategies, marketing plans, launch campaigns, and growth experiments. Coordinates with release-manager for launch timing. |
+| business-operations | Business Track **[Draft]** | `business-operations/`   | Manages financial planning, OKRs, team resources, vendor relationships, and operational compliance. The operational backbone for all business track skills. |
 
 ## Compliance Documentation
 
@@ -128,7 +131,10 @@ sequenceDiagram
     end
 ```
 
-## Business Track Interaction Flow (v2.0)
+## Business Track Interaction Flow [Draft]
+
+> [!WARNING]
+> The Business Track below is **under development** on the `feature-business` branch and is not part of the official v1.5 release.
 
 The Business Track operates as a **parallel lifecycle** alongside the Engineering Track, with defined integration points:
 
@@ -225,9 +231,11 @@ Version 1.3 also includes compliance hardening based on a clause-by-clause audit
 - **Secure Coding** (`build-agent`): 7 minimum secure coding rules (input validation, error handling, no hardcoded secrets, parameterized queries, bounded operations, least privilege, dependency awareness). Addresses ISO 27001 A.8.28.
 - **Nonconformity Disposition** (`red-team-verifier`): Formal disposition categories (rework, accept-as-is, reject, defer) with CAPA trigger criteria. Addresses ISO 9001 8.7, ISO 13485 8.3.
 
-### Business Track: Parallel Business Lifecycle (v2.0)
+### Business Track: Parallel Business Lifecycle [Draft]
 
-Version 2.0 introduces the **Agile V Business Track** -- four new skills that extend Agile V's traceability and verification rigor into business strategy, R&D innovation, go-to-market execution, and business operations.
+> **Note:** This section describes skills under development on the `feature-business` branch. Not yet part of an official release.
+
+The planned v2.0 release will introduce the **Agile V Business Track** -- four new skills that extend Agile V's traceability and verification rigor into business strategy, R&D innovation, go-to-market execution, and business operations.
 
 **Key additions:**
 - **Venture Strategist** (`venture-strategist`): Converts vision and market opportunity into traceable business models (BM-XXXX), product portfolios (PORT-XXXX), and strategic plans (VIS-XXXX). Introduces **Business Gate 0** (Strategy Approval). Portfolio items feed discovery-analyst as product intent.

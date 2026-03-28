@@ -1,12 +1,14 @@
-# Agile V Skills v2.0 Performance Analysis
+# Agile V Skills v1.5 Performance Analysis
+
+> **Note:** This document includes draft metrics for Business Track skills (venture-strategist, rd-innovator, gtm-executor, business-operations) that are under development on the `feature-business` branch. Rows and scenarios marked **[Draft]** are not part of the official v1.5 release.
 
 ## Executive Summary
 
-Agile V Skills v2.0 are **highly performant** and **context-optimized**:
-- ✅ **<10% context** for full dual-track lifecycle (Strategy → Production)
+Agile V Skills v1.5 are **highly performant** and **context-optimized**:
+- ✅ **<10% context** for full engineering lifecycle (Discovery → Production)
 - ✅ **All workflows stay in PEAK quality zone** (0-30% context)
 - ✅ **8-10× more efficient** than loading equivalent documentation
-- ✅ **Context-optimized** following v1.3/v1.5 patterns
+- ✅ **53% size reduction** vs initial v1.5 implementation
 - ✅ **Scales infinitely** — skill token cost stays constant as project grows
 
 ## Token Usage by Skill
@@ -26,14 +28,15 @@ Agile V Skills v2.0 are **highly performant** and **context-optimized**:
 | release-manager | 9.1 KB | ~2,275 | 1.14% | Release |
 | observability-planner | 8.1 KB | ~2,025 | 1.01% | Operations |
 | compliance-auditor | 3.9 KB | ~975 | 0.49% | Compliance |
-| venture-strategist | 7.8 KB | ~1,950 | 0.98% | Business Strategy |
-| rd-innovator | 10.5 KB | ~2,625 | 1.31% | Business R&D |
-| gtm-executor | 10.7 KB | ~2,675 | 1.34% | Business GTM |
-| business-operations | 11.5 KB | ~2,875 | 1.44% | Business Operations |
+| venture-strategist | 7.8 KB | ~1,950 | 0.98% | Business Strategy **[Draft]** |
+| rd-innovator | 10.5 KB | ~2,625 | 1.31% | Business R&D **[Draft]** |
+| gtm-executor | 10.7 KB | ~2,675 | 1.34% | Business GTM **[Draft]** |
+| business-operations | 11.5 KB | ~2,875 | 1.44% | Business Operations **[Draft]** |
 
-**Largest skill:** 11.5 KB (1.44% of context)
+**Largest skill (released):** 9.4 KB (1.18% of context)
+**Largest skill (incl. draft):** 11.5 KB (1.44% of context)
 **Smallest skill:** 2.1 KB (0.26% of context)
-**Average skill:** 6.4 KB (0.8% of context)
+**Average skill (released):** 5.6 KB (0.7% of context)
 
 ## Common Workflow Scenarios
 
@@ -61,19 +64,19 @@ Agile V Skills v2.0 are **highly performant** and **context-optimized**:
 **Skills:** agile-v-core + release-manager + observability-planner
 **Total:** ~5,600 tokens (2.8% of context) ✅ PEAK
 
-### Scenario 7: Business Strategy (New Venture)
+### Scenario 7: Business Strategy (New Venture) [Draft]
 **Skills:** agile-v-core + venture-strategist + rd-innovator + business-operations
 **Total:** ~8,750 tokens (4.4% of context) ✅ PEAK
 
-### Scenario 8: Business + Engineering Full Lifecycle
+### Scenario 8: Business + Engineering Full Lifecycle [Draft]
 **Skills:** agile-v-core + venture-strategist + rd-innovator + gtm-executor + business-operations + discovery-analyst + requirement-architect + logic-gatekeeper + build-agent-python + test-designer + red-team-verifier + release-manager + observability-planner
 **Total:** ~25,400 tokens (12.7% of context) ✅ PEAK
 
-### Scenario 9: Product Launch (GTM + Engineering)
+### Scenario 9: Product Launch (GTM + Engineering) [Draft]
 **Skills:** agile-v-core + gtm-executor + release-manager + observability-planner
 **Total:** ~8,275 tokens (4.1% of context) ✅ PEAK
 
-### Scenario 10: Business Operations Only
+### Scenario 10: Business Operations Only [Draft]
 **Skills:** agile-v-core + business-operations + venture-strategist
 **Total:** ~6,125 tokens (3.1% of context) ✅ PEAK
 

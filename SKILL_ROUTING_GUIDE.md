@@ -1,5 +1,7 @@
 # Agile V Skills: Routing Guide
 
+> **Note:** Entries marked **[Draft]** refer to Business Track skills under development on the `feature-business` branch. They are not part of the official v1.5 release.
+
 This guide maps common user phrases and intents to the appropriate Agile V skill(s). Use this to quickly identify which skill(s) to load for a given task.
 
 ## Quick Reference Table
@@ -21,10 +23,10 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 | Generate repository documentation | `documentation-agent` | "Generate docs", "Create README", "Document architecture", "ISO 9001 docs" |
 | Orchestrate full pipeline | `agile-v-pipeline` + others | "Run full workflow", "Execute pipeline", "End-to-end process" |
 | Multi-cycle management | `agile-v-lifecycle` | "Start Cycle 2", "Manage iterations", "Change requests", "Version requirements" |
-| Business strategy & vision | `venture-strategist` | "Define vision", "Business model", "Product portfolio", "Competitive analysis", "Fundraising" |
-| R&D & innovation pipeline | `rd-innovator` | "Evaluate technology", "Prototype", "R&D pipeline", "Technology radar", "Patent tracking" |
-| Go-to-market & marketing | `gtm-executor` | "Launch plan", "Marketing strategy", "Growth experiments", "Sales enablement", "Channel strategy" |
-| Financial & operational planning | `business-operations` | "Budget", "OKRs", "Vendor management", "Resource planning", "Runway" |
+| Business strategy & vision **[Draft]** | `venture-strategist` | "Define vision", "Business model", "Product portfolio", "Competitive analysis", "Fundraising" |
+| R&D & innovation pipeline **[Draft]** | `rd-innovator` | "Evaluate technology", "Prototype", "R&D pipeline", "Technology radar", "Patent tracking" |
+| Go-to-market & marketing **[Draft]** | `gtm-executor` | "Launch plan", "Marketing strategy", "Growth experiments", "Sales enablement", "Channel strategy" |
+| Financial & operational planning **[Draft]** | `business-operations` | "Budget", "OKRs", "Vendor management", "Resource planning", "Runway" |
 
 ## Detailed Skill Triggers
 
@@ -182,7 +184,7 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 - "Incident detection"
 - "Error budget tracking"
 
-### Business Track (Strategy, R&D, GTM, Operations)
+### Business Track (Strategy, R&D, GTM, Operations) [Draft]
 
 **`venture-strategist`**
 - "Define the product vision"
@@ -315,7 +317,7 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 7. **`logic-gatekeeper`** — Re-validate
 8. Re-enter pipeline for fix
 
-### Workflow 6: Business Track — New Venture
+### Workflow 6: Business Track — New Venture [Draft]
 
 1. **`venture-strategist`** — Vision, business model, product portfolio
 2. **Business Gate 0** — Approve strategy
@@ -328,7 +330,7 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 9. Continue: Requirements → Build → Verify → Release → Monitor
 10. **Feedback** — Production metrics + growth data → inform next business cycle
 
-### Workflow 7: Business Track — Product Launch
+### Workflow 7: Business Track — Product Launch [Draft]
 
 1. **`venture-strategist`** — Confirm PORT-XXXX launch decision
 2. **`gtm-executor`** — Launch plan (MKT-XXXX), marketing materials, campaigns
@@ -339,7 +341,7 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 7. **`gtm-executor`** — Growth experiments (GROW-XXXX), iterate
 8. **Feedback** — Results → `venture-strategist` (portfolio updates), `discovery-analyst` (next cycle)
 
-### Workflow 8: Business Track — R&D to Product
+### Workflow 8: Business Track — R&D to Product [Draft]
 
 1. **`venture-strategist`** — Strategic direction (VIS-XXXX, PORT-XXXX)
 2. **`rd-innovator`** — Technology scouting (TECH-XXXX), R&D initiative (RDI-XXXX)

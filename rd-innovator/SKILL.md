@@ -4,6 +4,7 @@ description: Manages R&D pipeline, technology scouting, prototyping, and IP trac
 license: CC-BY-SA-4.0
 metadata:
   version: "1.0"
+  status: draft
   standard: "Agile V"
   author: agile-v.org
   sections_index:
