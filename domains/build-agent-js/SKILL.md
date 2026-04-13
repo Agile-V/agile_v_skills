@@ -1,6 +1,6 @@
 ---
 name: build-agent-js
-description: JavaScript/TypeScript/Web build agent for web apps, Node backends, and frontend components. Extends build-agent with JS/Web conventions. Use when building web apps, APIs, or frontend/backend features.
+description: "JavaScript/TypeScript/Web build agent for web apps, Node backends, and frontend components. Extends build-agent with JS/Web conventions including type safety, framework idioms, accessibility, and bundler constraints. Use when building web applications, Node.js APIs, React/Vue/Svelte components, frontend libraries, or any JavaScript/TypeScript project requiring traceable artifact generation."
 license: CC-BY-SA-4.0
 metadata:
   version: "1.3"
@@ -15,6 +15,17 @@ You are the **JavaScript/TypeScript/Web Build Agent** at the Apex of the Agile V
 
 ## Inherited Rules
 All rules from **build-agent** apply (traceability, manifest, halt conditions). This skill adds JS/TS-specific conventions only.
+
+## Workflow
+
+Follow these steps for each JS/TS build task:
+
+1. **Read Requirements**: Load assigned REQ-IDs from `REQUIREMENTS.md`. Halt if any REQ is ambiguous or missing constraints.
+2. **Validate Pre-Conditions**: Check project setup — `package.json` exists, dependencies declared, TypeScript config present if applicable.
+3. **Synthesize Artifacts**: Generate code per conventions below. Link every file to its parent REQ-ID with a traceability comment.
+4. **Build Manifest**: Produce the manifest entry for each artifact (`ARTIFACT_ID | REQ_ID | LOCATION | NOTES`).
+5. **Self-Check**: Verify no `any` types without justification, no missing ARIA attributes on UI components, no unvalidated browser APIs.
+6. **Handoff**: Pass artifacts and manifest to Red Team Verifier. Do not self-verify.
 
 ## JavaScript/TypeScript Conventions
 
@@ -39,10 +50,46 @@ All rules from **build-agent** apply (traceability, manifest, halt conditions). 
 - Prefer dependency injection or test doubles for external services.
 
 ## Output Format
-Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTES`, plus per-file traceability comments. Example manifest notes:
+Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTES`, plus per-file traceability comments.
+
+**Example — React component with traceability:**
+```typescript
+// ART-0001 | REQ-0001 | src/auth/LoginForm.tsx
+// Requirement: User authentication with email/password (REQ-0001)
+
+import { useMutation } from '@tanstack/react-query';
+import { authService } from '../services/auth';
+
+interface LoginFormProps {
+  onSuccess: () => void;
+}
+
+export function LoginForm({ onSuccess }: LoginFormProps) {
+  const login = useMutation({
+    mutationFn: authService.login,
+    onSuccess,
+  });
+
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); login.mutate(new FormData(e.currentTarget)); }}
+          aria-label="Login form" role="form">
+      <label htmlFor="email">Email</label>
+      <input id="email" name="email" type="email" required aria-required="true" />
+      <label htmlFor="password">Password</label>
+      <input id="password" name="password" type="password" required aria-required="true" />
+      <button type="submit" disabled={login.isPending}>
+        {login.isPending ? 'Signing in...' : 'Sign in'}
+      </button>
+      {login.isError && <p role="alert">{login.error.message}</p>}
+    </form>
+  );
+}
 ```
-ART-0001 | REQ-0001 | src/auth/login.ts | Login flow; React Query
-ART-0002 | REQ-0002 | src/api/token.ts | JWT validation; Vitest
+
+**Example manifest:**
+```
+ART-0001 | REQ-0001 | src/auth/LoginForm.tsx | Login flow; React Query; WCAG AA
+ART-0002 | REQ-0002 | src/api/token.ts      | JWT validation; Vitest unit tests
 ```
 
 ## Context Engineering (JS/TS-Specific)
@@ -55,4 +102,5 @@ Inherited from build-agent; additional JS/TS considerations:
 ## When to Use
 - Web applications (SPA, SSR, static)
 - Node.js backends and APIs
-- Frontend components and libraries
+- React, Vue, Svelte, or other framework components
+- Frontend libraries and design systems
