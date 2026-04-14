@@ -27,6 +27,11 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 | R&D & innovation pipeline **[Draft]** | `rd-innovator` | "Evaluate technology", "Prototype", "R&D pipeline", "Technology radar", "Patent tracking" |
 | Go-to-market & marketing **[Draft]** | `gtm-executor` | "Launch plan", "Marketing strategy", "Growth experiments", "Sales enablement", "Channel strategy" |
 | Financial & operational planning **[Draft]** | `business-operations` | "Budget", "OKRs", "Vendor management", "Resource planning", "Runway" |
+| Executive strategy & alignment **[Draft]** | `chief-exec` | "Board report", "Strategic alignment", "Crisis management", "Executive dashboard", "Quarterly review" |
+| Architecture & tech governance **[Draft]** | `chief-tech` | "Architecture decisions", "Build vs buy", "Tech debt", "Platform strategy", "Engineering standards" |
+| Financial governance & modeling **[Draft]** | `chief-finance` | "Financial model", "Cash management", "Fundraising terms", "Board financials", "Unit economics" |
+| People & org operations **[Draft]** | `chief-people` | "Org design", "Hiring pipeline", "Compensation bands", "Culture code", "Performance reviews", "DE&I" |
+| Operational excellence **[Draft]** | `chief-ops` | "Operational playbooks", "Process design", "Delivery cadence", "Resource arbitration", "Scaling readiness" |
 
 ## Detailed Skill Triggers
 
@@ -226,6 +231,54 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 - "Operational risk assessment"
 - "Track burn rate and runway"
 
+### C-Suite Orchestrator Layer (Executive Governance) [Draft]
+
+**`chief-exec`** (CEO)
+- "Prepare board report"
+- "Strategic alignment review"
+- "Crisis response"
+- "Cross-functional conflict"
+- "Quarterly strategic review"
+- "Executive dashboard"
+- "Company health overview"
+
+**`chief-tech`** (CTO)
+- "Architecture decision"
+- "Build vs buy analysis"
+- "Tech debt strategy"
+- "Platform plan"
+- "Engineering standards"
+- "Security posture review"
+- "Technology adoption governance"
+
+**`chief-finance`** (CFO)
+- "Financial model"
+- "Cash management and runway"
+- "Fundraising strategy and terms"
+- "Board financial report"
+- "Unit economics thresholds"
+- "Financial controls and approvals"
+- "Dilution analysis"
+
+**`chief-people`** (CHRO)
+- "Org design and team structure"
+- "Hiring pipeline"
+- "Compensation framework"
+- "Culture code and values"
+- "Performance review process"
+- "DE&I strategy"
+- "Onboarding playbooks"
+- "Talent development and succession"
+
+**`chief-ops`** (COO)
+- "Operational playbooks"
+- "Process design and optimization"
+- "Delivery cadence governance"
+- "Resource arbitration"
+- "Vendor escalation"
+- "Scaling readiness assessment"
+- "Cross-functional coordination"
+
 ### Orchestration & Lifecycle
 
 **`agile-v-core`**
@@ -352,6 +405,38 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 7. Continue: Requirements → Build → Verify → Release
 8. **`rd-innovator`** — Production feedback updates TECH_RADAR.md
 
+### Workflow 9: C-Suite Orchestrated Business [Draft]
+
+1. **`chief-exec`** -- Set strategic direction, align C-suite
+2. **Executive Gate 0** -- Approve strategic alignment
+3. **`chief-tech`** -- Architecture governance, tech strategy, platform plan
+4. **`chief-finance`** -- Financial model, controls, fundraising governance
+5. **`chief-people`** -- Org design, hiring plan, compensation framework
+6. **`chief-ops`** -- Process design, delivery cadence, operational playbooks
+7. **Executive Gate 1** -- Approve domain strategies (Tech + Finance + People + Ops)
+8. **`venture-strategist`** -- Vision, business model, portfolio (governed by chief-exec)
+9. **Business Gate 0** -- Approve strategy
+10. **Continue standard Business + Engineering pipeline**
+11. **Quarterly:** `chief-exec` -- Strategic review, board report, direction update
+
+### Workflow 10: Architecture Governance [Draft]
+
+1. **`chief-tech`** -- Technology strategy, principles (TS-XXXX)
+2. **`chief-tech`** -- ADR-XXXX for significant decisions (build-vs-buy, framework, platform)
+3. **Executive Gate 1 (Tech)** -- Approve architecture decisions
+4. **`rd-innovator`** -- Technology scouting, prototypes (governed by CTO adoption approval)
+5. **`build-agent-*`** -- Implementation within ADR constraints
+6. **`chief-tech`** -- Tech debt triage (TD-XXXX), security posture review
+
+### Workflow 11: People Operations Lifecycle [Draft]
+
+1. **`chief-people`** -- Org design (ORG-XXXX), culture code (CULT-XXXX)
+2. **`chief-people`** -- Compensation framework (COMP-XXXX), performance framework (PERF-XXXX)
+3. **Executive Gate 1 (People)** -- Approve org + compensation
+4. **`chief-people`** -- Open roles (HIRE-XXXX) based on capacity gaps
+5. **`chief-people`** -- Interview, hire, onboard (30/60/90 plans)
+6. **`chief-people`** -- Quarterly: performance reviews, talent development, DE&I reporting
+
 ## Skill Loading Recommendations
 
 ### Essential Core (Load First)
@@ -371,6 +456,13 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 - **Innovation:** `rd-innovator`
 - **Market Execution:** `gtm-executor`
 - **Operations:** `business-operations`
+
+### By C-Suite Domain [Draft]
+- **CEO / Strategic Alignment:** `chief-exec`
+- **CTO / Tech Governance:** `chief-tech`
+- **CFO / Financial Governance:** `chief-finance`
+- **CHRO / People Operations:** `chief-people`
+- **COO / Operational Excellence:** `chief-ops`
 
 ### On Demand
 - `agile-v-pipeline` — When orchestrating multi-agent workflows
@@ -401,6 +493,11 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 | `rd-innovator` | Yes | Yes (parallel with gtm-executor) | `venture-strategist` |
 | `gtm-executor` | No (requires PORTFOLIO.md) | Yes (parallel with rd-innovator) | `venture-strategist` |
 | `business-operations` | No (requires strategic OKRs) | Yes (parallel with rd-innovator, gtm-executor) | `venture-strategist` |
+| `chief-exec` | Yes (top-level orchestrator) | No (coordinates all C-suite) | `agile-v-core` |
+| `chief-tech` | Yes | No (governs engineering skills) | `agile-v-core`, `chief-exec` |
+| `chief-finance` | Yes | Yes (parallel with chief-tech, chief-people, chief-ops) | `agile-v-core`, `chief-exec` |
+| `chief-people` | Yes (standalone domain) | Yes (parallel with chief-tech, chief-finance, chief-ops) | `agile-v-core`, `chief-exec` |
+| `chief-ops` | Yes | Yes (parallel with chief-tech, chief-finance, chief-people) | `agile-v-core`, `chief-exec` |
 
 ## Tips for Effective Skill Use
 
@@ -430,6 +527,12 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 
 13. **R&D is not engineering** — Prototypes from `rd-innovator` are *not* production code. Transfer to engineering means fresh build from requirements.
 
+14. **C-Suite governs, not executes** — `chief-*` skills set policy and strategy; functional skills (`business-operations`, `rd-innovator`, etc.) execute. Don't load C-suite skills for execution tasks.
+
+15. **Start with chief-exec for full business suite** — When running the complete business suite, `chief-exec` coordinates all other C-suite agents. Load it first, then domain C-suite skills as needed.
+
+16. **chief-people is standalone** — Unlike other C-suite skills that orchestrate existing functional skills, `chief-people` owns an entirely new domain (org, hiring, compensation, culture). It has no functional skill dependency.
+
 ## Troubleshooting
 
 **"I'm not sure which skill to use"**
@@ -456,6 +559,11 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 - `gtm-executor` vs `release-manager`: GTM handles market launch (marketing, campaigns); Release Manager handles technical deployment
 - `rd-innovator` vs `build-agent`: R&D explores and prototypes (disposable); Build Agent creates production artifacts from requirements
 - `business-operations` vs `compliance-auditor`: Business Operations manages financial/operational compliance; Compliance Auditor manages engineering/regulatory compliance
+- `chief-tech` vs `rd-innovator`: CTO governs technology adoption (approves Trial→Adopt); R&D Innovator scouts and prototypes
+- `chief-finance` vs `business-operations`: CFO sets financial policy and models; Business Operations executes budgets and tracking
+- `chief-ops` vs `business-operations`: COO sets operational process policy; Business Operations executes operational tracking
+- `chief-people` vs `business-operations` (resource planning): CHRO owns org design, hiring, and compensation; Business Operations tracks headcount costs and capacity
+- `chief-exec` vs `venture-strategist`: CEO governs strategic execution and cross-C-suite alignment; Venture Strategist produces strategy artifacts
 
 **"How do I know when to move to the next skill?"**
 - Each skill produces a **handoff artifact** (REQUIREMENTS.md, BUILD_MANIFEST.md, VALIDATION_SUMMARY.md, etc.)

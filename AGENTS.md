@@ -4,17 +4,23 @@
 
 ## Branch Context
 
-**You are on the `feature-business` development branch** (version `2.0.0-dev.1`).
+**You are on the `feature-business` development branch** (version `2.0.0-dev.2`).
 This is a development fork of the official Agile V augmented engineering framework,
 whose stable release is **v1.5.0 on `main`**.
 
-This branch adds 4 **draft** Business Track skills that have NOT been officially
-released: `venture-strategist`, `rd-innovator`, `gtm-executor`, `business-operations`.
-These skills carry `metadata.status: draft` in their YAML frontmatter. Content,
-contracts, and artifact formats may change before merging to `main`.
+This branch adds 9 **draft** Business Track skills that have NOT been officially
+released. These skills carry `metadata.status: draft` in their YAML frontmatter.
+Content, contracts, and artifact formats may change before merging to `main`.
+
+**Functional skills (4):** `venture-strategist`, `rd-innovator`, `gtm-executor`,
+`business-operations` -- execute specific business functions.
+
+**C-Suite orchestrator skills (5):** `chief-exec`, `chief-tech`, `chief-finance`,
+`chief-people`, `chief-ops` -- govern and coordinate functional skills as
+executive-level decision agents.
 
 **Official (released) skills:** All engineering track skills from v1.5.0 (`main`).
-**Draft (unreleased) skills:** The 4 business track skills listed above.
+**Draft (unreleased) skills:** The 9 business track skills listed above.
 
 ## Project Overview
 
@@ -51,6 +57,11 @@ build agents under `domains/`.
 ├── rd-innovator/           # [Draft] Business: R&D pipeline, tech radar
 ├── gtm-executor/           # [Draft] Business: go-to-market, growth
 ├── business-operations/    # [Draft] Business: finance, OKRs, vendors
+├── chief-exec/             # [Draft] C-Suite: CEO orchestrator, strategic alignment
+├── chief-tech/             # [Draft] C-Suite: CTO orchestrator, architecture governance
+├── chief-finance/          # [Draft] C-Suite: CFO orchestrator, financial governance
+├── chief-people/           # [Draft] C-Suite: CHRO orchestrator, people operations
+├── chief-ops/              # [Draft] C-Suite: COO orchestrator, operational excellence
 ├── domains/
 │   ├── build-agent-dart/       # Dart/Flutter
 │   ├── build-agent-embedded/   # C/C++ embedded/firmware
@@ -81,7 +92,7 @@ Versioning is automated via GitHub Actions on push to `main`:
   `package.json` version. Do NOT edit `package.json` version by hand.
 - **Skill versions:** Each skill has independent `metadata.version` in its
   YAML frontmatter. Bump only when that skill's content/contract changes.
-- **This branch** uses `2.0.0-dev.1` (semver prerelease) to indicate unreleased.
+- **This branch** uses `2.0.0-dev.2` (semver prerelease) to indicate unreleased.
 
 ## Commit Message Convention
 
@@ -127,6 +138,7 @@ Every skill file MUST follow this exact structure:
 | Artifact IDs | `ART-XXXX` format |
 | Test case IDs | `TC-XXXX` format |
 | Business IDs | `VIS-XXXX`, `BM-XXXX`, `PORT-XXXX`, `TECH-XXXX`, etc. |
+| C-Suite IDs | `EXEC-XXXX`, `ADR-XXXX`, `FM-XXXX`, `ORG-XXXX`, `PLAY-XXXX`, etc. |
 | Directory names | `kebab-case`, matching the skill `name:` field |
 | YAML strings | Quote version numbers: `"1.3"` not `1.3` |
 | Tables over prose | Use Markdown tables for directives, rules, mappings |
@@ -179,4 +191,5 @@ for context engineering patterns.
 - Do NOT add dependencies to `package.json`
 - Do NOT create files outside the established directory structure
 - Do NOT remove or rename the `# Instructions` heading in any SKILL.md
-- Do NOT present draft Business Track skills as officially released
+- Do NOT present draft Business Track or C-Suite skills as officially released
+- Do NOT confuse C-Suite orchestrator skills with functional skills -- C-Suite skills govern and coordinate; functional skills execute
