@@ -8,6 +8,9 @@
 
 This repository contains the official collection of **Agent Skills** for the Agile V™ framework. These skills are designed to transform standard LLMs into specialized engineering agents capable of building, verifying, and auditing complex systems with mathematical rigor.
 
+> [!CAUTION]
+> **Development Branch (`feature-business`):** This branch is a development fork of the official Agile V engineering framework (v1.5.0 on `main`). It contains **9 draft Business Track skills** -- 4 functional skills (venture-strategist, rd-innovator, gtm-executor, business-operations) and 5 C-Suite orchestrator skills (chief-exec, chief-tech, chief-finance, chief-people, chief-ops) -- that are under active development and have **not been officially released**. The official, stable release is on the `main` branch. Business Track and C-Suite content below is marked with **[Draft]**.
+
 
 ## The Vision: From Manifesto to Execution
 
@@ -37,7 +40,16 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 │   └── build-agent-python/
 ├── red-team-verifier/      # Right Side: Verification and Red Teaming
 ├── compliance-auditor/     # Compliance: Audit and governance
-└── documentation-agent/    # Documentation: Standards-based repo docs (ISO 9001, V-Model, ISO 27001)
+├── documentation-agent/    # Documentation: Standards-based repo docs (ISO 9001, V-Model, ISO 27001)
+├── venture-strategist/     # [Draft] Business Track: Vision, business model, product portfolio
+├── rd-innovator/           # [Draft] Business Track: R&D pipeline, technology radar, prototyping
+├── gtm-executor/           # [Draft] Business Track: Go-to-market, marketing, growth experiments
+├── business-operations/    # [Draft] Business Track: Finance, OKRs, vendors, operational risk
+├── chief-exec/             # [Draft] C-Suite: CEO orchestrator, strategic alignment, board, crisis
+├── chief-tech/             # [Draft] C-Suite: CTO orchestrator, architecture, tech debt, platform
+├── chief-finance/          # [Draft] C-Suite: CFO orchestrator, financial modeling, controls
+├── chief-people/           # [Draft] C-Suite: CHRO orchestrator, org, hiring, compensation, culture
+└── chief-ops/              # [Draft] C-Suite: COO orchestrator, processes, delivery, scaling
 ```
 
 
@@ -57,6 +69,15 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 | red-team-verifier   | Right Side  | `red-team-verifier/`        | Challenges build artifacts; produces Validation Summary for Human Gate 2. Includes stub/anti-pattern detection and post-verification feedback protocol. |
 | compliance-auditor  | Compliance  | `compliance-auditor/`        | Automates decision logging, traceability matrix (ATM), and VSR for ISO/GxP. |
 | documentation-agent | Compliance  | `documentation-agent/`      | Generates standards-based repo documentation (ISO 9001, V-Model, ISO 27001, optional GAMP 5) into `docs/` with hub README, cross-reference matrix, Mermaid diagrams, and compliance posture documentation. |
+| venture-strategist  | Business Track **[Draft]** | `venture-strategist/`    | Converts vision and market opportunity into traceable business models, product portfolios, and strategic plans. Feeds product intent to discovery-analyst. |
+| rd-innovator        | Business Track **[Draft]** | `rd-innovator/`          | Manages R&D pipeline, technology radar, prototyping, and IP tracking. Transfers validated innovations to the engineering pipeline. |
+| gtm-executor        | Business Track **[Draft]** | `gtm-executor/`          | Converts product portfolio into go-to-market strategies, marketing plans, launch campaigns, and growth experiments. Coordinates with release-manager for launch timing. |
+| business-operations | Business Track **[Draft]** | `business-operations/`   | Manages financial planning, OKRs, team resources, vendor relationships, and operational compliance. The operational backbone for all business track skills. |
+| chief-exec          | C-Suite **[Draft]** | `chief-exec/`            | CEO orchestrator: strategic alignment, cross-C-suite coordination, board relations, crisis management. Top-level business orchestrator. |
+| chief-tech          | C-Suite **[Draft]** | `chief-tech/`            | CTO orchestrator: architecture governance (ADRs), build-vs-buy, tech debt management, platform strategy, engineering standards, security posture. |
+| chief-finance       | C-Suite **[Draft]** | `chief-finance/`         | CFO orchestrator: financial modeling, cash management, financial controls, fundraising governance, board financial reporting, unit economics. |
+| chief-people        | C-Suite **[Draft]** | `chief-people/`          | CHRO orchestrator: org design, hiring pipeline, compensation framework, culture code, performance management, DE&I, talent development. Entirely new domain. |
+| chief-ops           | C-Suite **[Draft]** | `chief-ops/`             | COO orchestrator: operational playbooks, process design, delivery cadence governance, resource arbitration, vendor escalation, scaling readiness. |
 
 ## Compliance Documentation
 
@@ -120,6 +141,87 @@ sequenceDiagram
     end
 ```
 
+## Business Track Interaction Flow [Draft]
+
+> [!WARNING]
+> The Business Track below is **under development** on the `feature-business` branch and is not part of the official v1.5 release.
+
+The Business Track operates as a **parallel lifecycle** alongside the Engineering Track, with defined integration points:
+
+```mermaid
+sequenceDiagram
+    participant Human
+    participant VS as Venture Strategist
+    participant RDI as R&D Innovator
+    participant GTM as GTM Executor
+    participant BOP as Business Operations
+    participant DA as Discovery Analyst
+    participant RA as Requirement Architect
+    participant RM as Release Manager
+    participant OP as Observability Planner
+
+    Human->>VS: Vision & Market Opportunity
+    VS->>VS: VISION.md, BUSINESS_MODEL.md, PORTFOLIO.md
+    VS->>Human: Business Gate 0: Approve Strategy
+
+    par Business Execution
+        Human->>RDI: R&D Direction (from PORTFOLIO.md)
+        RDI->>RDI: TECH_RADAR.md, PROTOTYPE_LOG.md
+        RDI->>Human: Business Gate 1 (R&D): Approve Portfolio
+
+        Human->>GTM: GTM Direction (from BUSINESS_MODEL.md)
+        GTM->>GTM: GTM_PLAN.md, CHANNEL_STRATEGY.md
+        GTM->>Human: Business Gate 1 (GTM): Approve Strategy
+
+        Human->>BOP: Operational Planning
+        BOP->>BOP: FINANCIAL_PLAN.md, OKR.md
+        BOP->>Human: Business Gate 2: Approve Budget
+    end
+
+    Note over RDI,DA: Product Transfer
+    RDI->>DA: Transfer Package (validated prototypes)
+    VS->>DA: PORTFOLIO.md (product intent)
+    DA->>RA: Candidate Requirements
+
+    Note over GTM,RM: Launch Coordination
+    RM->>GTM: Deployment Confirmation
+    GTM->>GTM: Execute Launch Plan
+
+    Note over OP,VS: Feedback Loop
+    OP->>VS: Production Metrics → Portfolio Decisions
+    GTM->>DA: Market Feedback → Next Cycle Discovery
+```
+
+### C-Suite Orchestrator Layer [Draft]
+
+> [!WARNING]
+> The C-Suite layer below is **under development** on the `feature-business` branch and is not part of the official v1.5 release.
+
+The C-Suite layer adds executive-level governance agents that orchestrate the functional Business Track skills. They set policy and strategy; functional skills execute within their governance frameworks.
+
+```
+                        chief-exec (CEO)
+                   Strategic Alignment & Board
+                    ┌───────┼───────┬──────────┐
+              chief-tech  chief-fin  chief-ppl  chief-ops
+              (CTO)       (CFO)      (CHRO)     (COO)
+                │           │          │           │
+           rd-innovator  biz-ops   [standalone  biz-ops
+           build-agent   (finance)  new domain] (ops)
+           observability venture-               release-mgr
+           threat-model  strategist             product-owner
+                         (investors)            gtm-executor
+```
+
+**Key design principles:**
+- **Orchestrator pattern:** C-suite skills delegate to existing functional skills; no functional skills are modified
+- **Executive Gates:** New approval layer (Executive Gates 0-1) above existing Business Gates
+- **Backward compatible:** All engineering and functional business skills work without C-suite layer
+- **CHRO is entirely new:** `chief-people` introduces org design, hiring, compensation, culture, performance, DE&I, and talent development -- domains previously uncovered
+
+### Business Track artifacts (state persistence)
+Business Track state lives in `.agile-v/business/`. **Functional skill artifacts:** VISION.md, BUSINESS_MODEL.md, PORTFOLIO.md, INVESTOR_LOG.md, RD_PIPELINE.md, TECH_RADAR.md, PROTOTYPE_LOG.md, IP_REGISTER.md, GTM_PLAN.md, LAUNCH_PLAN.md, CHANNEL_STRATEGY.md, GROWTH_METRICS.md, FINANCIAL_PLAN.md, OKR.md, OPERATIONS_LOG.md, VENDOR_REGISTER.md, BUSINESS_DECISION_LOG.md. **C-Suite artifacts:** EXEC_DASHBOARD.md, BOARD_REPORT.md, CRISIS_LOG.md, TECH_STRATEGY.md, ARCH_DECISIONS.md, TECH_DEBT_REGISTER.md, PLATFORM_PLAN.md, FINANCIAL_MODEL.md, CASH_MANAGEMENT.md, FINANCIAL_CONTROLS.md, BOARD_FINANCIALS.md, ORG_DESIGN.md, HIRING_PIPELINE.md, COMPENSATION_FRAMEWORK.md, CULTURE_CODE.md, PERFORMANCE_FRAMEWORK.md, TALENT_PLAN.md, OPS_PLAYBOOK.md, PROCESS_MAP.md, DELIVERY_DASHBOARD.md. All skills reference artifacts by file path for cross-track integration.
+
 ### Requirements artifact (source of truth)
 The Requirement Architect exports the approved Blueprint (after Human Gate 1) to a **requirements file** (default: `REQUIREMENTS.md` in the project root). The Logic Gatekeeper then **reads** that file, validates it (ambiguity, constraints, conflicts), and **writes back** any user-approved adjustments to the same file. All downstream agents (Build Agent, Test Designer, Red Team Verifier, Schematic Generator, Compliance Auditor) **read requirements from this file**, not from in-chat handoff. Using a single persisted file as the requirements source reduces context-window pressure, avoids carrying the full Blueprint in conversation, and lets parallel or sequential agent runs (e.g. build per feature) reference the same canonical artifact.
 
@@ -165,6 +267,26 @@ Version 1.3 also includes compliance hardening based on a clause-by-clause audit
 - **Quality Metrics and KPIs** (`compliance-auditor`): 7 defined metrics (first-pass verification rate, defect density, requirement coverage, regression pass rate, CR cycle time, open CAPA count, traceability completeness) with trend analysis. Addresses ISO 9001 9.1, AS9100D 9.1.1.
 - **Secure Coding** (`build-agent`): 7 minimum secure coding rules (input validation, error handling, no hardcoded secrets, parameterized queries, bounded operations, least privilege, dependency awareness). Addresses ISO 27001 A.8.28.
 - **Nonconformity Disposition** (`red-team-verifier`): Formal disposition categories (rework, accept-as-is, reject, defer) with CAPA trigger criteria. Addresses ISO 9001 8.7, ISO 13485 8.3.
+
+### Business Track: Parallel Business Lifecycle [Draft]
+
+> **Note:** This section describes skills under development on the `feature-business` branch. Not yet part of an official release.
+
+The planned v2.0 release will introduce the **Agile V Business Track** -- nine new skills that extend Agile V's traceability and verification rigor into business strategy, R&D innovation, go-to-market execution, business operations, and **executive governance**.
+
+**Key additions:**
+- **Venture Strategist** (`venture-strategist`): Converts vision and market opportunity into traceable business models (BM-XXXX), product portfolios (PORT-XXXX), and strategic plans (VIS-XXXX). Introduces **Business Gate 0** (Strategy Approval). Portfolio items feed discovery-analyst as product intent.
+- **R&D Innovator** (`rd-innovator`): Manages R&D pipeline (RDI-XXXX) from technology scouting (TECH-XXXX) through prototyping (PROTO-XXXX) to formal product transfer. Technology Radar framework (Assess/Trial/Adopt/Hold). IP tracking (IPR-XXXX). Introduces **Business Gate 1 (R&D)**.
+- **GTM Executor** (`gtm-executor`): Converts business model + portfolio into go-to-market strategies (GTM-XXXX), channel strategies (CHAN-XXXX), launch plans (MKT-XXXX), and growth experiments (GROW-XXXX). Marketing claims must trace to verified REQs. Introduces **Business Gate 1 (GTM)**.
+- **Business Operations** (`business-operations`): Financial planning (FIN-XXXX), OKR cascade (OKR-XXXX), vendor management (VENDOR-XXXX), operational risk (OPS-XXXX). Every budget line traces to strategic rationale. Introduces **Business Gate 2** (Operational Plan Approval).
+
+- **Chief Executive** (`chief-exec`): CEO orchestrator. Strategic alignment, cross-C-suite coordination, board relations (BRD-XXXX), crisis management (CRI-XXXX), executive dashboard (EXEC-XXXX). Introduces **Executive Gate 0**.
+- **Chief Technology Officer** (`chief-tech`): CTO orchestrator. Architecture decisions (ADR-XXXX), tech debt management (TD-XXXX), platform strategy (PLT-XXXX), build-vs-buy governance, security posture, engineering standards. Introduces **Executive Gate 1 (Tech)**.
+- **Chief Financial Officer** (`chief-finance`): CFO orchestrator. Financial modeling (FM-XXXX), cash management (CASH-XXXX), financial controls (CTRL-XXXX), board financial reporting (BFN-XXXX), fundraising governance, unit economics. Introduces **Executive Gate 1 (Finance)**.
+- **Chief People Officer** (`chief-people`): CHRO orchestrator. Entirely new domain: org design (ORG-XXXX), hiring pipeline (HIRE-XXXX), compensation framework (COMP-XXXX), culture code (CULT-XXXX), performance management (PERF-XXXX), talent development (TAL-XXXX), DE&I strategy. Introduces **Executive Gate 1 (People)**.
+- **Chief Operating Officer** (`chief-ops`): COO orchestrator. Operational playbooks (PLAY-XXXX), process design (PROC-XXXX), delivery cadence governance (DEL-XXXX), resource arbitration, vendor escalation, scaling readiness. Introduces **Executive Gate 1 (Ops)**.
+
+**Architecture:** The Business Track runs as a parallel lifecycle with its own gates, artifact IDs, and state directory (`.agile-v/business/`). The C-Suite layer sits above the functional layer, providing executive governance through the Orchestrator pattern -- C-suite skills delegate to functional skills without modifying them. Integration with the Engineering Track occurs through defined handoff points: portfolio → discovery, prototypes → discovery, tech radar → requirements, launch → release coordination, production metrics → business decisions.
 
 ### Context Optimization (v1.3)
 
