@@ -165,6 +165,10 @@ Version 1.3 introduces the **multi-cycle V-loop** -- the ability to run second a
 
 Version 1.4 adds **Phase 1-2** adoption from the competitive analysis: machine-readable **trace** (`TRACE_LOG.md`), **eval flywheel** (`EVAL_RESULTS.md` + Human Gate 2 **EvalGate** block in `VALIDATION_SUMMARY.md`), **policy-as-code** (`POLICY.yaml` + templates), **failure taxonomy** (`FT-*` codes on every `VER-*` record), and **durable Human Gate checkpoints** (`CHECKPOINTS.md` with `resume_token` linked to `APPROVALS.md`). Normative schema: [`docs/agile-v-runtime/01_SCHEMAS.md`](docs/agile-v-runtime/01_SCHEMAS.md); copy templates from [`templates/agile-v/`](templates/agile-v/).
 
+### Release baseline (v1.6)
+
+Version 1.6 consolidates runtime governance adoption by shipping the repository-level runtime schema spec + templates and aligning core routing/docs for Eval Gate evidence and durable HITL workflow. See [v1.6 release notes](V1.6_RELEASE_NOTES.md).
+
 ### Compliance Hardening (v1.3)
 
 Version 1.3 also includes compliance hardening based on a clause-by-clause audit against ISO 9001:2015, ISO 13485:2016, AS9100D, ISO 27001:2022, and GxP/GAMP 5. The compliance metadata has been updated from `"ISO/GxP-Ready"` to `"ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"` to accurately reflect the scope.
