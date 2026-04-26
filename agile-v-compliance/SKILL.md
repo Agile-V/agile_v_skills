@@ -3,7 +3,7 @@ name: agile-v-compliance
 description: Risk management, CAPA protocol, human gate approval records, AI agent security controls, and periodic revalidation. Load when running gates, auditing risks, handling CAPAs, or reviewing security posture.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
+  version: "1.4"
   standard: "Agile V"
   compliance: "ISO 9001 6.1, ISO 13485 8.5, ISO 27001 A.5.23/A.8.3, 21 CFR Part 11, GxP/GAMP 5"
   author: agile-v.org
@@ -31,9 +31,11 @@ Record in `.agile-v/CAPA_LOG.md`: `CAPA-XXXX` with Cycle, Trigger, Nonconformity
 
 ## Human Gate Approval Records (21 CFR Part 11 / Annex 11)
 
-Append-only in `.agile-v/APPROVALS.md`: `GATE-XXXX` with Gate type, Cycle, Scope, Decision (Approved/Conditional/Rejected), Conditions, Approver (full name), Role/Authority, Timestamp (ISO 8601), Signature Method, Evidence Reference (commit hash).
+Append-only in `.agile-v/APPROVALS.md`: `GATE-XXXX` with Gate type, Cycle, Scope, Decision (Approved/Conditional/Rejected), Conditions, Approver (full name), Role/Authority, Timestamp (ISO 8601), Signature Method, Evidence Reference (commit hash). **Durable HITL (Phase 2):** when closing a pending interrupt, include `resume_token=[value]` and `INTERRUPT-ID=[INT-XXXX]` matching `.agile-v/CHECKPOINTS.md`; Compliance Auditor verifies token pairing on Gate 2.
 
 **Rules:** Name + role required (not just "Human"). Authority from matrix in config.json. Rejected = pipeline halts.
+
+**Checkpoint SLA:** If `CHECKPOINTS.md` shows `due_at` passed with `PENDING`, escalate per project policy; append `ESCALATED` or `EXPIRED` row before forcing resume.
 
 | Regulatory Context | Minimum Signature |
 |---|---|

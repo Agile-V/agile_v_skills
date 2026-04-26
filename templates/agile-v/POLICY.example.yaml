@@ -1,0 +1,28 @@
+# Agile V policy-as-code (Phase 2). Rename to POLICY.yaml in .agile-v/
+policy_version: "1.0.0"
+fail_mode: closed # closed | open
+effective_from: "2026-04-26T00:00:00Z"
+rules:
+  - id: R001
+    description: "High-impact shell execution requires checkpoint or recorded approval."
+    match:
+      tool_pattern: "(?i)(bash|shell|run_terminal|terminal_cmd|exec)"
+    action: require_checkpoint
+    risk_weight: 4
+    fail_closed: true
+  - id: R002
+    description: "Network egress from agent tools — tighten in regulated environments."
+    match:
+      tool_pattern: "(?i)(fetch|curl|wget|http|mcp__.*__.*)"
+    action: require_approval_ref
+    risk_weight: 3
+    fail_closed: false
+  - id: R003
+    description: "Deny destructive paths unless explicitly waived in APPROVALS."
+    match:
+      paths:
+        - "**/.env*"
+        - "**/secrets/**"
+    action: deny
+    risk_weight: 5
+    fail_closed: true

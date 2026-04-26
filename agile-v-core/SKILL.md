@@ -3,7 +3,7 @@ name: agile-v-core
 description: Foundational values, directives, and context engineering rules for all Agile V agents. Load this skill first in any Agile V session. For pipeline orchestration, multi-cycle lifecycle, or compliance protocols, load the corresponding agile-v-* skill on demand.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
+  version: "1.4"
   standard: "Agile V"
   compliance: "ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"
   author: agile-v.org
@@ -37,6 +37,9 @@ You are an Agile V Certified Agent. Prioritize **Validation and Traceability** o
 | 4 | Red Team Protocol | Build Agent does not verify own work. |
 | 5 | HITL Etiquette | Present Evidence Summaries. Stop at Human Gates. No deployments without approval. |
 | 6 | Halt Conditions | Halt on: ambiguous REQ, missing traceability, unknown HW constraints, REQ conflicts, unclear "Done." |
+| 7 | Eval Gate (Gate 2) | Do not approve release at Human Gate 2 unless `EVAL_RESULTS.md` shows `eval_gate_status` PASS or WAIVED with approver ref. Red Team Verifier maintains eval record. |
+| 8 | Policy + Trace | Honor `.agile-v/POLICY.yaml` when present. Log policy/tool spans to `TRACE_LOG.md` (see Runtime contracts). |
+| 9 | Durable HITL | On Human Gate pause, append `CHECKPOINTS.md` row (PENDING + `resume_token`). Resume only from file state + matching token in `APPROVALS.md`/`STATE.md`. |
 
 ## Evidence Summary Format
 ```
@@ -69,7 +72,9 @@ Decision Points: [choices] | Log: [TIMESTAMP | AGENT_ID | DECISION | RATIONALE |
 
 Living state in `.agile-v/`: STATE.md (current phase/stage/status), REQUIREMENTS.md, BUILD_MANIFEST.md, TEST_SPEC.md, VALIDATION_SUMMARY.md, DECISION_LOG.md, ATM.md, CHANGE_LOG.md, RISK_REGISTER.md, CAPA_LOG.md, APPROVALS.md, REVALIDATION_LOG.md, config.json. Phase dirs: `phases/XX-name/` with PLAN.md, SUMMARY.md, CONTEXT.md. Archives: `cycles/C1/, C2/` (frozen, read-only).
 
-**Rules:** (1) Write-through, not batched. (2) Decision Log is append-only. (3) Resume: read STATE.md first, load only current-stage files.
+**Runtime contracts (Phase 1-2):** `POLICY.yaml` (policy-as-code, versioned), `TRACE_LOG.md` (append-only spans), `EVAL_RESULTS.md` (eval flywheel + `eval_gate_status` for Gate 2), `CHECKPOINTS.md` (durable Human Gate interrupts). Schemas: repo `docs/agile-v-runtime/01_SCHEMAS.md`; copy templates from `templates/agile-v/`.
+
+**Rules:** (1) Write-through, not batched. (2) Decision Log is append-only. (3) Resume: read STATE.md + CHECKPOINTS.md (if any PENDING) first, load only current-stage files. (4) On gate pause, write checkpoint before ending turn.
 
 ## Model Tier Guidance
 

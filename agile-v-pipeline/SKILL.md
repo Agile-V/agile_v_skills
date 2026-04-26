@@ -3,7 +3,7 @@ name: agile-v-pipeline
 description: Orchestration pipeline, wave execution, handoff protocols, and checkpoint types for the Agile V 5-stage workflow. Load when orchestrating multi-agent pipelines or managing stage transitions.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
+  version: "1.4"
   standard: "Agile V"
   author: agile-v.org
   adapted_from:
@@ -33,17 +33,21 @@ Compliance Auditor observes all stages.
 4. Build Manifest + Test Cases -> Red Team Verifier.
 5. Validation Summary -> Gate 2.
 
+**Gate 2 prereqs (Phase 1):** `EVAL_RESULTS.md` + `VALIDATION_SUMMARY.md` **EvalGate** line. **Gate pause (Phase 2):** append `CHECKPOINTS.md` (`PENDING` + `resume_token`); resume only with matching `APPROVALS.md` entry (see `agile-v-core`).
+
 ## Wave Execution
 
 Dependency analysis -> Wave assignment (no-deps = Wave 1) -> Parallel within waves (fresh context each) -> Sequential across waves -> Prefer vertical slices (feature > layer).
 
 ## Checkpoint Types
 
-| Type | Action |
-|------|--------|
-| Auto | Proceed |
-| Human-Verify | Confirm output |
-| Human-Decision | Choose alternative |
-| Human-Action | Physical/external step |
+
+| Type           | Action                 |
+| -------------- | ---------------------- |
+| Auto           | Proceed                |
+| Human-Verify   | Confirm output         |
+| Human-Decision | Choose alternative     |
+| Human-Action   | Physical/external step |
+
 
 All except Auto require Human Gate protocol.
