@@ -55,77 +55,48 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 ### 1. Project Structure
 
 **Bare-Metal Structure:**
-- Organize by hardware abstraction layers
-- Example:
-  ```
-  src/
-    bsp/                    # Board Support Package
-      startup.c             # Startup code, vector table
-      system_init.c         # Clock, PLL, system config
-      linker_script.ld      # Memory layout
-    hal/                    # Hardware Abstraction Layer
-      gpio.c/.h
-      uart.c/.h
-      spi.c/.h
-      i2c.c/.h
-      timer.c/.h
-    drivers/                # Device drivers
-      sensor_driver.c/.h
-      display_driver.c/.h
-    app/                    # Application logic
-      main.c
-      state_machine.c/.h
-      data_processing.c/.h
-    common/
-      types.h               # Common type definitions
-      error_codes.h
-  include/
-    config.h                # Build-time configuration
-    board_config.h          # Pin mappings, hardware config
-  tests/
-    unit/                   # Host-based unit tests
-    hil/                    # Hardware-in-the-loop tests
-  ```
+```
+src/
+  bsp/                    # Board Support Package
+    startup.c             # Startup code, vector table
+    system_init.c         # Clock, PLL, system config
+    linker_script.ld      # Memory layout
+  hal/                    # Hardware Abstraction Layer
+    gpio.c/.h
+    uart.c/.h
+    spi.c/.h
+  drivers/                # Device drivers
+    sensor_driver.c/.h
+  app/                    # Application logic
+    main.c
+    state_machine.c/.h
+  common/
+    types.h               # Common type definitions
+    error_codes.h
+include/
+  config.h                # Build-time configuration
+  board_config.h          # Pin mappings, hardware config
+tests/
+  unit/                   # Host-based unit tests
+  hil/                    # Hardware-in-the-loop tests
+```
 
 **RTOS-Based Structure:**
-- Organize by tasks and services
-- Example:
-  ```
-  src/
-    rtos/
-      tasks/
-        sensor_task.c/.h
-        control_task.c/.h
-        comm_task.c/.h
-      services/
-        queue_manager.c/.h
-        event_manager.c/.h
-    hal/                    # Hardware abstraction
-    drivers/                # Device drivers
-    app/
-      main.c                # RTOS initialization
-      config/
-        FreeRTOSConfig.h    # RTOS configuration
-  ```
-
-**Linux Embedded Structure:**
-- Organize by subsystems
-- Example:
-  ```
-  src/
-    daemon/                 # Main daemon process
-      main.c
-      signal_handler.c/.h
-    drivers/                # User-space drivers
-      gpio_driver.c/.h
-      spi_driver.c/.h
+```
+src/
+  rtos/
+    tasks/
+      sensor_task.c/.h
+      control_task.c/.h
     services/
-      data_logger.c/.h
-      network_service.c/.h
-    common/
-      ipc.c/.h              # Inter-process communication
-      config_parser.c/.h
-  ```
+      queue_manager.c/.h
+  hal/                    # Hardware abstraction
+  drivers/                # Device drivers
+  app/
+    main.c                # RTOS initialization
+    config/
+      FreeRTOSConfig.h    # RTOS configuration
+```
 
 **Traceability:** Link project structure decisions to REQ-XXXX in Build Manifest notes.
 
@@ -134,83 +105,66 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 ### 2. C/C++ Best Practices
 
 **Memory Safety:**
-- Bounds checking for all array accesses
-- Null pointer checks before dereferencing
-- Example:
-  ```c
-  /* Parent: REQ-0001 */
-  /* AC1: Read sensor data with bounds checking */
-  
-  #define BUFFER_SIZE 64
-  
-  int read_sensor_data(uint8_t *buffer, size_t buffer_len, size_t *bytes_read) {
-      if (buffer == NULL || bytes_read == NULL) {
-          return -1;  /* Invalid argument */
-      }
-      
-      if (buffer_len < BUFFER_SIZE) {
-          return -2;  /* Buffer too small */
-      }
-      
-      /* Safe to proceed */
-      *bytes_read = sensor_read(buffer, BUFFER_SIZE);
-      return 0;
-  }
-  ```
+```c
+/* Parent: REQ-0001 */
+/* AC1: Read sensor data with bounds checking */
+
+#define BUFFER_SIZE 64
+
+int read_sensor_data(uint8_t *buffer, size_t buffer_len, size_t *bytes_read) {
+    if (buffer == NULL || bytes_read == NULL) {
+        return -1;  /* Invalid argument */
+    }
+    
+    if (buffer_len < BUFFER_SIZE) {
+        return -2;  /* Buffer too small */
+    }
+    
+    /* Safe to proceed */
+    *bytes_read = sensor_read(buffer, BUFFER_SIZE);
+    return 0;
+}
+```
 
 **MISRA-C Compliance:**
 - MISRA-C:2012 for safety-critical code
 - Document deviations with justification
-- Example:
-  ```c
-  /* Parent: REQ-0002 */
-  /* MISRA Deviation: Rule 11.4 - Cast from pointer to integer required for register access */
-  /* Justification: Memory-mapped I/O requires pointer-to-integer conversion */
-  
-  #define GPIO_BASE_ADDR  ((uint32_t)0x40020000U)
-  #define GPIO_ODR_OFFSET (0x14U)
-  
-  volatile uint32_t *gpio_odr = (volatile uint32_t *)(GPIO_BASE_ADDR + GPIO_ODR_OFFSET);
-  ```
+```c
+/* Parent: REQ-0002 */
+/* MISRA Deviation: Rule 11.4 - Cast from pointer to integer required for register access */
+/* Justification: Memory-mapped I/O requires pointer-to-integer conversion */
+
+#define GPIO_BASE_ADDR  ((uint32_t)0x40020000U)
+volatile uint32_t *gpio_odr = (volatile uint32_t *)(GPIO_BASE_ADDR + 0x14U);
+```
 
 **Static Analysis:**
-- Use cppcheck, clang-tidy, or PC-lint for static analysis
+- Use cppcheck, clang-tidy, or PC-lint
 - Zero warnings policy for safety-critical code
-- Example Build Manifest notes:
-  ```
-  ART-0001 | REQ-0001 | src/drivers/sensor.c | Static analysis: cppcheck clean, 0 warnings
-  ```
+- Document in Build Manifest: `ART-0001 | REQ-0001 | src/drivers/sensor.c | Static analysis: cppcheck clean, 0 warnings`
 
-**Modern C++ for Embedded (C++11/14/17):**
-- Prefer C++14 for embedded (constexpr, type safety, templates)
+**Modern C++ for Embedded (C++14):**
 - Avoid exceptions and RTTI in resource-constrained systems
-- Example:
-  ```cpp
-  /* Parent: REQ-0003 */
-  /* AC1: Type-safe GPIO abstraction without runtime overhead */
-  
-  template<uint32_t Port, uint8_t Pin>
-  class GpioPin {
-  public:
-      static constexpr void set_high() {
-          *reinterpret_cast<volatile uint32_t*>(Port + ODR_OFFSET) |= (1U << Pin);
-      }
-      
-      static constexpr void set_low() {
-          *reinterpret_cast<volatile uint32_t*>(Port + ODR_OFFSET) &= ~(1U << Pin);
-      }
-      
-      static constexpr bool read() {
-          return (*reinterpret_cast<volatile uint32_t*>(Port + IDR_OFFSET) & (1U << Pin)) != 0;
-      }
-  };
-  
-  /* Usage: Zero runtime overhead, compile-time type safety */
-  using LED = GpioPin<GPIOA_BASE, 5>;
-  LED::set_high();
-  ```
+```cpp
+/* Parent: REQ-0003 */
+/* AC1: Type-safe GPIO abstraction without runtime overhead */
 
-**Traceability:** Document MISRA deviations and static analysis results in Build Manifest.
+template<uint32_t Port, uint8_t Pin>
+class GpioPin {
+public:
+    static constexpr void set_high() {
+        *reinterpret_cast<volatile uint32_t*>(Port + ODR_OFFSET) |= (1U << Pin);
+    }
+    
+    static constexpr bool read() {
+        return (*reinterpret_cast<volatile uint32_t*>(Port + IDR_OFFSET) & (1U << Pin)) != 0;
+    }
+};
+
+/* Usage: Zero runtime overhead, compile-time type safety */
+using LED = GpioPin<GPIOA_BASE, 5>;
+LED::set_high();
+```
 
 ---
 
@@ -219,71 +173,40 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 **ISO 26262 (Automotive):**
 - ASIL A/B/C/D classification per REQ
 - Software safety requirements (SSR) traceability
-- Example:
-  ```c
-  /* Parent: REQ-0004 (ASIL-D) */
-  /* SSR-0001: Brake control shall validate sensor data with dual redundancy */
-  
-  typedef struct {
-      uint16_t sensor_a;
-      uint16_t sensor_b;
-      bool valid;
-  } BrakeSensorData;
-  
-  BrakeSensorData read_brake_sensors(void) {
-      BrakeSensorData data;
-      data.sensor_a = read_sensor_channel(BRAKE_SENSOR_A);
-      data.sensor_b = read_sensor_channel(BRAKE_SENSOR_B);
-      
-      /* Dual redundancy check (ASIL-D requirement) */
-      uint16_t diff = (data.sensor_a > data.sensor_b) 
-                      ? (data.sensor_a - data.sensor_b) 
-                      : (data.sensor_b - data.sensor_a);
-      
-      data.valid = (diff < SENSOR_TOLERANCE);
-      return data;
-  }
-  ```
+```c
+/* Parent: REQ-0004 (ASIL-D) */
+/* SSR-0001: Brake control shall validate sensor data with dual redundancy */
+
+typedef struct {
+    uint16_t sensor_a;
+    uint16_t sensor_b;
+    bool valid;
+} BrakeSensorData;
+
+BrakeSensorData read_brake_sensors(void) {
+    BrakeSensorData data;
+    data.sensor_a = read_sensor_channel(BRAKE_SENSOR_A);
+    data.sensor_b = read_sensor_channel(BRAKE_SENSOR_B);
+    
+    /* Dual redundancy check (ASIL-D requirement) */
+    uint16_t diff = (data.sensor_a > data.sensor_b) 
+                    ? (data.sensor_a - data.sensor_b) 
+                    : (data.sensor_b - data.sensor_a);
+    
+    data.valid = (diff < SENSOR_TOLERANCE);
+    return data;
+}
+```
 
 **IEC 61508 (Industrial):**
 - SIL 1/2/3/4 classification per REQ
 - Systematic capability (SC) requirements
-- Example Build Manifest notes:
-  ```
-  ART-0005 | REQ-0004 | src/safety/brake_control.c | SIL-3; dual redundancy; static analysis clean
-  ```
+- Build Manifest: `ART-0005 | REQ-0004 | src/safety/brake_control.c | SIL-3; dual redundancy; static analysis clean`
 
 **DO-178C (Avionics):**
 - DAL A/B/C/D/E classification per REQ
-- Structural coverage analysis (MC/DC for DAL A/B)
-- Example:
-  ```c
-  /* Parent: REQ-0005 (DAL-B) */
-  /* Coverage: MC/DC required for all decision points */
-  
-  bool validate_flight_data(FlightData *data) {
-      if (data == NULL) {
-          return false;  /* Test case: TC-0001 */
-      }
-      
-      /* MC/DC coverage: altitude AND speed AND heading */
-      if ((data->altitude >= MIN_ALTITUDE && data->altitude <= MAX_ALTITUDE) &&
-          (data->speed >= MIN_SPEED && data->speed <= MAX_SPEED) &&
-          (data->heading >= 0 && data->heading < 360)) {
-          return true;  /* Test cases: TC-0002, TC-0003, TC-0004 */
-      }
-      
-      return false;  /* Test case: TC-0005 */
-  }
-  ```
-
-**ISO 13485 (Medical Devices):**
-- Risk classification per ISO 14971
-- Software of Unknown Provenance (SOUP) management
-- Example Build Manifest notes:
-  ```
-  ART-0006 | REQ-0006 | src/medical/heart_rate_monitor.c | Class IIa; SOUP: FreeRTOS v10.4.6 (validated)
-  ```
+- MC/DC coverage required for DAL A/B
+- Document test coverage mapping to decision points
 
 **Traceability:** Every safety-critical artifact → REQ → SSR/SRS → Safety Analysis.
 
@@ -292,136 +215,73 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 ### 4. RTOS Patterns
 
 **FreeRTOS Task Structure:**
-- One task per logical function
-- Example:
-  ```c
-  /* Parent: REQ-0007 */
-  /* AC1: Sensor task reads data every 100ms and sends to queue */
-  
-  #include "FreeRTOS.h"
-  #include "task.h"
-  #include "queue.h"
-  
-  #define SENSOR_TASK_STACK_SIZE  256
-  #define SENSOR_TASK_PRIORITY    2
-  
-  extern QueueHandle_t sensor_queue;
-  
-  void sensor_task(void *pvParameters) {
-      TickType_t last_wake_time = xTaskGetTickCount();
-      const TickType_t period = pdMS_TO_TICKS(100);
-      
-      for (;;) {
-          /* Read sensor data */
-          SensorData data = read_sensor();
-          
-          /* Send to queue (non-blocking) */
-          if (xQueueSend(sensor_queue, &data, 0) != pdPASS) {
-              /* Queue full - log error */
-              log_error("Sensor queue full");
-          }
-          
-          /* Wait for next period */
-          vTaskDelayUntil(&last_wake_time, period);
-      }
-  }
-  
-  void create_sensor_task(void) {
-      xTaskCreate(
-          sensor_task,
-          "SensorTask",
-          SENSOR_TASK_STACK_SIZE,
-          NULL,
-          SENSOR_TASK_PRIORITY,
-          NULL
-      );
-  }
-  ```
+```c
+/* Parent: REQ-0007 */
+/* AC1: Sensor task reads data every 100ms and sends to queue */
+
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+
+#define SENSOR_TASK_STACK_SIZE  256
+#define SENSOR_TASK_PRIORITY    2
+
+extern QueueHandle_t sensor_queue;
+
+void sensor_task(void *pvParameters) {
+    TickType_t last_wake_time = xTaskGetTickCount();
+    const TickType_t period = pdMS_TO_TICKS(100);
+    
+    for (;;) {
+        SensorData data = read_sensor();
+        
+        if (xQueueSend(sensor_queue, &data, 0) != pdPASS) {
+            log_error("Sensor queue full");
+        }
+        
+        vTaskDelayUntil(&last_wake_time, period);
+    }
+}
+```
 
 **Queue Communication:**
-- Use queues for inter-task communication
-- Document queue sizes and overflow handling
-- Example:
-  ```c
-  /* Parent: REQ-0008 */
-  /* AC1: Sensor queue holds 10 samples, overflow logged */
-  
-  #define SENSOR_QUEUE_LENGTH  10
-  
-  QueueHandle_t sensor_queue;
-  
-  void init_queues(void) {
-      sensor_queue = xQueueCreate(SENSOR_QUEUE_LENGTH, sizeof(SensorData));
-      if (sensor_queue == NULL) {
-          /* Queue creation failed - halt */
-          error_handler("Failed to create sensor queue");
-      }
-  }
-  ```
+```c
+/* Parent: REQ-0008 */
+/* AC1: Sensor queue holds 10 samples, overflow logged */
+
+#define SENSOR_QUEUE_LENGTH  10
+
+QueueHandle_t sensor_queue;
+
+void init_queues(void) {
+    sensor_queue = xQueueCreate(SENSOR_QUEUE_LENGTH, sizeof(SensorData));
+    if (sensor_queue == NULL) {
+        error_handler("Failed to create sensor queue");
+    }
+}
+```
 
 **Semaphore Synchronization:**
-- Use binary semaphores for signaling
-- Use counting semaphores for resource management
-- Example:
-  ```c
-  /* Parent: REQ-0009 */
-  /* AC1: ISR signals task via semaphore */
-  
-  SemaphoreHandle_t data_ready_semaphore;
-  
-  void init_semaphores(void) {
-      data_ready_semaphore = xSemaphoreCreateBinary();
-  }
-  
-  /* ISR: Signal data ready */
-  void UART_IRQHandler(void) {
-      BaseType_t higher_priority_task_woken = pdFALSE;
-      
-      if (uart_rx_complete()) {
-          xSemaphoreGiveFromISR(data_ready_semaphore, &higher_priority_task_woken);
-          portYIELD_FROM_ISR(higher_priority_task_woken);
-      }
-  }
-  
-  /* Task: Wait for data */
-  void uart_task(void *pvParameters) {
-      for (;;) {
-          if (xSemaphoreTake(data_ready_semaphore, portMAX_DELAY) == pdTRUE) {
-              process_uart_data();
-          }
-      }
-  }
-  ```
+```c
+/* Parent: REQ-0009 */
+/* AC1: ISR signals task via semaphore */
 
-**Zephyr RTOS Patterns:**
-- Use Zephyr threads, workqueues, and message queues
-- Example:
-  ```c
-  /* Parent: REQ-0010 */
-  #include <zephyr/kernel.h>
-  
-  #define STACK_SIZE 1024
-  #define PRIORITY 5
-  
-  K_THREAD_STACK_DEFINE(sensor_stack, STACK_SIZE);
-  struct k_thread sensor_thread_data;
-  
-  void sensor_thread(void *arg1, void *arg2, void *arg3) {
-      while (1) {
-          SensorData data = read_sensor();
-          process_data(&data);
-          k_sleep(K_MSEC(100));
-      }
-  }
-  
-  void init_threads(void) {
-      k_thread_create(&sensor_thread_data, sensor_stack,
-                      K_THREAD_STACK_SIZEOF(sensor_stack),
-                      sensor_thread,
-                      NULL, NULL, NULL,
-                      PRIORITY, 0, K_NO_WAIT);
-  }
-  ```
+SemaphoreHandle_t data_ready_semaphore;
+
+/* ISR: Signal data ready */
+void UART_IRQHandler(void) {
+    BaseType_t higher_priority_task_woken = pdFALSE;
+    
+    if (uart_rx_complete()) {
+        xSemaphoreGiveFromISR(data_ready_semaphore, &higher_priority_task_woken);
+        portYIELD_FROM_ISR(higher_priority_task_woken);
+    }
+}
+```
+
+**Zephyr RTOS (brief):**
+- Use Zephyr threads, workqueues, message queues
+- Similar patterns with `k_thread_create()`, `k_sleep()`, `K_THREAD_STACK_DEFINE()`
 
 **Traceability:** Document task priorities, stack sizes, and timing constraints in Build Manifest.
 
@@ -430,82 +290,48 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 ### 5. Hardware Abstraction
 
 **Register Access Patterns:**
-- Use volatile for memory-mapped I/O
-- Example:
-  ```c
-  /* Parent: REQ-0011 */
-  /* AC1: Configure UART with 115200 baud, 8N1 */
-  
-  #define UART1_BASE      0x40011000U
-  #define UART_CR1_OFFSET 0x0CU
-  #define UART_BRR_OFFSET 0x08U
-  
-  typedef struct {
-      volatile uint32_t SR;   /* Status register */
-      volatile uint32_t DR;   /* Data register */
-      volatile uint32_t BRR;  /* Baud rate register */
-      volatile uint32_t CR1;  /* Control register 1 */
-  } UART_TypeDef;
-  
-  #define UART1 ((UART_TypeDef *)UART1_BASE)
-  
-  void uart_init(void) {
-      /* Configure baud rate: 115200 @ 48MHz */
-      UART1->BRR = 417;  /* 48MHz / 115200 */
-      
-      /* Enable UART, TX, RX */
-      UART1->CR1 = (1U << 13) | (1U << 3) | (1U << 2);
-  }
-  ```
+```c
+/* Parent: REQ-0011 */
+/* AC1: Configure UART with 115200 baud, 8N1 */
+
+#define UART1_BASE      0x40011000U
+
+typedef struct {
+    volatile uint32_t SR;   /* Status register */
+    volatile uint32_t DR;   /* Data register */
+    volatile uint32_t BRR;  /* Baud rate register */
+    volatile uint32_t CR1;  /* Control register 1 */
+} UART_TypeDef;
+
+#define UART1 ((UART_TypeDef *)UART1_BASE)
+
+void uart_init(void) {
+    UART1->BRR = 417;  /* 48MHz / 115200 */
+    UART1->CR1 = (1U << 13) | (1U << 3) | (1U << 2);  /* Enable UART, TX, RX */
+}
+```
 
 **HAL Abstraction:**
-- Abstract hardware details behind HAL interface
-- Example:
-  ```c
-  /* Parent: REQ-0012 */
-  /* hal/gpio.h - Hardware-independent interface */
-  
-  typedef enum {
-      GPIO_MODE_INPUT,
-      GPIO_MODE_OUTPUT,
-      GPIO_MODE_ALTERNATE,
-      GPIO_MODE_ANALOG
-  } GpioMode;
-  
-  typedef struct {
-      void *port;
-      uint8_t pin;
-  } GpioPin;
-  
-  void gpio_init(GpioPin *pin, GpioMode mode);
-  void gpio_write(GpioPin *pin, bool state);
-  bool gpio_read(GpioPin *pin);
-  ```
+```c
+/* Parent: REQ-0012 */
+/* hal/gpio.h - Hardware-independent interface */
 
-**DMA Configuration:**
-- Document DMA channels, priorities, and memory regions
-- Example:
-  ```c
-  /* Parent: REQ-0013 */
-  /* AC1: DMA transfers ADC data to buffer without CPU intervention */
-  
-  #define ADC_BUFFER_SIZE 128
-  
-  __attribute__((aligned(4))) uint16_t adc_buffer[ADC_BUFFER_SIZE];
-  
-  void dma_init_adc(void) {
-      /* DMA1 Channel 1 for ADC */
-      DMA1_Channel1->CPAR = (uint32_t)&ADC1->DR;  /* Peripheral address */
-      DMA1_Channel1->CMAR = (uint32_t)adc_buffer;  /* Memory address */
-      DMA1_Channel1->CNDTR = ADC_BUFFER_SIZE;      /* Number of data */
-      
-      /* Configuration: Memory increment, circular mode, 16-bit transfers */
-      DMA1_Channel1->CCR = DMA_CCR_MINC | DMA_CCR_CIRC | DMA_CCR_MSIZE_0 | DMA_CCR_PSIZE_0;
-      
-      /* Enable DMA channel */
-      DMA1_Channel1->CCR |= DMA_CCR_EN;
-  }
-  ```
+typedef enum {
+    GPIO_MODE_INPUT,
+    GPIO_MODE_OUTPUT,
+    GPIO_MODE_ALTERNATE,
+    GPIO_MODE_ANALOG
+} GpioMode;
+
+typedef struct {
+    void *port;
+    uint8_t pin;
+} GpioPin;
+
+void gpio_init(GpioPin *pin, GpioMode mode);
+void gpio_write(GpioPin *pin, bool state);
+bool gpio_read(GpioPin *pin);
+```
 
 **Traceability:** Cross-reference Logic Gatekeeper pin assignments. Never assume pin availability.
 
@@ -515,58 +341,50 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
 **Stack Analysis:**
 - Document stack usage per task/function
-- Example Build Manifest notes:
-  ```
-  ART-0014 | REQ-0014 | src/rtos/tasks/sensor_task.c | Stack: 256 bytes; measured peak: 187 bytes (73%)
-  ```
-
-**Heap Management:**
-- Avoid dynamic allocation in safety-critical code
-- Use memory pools for predictable allocation
-- Example:
-  ```c
-  /* Parent: REQ-0015 */
-  /* AC1: Fixed-size memory pool for sensor data packets */
-  
-  #define PACKET_POOL_SIZE 16
-  
-  typedef struct {
-      uint8_t data[64];
-      size_t length;
-  } Packet;
-  
-  static Packet packet_pool[PACKET_POOL_SIZE];
-  static bool packet_allocated[PACKET_POOL_SIZE];
-  
-  Packet* packet_alloc(void) {
-      for (size_t i = 0; i < PACKET_POOL_SIZE; i++) {
-          if (!packet_allocated[i]) {
-              packet_allocated[i] = true;
-              return &packet_pool[i];
-          }
-      }
-      return NULL;  /* Pool exhausted */
-  }
-  
-  void packet_free(Packet *packet) {
-      size_t index = packet - packet_pool;
-      if (index < PACKET_POOL_SIZE) {
-          packet_allocated[index] = false;
-      }
-  }
-  ```
+- Build Manifest: `ART-0014 | REQ-0014 | src/rtos/tasks/sensor_task.c | Stack: 256 bytes; measured peak: 187 bytes (73%)`
 
 **Static Allocation:**
-- Prefer static allocation for deterministic behavior
-- Example:
-  ```c
-  /* Parent: REQ-0016 */
-  /* AC1: All buffers statically allocated at compile time */
-  
-  static uint8_t uart_rx_buffer[256];
-  static uint8_t uart_tx_buffer[256];
-  static SensorData sensor_buffer[32];
-  ```
+```c
+/* Parent: REQ-0016 */
+/* AC1: All buffers statically allocated at compile time */
+
+static uint8_t uart_rx_buffer[256];
+static uint8_t uart_tx_buffer[256];
+static SensorData sensor_buffer[32];
+```
+
+**Memory Pools (avoid dynamic allocation):**
+```c
+/* Parent: REQ-0015 */
+/* AC1: Fixed-size memory pool for sensor data packets */
+
+#define PACKET_POOL_SIZE 16
+
+typedef struct {
+    uint8_t data[64];
+    size_t length;
+} Packet;
+
+static Packet packet_pool[PACKET_POOL_SIZE];
+static bool packet_allocated[PACKET_POOL_SIZE];
+
+Packet* packet_alloc(void) {
+    for (size_t i = 0; i < PACKET_POOL_SIZE; i++) {
+        if (!packet_allocated[i]) {
+            packet_allocated[i] = true;
+            return &packet_pool[i];
+        }
+    }
+    return NULL;  /* Pool exhausted */
+}
+
+void packet_free(Packet *packet) {
+    size_t index = packet - packet_pool;
+    if (index < PACKET_POOL_SIZE) {
+        packet_allocated[index] = false;
+    }
+}
+```
 
 **Traceability:** Document RAM/ROM usage against MCU limits in Build Manifest.
 
@@ -575,75 +393,69 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 ### 7. Security Patterns
 
 **Secure Boot:**
-- Verify firmware signature before execution
-- Example:
-  ```c
-  /* Parent: REQ-0017 */
-  /* AC1: Verify firmware signature using RSA-2048 */
-  
-  #include "mbedtls/rsa.h"
-  #include "mbedtls/sha256.h"
-  
-  bool verify_firmware_signature(const uint8_t *firmware, size_t firmware_len,
-                                  const uint8_t *signature, size_t signature_len) {
-      uint8_t hash[32];
-      mbedtls_sha256_context sha_ctx;
-      
-      /* Compute firmware hash */
-      mbedtls_sha256_init(&sha_ctx);
-      mbedtls_sha256_starts(&sha_ctx, 0);
-      mbedtls_sha256_update(&sha_ctx, firmware, firmware_len);
-      mbedtls_sha256_finish(&sha_ctx, hash);
-      mbedtls_sha256_free(&sha_ctx);
-      
-      /* Verify signature */
-      mbedtls_rsa_context rsa_ctx;
-      /* ... RSA verification ... */
-      
-      return true;  /* Signature valid */
-  }
-  ```
+```c
+/* Parent: REQ-0017 */
+/* AC1: Verify firmware signature using RSA-2048 */
+
+#include "mbedtls/rsa.h"
+#include "mbedtls/sha256.h"
+
+bool verify_firmware_signature(const uint8_t *firmware, size_t firmware_len,
+                                const uint8_t *signature, size_t signature_len) {
+    uint8_t hash[32];
+    mbedtls_sha256_context sha_ctx;
+    
+    /* Compute firmware hash */
+    mbedtls_sha256_init(&sha_ctx);
+    mbedtls_sha256_starts(&sha_ctx, 0);
+    mbedtls_sha256_update(&sha_ctx, firmware, firmware_len);
+    mbedtls_sha256_finish(&sha_ctx, hash);
+    mbedtls_sha256_free(&sha_ctx);
+    
+    /* Verify signature (RSA verification) */
+    /* ... RSA verification ... */
+    
+    return true;  /* Signature valid */
+}
+```
 
 **Cryptography:**
-- Use mbedTLS or WolfSSL for embedded crypto
-- Example:
-  ```c
-  /* Parent: REQ-0018 */
-  /* AC1: AES-128 encryption for sensor data */
-  
-  #include "mbedtls/aes.h"
-  
-  void encrypt_sensor_data(const uint8_t *plaintext, uint8_t *ciphertext,
-                           const uint8_t *key) {
-      mbedtls_aes_context aes_ctx;
-      mbedtls_aes_init(&aes_ctx);
-      mbedtls_aes_setkey_enc(&aes_ctx, key, 128);
-      mbedtls_aes_crypt_ecb(&aes_ctx, MBEDTLS_AES_ENCRYPT, plaintext, ciphertext);
-      mbedtls_aes_free(&aes_ctx);
-  }
-  ```
+```c
+/* Parent: REQ-0018 */
+/* AC1: AES-128 encryption for sensor data */
+
+#include "mbedtls/aes.h"
+
+void encrypt_sensor_data(const uint8_t *plaintext, uint8_t *ciphertext,
+                         const uint8_t *key) {
+    mbedtls_aes_context aes_ctx;
+    mbedtls_aes_init(&aes_ctx);
+    mbedtls_aes_setkey_enc(&aes_ctx, key, 128);
+    mbedtls_aes_crypt_ecb(&aes_ctx, MBEDTLS_AES_ENCRYPT, plaintext, ciphertext);
+    mbedtls_aes_free(&aes_ctx);
+}
+```
 
 **CWE Top 25 Prevention:**
 - CWE-119: Buffer overflow → bounds checking
 - CWE-120: Buffer copy without checking size → use strncpy, memcpy_s
 - CWE-787: Out-of-bounds write → validate indices
-- Example:
-  ```c
-  /* Parent: REQ-0019 */
-  /* AC1: Safe string copy with bounds checking (CWE-120 prevention) */
-  
-  void safe_string_copy(char *dest, const char *src, size_t dest_size) {
-      if (dest == NULL || src == NULL || dest_size == 0) {
-          return;
-      }
-      
-      size_t i;
-      for (i = 0; i < dest_size - 1 && src[i] != '\0'; i++) {
-          dest[i] = src[i];
-      }
-      dest[i] = '\0';  /* Null-terminate */
-  }
-  ```
+```c
+/* Parent: REQ-0019 */
+/* AC1: Safe string copy with bounds checking (CWE-120 prevention) */
+
+void safe_string_copy(char *dest, const char *src, size_t dest_size) {
+    if (dest == NULL || src == NULL || dest_size == 0) {
+        return;
+    }
+    
+    size_t i;
+    for (i = 0; i < dest_size - 1 && src[i] != '\0'; i++) {
+        dest[i] = src[i];
+    }
+    dest[i] = '\0';  /* Null-terminate */
+}
+```
 
 **Escalation Rule:**
 - Any security, crypto, or boot code change = R2+ risk level (see Evidence Requirements)
@@ -653,97 +465,68 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 ### 8. Testing Strategy
 
 **Unit Tests (Host-Based):**
-- Use Unity, CppUTest, or Google Test for unit tests
-- Example:
-  ```c
-  /* Parent: REQ-0020 */
-  /* tests/unit/test_sensor.c */
-  
-  #include "unity.h"
-  #include "sensor.h"
-  
-  void setUp(void) {
-      /* Initialize test fixtures */
-  }
-  
-  void tearDown(void) {
-      /* Clean up */
-  }
-  
-  void test_sensor_read_valid_data(void) {
-      SensorData data = read_sensor();
-      TEST_ASSERT_GREATER_THAN(0, data.value);
-      TEST_ASSERT_LESS_THAN(1024, data.value);
-  }
-  
-  void test_sensor_read_null_pointer(void) {
-      int result = read_sensor_data(NULL, 0, NULL);
-      TEST_ASSERT_EQUAL(-1, result);
-  }
-  
-  int main(void) {
-      UNITY_BEGIN();
-      RUN_TEST(test_sensor_read_valid_data);
-      RUN_TEST(test_sensor_read_null_pointer);
-      return UNITY_END();
-  }
-  ```
+```c
+/* Parent: REQ-0020 */
+/* tests/unit/test_sensor.c */
+
+#include "unity.h"
+#include "sensor.h"
+
+void test_sensor_read_valid_data(void) {
+    SensorData data = read_sensor();
+    TEST_ASSERT_GREATER_THAN(0, data.value);
+    TEST_ASSERT_LESS_THAN(1024, data.value);
+}
+
+void test_sensor_read_null_pointer(void) {
+    int result = read_sensor_data(NULL, 0, NULL);
+    TEST_ASSERT_EQUAL(-1, result);
+}
+
+int main(void) {
+    UNITY_BEGIN();
+    RUN_TEST(test_sensor_read_valid_data);
+    RUN_TEST(test_sensor_read_null_pointer);
+    return UNITY_END();
+}
+```
 
 **Hardware-in-the-Loop (HIL) Tests:**
 - Test with actual hardware
-- Document test setup and expected behavior
-- Example Build Manifest notes:
-  ```
-  ART-0021 | REQ-0021 | tests/hil/test_uart_comm.c | HIL test: STM32F4 @ 115200 baud; 100% pass
-  ```
+- Build Manifest: `ART-0021 | REQ-0021 | tests/hil/test_uart_comm.c | HIL test: STM32F4 @ 115200 baud; 100% pass`
 
 **Software-in-the-Loop (SIL) Tests:**
-- Simulate hardware for integration testing
-- Example:
-  ```c
-  /* Parent: REQ-0022 */
-  /* tests/sil/test_control_loop.c */
-  
-  /* Mock hardware interface */
-  static uint16_t mock_adc_value = 512;
-  
-  uint16_t adc_read(void) {
-      return mock_adc_value;
-  }
-  
-  void test_control_loop_setpoint_tracking(void) {
-      mock_adc_value = 512;  /* 50% setpoint */
-      
-      control_loop_step();
-      
-      uint16_t output = get_control_output();
-      TEST_ASSERT_UINT16_WITHIN(10, 512, output);
-  }
-  ```
+```c
+/* Parent: REQ-0022 */
+/* tests/sil/test_control_loop.c */
+
+/* Mock hardware interface */
+static uint16_t mock_adc_value = 512;
+
+uint16_t adc_read(void) {
+    return mock_adc_value;
+}
+
+void test_control_loop_setpoint_tracking(void) {
+    mock_adc_value = 512;  /* 50% setpoint */
+    control_loop_step();
+    uint16_t output = get_control_output();
+    TEST_ASSERT_UINT16_WITHIN(10, 512, output);
+}
+```
 
 **Coverage Analysis:**
 - Statement coverage (C0) for all code
 - Branch coverage (C1) for safety-critical code
 - MC/DC coverage for highest safety levels (DO-178C DAL A/B)
-- Example:
-  ```bash
-  # Parent: REQ-0023
-  # Generate coverage report with gcov/lcov
-  gcc -fprofile-arcs -ftest-coverage -o test_sensor test_sensor.c sensor.c
-  ./test_sensor
-  gcov sensor.c
-  lcov --capture --directory . --output-file coverage.info
-  genhtml coverage.info --output-directory coverage_report
-  ```
+- Tools: gcov, lcov, or vendor-specific coverage tools
 
 **MISRA Compliance Checking:**
-- Use PC-lint, cppcheck, or MISRA checker
-- Example:
-  ```bash
-  # Parent: REQ-0024
-  # Check MISRA-C:2012 compliance
-  cppcheck --addon=misra.json --enable=all src/
-  ```
+```bash
+# Parent: REQ-0024
+# Check MISRA-C:2012 compliance
+cppcheck --addon=misra.json --enable=all src/
+```
 
 **Alignment:** Test Designer (TC-XXXX) defines tests; Build Agent structures code for testability.
 
@@ -752,72 +535,45 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 ### 9. Build Systems
 
 **CMake (Modern Embedded):**
-- Cross-compilation toolchain configuration
-- Example:
-  ```cmake
-  # Parent: REQ-0025
-  # CMakeLists.txt
-  cmake_minimum_required(VERSION 3.20)
-  project(embedded_firmware C ASM)
-  
-  # Toolchain configuration
-  set(CMAKE_C_COMPILER arm-none-eabi-gcc)
-  set(CMAKE_ASM_COMPILER arm-none-eabi-gcc)
-  set(CMAKE_OBJCOPY arm-none-eabi-objcopy)
-  set(CMAKE_SIZE arm-none-eabi-size)
-  
-  # MCU-specific flags
-  set(MCU_FLAGS "-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16")
-  set(CMAKE_C_FLAGS "${MCU_FLAGS} -Wall -Wextra -O2 -g")
-  
-  # Linker script
-  set(LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/STM32F407VGTx_FLASH.ld")
-  set(CMAKE_EXE_LINKER_FLAGS "-T${LINKER_SCRIPT} -Wl,-Map=output.map")
-  
-  # Sources
-  add_executable(firmware
-      src/main.c
-      src/bsp/startup.c
-      src/hal/gpio.c
-      src/drivers/sensor.c
-  )
-  
-  # Generate binary
-  add_custom_command(TARGET firmware POST_BUILD
-      COMMAND ${CMAKE_OBJCOPY} -O binary firmware firmware.bin
-      COMMAND ${CMAKE_SIZE} firmware
-  )
-  ```
+```cmake
+# Parent: REQ-0025
+# CMakeLists.txt
+cmake_minimum_required(VERSION 3.20)
+project(embedded_firmware C ASM)
 
-**Makefile (Traditional):**
-- Example:
-  ```makefile
-  # Parent: REQ-0026
-  # Makefile
-  
-  CC = arm-none-eabi-gcc
-  OBJCOPY = arm-none-eabi-objcopy
-  SIZE = arm-none-eabi-size
-  
-  MCU = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
-  CFLAGS = $(MCU) -Wall -Wextra -O2 -g
-  LDFLAGS = -T STM32F407VGTx_FLASH.ld -Wl,-Map=output.map
-  
-  SRCS = src/main.c src/bsp/startup.c src/hal/gpio.c src/drivers/sensor.c
-  OBJS = $(SRCS:.c=.o)
-  
-  all: firmware.bin
-  
-  firmware.elf: $(OBJS)
-  	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
-  	$(SIZE) $@
-  
-  firmware.bin: firmware.elf
-  	$(OBJCOPY) -O binary $< $@
-  
-  clean:
-  	rm -f $(OBJS) firmware.elf firmware.bin output.map
-  ```
+# Toolchain configuration
+set(CMAKE_C_COMPILER arm-none-eabi-gcc)
+set(CMAKE_ASM_COMPILER arm-none-eabi-gcc)
+set(CMAKE_OBJCOPY arm-none-eabi-objcopy)
+set(CMAKE_SIZE arm-none-eabi-size)
+
+# MCU-specific flags
+set(MCU_FLAGS "-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16")
+set(CMAKE_C_FLAGS "${MCU_FLAGS} -Wall -Wextra -O2 -g")
+
+# Linker script
+set(LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/STM32F407VGTx_FLASH.ld")
+set(CMAKE_EXE_LINKER_FLAGS "-T${LINKER_SCRIPT} -Wl,-Map=output.map")
+
+# Sources
+add_executable(firmware
+    src/main.c
+    src/bsp/startup.c
+    src/hal/gpio.c
+    src/drivers/sensor.c
+)
+
+# Generate binary
+add_custom_command(TARGET firmware POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} -O binary firmware firmware.bin
+    COMMAND ${CMAKE_SIZE} firmware
+)
+```
+
+**Makefile (brief):**
+- Traditional build system for embedded
+- Similar structure: define toolchain, MCU flags, sources, link with linker script
+- Generate `.elf` and `.bin` outputs
 
 **Traceability:** Document target MCU/board and toolchain in Build Manifest.
 
@@ -827,26 +583,16 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
 **Traceability Matrix:**
 - REQ → ART → TC → Evidence mapping
-- Example:
-  ```
-  REQ-0027 | ART-0027 | TC-0027 | Evidence: Unit test pass, MISRA clean, HIL test pass
-  ```
+- Example: `REQ-0027 | ART-0027 | TC-0027 | Evidence: Unit test pass, MISRA clean, HIL test pass`
 
 **Code Review:**
 - Peer review required for R2+ artifacts
-- Document review findings and resolutions
-- Example Build Manifest notes:
-  ```
-  ART-0028 | REQ-0028 | src/safety/brake_control.c | Reviewed by: J.Smith; Findings: 0; Approved: 2026-05-22
-  ```
+- Build Manifest: `ART-0028 | REQ-0028 | src/safety/brake_control.c | Reviewed by: J.Smith; Findings: 0; Approved: 2026-05-22`
 
 **Static Analysis Reports:**
 - Zero warnings for safety-critical code
 - Document tool, version, and results
-- Example:
-  ```
-  ART-0029 | REQ-0029 | src/safety/brake_control.c | cppcheck v2.10; MISRA-C:2012; 0 warnings
-  ```
+- Example: `ART-0029 | REQ-0029 | src/safety/brake_control.c | cppcheck v2.10; MISRA-C:2012; 0 warnings`
 
 **Traceability:** Full traceability matrix required for R3 (certification-ready code).
 

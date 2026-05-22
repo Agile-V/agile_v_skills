@@ -46,9 +46,9 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
 ### 1. Project Structure
 
-**Package Layout:**
-- Organize by feature or domain, not technical layer
-- Example backend API structure:
+**Package Layout (Feature-Based):**
+- Organize by feature/domain, not technical layer
+- Example backend API:
   ```
   src/
     auth/
@@ -72,48 +72,11 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
     auth/
       test_service.py
       test_routes.py
-    users/
-      test_service.py
-  ```
-
-**Data/ML Project Structure:**
-- Separate data, models, pipelines, and inference
-- Example:
-  ```
-  src/
-    data/
-      __init__.py
-      loader.py
-      preprocessor.py
-      validator.py
-    models/
-      __init__.py
-      classifier.py
-      trainer.py
-    pipelines/
-      __init__.py
-      training.py
-      inference.py
-    common/
-      __init__.py
-      config.py
-      metrics.py
   ```
 
 **Script/CLI Structure:**
 - Entry point in `src/cli/` or `src/scripts/`
 - Business logic in modules, CLI only handles argument parsing
-- Example:
-  ```
-  src/
-    cli/
-      __init__.py
-      main.py  # Click/argparse entry point
-    core/
-      __init__.py
-      processor.py
-      validator.py
-  ```
 
 **Module Boundaries:**
 - Avoid circular imports (module A imports B, B imports A)
@@ -127,7 +90,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 ### 2. Type Hints and Style
 
 **Modern Python 3.10+ Type Hints:**
-- Use built-in generics: `list[str]`, `dict[str, int]` (not `List`, `Dict` from typing)
+- Use built-in generics: `list[str]`, `dict[str, int]` (not `List`, `Dict`)
 - Use `|` for unions: `str | None` (not `Optional[str]`)
 - Use `TypeAlias` for complex types:
   ```python
@@ -141,16 +104,6 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 **Type Annotation Coverage:**
 - All public functions/methods must have type hints
 - Private functions (`_name`) should have type hints when complexity warrants
-- Example:
-  ```python
-  # Parent: REQ-0002
-  def authenticate_user(email: str, password: str) -> User | None:
-      """Authenticate user by email and password.
-      
-      Returns User object if valid, None if invalid credentials.
-      """
-      # Implementation
-  ```
 
 **PEP 8 Compliance:**
 - `snake_case` for functions, variables, modules
@@ -193,11 +146,6 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
   ]
   ```
 
-**requirements.txt (Legacy/Simple Projects):**
-- Pin exact versions for reproducibility: `fastapi==0.100.1`
-- Use `requirements-dev.txt` for development dependencies
-- Document version constraints in Build Manifest notes
-
 **Version Pinning Strategy:**
 - Production: Pin exact versions (`==`) or narrow ranges (`>=X.Y.Z,<X.Y+1.0`)
 - Libraries: Use compatible release (`~=X.Y.Z`) or broader ranges
@@ -205,7 +153,6 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
 **Virtual Environments:**
 - Always use virtual environments (venv, virtualenv, conda)
-- Document environment setup in Build Manifest notes
 - Never commit `.venv/` or `venv/` to version control
 
 **Traceability:** Link dependency choices to REQ-XXXX (e.g., "FastAPI selected per REQ-0003 for async support").
@@ -214,7 +161,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
 ### 4. Framework Patterns
 
-#### FastAPI
+#### FastAPI (Primary Modern Framework)
 
 **Route Organization:**
 - Use APIRouter for feature modules
@@ -250,20 +197,6 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 **Dependency Injection:**
 - Use `Depends()` for service injection
 - Create dependency providers for database sessions, auth, etc.
-- Example:
-  ```python
-  # Parent: REQ-0005
-  from fastapi import Depends
-  from sqlalchemy.orm import Session
-  from .database import get_db
-  
-  class UserService:
-      def __init__(self, db: Session = Depends(get_db)):
-          self.db = db
-      
-      def get_user(self, user_id: int) -> User | None:
-          return self.db.query(User).filter(User.id == user_id).first()
-  ```
 
 **Pydantic Schemas:**
 - Separate request/response schemas from ORM models
@@ -286,84 +219,11 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
       model_config = {"from_attributes": True}  # Pydantic v2
   ```
 
-#### Flask
+#### Flask & Django
 
-**Blueprint Organization:**
-- Use blueprints for feature modules
-- Example:
-  ```python
-  # Parent: REQ-0007
-  from flask import Blueprint, request, jsonify
-  from .service import AuthService
-  
-  auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
-  
-  @auth_bp.route("/login", methods=["POST"])
-  def login():
-      """Authenticate user and return JWT token."""
-      data = request.get_json()
-      auth_service = AuthService()
-      user = auth_service.authenticate(data["email"], data["password"])
-      if not user:
-          return jsonify({"error": "Invalid credentials"}), 401
-      token = auth_service.create_token(user.id)
-      return jsonify({"access_token": token, "token_type": "bearer"})
-  ```
+**Flask:** Use blueprints for feature modules, application factory pattern for testability.
 
-**Application Factory Pattern:**
-- Use factory function for app creation (testability)
-- Example:
-  ```python
-  # Parent: REQ-0008
-  from flask import Flask
-  from .auth.routes import auth_bp
-  from .users.routes import users_bp
-  
-  def create_app(config_name: str = "default") -> Flask:
-      """Create and configure Flask application."""
-      app = Flask(__name__)
-      app.config.from_object(f"config.{config_name}")
-      
-      app.register_blueprint(auth_bp)
-      app.register_blueprint(users_bp)
-      
-      return app
-  ```
-
-#### Django
-
-**App Structure:**
-- One Django app per feature domain
-- Use Django REST Framework for APIs
-- Example:
-  ```python
-  # Parent: REQ-0009
-  # apps/auth/views.py
-  from rest_framework.decorators import api_view
-  from rest_framework.response import Response
-  from rest_framework import status
-  from .serializers import LoginSerializer, TokenSerializer
-  from .services import AuthService
-  
-  @api_view(["POST"])
-  def login(request):
-      """Authenticate user and return JWT token."""
-      serializer = LoginSerializer(data=request.data)
-      serializer.is_valid(raise_exception=True)
-      
-      auth_service = AuthService()
-      user = auth_service.authenticate(
-          serializer.validated_data["email"],
-          serializer.validated_data["password"]
-      )
-      if not user:
-          return Response(
-              {"error": "Invalid credentials"},
-              status=status.HTTP_401_UNAUTHORIZED
-          )
-      token = auth_service.create_token(user.id)
-      return Response(TokenSerializer({"access_token": token}).data)
-  ```
+**Django:** One app per feature domain, use Django REST Framework for APIs.
 
 **Traceability:** Each endpoint/view → REQ-XXXX. Document schema → acceptance criteria mapping.
 
@@ -393,77 +253,22 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
 **Alembic Migrations:**
 - Schema changes require migration files
-- Example migration:
-  ```python
-  # Parent: REQ-0011
-  # migrations/versions/001_create_users_table.py
-  """Create users table
-  
-  Revision ID: 001
-  Revises: 
-  Create Date: 2026-05-22 10:00:00
-  """
-  from alembic import op
-  import sqlalchemy as sa
-  
-  def upgrade():
-      op.create_table(
-          'users',
-          sa.Column('id', sa.Integer(), nullable=False),
-          sa.Column('email', sa.String(255), nullable=False),
-          sa.Column('password_hash', sa.String(255), nullable=False),
-          sa.Column('name', sa.String(100), nullable=False),
-          sa.PrimaryKeyConstraint('id'),
-          sa.UniqueConstraint('email')
-      )
-  
-  def downgrade():
-      op.drop_table('users')
-  ```
+- Document rollback path in migration or Build Manifest
 
 **Transaction Management:**
 - Multi-step state changes require explicit transactions
-- Example:
-  ```python
-  # Parent: REQ-0012
-  from sqlalchemy.orm import Session
-  
-  def transfer_funds(
-      db: Session, 
-      from_account_id: int, 
-      to_account_id: int, 
-      amount: float
-  ) -> None:
-      """Transfer funds between accounts (atomic operation)."""
-      try:
-          from_account = db.query(Account).filter(Account.id == from_account_id).with_for_update().first()
-          to_account = db.query(Account).filter(Account.id == to_account_id).with_for_update().first()
-          
-          from_account.balance -= amount
-          to_account.balance += amount
-          
-          db.commit()
-      except Exception:
-          db.rollback()
-          raise
-  ```
+- Use `try/commit/except/rollback` pattern
+- Use `with_for_update()` for row-level locking when needed
 
 **N+1 Query Prevention:**
-- Use eager loading for relationships
+- Use eager loading (`joinedload`, `selectinload`) for relationships
 - Example:
   ```python
   # Parent: REQ-0013
   from sqlalchemy.orm import joinedload
   
-  # Bad: N+1 query
-  users = db.query(User).all()
-  for user in users:
-      print(user.posts)  # Triggers separate query per user
-  
   # Good: Eager loading
   users = db.query(User).options(joinedload(User.posts)).all()
-  for user in users:
-      print(user.posts)  # No additional queries
   ```
 
 **Halt Condition:** Halt if schema change detected without migration artifact.
@@ -506,40 +311,25 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Example:
   ```python
   # Parent: REQ-0016
-  # Bad: SQL injection vulnerability
-  user_id = request.args.get("id")
+  # WRONG: SQL injection vulnerability
   query = f"SELECT * FROM users WHERE id = {user_id}"  # NEVER DO THIS
   
-  # Good: Parameterized query (SQLAlchemy)
+  # CORRECT: Parameterized query (SQLAlchemy)
   user = db.query(User).filter(User.id == user_id).first()
   
-  # Good: Parameterized query (raw SQL)
+  # CORRECT: Parameterized query (raw SQL)
   cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
   ```
 
 **Input Validation:**
 - Validate all external inputs (Pydantic, marshmallow, or manual)
 - Sanitize user-generated content before storage/output (XSS prevention)
-- Example:
-  ```python
-  # Parent: REQ-0017
-  from pydantic import BaseModel, validator, Field
-  
-  class UserInput(BaseModel):
-      username: str = Field(min_length=3, max_length=50, pattern=r"^[a-zA-Z0-9_]+$")
-      email: str
-      
-      @validator("email")
-      def validate_email(cls, v):
-          if "@" not in v:
-              raise ValueError("Invalid email format")
-          return v.lower()
-  ```
+- Use Pydantic validators for complex validation logic
 
 **Escalation Rule:**
 - Any auth, permission, token, session, or identity change = R2+ risk level (see Evidence Requirements)
 
-**Secure Coding (inherited from build-agent + Python-specific):**
+**Secure Coding Checklist (inherited from build-agent + Python-specific):**
 1. Input validation (Pydantic, marshmallow, or manual validation)
 2. Error handling (explicit try/except, custom exception classes)
 3. No hardcoded secrets (use environment variables, config files)
@@ -568,14 +358,6 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
       """Provide AuthService instance with test database."""
       return AuthService(db_session)
   
-  @pytest.fixture
-  def test_user(db_session):
-      """Create test user."""
-      user = User(email="test@example.com", password_hash="hashed", name="Test")
-      db_session.add(user)
-      db_session.commit()
-      return user
-  
   def test_authenticate_valid_credentials(auth_service, test_user):
       """Test authentication with valid credentials."""
       user = auth_service.authenticate("test@example.com", "password")
@@ -591,30 +373,11 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 **Fixtures and Mocking:**
 - Use pytest fixtures for test data and dependencies
 - Mock external I/O (API calls, file system, database for unit tests)
-- Example:
-  ```python
-  # Parent: REQ-0019
-  from unittest.mock import Mock, patch
-  
-  @patch("src.auth.service.send_email")
-  def test_registration_sends_email(mock_send_email, auth_service):
-      """Test that registration sends welcome email."""
-      auth_service.register("new@example.com", "password", "New User")
-      mock_send_email.assert_called_once_with(
-          to="new@example.com",
-          subject="Welcome",
-          body="Welcome to our service!"
-      )
-  ```
+- Use `unittest.mock` or `pytest-mock` for mocking
 
 **Coverage Targets:**
 - From REQ acceptance criteria
-- Use `pytest-cov` for coverage reporting
-- Example:
-  ```bash
-  # Parent: REQ-0020
-  pytest --cov=src --cov-report=html --cov-report=term
-  ```
+- Use `pytest-cov` for coverage reporting: `pytest --cov=src --cov-report=html`
 
 **Integration Tests:**
 - API behavior changes require integration tests
@@ -652,19 +415,13 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Example:
   ```python
   # Parent: REQ-0022
-  from pydantic import BaseModel, Field, validator
+  from pydantic import BaseModel, Field
   import pandas as pd
   
   class TrainingDataRow(BaseModel):
       feature_1: float = Field(ge=0.0, le=1.0)
       feature_2: float = Field(ge=0.0, le=1.0)
       label: int = Field(ge=0, le=1)
-      
-      @validator("feature_1", "feature_2")
-      def validate_range(cls, v):
-          if not 0.0 <= v <= 1.0:
-              raise ValueError("Feature must be in range [0, 1]")
-          return v
   
   def validate_dataframe(df: pd.DataFrame) -> None:
       """Validate all rows in dataframe."""
@@ -674,42 +431,11 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
 **Model Versioning:**
 - Include model version, dataset reference, and training config in Build Manifest
-- Example manifest notes:
-  ```
-  ART-0030 | REQ-0022 | models/classifier_v1.2.pkl | Model v1.2; dataset: data/train_v3.csv; config: config/train_v1.2.yaml
-  ```
+- Example manifest notes: `ART-0030 | REQ-0022 | models/classifier_v1.2.pkl | Model v1.2; dataset: data/train_v3.csv; config: config/train_v1.2.yaml`
 
 **Data Pipeline Structure:**
 - Separate data loading, preprocessing, validation, and transformation
-- Example:
-  ```python
-  # Parent: REQ-0023
-  from pathlib import Path
-  import pandas as pd
-  
-  class DataPipeline:
-      def __init__(self, data_path: Path):
-          self.data_path = data_path
-      
-      def load(self) -> pd.DataFrame:
-          """Load raw data from CSV."""
-          return pd.read_csv(self.data_path)
-      
-      def validate(self, df: pd.DataFrame) -> None:
-          """Validate data schema and constraints."""
-          validate_dataframe(df)
-      
-      def preprocess(self, df: pd.DataFrame) -> pd.DataFrame:
-          """Preprocess data (normalization, encoding, etc.)."""
-          # Normalization, encoding, etc.
-          return df
-      
-      def run(self) -> pd.DataFrame:
-          """Execute full pipeline."""
-          df = self.load()
-          self.validate(df)
-          return self.preprocess(df)
-  ```
+- Use class-based pipelines with clear method boundaries (load, validate, preprocess, run)
 
 **Context Engineering (ML-Specific):**
 - **ML datasets and model weights** must never be loaded into context
@@ -729,51 +455,25 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
   from pathlib import Path
   
   @click.command()
-  @click.option("--input", "-i", type=click.Path(exists=True), required=True, help="Input file path")
-  @click.option("--output", "-o", type=click.Path(), required=True, help="Output file path")
-  @click.option("--verbose", "-v", is_flag=True, help="Enable verbose logging")
+  @click.option("--input", "-i", type=click.Path(exists=True), required=True)
+  @click.option("--output", "-o", type=click.Path(), required=True)
+  @click.option("--verbose", "-v", is_flag=True)
   def process(input: str, output: str, verbose: bool) -> None:
       """Process input file and write to output."""
       if verbose:
           click.echo(f"Processing {input} -> {output}")
       
-      # Business logic here
       result = process_file(Path(input))
       
       with open(output, "w") as f:
           f.write(result)
       
       click.echo("Done!")
-  
-  if __name__ == "__main__":
-      process()
   ```
 
 **Exit Codes:**
-- Use standard exit codes for automation
-- Example:
-  ```python
-  # Parent: REQ-0025
-  import sys
-  
-  def main() -> int:
-      """Main entry point. Returns exit code."""
-      try:
-          # Business logic
-          return 0  # Success
-      except ValueError as e:
-          print(f"Invalid input: {e}", file=sys.stderr)
-          return 1  # General error
-      except FileNotFoundError as e:
-          print(f"File not found: {e}", file=sys.stderr)
-          return 2  # File not found
-      except Exception as e:
-          print(f"Unexpected error: {e}", file=sys.stderr)
-          return 3  # Unexpected error
-  
-  if __name__ == "__main__":
-      sys.exit(main())
-  ```
+- Use standard exit codes for automation (0=success, 1=general error, 2=file not found, etc.)
+- Return exit codes from main function, use `sys.exit(main())`
 
 ---
 
@@ -806,21 +506,8 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Libraries that don't support async (blocking calls in async context)
 
 **Async/Sync Mixing:**
-- Avoid blocking calls in async functions (use `asyncio.to_thread()` if necessary)
-- Example:
-  ```python
-  # Parent: REQ-0027
-  import asyncio
-  
-  def blocking_operation() -> str:
-      """CPU-bound or blocking I/O operation."""
-      # Heavy computation
-      return "result"
-  
-  async def async_wrapper() -> str:
-      """Wrap blocking operation for async context."""
-      return await asyncio.to_thread(blocking_operation)
-  ```
+- Avoid blocking calls in async functions
+- Use `asyncio.to_thread()` to wrap blocking operations if necessary
 
 **Halt Condition:** Halt if async/sync mismatch detected (async function called without await, blocking call in async context).
 

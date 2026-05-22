@@ -46,82 +46,23 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
 ### 1. Project Structure
 
-**React/Next.js Frontend Structure:**
-- Organize by feature or domain, not technical layer
-- Example Next.js App Router structure:
+**React/Next.js Frontend (App Router):**
+- Organize by feature/domain, not technical layer
+- Example:
   ```
   app/
-    (auth)/
-      login/
-        page.tsx
-        LoginForm.tsx
-      register/
-        page.tsx
-    (dashboard)/
-      layout.tsx
-      page.tsx
-      components/
-        DashboardHeader.tsx
-        StatsCard.tsx
-    api/
-      auth/
-        route.ts
-      users/
-        route.ts
-  components/
-    ui/
-      Button.tsx
-      Input.tsx
-      Card.tsx
-    layout/
-      Header.tsx
-      Footer.tsx
-  lib/
-    auth.ts
-    db.ts
-    utils.ts
-  hooks/
-    useAuth.ts
-    useUser.ts
-  types/
-    auth.ts
-    user.ts
+    (auth)/login/page.tsx
+    (dashboard)/page.tsx, components/
+    api/auth/route.ts, users/route.ts
+  components/ui/, layout/
+  lib/auth.ts, db.ts, utils.ts
+  hooks/useAuth.ts, useUser.ts
+  types/auth.ts, user.ts
   ```
 
-**React SPA Structure (Vite/CRA):**
-  ```
-  src/
-    features/
-      auth/
-        components/
-          LoginForm.tsx
-          RegisterForm.tsx
-        hooks/
-          useAuth.ts
-        services/
-          authService.ts
-        types/
-          auth.ts
-      users/
-        components/
-          UserList.tsx
-          UserProfile.tsx
-        hooks/
-          useUsers.ts
-        services/
-          userService.ts
-    components/
-      ui/
-        Button.tsx
-        Input.tsx
-    lib/
-      api.ts
-      utils.ts
-    App.tsx
-    main.tsx
-  ```
-
-**Node.js Backend Structure:**
+**Node.js Backend:**
+- Feature-based modules with controller/service/repository layers
+- Example:
   ```
   src/
     auth/
@@ -129,50 +70,19 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
       auth.service.ts
       auth.middleware.ts
       auth.types.ts
-      auth.validation.ts
     users/
       users.controller.ts
       users.service.ts
       users.repository.ts
-      users.types.ts
-    common/
-      database.ts
-      logger.ts
-      config.ts
-      errors.ts
-    middleware/
-      errorHandler.ts
-      validation.ts
-      auth.ts
-    routes/
-      index.ts
-      auth.routes.ts
-      users.routes.ts
-    app.ts
-    server.ts
-  tests/
-    auth/
-      auth.service.test.ts
-      auth.integration.test.ts
-    users/
-      users.service.test.ts
-  ```
-
-**Monorepo Structure (Turborepo/Nx):**
-  ```
-  apps/
-    web/              # Next.js frontend
-    api/              # Express/Fastify backend
-    admin/            # Admin dashboard
-  packages/
-    ui/               # Shared UI components
-    types/            # Shared TypeScript types
-    config/           # Shared configs (ESLint, TS)
-    utils/            # Shared utilities
+    common/database.ts, logger.ts, config.ts
+    middleware/errorHandler.ts, validation.ts
+    routes/index.ts, auth.routes.ts
+    app.ts, server.ts
+  tests/auth/, users/
   ```
 
 **Module Boundaries:**
-- Avoid circular dependencies (module A imports B, B imports A)
+- Avoid circular dependencies
 - Use barrel exports (`index.ts`) for clean public APIs
 - Document module dependency graph in Build Manifest notes
 
@@ -193,10 +103,8 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
       "noUncheckedIndexedAccess": true,
       "noImplicitOverride": true,
       "exactOptionalPropertyTypes": true,
-      "noFallthroughCasesInSwitch": true,
       "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "allowUnusedLabels": false
+      "noUnusedParameters": true
     }
   }
   ```
@@ -207,11 +115,6 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Example:
   ```typescript
   // Parent: REQ-0002
-  // Bad: Using any
-  function processData(data: any) {
-    return data.value; // No type safety
-  }
-
   // Good: Using unknown with type guard
   function processData(data: unknown): string {
     if (typeof data === 'object' && data !== null && 'value' in data) {
@@ -234,48 +137,16 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
     createdAt: Date;
   }
 
-  // Public user (omit sensitive fields)
   type PublicUser = Omit<User, 'password'>;
-
-  // User creation payload (omit generated fields)
   type CreateUserDto = Omit<User, 'id' | 'createdAt'>;
-
-  // Partial update
   type UpdateUserDto = Partial<Pick<User, 'email' | 'name'>>;
-
-  // Read-only user
-  type ImmutableUser = Readonly<User>;
-  ```
-
-**Type Aliases and Interfaces:**
-- Use `type` for unions, intersections, primitives, tuples
-- Use `interface` for object shapes that may be extended
-- Example:
-  ```typescript
-  // Parent: REQ-0004
-  // Type for unions and primitives
-  type UserId = string;
-  type UserRole = 'admin' | 'user' | 'guest';
-  type ApiResponse<T> = { data: T } | { error: string };
-
-  // Interface for extensible object shapes
-  interface BaseEntity {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-  }
-
-  interface User extends BaseEntity {
-    email: string;
-    name: string;
-  }
   ```
 
 **Discriminated Unions:**
 - Use for type-safe state management and API responses
 - Example:
   ```typescript
-  // Parent: REQ-0005
+  // Parent: REQ-0004
   type AsyncState<T> =
     | { status: 'idle' }
     | { status: 'loading' }
@@ -284,14 +155,10 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
   function handleState<T>(state: AsyncState<T>) {
     switch (state.status) {
-      case 'idle':
-        return 'Not started';
-      case 'loading':
-        return 'Loading...';
-      case 'success':
-        return state.data; // TypeScript knows data exists
-      case 'error':
-        return state.error.message; // TypeScript knows error exists
+      case 'idle': return 'Not started';
+      case 'loading': return 'Loading...';
+      case 'success': return state.data; // TypeScript knows data exists
+      case 'error': return state.error.message;
     }
   }
   ```
@@ -305,29 +172,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 **package.json Structure:**
 - Separate dependencies from devDependencies
 - Use exact versions or narrow ranges for production
-- Example:
-  ```json
-  // Parent: REQ-0006
-  {
-    "name": "myapp",
-    "version": "1.0.0",
-    "dependencies": {
-      "react": "^18.2.0",
-      "next": "14.0.0",
-      "zod": "^3.22.0"
-    },
-    "devDependencies": {
-      "typescript": "^5.3.0",
-      "eslint": "^8.55.0",
-      "@types/react": "^18.2.0",
-      "vitest": "^1.0.0"
-    }
-  }
-  ```
-
-**Lock Files:**
 - Commit lock files (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`)
-- Use consistent package manager across team (document in README)
 - Never manually edit lock files
 
 **Version Pinning Strategy:**
@@ -358,12 +203,6 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
   // AC1: Display user profile with loading and error states
   import { useState, useEffect } from 'react';
 
-  interface User {
-    id: string;
-    name: string;
-    email: string;
-  }
-
   export function UserProfile({ userId }: { userId: string }) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
@@ -374,8 +213,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
         try {
           const response = await fetch(`/api/users/${userId}`);
           if (!response.ok) throw new Error('Failed to fetch user');
-          const data = await response.json();
-          setUser(data);
+          setUser(await response.json());
         } catch (err) {
           setError(err instanceof Error ? err : new Error('Unknown error'));
         } finally {
@@ -412,20 +250,17 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
     useEffect(() => {
       let cancelled = false;
-
       async function fetchUser() {
         try {
           const response = await fetch(`/api/users/${userId}`);
           if (!response.ok) throw new Error('Failed to fetch user');
-          const data = await response.json();
-          if (!cancelled) setUser(data);
+          if (!cancelled) setUser(await response.json());
         } catch (err) {
           if (!cancelled) setError(err instanceof Error ? err : new Error('Unknown error'));
         } finally {
           if (!cancelled) setLoading(false);
         }
       }
-
       fetchUser();
       return () => { cancelled = true; };
     }, [userId]);
@@ -460,8 +295,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
         body: JSON.stringify({ email, password }),
       });
       if (!response.ok) throw new Error('Login failed');
-      const data = await response.json();
-      setUser(data.user);
+      setUser((await response.json()).user);
     };
 
     const logout = () => setUser(null);
@@ -480,36 +314,6 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
   }
   ```
 
-**Component Composition:**
-- Prefer composition over prop drilling
-- Use children and render props
-- Example:
-  ```typescript
-  // Parent: REQ-0010
-  interface CardProps {
-    children: ReactNode;
-    className?: string;
-  }
-
-  export function Card({ children, className }: CardProps) {
-    return <div className={`card ${className || ''}`}>{children}</div>;
-  }
-
-  export function CardHeader({ children }: { children: ReactNode }) {
-    return <div className="card-header">{children}</div>;
-  }
-
-  export function CardBody({ children }: { children: ReactNode }) {
-    return <div className="card-body">{children}</div>;
-  }
-
-  // Usage
-  <Card>
-    <CardHeader><h2>Title</h2></CardHeader>
-    <CardBody><p>Content</p></CardBody>
-  </Card>
-  ```
-
 #### Next.js
 
 **App Router (Next.js 13+):**
@@ -517,7 +321,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Client Components only when needed (interactivity, hooks, browser APIs)
 - Example:
   ```typescript
-  // Parent: REQ-0011
+  // Parent: REQ-0010
   // app/users/[id]/page.tsx (Server Component)
   import { notFound } from 'next/navigation';
 
@@ -546,7 +350,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Use route handlers for backend logic
 - Example:
   ```typescript
-  // Parent: REQ-0012
+  // Parent: REQ-0011
   // app/api/auth/login/route.ts
   import { NextRequest, NextResponse } from 'next/server';
   import { z } from 'zod';
@@ -561,101 +365,46 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
       const body = await request.json();
       const { email, password } = loginSchema.parse(body);
 
-      // Authenticate user
       const user = await authenticateUser(email, password);
       if (!user) {
-        return NextResponse.json(
-          { error: 'Invalid credentials' },
-          { status: 401 }
-        );
+        return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
       }
 
-      const token = generateToken(user.id);
-      return NextResponse.json({ token, user });
+      return NextResponse.json({ token: generateToken(user.id), user });
     } catch (error) {
       if (error instanceof z.ZodError) {
-        return NextResponse.json(
-          { error: 'Validation failed', details: error.errors },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: 'Validation failed', details: error.errors }, { status: 400 });
       }
-      return NextResponse.json(
-        { error: 'Internal server error' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
   }
   ```
 
-#### Express/Fastify (Node.js Backend)
+#### Express (Node.js Backend)
 
-**Express Middleware Pattern:**
-- Use middleware for cross-cutting concerns
+**Middleware Pattern:**
+- Use middleware for cross-cutting concerns (auth, validation, error handling)
 - Example:
   ```typescript
-  // Parent: REQ-0013
+  // Parent: REQ-0012
   import express, { Request, Response, NextFunction } from 'express';
 
-  // Auth middleware
   export function authMiddleware(req: Request, res: Response, next: NextFunction) {
     const token = req.headers.authorization?.replace('Bearer ', '');
-    if (!token) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
+    if (!token) return res.status(401).json({ error: 'Unauthorized' });
 
     try {
-      const payload = verifyToken(token);
-      req.user = payload; // Attach user to request
+      req.user = verifyToken(token);
       next();
     } catch (error) {
       return res.status(401).json({ error: 'Invalid token' });
     }
   }
 
-  // Error handling middleware
-  export function errorHandler(
-    err: Error,
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
   }
-  ```
-
-**Route Organization:**
-- Separate routes by feature
-- Example:
-  ```typescript
-  // Parent: REQ-0014
-  import { Router } from 'express';
-  import { authMiddleware } from '../middleware/auth';
-  import { UserService } from './users.service';
-
-  const router = Router();
-  const userService = new UserService();
-
-  router.get('/users', authMiddleware, async (req, res, next) => {
-    try {
-      const users = await userService.findAll();
-      res.json(users);
-    } catch (error) {
-      next(error);
-    }
-  });
-
-  router.get('/users/:id', authMiddleware, async (req, res, next) => {
-    try {
-      const user = await userService.findById(req.params.id);
-      if (!user) return res.status(404).json({ error: 'User not found' });
-      res.json(user);
-    } catch (error) {
-      next(error);
-    }
-  });
-
-  export default router;
   ```
 
 **Traceability:** Each endpoint/route → REQ-XXXX. Document validation → acceptance criteria mapping.
@@ -664,11 +413,14 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
 ### 5. State Management
 
-**React Query (TanStack Query):**
-- Use for server state (API data)
+**Context API (Simple Global State):**
+- Use for auth, theme, locale (see React Context example above)
+
+**React Query (Server State):**
+- Use for API data with caching, refetching, and mutations
 - Example:
   ```typescript
-  // Parent: REQ-0015
+  // Parent: REQ-0013
   import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
   export function useUsers() {
@@ -684,7 +436,6 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
   export function useCreateUser() {
     const queryClient = useQueryClient();
-
     return useMutation({
       mutationFn: async (user: CreateUserDto) => {
         const response = await fetch('/api/users', {
@@ -695,18 +446,16 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
         if (!response.ok) throw new Error('Failed to create user');
         return response.json();
       },
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['users'] });
-      },
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] }),
     });
   }
   ```
 
-**Zustand (Lightweight State):**
-- Use for client state (UI state, preferences)
+**Zustand (Lightweight Client State):**
+- Use for UI state, preferences
 - Example:
   ```typescript
-  // Parent: REQ-0016
+  // Parent: REQ-0014
   import { create } from 'zustand';
 
   interface AppState {
@@ -724,42 +473,6 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
   }));
   ```
 
-**Redux Toolkit (Complex State):**
-- Use for complex client state with time-travel debugging
-- Example:
-  ```typescript
-  // Parent: REQ-0017
-  import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-  interface AuthState {
-    user: User | null;
-    token: string | null;
-  }
-
-  const initialState: AuthState = {
-    user: null,
-    token: null,
-  };
-
-  const authSlice = createSlice({
-    name: 'auth',
-    initialState,
-    reducers: {
-      setUser: (state, action: PayloadAction<{ user: User; token: string }>) => {
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-      },
-      logout: (state) => {
-        state.user = null;
-        state.token = null;
-      },
-    },
-  });
-
-  export const { setUser, logout } = authSlice.actions;
-  export default authSlice.reducer;
-  ```
-
 ---
 
 ### 6. Security Patterns
@@ -769,7 +482,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Sanitize user-generated HTML
 - Example:
   ```typescript
-  // Parent: REQ-0018
+  // Parent: REQ-0015
   import DOMPurify from 'dompurify';
 
   // Bad: XSS vulnerability
@@ -788,7 +501,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Use CSRF tokens for state-changing requests
 - Example (Express):
   ```typescript
-  // Parent: REQ-0019
+  // Parent: REQ-0016
   import csrf from 'csurf';
   import cookieParser from 'cookie-parser';
 
@@ -809,7 +522,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Validate all external inputs (Zod, Yup, or manual)
 - Example:
   ```typescript
-  // Parent: REQ-0020
+  // Parent: REQ-0017
   import { z } from 'zod';
 
   const userSchema = z.object({
@@ -824,9 +537,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
   export function validateUserSafe(data: unknown) {
     const result = userSchema.safeParse(data);
-    if (!result.success) {
-      return { error: result.error.errors };
-    }
+    if (!result.success) return { error: result.error.errors };
     return { data: result.data };
   }
   ```
@@ -835,17 +546,15 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Use environment variables (never commit `.env` files)
 - Example:
   ```typescript
-  // Parent: REQ-0021
+  // Parent: REQ-0018
   // .env.example (commit this)
   DATABASE_URL=postgresql://localhost:5432/mydb
   JWT_SECRET=your-secret-here
-  API_KEY=your-api-key-here
 
   // config.ts
   export const config = {
     databaseUrl: process.env.DATABASE_URL!,
     jwtSecret: process.env.JWT_SECRET!,
-    apiKey: process.env.API_KEY!,
   };
 
   // Validate at startup
@@ -879,8 +588,8 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Use Vitest for Vite projects, Jest for others
 - Example:
   ```typescript
-  // Parent: REQ-0022
-  import { describe, it, expect, vi } from 'vitest';
+  // Parent: REQ-0019
+  import { describe, it, expect } from 'vitest';
   import { AuthService } from './auth.service';
 
   describe('AuthService', () => {
@@ -903,7 +612,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Test user behavior, not implementation details
 - Example:
   ```typescript
-  // Parent: REQ-0023
+  // Parent: REQ-0020
   import { render, screen, fireEvent, waitFor } from '@testing-library/react';
   import { LoginForm } from './LoginForm';
 
@@ -912,47 +621,26 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
       const onSubmit = vi.fn();
       render(<LoginForm onSubmit={onSubmit} />);
 
-      fireEvent.change(screen.getByLabelText(/email/i), {
-        target: { value: 'test@example.com' },
-      });
-      fireEvent.change(screen.getByLabelText(/password/i), {
-        target: { value: 'password123' },
-      });
+      fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'test@example.com' } });
+      fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } });
       fireEvent.click(screen.getByRole('button', { name: /login/i }));
 
       await waitFor(() => {
-        expect(onSubmit).toHaveBeenCalledWith({
-          email: 'test@example.com',
-          password: 'password123',
-        });
-      });
-    });
-
-    it('should display error for invalid email', async () => {
-      render(<LoginForm onSubmit={vi.fn()} />);
-
-      fireEvent.change(screen.getByLabelText(/email/i), {
-        target: { value: 'invalid' },
-      });
-      fireEvent.click(screen.getByRole('button', { name: /login/i }));
-
-      await waitFor(() => {
-        expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
+        expect(onSubmit).toHaveBeenCalledWith({ email: 'test@example.com', password: 'password123' });
       });
     });
   });
   ```
 
-**Playwright/Cypress E2E Tests:**
+**E2E Tests (Playwright/Cypress):**
 - Test critical user flows
 - Example (Playwright):
   ```typescript
-  // Parent: REQ-0024
+  // Parent: REQ-0021
   import { test, expect } from '@playwright/test';
 
   test('user can login and view dashboard', async ({ page }) => {
     await page.goto('/login');
-
     await page.fill('input[name="email"]', 'test@example.com');
     await page.fill('input[name="password"]', 'password123');
     await page.click('button[type="submit"]');
@@ -980,7 +668,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Modern build tool for frontend projects
 - Example:
   ```typescript
-  // Parent: REQ-0025
+  // Parent: REQ-0022
   // vite.config.ts
   import { defineConfig } from 'vite';
   import react from '@vitejs/plugin-react';
@@ -989,9 +677,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
   export default defineConfig({
     plugins: [react()],
     resolve: {
-      alias: {
-        '@': path.resolve(__dirname, './src'),
-      },
+      alias: { '@': path.resolve(__dirname, './src') },
     },
     build: {
       rollupOptions: {
@@ -1010,7 +696,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Enforce code quality and consistency
 - Example:
   ```javascript
-  // Parent: REQ-0026
+  // Parent: REQ-0023
   // .eslintrc.cjs
   module.exports = {
     extends: [
@@ -1024,7 +710,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
     rules: {
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'error',
-      'react/react-in-jsx-scope': 'off', // Not needed in React 17+
+      'react/react-in-jsx-scope': 'off',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
     },

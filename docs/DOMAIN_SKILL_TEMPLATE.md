@@ -384,14 +384,30 @@ Before submitting a new domain skill:
 
 ## Target Metrics
 
-| Category | Target |
-|----------|--------|
-| **Total lines** | 400-500 (can exceed for comprehensive coverage) |
-| **Architecture & Patterns** | 300-400 lines |
-| **Evidence Requirements** | 80-120 lines |
-| **Halt Conditions** | 40-60 lines |
-| **Code examples** | 10-20 examples |
-| **Traceability comments** | All code examples |
+| Category | Target | Rationale |
+|----------|--------|-----------|
+| **Total lines** | 600-800 lines | Optimal balance of quality and context efficiency |
+| **Architecture & Patterns** | 250-400 lines | Core content, streamlined examples |
+| **Evidence Requirements** | 80-120 lines | Complete R0-R3 coverage |
+| **Halt Conditions** | 40-60 lines | Critical pre-execution validation |
+| **Code examples** | 8-15 examples | Key patterns with traceability |
+| **Traceability comments** | All code examples | Mandatory for Agile V |
+| **Context usage** | <20% of 200K window | Leaves 160KB+ for user work |
+
+### Optimization Guidelines
+
+**When skills exceed 800 lines:**
+1. Reduce code examples from 3-4 per pattern to 1-2 key examples
+2. Convert verbose explanations to concise bullet points
+3. Consolidate similar frameworks (keep primary detailed, others brief)
+4. Remove duplicate patterns showing same concept
+5. **Never compromise:** Evidence Requirements, Halt Conditions, Security examples
+
+**Example: Framework consolidation**
+- ✅ Python: FastAPI (primary detail) + Flask/Django (brief mention)
+- ✅ JavaScript: React/Next.js (primary) + Express (brief)
+- ✅ Dart: BLoC (primary) + Provider/Riverpod (brief)
+- ✅ Embedded: FreeRTOS (primary) + Zephyr (brief)
 
 ---
 
