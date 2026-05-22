@@ -6,6 +6,7 @@ metadata:
   version: "1.3"
   standard: "Agile V"
   author: agile-v.org
+  sections_index: ["Cycle ID", "Document Versioning", "REQ Status Tags", "Change Requests", "Cycle Triggers", "Re-Entry Points", "Archival", "Impact Analysis"]
 ---
 
 # Instructions

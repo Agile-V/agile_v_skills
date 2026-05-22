@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.6.0 (2026-05-22)
+
+
+### Features
+
+* **agile-v-core:** Add SCOPE-V Task Execution Framework (Specify → Constrain → Orchestrate → Prove → Evolve → Verify)
+* **skills:** Add build-agent-nestjs domain skill for NestJS backend development
+  - Extends build-agent with NestJS architectural patterns
+  - Dependency injection, API design, security, database, testing conventions
+  - R0-R3 evidence requirements with NestJS-specific additions
+  - SCOPE-V participation mapping
+  - Upstream integration with Kadajett/agent-nestjs-skills
+  - MIT license attribution preserved
+
+
+### Changed
+
+* **agile-v-core:** Version bumped to 1.4 (added SCOPE-V + sections_index)
+* **SKILL_ROUTING_GUIDE.md:** Updated with NestJS auto-trigger hints
+* **README.md:** Updated skills table and directory structure
+
+
+### Documentation
+
+* Added NESTJS_INTEGRATION_PLAN_FINAL.md (implementation guide)
+* Added STRUCTURE_REVIEW_AND_RECOMMENDATIONS.md (architecture analysis)
+* NOTICE.md in build-agent-nestjs for upstream attribution
+
 ## 1.5.0 (2026-02-27)
 
 
