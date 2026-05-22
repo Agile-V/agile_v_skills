@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/Agile-V/agile_v_skills/compare/v1.5.0...v2.0.0) (2026-05-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* agile-v-core version 1.3 → 1.4 (SCOPE-V addition)
+
+### Features
+
+* add runtime schemas and templates ([e942f36](https://github.com/Agile-V/agile_v_skills/commit/e942f36ae028814b2ac77c9b6d0f3e20f137dfef))
+* add SCOPE-V framework and build-agent-nestjs skill ([9eeb8f3](https://github.com/Agile-V/agile_v_skills/commit/9eeb8f3ce56884c335d64e65391682c4328ed6ea))
+* Comprehensive domain skill enrichment and modernization ([f467a6e](https://github.com/Agile-V/agile_v_skills/commit/f467a6e5355850588a67dbddd097c5ea941cf526))
+
 ## 1.6.0 (2026-05-22)
 
 
