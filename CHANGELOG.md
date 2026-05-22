@@ -28,19 +28,42 @@ All notable changes to this project will be documented in this file. See [standa
   - SCOPE-V participation mapping
   - Upstream integration with Kadajett/agent-nestjs-skills
   - MIT license attribution preserved
+* **skills:** Comprehensive enrichment of all domain build agents
+  - build-agent-python: FastAPI/Flask/Django patterns, SQLAlchemy, security, testing (695 lines)
+  - build-agent-js: React/Next.js/Node.js patterns, TypeScript, security, testing (900 lines)
+  - build-agent-dart: Flutter/BLoC patterns, platform channels, testing (787 lines)
+  - build-agent-embedded: MISRA-C, RTOS, safety standards (ISO 26262, IEC 61508), HIL/SIL testing (787 lines)
+  - All include comprehensive Evidence Requirements (R0-R3) and domain-specific Halt Conditions
+  - All include SCOPE-V participation and sections_index
 
 
 ### Changed
 
 * **agile-v-core:** Version bumped to 1.4 (added SCOPE-V + sections_index)
-* **SKILL_ROUTING_GUIDE.md:** Updated with NestJS auto-trigger hints
-* **README.md:** Updated skills table and directory structure
+* **SKILL_ROUTING_GUIDE.md:** Updated with all domain skill auto-trigger patterns
+* **README.md:** Updated skills table with comprehensive domain skill descriptions
+* **agile-v-compliance:** Added sections_index
+* **agile-v-lifecycle:** Added sections_index
+* **agile-v-pipeline:** Added sections_index
+
+
+### Performance
+
+* **skills:** Context optimization for domain skills (24.4% → 19.1% max usage)
+  - Reduced code examples while maintaining quality
+  - Consolidated framework coverage (primary detailed, others brief)
+  - Streamlined explanations to concise bullet points
+  - 100% preservation of Evidence Requirements, Halt Conditions, and security patterns
+  - Result: 160KB+ remaining for user code and requirements
 
 
 ### Documentation
 
 * Added NESTJS_INTEGRATION_PLAN_FINAL.md (implementation guide)
 * Added STRUCTURE_REVIEW_AND_RECOMMENDATIONS.md (architecture analysis)
+* Added docs/DOMAIN_SKILL_TEMPLATE.md (community contribution guide with optimization guidelines)
+* Added test validation framework (9/9 tests passing)
+* Added SKILLS_EFFECTIVENESS_REVIEW.md (comprehensive analysis)
 * NOTICE.md in build-agent-nestjs for upstream attribution
 
 ## 1.5.0 (2026-02-27)
