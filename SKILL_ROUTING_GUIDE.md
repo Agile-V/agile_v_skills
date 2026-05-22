@@ -13,6 +13,8 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 | Generate NestJS backend code | `build-agent-nestjs` | "Build NestJS API", "Implement NestJS auth", "Create microservice", "NestJS GraphQL" |
 | Design test cases | `test-designer` | "Create tests", "Design verification suite", "How do we verify this?" |
 | Verify/test implementation | `red-team-verifier` | "Run verification", "Test the build", "Challenge the code", "Find defects" |
+| Human Gate 2 / eval gate evidence | `red-team-verifier` + `compliance-auditor` | "Eval gate", "EVAL_RESULTS", "FT code on finding", "Gate 2 blocked" |
+| Tool policy / durable approval pause | `agile-v-core` + `agile-v-compliance` | "POLICY.yaml", "CHECKPOINTS", "resume_token", "interrupt pending" |
 | Security threat modeling | `threat-modeler` | "Identify security threats", "STRIDE analysis", "Privacy assessment", "What are the security risks?" |
 | UX/design specifications | `ux-spec-author` | "Define user flows", "Design spec", "Accessibility requirements", "What should the UX be?" |
 | Sprint planning & backlog management | `agile-v-product-owner` | "Plan sprint", "Prioritize backlog", "Create user stories", "Track velocity" |
