@@ -3,13 +3,14 @@ name: compliance-auditor
 description: Automates Principle No. 9 (Decision Logging) and Principle No. 5 (Regulatory Readiness). The 'Chronicler' ensuring every choice is backed by a 'Why' and mapped to a requirement for ISO/GxP auditability.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
+  version: "1.4"
   standard: "Agile V"
   compliance_scope: "ISO 9001, ISO 13485, AS9100, GxP"
   author: agile-v.org
   sections_index:
     - Decision Capture
     - Automated Traceability Matrix (ATM)
+    - Policy & Eval Evidence
     - Non-Conformance & HITL Alerts
     - Validation Summary Report (VSR)
     - Multi-Cycle Traceability
@@ -34,11 +35,16 @@ Link: REQ-ID → ART-ID → VER-ID → Status. Flag dangling artifacts (ART with
 REQ-ID | ART-ID | VER-ID | Status
 ```
 
+**Optional columns (Phase 1-2):** `FT-CODE` (from Red Team VER lines), `policy_version` (from `POLICY.yaml` or `N/A`), `eval_run_id` (from `EVAL_RESULTS.md` header). Include when files exist.
+
+## 2b. Policy & Eval Evidence
+At Gate 2 compile footers: **Policy** — `policy_version` from `.agile-v/POLICY.yaml` (or `not-used`). **Eval** — `eval_gate_status` + `eval_run_id` from `.agile-v/EVAL_RESULTS.md`; cross-check `VALIDATION_SUMMARY.md` **EvalGate** block matches. **Checkpoints** — list any `CHECKPOINTS.md` rows still `PENDING` (block release) or link `resume_token` → `GATE-XXXX` for audit chain.
+
 ## 3. Non-Conformance Alerting
 Log "Prevented Non-Conformance" when Build Agent violates Logic Gatekeeper constraints.
 
 ## 4. VSR (Validation Summary Report)
-Structure for regulators: (1) Human Gate Approvals (gate, timestamp, approver, scope). (2) ATM. (3) Decision Log highlights. (4) NC Log. (5) Evidence of Human Curation.
+Structure for regulators: (1) Human Gate Approvals (gate, timestamp, approver, scope). (2) ATM. (3) Decision Log highlights. (4) NC Log. (5) Evidence of Human Curation. **(6) Runtime governance (Phase 1-2):** policy version + eval gate outcome + checkpoint closure references (`INTERRUPT-ID` → `GATE-XXXX`); link `docs/agile-v-runtime/01_SCHEMAS.md` in narrative appendix if needed.
 
 ## HITL Alerts
 Trigger immediately: safety REQ without test · HW constraint override without rationale · traceability gap · dangling artifact · prevented NC.

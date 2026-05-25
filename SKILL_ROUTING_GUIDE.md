@@ -9,9 +9,16 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 | Convert user research/feedback into requirements | `discovery-analyst` | "Analyze user interviews", "Convert feedback to requirements", "I have customer insights" |
 | Write formal requirements from product intent | `requirement-architect` | "Write PRD", "Create requirements", "Define features", "I need a blueprint" |
 | Check requirements for ambiguity/conflicts | `logic-gatekeeper` | "Validate requirements", "Check for ambiguity", "Review constraints", "Are requirements testable?" |
-| Generate code from requirements | `build-agent` + domain-specific (e.g., `build-agent-python`) | "Implement features", "Generate code", "Build from requirements" |
+| Generate code from requirements | `build-agent` + domain-specific | "Implement features", "Generate code", "Build from requirements" |
+| Generate Python code | `build-agent-python` | "Build Python API", "FastAPI/Flask/Django", "Python data pipeline", "ML implementation" |
+| Generate JavaScript/TypeScript code | `build-agent-js` | "Build React app", "Next.js app", "Node.js backend", "TypeScript API" |
+| Generate Dart/Flutter code | `build-agent-dart` | "Build Flutter app", "Mobile app", "Cross-platform app" |
+| Generate embedded C/C++ code | `build-agent-embedded` | "Build firmware", "RTOS app", "Microcontroller code", "Safety-critical system" |
+| Generate NestJS backend code | `build-agent-nestjs` | "Build NestJS API", "Implement NestJS auth", "Create microservice", "NestJS GraphQL" |
 | Design test cases | `test-designer` | "Create tests", "Design verification suite", "How do we verify this?" |
 | Verify/test implementation | `red-team-verifier` | "Run verification", "Test the build", "Challenge the code", "Find defects" |
+| Human Gate 2 / eval gate evidence | `red-team-verifier` + `compliance-auditor` | "Eval gate", "EVAL_RESULTS", "FT code on finding", "Gate 2 blocked" |
+| Tool policy / durable approval pause | `agile-v-core` + `agile-v-compliance` | "POLICY.yaml", "CHECKPOINTS", "resume_token", "interrupt pending" |
 | Security threat modeling | `threat-modeler` | "Identify security threats", "STRIDE analysis", "Privacy assessment", "What are the security risks?" |
 | UX/design specifications | `ux-spec-author` | "Define user flows", "Design spec", "Accessibility requirements", "What should the UX be?" |
 | Sprint planning & backlog management | `agile-v-product-owner` | "Plan sprint", "Prioritize backlog", "Create user stories", "Track velocity" |
@@ -86,23 +93,45 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 - "Implement in Python"
 - "Create Python package"
 - "FastAPI/Flask/Django application"
+- "Python data pipeline"
+- "ML model implementation"
+- "Python CLI tool"
+- **Auto-detected:** `requirements.txt`, `pyproject.toml`, `setup.py`, `.py` files
 
 **`build-agent-js`**
 - "Build React app"
 - "Implement in TypeScript"
 - "Create Node.js backend"
 - "Next.js/Express application"
+- "Build frontend"
+- "JavaScript API"
+- **Auto-detected:** `package.json`, `.js`, `.ts`, `.jsx`, `.tsx` files
 
 **`build-agent-dart`**
 - "Build Flutter app"
 - "Implement in Dart"
 - "Create mobile application"
+- "Flutter widget"
+- "Cross-platform app"
+- **Auto-detected:** `pubspec.yaml`, `.dart` files
 
 **`build-agent-embedded`**
 - "Build firmware"
 - "Implement for microcontroller"
 - "C/C++ embedded code"
 - "Hardware integration"
+- "RTOS application"
+- "Safety-critical system"
+- **Auto-detected:** `CMakeLists.txt`, `Makefile`, `.c`, `.cpp` files with embedded patterns
+
+**`build-agent-nestjs`**
+- "Build NestJS backend"
+- "Implement NestJS API"
+- "Create NestJS microservice"
+- "NestJS authentication"
+- "NestJS GraphQL API"
+- "TypeORM integration"
+- "Prisma integration"
 
 **`test-designer`**
 - "Design test cases"

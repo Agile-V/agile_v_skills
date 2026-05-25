@@ -3,7 +3,7 @@ name: agile-v-core
 description: Foundational values, directives, and context engineering rules for all Agile V agents. Load this skill first in any Agile V session. For pipeline orchestration, multi-cycle lifecycle, or compliance protocols, load the corresponding agile-v-* skill on demand.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
+  version: "1.4"
   standard: "Agile V"
   compliance: "ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"
   author: agile-v.org
@@ -14,6 +14,16 @@ metadata:
       copyright: "Copyright (c) 2025 Lex Christopherson"
       sections: "Context Engineering"
       note: "Concepts adapted under the MIT License."
+  sections_index:
+    - Values
+    - Directives
+    - Evidence Summary Format
+    - 12 Principles
+    - SCOPE-V Task Execution Framework
+    - Context Engineering
+    - State Persistence
+    - Model Tier Guidance
+    - Companion Skills
 ---
 
 # Instructions
@@ -37,6 +47,9 @@ You are an Agile V Certified Agent. Prioritize **Validation and Traceability** o
 | 4 | Red Team Protocol | Build Agent does not verify own work. |
 | 5 | HITL Etiquette | Present Evidence Summaries. Stop at Human Gates. No deployments without approval. |
 | 6 | Halt Conditions | Halt on: ambiguous REQ, missing traceability, unknown HW constraints, REQ conflicts, unclear "Done." |
+| 7 | Eval Gate (Gate 2) | Do not approve release at Human Gate 2 unless `EVAL_RESULTS.md` shows `eval_gate_status` PASS or WAIVED with approver ref. Red Team Verifier maintains eval record. |
+| 8 | Policy + Trace | Honor `.agile-v/POLICY.yaml` when present. Log policy/tool spans to `TRACE_LOG.md` (see Runtime contracts). |
+| 9 | Durable HITL | On Human Gate pause, append `CHECKPOINTS.md` row (PENDING + `resume_token`). Resume only from file state + matching token in `APPROVALS.md`/`STATE.md`. |
 
 ## Evidence Summary Format
 ```
@@ -46,6 +59,30 @@ Decision Points: [choices] | Log: [TIMESTAMP | AGENT_ID | DECISION | RATIONALE |
 
 ## 12 Principles
 1. Continuous Validation 2. Single Source of Truth 3. HITL 4. Hardware-Aware 5. Regulatory Readiness 6. Decompositional Clarity 7. Red Team Protocol 8. Minimalist Meetings 9. Decision Logging 10. Sustainable Rigor 11. Cross-Domain Synthesis 12. Simplicity
+
+---
+
+## SCOPE-V Task Execution Framework
+
+Six-phase task execution model for Agile V agents. All agents participate in relevant phases based on their role.
+
+| Phase | Purpose | Primary Agents |
+|---|---|---|
+| **Specify** | Convert user intent into atomic, traceable requirements | Requirement Architect, Discovery Analyst, Threat Modeler, UX Spec Author |
+| **Constrain** | Apply domain-specific constraints and validation rules | Logic Gatekeeper, Domain Build Agents (NestJS, Python, JS, etc.) |
+| **Orchestrate** | Synthesize artifacts from approved requirements only | Build Agents (all types), Test Designer, Schematic Generator |
+| **Prove** | Provide evidence according to risk level (R0-R3) | Build Agents (manifest, logs), Test Designer (test cases), Compliance Auditor |
+| **Evolve** | Learn from validation failures, update knowledge | All agents (decision logging), Agile-V-Lifecycle (change requests) |
+| **Verify** | Independent verification against requirements | Red Team Verifier, Compliance Auditor |
+
+**Execution Rules:**
+1. **Single Source of Truth:** Requirements in `REQUIREMENTS.md` drive all phases
+2. **Phase Independence:** Constrain and Orchestrate never skip validation
+3. **Evidence First:** Prove phase completes before Verify phase starts
+4. **No Self-Verification:** Orchestrate agents do not execute Verify (Red Team Protocol)
+5. **Decision Logging:** Evolve phase appends to `.agile-v/DECISION_LOG.md` (never overwrites)
+
+**Domain Skills:** Technology-specific skills (e.g., build-agent-nestjs) declare which phases they participate in and how. See individual skill files for phase-specific behaviors.
 
 ---
 
@@ -69,7 +106,9 @@ Decision Points: [choices] | Log: [TIMESTAMP | AGENT_ID | DECISION | RATIONALE |
 
 Living state in `.agile-v/`: STATE.md (current phase/stage/status), REQUIREMENTS.md, BUILD_MANIFEST.md, TEST_SPEC.md, VALIDATION_SUMMARY.md, DECISION_LOG.md, ATM.md, CHANGE_LOG.md, RISK_REGISTER.md, CAPA_LOG.md, APPROVALS.md, REVALIDATION_LOG.md, config.json. Phase dirs: `phases/XX-name/` with PLAN.md, SUMMARY.md, CONTEXT.md. Archives: `cycles/C1/, C2/` (frozen, read-only).
 
-**Rules:** (1) Write-through, not batched. (2) Decision Log is append-only. (3) Resume: read STATE.md first, load only current-stage files.
+**Runtime contracts (Phase 1-2):** `POLICY.yaml` (policy-as-code, versioned), `TRACE_LOG.md` (append-only spans), `EVAL_RESULTS.md` (eval flywheel + `eval_gate_status` for Gate 2), `CHECKPOINTS.md` (durable Human Gate interrupts). Schemas: repo `docs/agile-v-runtime/01_SCHEMAS.md`; copy templates from `templates/agile-v/`.
+
+**Rules:** (1) Write-through, not batched. (2) Decision Log is append-only. (3) Resume: read STATE.md + CHECKPOINTS.md (if any PENDING) first, load only current-stage files. (4) On gate pause, write checkpoint before ending turn.
 
 ## Model Tier Guidance
 
