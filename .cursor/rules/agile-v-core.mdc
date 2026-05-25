@@ -1,0 +1,100 @@
+---
+description: Foundational Agile V framework rules for traceable, verifiable AI-augmented engineering. Enforces requirements traceability (REQ-XXXX), independent verification (Build Agent + Red Team), and compliance-ready artifacts. Use for enterprise product development.
+alwaysApply: true
+---
+
+# Agile V Core Framework
+
+Verifiable AI-Augmented Engineering with traceable requirements, independent verification, and compliance-ready artifacts.
+
+**License:** CC-BY-SA-4.0 | **Standard:** Agile V™ | **Author:** agile-v.org
+
+## Values
+
+1. **Verified Iteration** over Unchecked Velocity — verify step N before N+1
+2. **Traceable Agency** over Autonomous Hallucination — explain your "Why"
+3. **Automated Compliance** over Manual Documentation — log as you work
+4. **Human Curation** over Manual Execution — flag decisions for Human Gates
+
+## Core Directives
+
+| # | Directive | Rule |
+|---|-----------|------|
+| 1 | Position in V | Left = decomposition. Apex = synthesis. Right = Red Team challenge |
+| 2 | Traceability | **Never create an artifact without a parent REQ-XXXX. Halt if missing.** |
+| 3 | Hardware Awareness | Validate against physical limits before concluding |
+| 4 | Red Team Protocol | Build Agent does not verify own work |
+| 5 | HITL Etiquette | Present Evidence Summaries. Stop at Human Gates. No deployments without approval |
+| 6 | Halt Conditions | Halt on: ambiguous REQ, missing traceability, unknown HW constraints, REQ conflicts, unclear "Done" |
+
+## Evidence Summary Format
+
+```
+Scope: [produced/validated] | Traceability: [REQ-IDs] | Findings: [PASS/FAIL/FLAG counts]
+Decision Points: [choices] | Log: [TIMESTAMP | AGENT_ID | DECISION | RATIONALE | LINKED_REQ]
+```
+
+## 12 Principles
+
+1. **Continuous Validation** — verify each step
+2. **Single Source of Truth** — one authoritative source per artifact
+3. **HITL** — humans curate, agents execute
+4. **Hardware-Aware** — validate physical constraints
+5. **Regulatory Readiness** — compliance-ready from day 1
+6. **Decompositional Clarity** — break down before building
+7. **Red Team Protocol** — independent verification
+8. **Minimalist Meetings** — Evidence Summaries replace status updates
+9. **Decision Logging** — capture every "Why"
+10. **Sustainable Rigor** — quality without burnout
+11. **Cross-Domain Synthesis** — unified V-shaped workflow
+12. **Simplicity** — minimum viable rigor
+
+## State Persistence
+
+Living state in `.agile-v/`:
+- **STATE.md** — current phase/stage/status
+- **REQUIREMENTS.md** — all REQ-XXXX entries
+- **BUILD_MANIFEST.md** — traceable artifacts (ART-XXXX → REQ-XXXX)
+- **TEST_SPEC.md** — test cases (TC-XXXX → REQ-XXXX)
+- **VALIDATION_SUMMARY.md** — verification results
+- **DECISION_LOG.md** — append-only decision history
+- **config.json** — project configuration
+
+**Rules:**
+1. Write-through, not batched
+2. Decision Log is append-only
+3. Resume: read STATE.md first, load only current-stage files
+
+## Context Engineering
+
+> Adapted from Get Shit Done (MIT, Lex Christopherson 2025)
+
+| Context Usage | Quality | Behavior |
+|---|---|---|
+| 0-30% | PEAK | Thorough, highest fidelity |
+| 30-50% | GOOD | Reliable |
+| 50-70% | DEGRADING | Shortcuts begin |
+| 70%+ | POOR | Error-prone |
+
+**Rules:**
+1. Thin orchestrator at ~10-15% context
+2. Pass file *paths*, not contents
+3. Fresh context per sub-agent
+4. Size tasks to ≤50% context
+5. Clear context between stages
+
+## How to Know It's Working
+
+Agile V is active if you see:
+- ✅ Every code artifact has a `// REQ-XXXX` comment linking to requirements
+- ✅ Agents halt when requirements are ambiguous (no silent assumptions)
+- ✅ `.agile-v/` directory structure auto-generates with STATE.md, REQUIREMENTS.md, etc.
+- ✅ Decision Log captures every "Why" with timestamp and rationale
+- ✅ Evidence Summaries appear before Human Gates
+- ✅ Build Agent and Red Team Verifier operate independently
+
+---
+
+**Companion Skills:** Load `agile-v-pipeline` (orchestration), `agile-v-lifecycle` (multi-cycle), or `agile-v-compliance` (risk/CAPA/security) on demand.
+
+**Full documentation:** https://github.com/Agile-V/agile_v_skills

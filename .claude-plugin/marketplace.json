@@ -1,0 +1,40 @@
+{
+  "name": "agile-v-skills",
+  "id": "agile-v-skills",
+  "owner": {
+    "name": "Agile V",
+    "url": "https://agile-v.org"
+  },
+  "metadata": {
+    "description": "Verifiable AI-Augmented Engineering framework with traceable requirements, independent verification, and compliance-ready artifacts",
+    "version": "1.5.0",
+    "homepage": "https://github.com/Agile-V/agile_v_skills",
+    "documentation": "https://github.com/Agile-V/agile_v_skills/blob/main/README.md"
+  },
+  "plugins": [
+    {
+      "name": "agile-v-skills",
+      "source": "./",
+      "description": "Complete AI-augmented engineering framework: Requirements traceability (REQ-XXXX), independent Build Agent + Red Team Verifier, multi-cycle lifecycle management, compliance-ready artifacts (ISO 9001, ISO 27001, GxP)",
+      "version": "1.5.0",
+      "author": {
+        "name": "Agile V",
+        "url": "https://agile-v.org"
+      },
+      "keywords": [
+        "requirements",
+        "traceability",
+        "verification",
+        "compliance",
+        "testing",
+        "agile",
+        "lifecycle",
+        "enterprise",
+        "iso-9001",
+        "iso-27001",
+        "gxp"
+      ],
+      "category": "workflow"
+    }
+  ]
+}

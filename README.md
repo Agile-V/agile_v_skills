@@ -250,6 +250,126 @@ For other tools please refer to the official documentation of your desired tool.
 
 To learn more about skills and how to use skills in general, please follow the [instructions and documentation](https://agentskills.io/integrate-skills) of Agent Skills.
 
+
+## ✅ How to Know It's Working
+
+Agile V is actively protecting your development process if you observe these behaviors:
+
+### 1. Traceability Everywhere
+- ✅ Every code file includes `// REQ-XXXX` or `# Implements: REQ-XXXX` comments linking to requirements
+- ✅ `.agile-v/REQUIREMENTS.md` exists with formal requirement specifications
+- ✅ `.agile-v/BUILD_MANIFEST.md` maps every artifact (ART-XXXX) to its parent requirement
+- ✅ Each requirement includes acceptance criteria and rationale
+
+**Example:**
+```python
+# app/auth.py
+# ART-0001: User authentication handler
+# Implements: REQ-0001 (username/password authentication)
+# Compliance: ISO 27001 A.9.4.1
+```
+
+### 2. Agents Halt on Ambiguity
+- ✅ Instead of assuming, agents ask clarifying questions before implementing
+- ✅ `⚠️ HALT CONDITION` messages appear when requirements are unclear or missing
+- ✅ Agents present multiple interpretations when faced with ambiguous requests
+- ✅ No "silent assumptions" about hardware, scope, or user intent
+
+**Example:**
+```
+User: "Make the app faster"
+
+Agent: ⚠️ HALT CONDITION: Ambiguous requirement
+
+"Faster" could mean:
+1. Faster response time (backend optimization)
+2. Faster perceived speed (UI/UX improvements)
+3. Faster time-to-first-byte (infrastructure)
+
+Which aspect matters most for your use case?
+```
+
+### 3. Independent Verification (Red Team Protocol)
+- ✅ Build Agent implements features
+- ✅ Red Team Verifier tests independently (separate agent, fresh context)
+- ✅ Red Team finds issues Build Agent didn't self-detect
+- ✅ Evidence Summaries show both perspectives before Human Gates
+
+**Example:**
+```
+Build Agent: Implementation complete ✓
+Red Team Verifier: Found 4 security issues Build Agent missed
+  - SECURITY-001: No maximum password length (DoS risk)
+  - SECURITY-002: Unicode character bypass
+```
+
+### 4. Hardware Constraints Validated
+- ✅ Agents ask about target platform before optimizing (embedded vs cloud vs workstation)
+- ✅ Implementations stay within specified resource limits (RAM, CPU, GPU)
+- ✅ No assumptions about unlimited compute resources
+- ✅ Physical constraints documented in requirements
+
+**Example:**
+```
+Agent: ⚠️ HALT CONDITION: Hardware constraints unknown
+
+Before optimizing image processing:
+1. Target platform? (RPi4, workstation, cloud?)
+2. Available RAM?
+3. GPU availability?
+```
+
+### 5. Human Gates with Evidence Summaries
+- ✅ Before deployments, comprehensive Evidence Summaries appear
+- ✅ Approvals logged with timestamp and approver ID
+- ✅ No autonomous production deployments
+- ✅ Clear decision points documented
+
+**Example:**
+```
+=== EVIDENCE SUMMARY ===
+Scope: Deploy API v2.1.0 to production
+Traceability: REQ-0101 to REQ-0115 (15 requirements) ✓
+Test Results: 47/47 PASS
+Risk Assessment: RISK-003 mitigated ✓
+
+🛑 AWAITING HUMAN APPROVAL
+```
+
+### 6. Decision Log Captures "Why"
+- ✅ `.agile-v/DECISION_LOG.md` is append-only audit trail
+- ✅ Every significant choice includes timestamp, agent ID, rationale, and linked requirement
+- ✅ Alternative approaches considered and documented
+- ✅ Compliance-ready audit evidence
+
+**Example:**
+```markdown
+TIMESTAMP: 2026-05-26T10:30:00Z
+AGENT_ID: build-agent-python
+DECISION: Use sequential processing instead of parallel
+RATIONALE: Target hardware (RPi4) has only 4GB RAM
+LINKED_REQ: REQ-0010
+ALTERNATIVE_CONSIDERED: ProcessPoolExecutor with 2 workers
+ALTERNATIVE_REJECTED: Still risks OOM with high-res images
+```
+
+### 7. Multi-Cycle Lifecycle Support
+- ✅ Change Requests (CR-XXXX) tracked in `.agile-v/CHANGE_LOG.md`
+- ✅ Prior cycle artifacts archived to `.agile-v/cycles/C1/`, `C2/`, etc.
+- ✅ Requirements carry status tags (`new`, `modified`, `deprecated`, `superseded`)
+- ✅ Regression testing distinguishes delta tests from baseline tests
+
+### 8. Compliance-Ready Artifacts
+- ✅ Requirements map to compliance standards (ISO 9001, ISO 27001, GxP)
+- ✅ Traceability matrix (ATM) auto-generated in `.agile-v/ATM.md`
+- ✅ Risk register and CAPA log maintained
+- ✅ Verification Summary Report (VSR) ready for audits
+
+---
+
+**If you're NOT seeing these behaviors**, the Agile V skills may not be properly loaded or configured. See [EXAMPLES.md](EXAMPLES.md) for concrete before/after scenarios, or refer to [CLAUDE.md](CLAUDE.md) and [CURSOR.md](CURSOR.md) for platform-specific setup guides.
+
+
 ## 🏢 Enterprise & Team Integration: Standardizing Excellence
 
 Agile V™ is built to function as the quality layer between your team’s expertise and any AI agent they use. Whether teams rely on proprietary LLMs, local models, or different IDEs, the **engineering standard remains consistent** across the organization.

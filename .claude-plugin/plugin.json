@@ -1,0 +1,37 @@
+{
+  "name": "agile-v-skills",
+  "description": "Verifiable AI-Augmented Engineering framework with traceable requirements, independent verification, and compliance-ready artifacts",
+  "version": "1.5.0",
+  "author": {
+    "name": "Agile V",
+    "url": "https://agile-v.org"
+  },
+  "license": "CC-BY-SA-4.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Agile-V/agile_v_skills.git"
+  },
+  "keywords": [
+    "requirements",
+    "traceability",
+    "verification",
+    "compliance",
+    "testing",
+    "agile",
+    "lifecycle",
+    "enterprise"
+  ],
+  "skills": [
+    "./agile-v-core",
+    "./agile-v-behavioral",
+    "./agile-v-pipeline",
+    "./agile-v-lifecycle",
+    "./build-agent",
+    "./test-designer",
+    "./red-team-verifier",
+    "./discovery-analyst",
+    "./requirement-architect",
+    "./compliance-auditor",
+    "./release-manager"
+  ]
+}
