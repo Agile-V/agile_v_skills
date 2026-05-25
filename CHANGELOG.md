@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/Agile-V/agile_v_skills/compare/v2.0.1...v3.0.0) (2026-05-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* Introduces new checklist requirements in feature briefs and evidence bundles
+
+### Features
+
+* Add agile-v-quality-gates skill for enhanced quality assurance ([c4ac524](https://github.com/Agile-V/agile_v_skills/commit/c4ac5242203d7d01054a750d50db1627940647dd))
+* Add quality improvements based on comprehensive testing ([3d204dc](https://github.com/Agile-V/agile_v_skills/commit/3d204dc3cdb0435290ca1de867617103e894b3ff))
+
 ### [2.0.1](https://github.com/Agile-V/agile_v_skills/compare/v2.0.0...v2.0.1) (2026-05-22)
 
 ## [2.0.0](https://github.com/Agile-V/agile_v_skills/compare/v1.5.0...v2.0.0) (2026-05-22)
