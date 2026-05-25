@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/Agile-V/agile_v_skills/compare/v3.0.0...v3.1.0) (2026-05-25)
+
+
+### Features
+
+* integrate Karpathy Skills best practices for accessibility and distribution ([e150c42](https://github.com/Agile-V/agile_v_skills/commit/e150c42770d78cae620004a9076fb359f3e0113b))
+
 ## [3.0.0](https://github.com/Agile-V/agile_v_skills/compare/v2.0.1...v3.0.0) (2026-05-25)
 
 
