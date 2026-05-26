@@ -334,7 +334,7 @@ Below are practical ways to use these skills in common editors and agents.
 Skills are discovered from `.cursor/skills/` (project) or `~/.cursor/skills/` (global). Each skill is a folder containing a `SKILL.md` file with YAML frontmatter. The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into `.cursor/skills/`.
 For more information on how to use Skills in Cursor please refer to the [official documentation](https://cursor.com/docs/context/skills).
 - **Claude Code**  
-Skills are discovered from `.claude/skills/` (project) or `~/.claude/skills/` (global). Each skill is a folder containing a `SKILL.md` file with YAML frontmatter. The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into `.cursor/skills/`.
+Skills are discovered from `.claude/skills/` (project) or `~/.claude/skills/` (global). Each skill is a folder containing a `SKILL.md` file with YAML frontmatter. The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into `.claude/skills/`.
 For more information on how to use Skills in Cursor please refer to the [official documentation](https://code.claude.com/docs/en/skills).
 - **VS Code**  
 VS Code supports two types of skills. Project skills, stored in your repository like `.github/skills/`, `.claude/skills`, `.agents/skills/` or personal skills stored globally like `~/.copilot/skills/`, `~/.claude/skills`, `~/.agents/skills/`.
@@ -494,6 +494,50 @@ Agile V™ establishes a minimum quality floor across all teams and agents.
 
 > [!TIP] 
 > Teams can maintain a private `/internal-skills` directory that inherits from the root-level skills (e.g., `agile-v-core/`). This enables a **“Global Standard, Local Context”** workflow; shared principles with company-specific adaptations.
+
+## Understand Anything Integration
+
+Agile V can consume an [Understand Anything](https://github.com/Lum1104/Understand-Anything)
+knowledge graph to add codebase-understanding, impact analysis, graph traceability, and
+regression-test selection to the Agile V lifecycle.
+
+This enables:
+
+- Requirement → component → test traceability
+- Change-impact analysis before writing code
+- Regression-test selection from the dependency graph
+- Audit-ready evidence bundles with system context
+- Reviewer-friendly architecture maps
+
+### New skills
+
+| Skill | Path | Purpose |
+|---|---|---|
+| `system-understanding-agent` | `skills/system-understanding-agent/` | Gate 0: consume graph, produce system overview |
+| `impact-analysis-agent` | `skills/impact-analysis-agent/` | Map change request to affected components |
+| `graph-traceability-agent` | `skills/graph-traceability-agent/` | Link REQs to graph nodes, files, and tests |
+| `regression-selection-agent` | `skills/regression-selection-agent/` | Select and prioritize regression tests |
+| `diff-evidence-agent` | `skills/diff-evidence-agent/` | Compare predicted vs actual impact |
+
+### Integration docs
+
+See `integrations/understand-anything/` for:
+
+- Adapter contract (graph format → Agile V schema)
+- Evidence mapping (which artifacts go where in the bundle)
+- Graph assumptions and tolerant loading strategy
+- Security and privacy guidance for evidence exports
+- End-to-end examples
+
+### Quick positioning
+
+> Understand the system. Change it safely. Prove what changed.
+
+The `agentic_agile_v` repository provides the runtime adapter, Python modules, JSON schemas,
+and unit tests. CLI commands are planned for Phase 3 and are not yet available.
+See `docs/understand-anything-integration.md` in that repository.
+
+---
 
 ## Versioning
 
