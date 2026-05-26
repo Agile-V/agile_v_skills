@@ -1,12 +1,111 @@
 # Agile V™ Agent Skills Library
 
-### *Verifiable AI-Augmented Engineering*
+### *🔬 Verifiable AI-Augmented Engineering - Stop AI Hallucinations with Formal Traceability*
 
 [![Standard: Agile V™](https://img.shields.io/badge/Standard-Agile--V™-blueviolet)](https://agile-v.org/)
 [![Spec: AgentSkills.io](https://img.shields.io/badge/Spec-AgentSkills.io-green)](https://agentskills.io/specification)
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey)](https://creativecommons.org/licenses/by-sa/4.0/)
+[![Version](https://img.shields.io/github/v/release/Agile-V/agile_v_skills?label=version)](https://github.com/Agile-V/agile_v_skills/releases)
+[![Stars](https://img.shields.io/github/stars/Agile-V/agile_v_skills?style=social)](https://github.com/Agile-V/agile_v_skills/stargazers)
 
-This repository contains the official collection of **Agent Skills** for the Agile V™ framework. These skills are designed to transform standard LLMs into specialized engineering agents capable of building, verifying, and auditing complex systems with mathematical rigor.
+[![ISO 9001 Aligned](https://img.shields.io/badge/ISO_9001-Aligned-blue)](./docs/compliance/02_ISO_9001_MATRIX.md)
+[![ISO 27001 Aligned](https://img.shields.io/badge/ISO_27001-Aligned-blue)](./docs/compliance/05_ISO_27001_MATRIX.md)
+[![GxP Aware](https://img.shields.io/badge/GxP-Aware-blue)](./docs/compliance/06_GXP_GAMP5_MATRIX.md)
+[![Claude Code](https://img.shields.io/badge/Claude_Code-Plugin-orange)](CLAUDE.md)
+[![Cursor](https://img.shields.io/badge/Cursor-Rules-orange)](CURSOR.md)
+[![VS Code](https://img.shields.io/badge/VS_Code-Skills-orange)](README.md#how-to-use)
+[![GitHub Copilot](https://img.shields.io/badge/GitHub_Copilot-Skills-orange)](README.md#how-to-use)
+
+---
+
+## 🎯 **The Problem with AI Agents Today**
+
+**AI agents hallucinate.** They generate code without requirements, skip testing, make silent assumptions, and deploy to production without approval. Great for demos. **Catastrophic for real products.**
+
+## ✨ **The Solution: Agile V Framework**
+
+Transform unreliable AI agents into **Verifiable Engineering Systems** with:
+
+- ✅ **Formal Traceability** — Every line of code links to `REQ-XXXX` → `ART-XXXX` → `TC-XXXX`
+- ✅ **Independent Verification** — Red Team Verifier tests what Build Agent creates (no self-grading)
+- ✅ **Hardware Awareness** — Agents ask about RAM/CPU/GPU before optimizing (no "works on my machine")
+- ✅ **Human Gates** — Evidence Summaries before deployments (no autonomous production releases)
+- ✅ **Halt on Ambiguity** — Agents stop and ask when requirements are unclear (no silent assumptions)
+- ✅ **Compliance-Ready** — Auto-generates ISO 9001, ISO 27001, GxP artifacts from day 1
+- ✅ **Multi-Platform** — Works with Claude Code, Cursor, VS Code, GitHub Copilot
+
+---
+
+## 🚀 **Quick Start**
+
+### Installation (Choose Your Platform)
+
+**Claude Code:**
+```bash
+/plugin install agile-v-skills
+```
+
+**Cursor:**
+```bash
+# Copy project rules to enable auto-apply
+cp -r .cursor/rules/ /path/to/your/project/.cursor/
+```
+
+**VS Code / GitHub Copilot:**
+```bash
+# Copy skills to global directory
+cp -r agile-v-core/ ~/.copilot/skills/
+cp -r build-agent/ ~/.copilot/skills/
+```
+
+👉 **See [Installation Guide](#how-to-use) for detailed platform-specific instructions**
+
+### Your First Verified Build
+
+```
+You: "Add user authentication"
+
+Agent: ⚠️ HALT CONDITION: No requirement specification found
+
+Before implementing, I'll invoke the Requirement Architect to:
+1. Decompose "user authentication" into formal requirements
+2. Define acceptance criteria
+3. Identify security and compliance constraints
+
+[Requirement Architect creates REQ-0001, REQ-0002...]
+
+Build Agent: ✓ Implementation complete (ART-0001 → REQ-0001)
+Red Team Verifier: Testing independently...
+  - Found 2 security issues Build Agent missed
+  - SECURITY-001: No max password length (DoS risk)
+  
+[Build Agent fixes issues based on Red Team feedback]
+
+Red Team Verifier: ✓ All tests pass
+Agent: Ready for Human Gate approval
+```
+
+**Result:** Production-ready code with full traceability and independent verification.
+
+---
+
+## 🌟 **Why Agile V?**
+
+| Feature | Typical AI Agents | Agile V Framework |
+|---------|------------------|-------------------|
+| **Traceability** | ❌ Code appears without requirements | ✅ Every artifact links to REQ-XXXX |
+| **Verification** | ❌ Self-tests own code (confirmation bias) | ✅ Independent Red Team Verifier |
+| **Hardware** | ❌ Assumes unlimited resources | ✅ Validates RAM/CPU/GPU constraints |
+| **Deployment** | ❌ Autonomous production pushes | ✅ Human Gates with Evidence Summaries |
+| **Ambiguity** | ❌ Silent assumptions, hallucinations | ✅ Halts and asks clarifying questions |
+| **Compliance** | ❌ Manual audit prep (weeks) | ✅ Auto-generated ISO/GxP artifacts |
+| **Multi-Cycle** | ❌ Fresh start each iteration | ✅ Change Requests, version control, regression tests |
+
+---
+
+## 💡 **What You Get**
+
+This repository contains the official collection of **Agent Skills** for the Agile V™ framework. These skills transform standard LLMs into specialized engineering agents capable of building, verifying, and auditing complex systems with mathematical rigor.
 
 ## The Vision: From Manifesto to Execution
 

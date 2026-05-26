@@ -1,11 +1,45 @@
 {
   "name": "agile-v-skills",
   "version": "3.2.0",
-  "description": "Official Agent Skills for the Agile V™ framework. Traceable product development: requirements, build, verification, and compliance.",
+  "description": "🔬 Verifiable AI-Augmented Engineering Framework - Agent Skills for traceable requirements, independent Red Team verification, and compliance-ready artifacts. Stop AI hallucinations with formal traceability (REQ→ART→TC). Enterprise-grade quality for Claude Code, Cursor, VS Code, and GitHub Copilot.",
+  "keywords": [
+    "ai-agents",
+    "agent-skills",
+    "requirements-engineering",
+    "traceability",
+    "verification",
+    "testing",
+    "compliance",
+    "iso-9001",
+    "iso-27001",
+    "gxp",
+    "quality-assurance",
+    "software-engineering",
+    "agile",
+    "v-model",
+    "red-team",
+    "claude-code",
+    "cursor",
+    "github-copilot",
+    "vscode",
+    "llm",
+    "ai-safety",
+    "autonomous-agents",
+    "enterprise",
+    "behavioral-guidelines",
+    "karpathy"
+  ],
   "author": "Agile V™ <info@agile-v.org>",
+  "homepage": "https://agile-v.org",
   "repository": {
     "type": "git",
     "url": "https://github.com/Agile-V/agile_v_skills.git"
   },
-  "license": "CC-BY-SA-4.0"
+  "bugs": {
+    "url": "https://github.com/Agile-V/agile_v_skills/issues"
+  },
+  "license": "CC-BY-SA-4.0",
+  "engines": {
+    "node": ">=14.0.0"
+  }
 }
