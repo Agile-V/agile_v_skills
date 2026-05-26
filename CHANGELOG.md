@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/Agile-V/agile_v_skills/compare/v3.1.0...v3.2.0) (2026-05-26)
+
+
+### Features
+
+* add Understand Anything integration — Phase 1 docs, skills, templates ([5b7a0df](https://github.com/Agile-V/agile_v_skills/commit/5b7a0df32cb8788de409a2e62642b39171b3600b))
+
+
+### Bug Fixes
+
+* resolve all H/M/L audit issues from code review ([4507de5](https://github.com/Agile-V/agile_v_skills/commit/4507de5eb0af186a123d20d630eba41d2ede85a9))
+
 ## [3.1.0](https://github.com/Agile-V/agile_v_skills/compare/v3.0.0...v3.1.0) (2026-05-25)
 
 
