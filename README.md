@@ -396,6 +396,49 @@ Agile V™ establishes a minimum quality floor across all teams and agents.
 > [!TIP] 
 > Teams can maintain a private `/internal-skills` directory that inherits from the root-level skills (e.g., `agile-v-core/`). This enables a **“Global Standard, Local Context”** workflow; shared principles with company-specific adaptations.
 
+## Understand Anything Integration
+
+Agile V can consume an [Understand Anything](https://github.com/Lum1104/Understand-Anything)
+knowledge graph to add codebase-understanding, impact analysis, graph traceability, and
+regression-test selection to the Agile V lifecycle.
+
+This enables:
+
+- Requirement → component → test traceability
+- Change-impact analysis before writing code
+- Regression-test selection from the dependency graph
+- Audit-ready evidence bundles with system context
+- Reviewer-friendly architecture maps
+
+### New skills
+
+| Skill | Path | Purpose |
+|---|---|---|
+| `system-understanding-agent` | `skills/system-understanding-agent/` | Gate 0: consume graph, produce system overview |
+| `impact-analysis-agent` | `skills/impact-analysis-agent/` | Map change request to affected components |
+| `graph-traceability-agent` | `skills/graph-traceability-agent/` | Link REQs to graph nodes, files, and tests |
+| `regression-selection-agent` | `skills/regression-selection-agent/` | Select and prioritize regression tests |
+| `diff-evidence-agent` | `skills/diff-evidence-agent/` | Compare predicted vs actual impact |
+
+### Integration docs
+
+See `integrations/understand-anything/` for:
+
+- Adapter contract (graph format → Agile V schema)
+- Evidence mapping (which artifacts go where in the bundle)
+- Graph assumptions and tolerant loading strategy
+- Security and privacy guidance for evidence exports
+- End-to-end examples
+
+### Quick positioning
+
+> Understand the system. Change it safely. Prove what changed.
+
+The `agentic_agile_v` repository provides the runtime adapter, Python modules, CLI commands,
+JSON schemas, and unit tests. See `docs/understand-anything-integration.md` in that repository.
+
+---
+
 ## Versioning
 
 - **Repository:** The repo uses [semantic versioning](https://semver.org/) driven by [Conventional Commits](https://www.conventionalcommits.org/). On each push to `main`, a GitHub Action reads the commit message and bumps the version accordingly: `feat:` → minor, `fix:` (and `chore:`, `docs:`, etc.) → patch, `BREAKING CHANGE` or `type!:` → major. It then creates a new git tag (e.g. `v1.5.1`) and updates the root `[package.json](package.json)`. The version field and tag are maintained by the workflow; do not edit `package.json` version by hand for releases. The same file holds repo metadata (name, description, author, repository, license).
