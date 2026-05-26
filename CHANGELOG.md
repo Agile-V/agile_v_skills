@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/Agile-V/agile_v_skills/compare/v3.2.0...v3.3.0) (2026-05-26)
+
+
+### Features
+
+* enhance repository discoverability and appeal ([993b06d](https://github.com/Agile-V/agile_v_skills/commit/993b06d6acf5b9651f70405354a326c86ec53d8d))
+
 ## [3.2.0](https://github.com/Agile-V/agile_v_skills/compare/v3.1.0...v3.2.0) (2026-05-26)
 
 
