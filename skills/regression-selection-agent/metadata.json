@@ -32,6 +32,7 @@
   "evidence_level": "supporting",
   "evidence_section": "05_tests",
   "human_gate_required": false,
+  "blocks_on_low_confidence": false,
   "compatible_frameworks": [
     "Claude Code",
     "Codex",

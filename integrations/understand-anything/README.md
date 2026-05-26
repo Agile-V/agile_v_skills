@@ -61,24 +61,29 @@ Skills live in `agile_v_skills/skills/` following the existing pattern.
 
 ## Example workflow
 
+> **Note:** The `agilev` CLI commands shown below (`agilev understand`, `agilev impact`, etc.)
+> are **Phase 3 / not yet available**. They are shown here to illustrate the intended workflow.
+> In the current release, run `system-understanding-agent` and `impact-analysis-agent` as
+> agent skills directly (via your AI coding assistant), not via CLI.
+
 ```bash
 # 1. Generate the knowledge graph (Understand Anything step, outside Agile V)
 understand --repo .
 
 # 2. Agile V detects the graph and runs Gate 0
-agilev understand --repo .
+agilev understand --repo .   # Phase 3 — not yet available
 
 # 3. Analyze impact of the change request
-agilev impact --change-request change_request.md
+agilev impact --change-request change_request.md   # Phase 3 — not yet available
 
 # 4. Proceed through the normal Agile V lifecycle with graph context
-agilev specify --from-impact .agile-v/impact/impact_map.md
-agilev contract generate
-agilev build
-agilev test design
-agilev redteam
-agilev trace graph
-agilev evidence export --include-understanding
+agilev specify --from-impact .agile-v/impact/impact_map.md   # Phase 3 — not yet available
+agilev contract generate   # Phase 3 — not yet available
+agilev build               # Phase 3 — not yet available
+agilev test design         # Phase 3 — not yet available
+agilev redteam             # Phase 3 — not yet available
+agilev trace graph         # Phase 3 — not yet available
+agilev evidence export --include-understanding   # Phase 3 — not yet available
 ```
 
 ## Example change request

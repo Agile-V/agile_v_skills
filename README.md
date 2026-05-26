@@ -235,7 +235,7 @@ Below are practical ways to use these skills in common editors and agents.
 Skills are discovered from `.cursor/skills/` (project) or `~/.cursor/skills/` (global). Each skill is a folder containing a `SKILL.md` file with YAML frontmatter. The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into `.cursor/skills/`.
 For more information on how to use Skills in Cursor please refer to the [official documentation](https://cursor.com/docs/context/skills).
 - **Claude Code**  
-Skills are discovered from `.claude/skills/` (project) or `~/.claude/skills/` (global). Each skill is a folder containing a `SKILL.md` file with YAML frontmatter. The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into `.cursor/skills/`.
+Skills are discovered from `.claude/skills/` (project) or `~/.claude/skills/` (global). Each skill is a folder containing a `SKILL.md` file with YAML frontmatter. The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into `.claude/skills/`.
 For more information on how to use Skills in Cursor please refer to the [official documentation](https://code.claude.com/docs/en/skills).
 - **VS Code**  
 VS Code supports two types of skills. Project skills, stored in your repository like `.github/skills/`, `.claude/skills`, `.agents/skills/` or personal skills stored globally like `~/.copilot/skills/`, `~/.claude/skills`, `~/.agents/skills/`.
@@ -434,8 +434,9 @@ See `integrations/understand-anything/` for:
 
 > Understand the system. Change it safely. Prove what changed.
 
-The `agentic_agile_v` repository provides the runtime adapter, Python modules, CLI commands,
-JSON schemas, and unit tests. See `docs/understand-anything-integration.md` in that repository.
+The `agentic_agile_v` repository provides the runtime adapter, Python modules, JSON schemas,
+and unit tests. CLI commands are planned for Phase 3 and are not yet available.
+See `docs/understand-anything-integration.md` in that repository.
 
 ---
 

@@ -12,7 +12,7 @@ the Build Agent, Test Designer, and Red Team.
 |---|---|
 | `impact_map.md` | Predicted affected components (direct and indirect) |
 | `affected_components.json` | Machine-readable component list for Build Agent context |
-| `required_regression_tests.md` | Regression tests to run after build |
+| `regression_test_candidates.md` | Preliminary regression test candidates (refined by `regression-selection-agent`) |
 | `change_risk_assessment.md` | Risk register pre-change |
 
 ## See also
@@ -21,4 +21,4 @@ the Build Agent, Test Designer, and Red Team.
 - `metadata.json` — machine-readable skill metadata
 - `../system-understanding-agent/` — prerequisite skill
 - `../regression-selection-agent/` — companion skill for test selection
-- `integrations/understand-anything/examples/impact_analysis_example.md` — full example
+- `../../integrations/understand-anything/examples/impact_analysis_example.md` — full example

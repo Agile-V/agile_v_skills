@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "Creates evidence comparing the predicted impact map to the actual implementation diff. Closes the pre-change to post-change evidence loop for audit and Red Team verification.",
   "category": "evidence",
-  "lifecycle_position": "post-build",
+  "lifecycle_position": "post-traceability",
   "inputs": [
     "implementation diff",
     ".agile-v/impact/impact_map.md",
+    ".agile-v/impact/change_risk_assessment.md",
     ".agile-v/requirements/requirements.md",
     ".agile-v/traceability/graph_traceability_matrix.md",
     "test results",
@@ -35,6 +36,7 @@
   "evidence_level": "primary",
   "evidence_section": "07_traceability",
   "human_gate_required": false,
+  "blocks_on_low_confidence": false,
   "compatible_frameworks": [
     "Claude Code",
     "Codex",

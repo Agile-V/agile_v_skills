@@ -11,7 +11,7 @@
 
 ## What this skill must NOT do
 
-- Must NOT generate requirements. That is `impact-analysis-agent` + `requirement-architect`.
+- Must NOT generate requirements. That is `requirement-architect`.
 - Must NOT write implementation code.
 - Must NOT modify any source files.
 - Must NOT remove or overwrite existing `.agile-v/` artifacts without logging the replacement.

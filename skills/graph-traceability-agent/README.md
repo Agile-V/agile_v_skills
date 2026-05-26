@@ -19,4 +19,4 @@ of the audit evidence chain.
 
 - `SKILL.md` — full skill specification
 - `metadata.json` — machine-readable skill metadata
-- `integrations/understand-anything/examples/evidence_bundle_example.md` — full example
+- `../../integrations/understand-anything/examples/evidence_bundle_example.md` — full example

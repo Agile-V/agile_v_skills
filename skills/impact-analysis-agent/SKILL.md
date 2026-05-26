@@ -40,7 +40,7 @@ All outputs are written to `.agile-v/impact/`.
 ```text
 impact_map.md
 affected_components.json
-required_regression_tests.md
+regression_test_candidates.md
 change_risk_assessment.md
 impact_confidence.md
 ```

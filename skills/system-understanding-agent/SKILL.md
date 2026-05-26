@@ -51,6 +51,8 @@ knowledge_graph_summary.md
 known_constraints.md
 system_understanding_confidence.md
 understanding_gate_decision.md
+normalized_graph.json          (when graph is available)
+knowledge_graph_hash.txt       (when graph is available)
 ```
 
 ---

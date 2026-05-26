@@ -19,4 +19,4 @@ for the Test Designer.
 
 - `SKILL.md` — full skill specification
 - `metadata.json` — machine-readable skill metadata
-- `integrations/understand-anything/examples/regression_selection_example.md` — full example
+- `../../integrations/understand-anything/examples/regression_selection_example.md` — full example

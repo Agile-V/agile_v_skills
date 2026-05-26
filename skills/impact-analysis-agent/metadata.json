@@ -13,7 +13,7 @@
   "outputs": [
     "impact_map.md",
     "affected_components.json",
-    "required_regression_tests.md",
+    "regression_test_candidates.md",
     "change_risk_assessment.md",
     "impact_confidence.md"
   ],
@@ -32,6 +32,7 @@
   "evidence_section": "01_impact",
   "human_gate_required": true,
   "human_gate_name": "Gate 1: Scope and Contract Gate",
+  "blocks_on_low_confidence": false,
   "compatible_frameworks": [
     "Claude Code",
     "Codex",

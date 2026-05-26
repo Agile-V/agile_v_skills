@@ -16,7 +16,9 @@
     "knowledge_graph_summary.md",
     "known_constraints.md",
     "system_understanding_confidence.md",
-    "understanding_gate_decision.md"
+    "understanding_gate_decision.md",
+    "normalized_graph.json",
+    "knowledge_graph_hash.txt"
   ],
   "output_dir": ".agile-v/understanding/",
   "triggers": [

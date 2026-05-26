@@ -25,6 +25,7 @@ Use this skill after implementation and before final validation. Specifically:
 ```text
 - implementation diff (git diff HEAD~1 or patch file)      required
 - .agile-v/impact/impact_map.md                            required
+- .agile-v/impact/change_risk_assessment.md                required
 - .agile-v/requirements/requirements.md                    required
 - .agile-v/traceability/graph_traceability_matrix.md       required
 - test results (JSON or JUnit XML)                         required
