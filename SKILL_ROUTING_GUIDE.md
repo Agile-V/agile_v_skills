@@ -6,6 +6,11 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 
 | User Intent | Skill(s) to Load | Typical Phrases |
 |---|---|---|
+| Understand an existing codebase before changing it | `system-understanding-agent` | "What does this system do?", "Analyze the codebase", "Gate 0", "knowledge graph available" |
+| Identify what a change will affect | `impact-analysis-agent` | "What will this impact?", "Impact analysis", "What could break?", "Affected components" |
+| Link requirements to code and tests | `graph-traceability-agent` | "Traceability matrix", "Link requirements to components", "Graph traceability" |
+| Select regression tests from an impact map | `regression-selection-agent` | "Which tests need to run?", "Regression test selection", "Coverage gaps" |
+| Explain diff vs predicted impact | `diff-evidence-agent` | "What actually changed?", "Predicted vs actual", "Diff evidence", "Unexpected changes" |
 | Convert user research/feedback into requirements | `discovery-analyst` | "Analyze user interviews", "Convert feedback to requirements", "I have customer insights" |
 | Write formal requirements from product intent | `requirement-architect` | "Write PRD", "Create requirements", "Define features", "I need a blueprint" |
 | Check requirements for ambiguity/conflicts | `logic-gatekeeper` | "Validate requirements", "Check for ambiguity", "Review constraints", "Are requirements testable?" |
@@ -30,6 +35,52 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 | Multi-cycle management | `agile-v-lifecycle` | "Start Cycle 2", "Manage iterations", "Change requests", "Version requirements" |
 
 ## Detailed Skill Triggers
+
+### System Understanding Phase (Gate 0 — Existing Codebases)
+
+Use these skills when working on an **existing repository**. Run before requirements and build.
+
+**`system-understanding-agent`**
+- "What does this system do?"
+- "Understand the codebase before changing it"
+- "Generate a system overview"
+- "Gate 0"
+- "Knowledge graph available"
+- "Onboarding guide"
+- "What architecture is this?"
+- **Auto-triggered:** `.understand-anything/knowledge-graph.json` exists
+
+**`impact-analysis-agent`**
+- "What will this change affect?"
+- "Impact analysis"
+- "What could break?"
+- "Affected components"
+- "Identify regression risks"
+- "Pre-change risk map"
+
+**`graph-traceability-agent`**
+- "Link requirements to components"
+- "Graph traceability matrix"
+- "Requirement to code to test"
+- "Audit traceability chain"
+- "Orphan requirements"
+- "Orphan changes"
+
+**`regression-selection-agent`**
+- "Which tests need to run?"
+- "Select regression tests"
+- "Test coverage gaps"
+- "Prioritize existing tests"
+
+**`diff-evidence-agent`**
+- "What actually changed vs predicted?"
+- "Predicted vs actual impact"
+- "Diff evidence"
+- "Unexpected changes"
+- "Risk delta"
+- "Release impact summary"
+
+---
 
 ### Discovery Phase (Pre-Requirements)
 
@@ -240,6 +291,23 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 
 ## Common Workflows
 
+### Workflow 0: Change to an Existing Codebase (with Understand Anything)
+
+Use this when the task modifies an existing repository and a knowledge graph is available.
+
+1. **`system-understanding-agent`** — Gate 0: system overview, architecture map, gate decision
+2. **`impact-analysis-agent`** — Impact map, affected components, regression candidates
+3. **`regression-selection-agent`** — Select and prioritize regression tests
+4. **`requirement-architect`** — Generate requirements from impact map
+5. **`logic-gatekeeper`** — Validate requirements
+6. **Human Gate 1** — Review impact map + requirements
+7. **`build-agent-*`** + **`test-designer`** — Parallel synthesis (Build Agent receives impact map)
+8. **`graph-traceability-agent`** — Link requirements to changed files and tests
+9. **`diff-evidence-agent`** — Compare predicted vs actual impact
+10. **`red-team-verifier`** — Verify runtime + evidence quality
+11. **Human Gate 2** — Review traceability matrix + evidence bundle
+12. **`compliance-auditor`** — Generate evidence bundle with `00_understanding/` section
+
 ### Workflow 1: New Project from Scratch
 
 1. **`discovery-analyst`** — Convert user research → candidate REQs
@@ -304,10 +372,11 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 - `agile-v-core` — Always load first (foundational values & directives)
 
 ### By Phase
+- **System Understanding (existing repos):** `system-understanding-agent`, `impact-analysis-agent`, `regression-selection-agent`
 - **Discovery:** `discovery-analyst`, `threat-modeler`, `ux-spec-author`
 - **Requirements:** `requirement-architect`, `logic-gatekeeper`
 - **Synthesis:** `build-agent-*` (domain-specific), `test-designer`
-- **Verification:** `red-team-verifier`
+- **Verification:** `red-team-verifier`, `graph-traceability-agent`, `diff-evidence-agent`
 - **Release:** `release-manager`, `observability-planner`
 - **Compliance:** `compliance-auditor`, `documentation-agent`
 - **Agile Delivery:** `agile-v-product-owner`
@@ -321,6 +390,11 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 
 | Skill | Run Alone? | Run in Parallel? | Dependencies |
 |---|---|---|---|
+| `system-understanding-agent` | Yes (Gate 0) | No (sequential, before impact-analysis) | None |
+| `impact-analysis-agent` | No (requires system overview) | No (after Gate 0) | `system-understanding-agent` |
+| `regression-selection-agent` | No (requires impact map) | Yes (parallel with requirement-architect) | `impact-analysis-agent` |
+| `graph-traceability-agent` | No (requires diff + tests) | No (after build + test) | `build-agent-*`, `test-designer` |
+| `diff-evidence-agent` | No (requires diff + traceability) | No (after graph-traceability) | `graph-traceability-agent` |
 | `agile-v-core` | Yes (always load first) | N/A | None |
 | `discovery-analyst` | Yes | No (sequential before requirement-architect) | None |
 | `threat-modeler` | Yes | Yes (parallel with ux-spec-author) | None |
