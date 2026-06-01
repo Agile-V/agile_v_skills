@@ -22,45 +22,141 @@
 
 **AI agents hallucinate.** They generate code without requirements, skip testing, make silent assumptions, and deploy to production without approval. Great for demos. **Catastrophic for real products.**
 
+### Real-World Failure Scenarios
+
+Without formal verification frameworks, AI agents commonly produce:
+
+- **Orphaned Code**: Functions and features appear with no documented requirement or business justification. Six months later, no one knows why they exist or if they can be safely removed.
+- **Silent Assumptions**: An agent optimizes for cloud deployment without asking about target hardware, producing code that crashes on embedded devices with limited RAM.
+- **Self-Grading Bias**: The same agent that writes code also writes its own tests, missing edge cases and security vulnerabilities a fresh perspective would catch.
+- **Deployment Disasters**: Autonomous agents push changes to production at 2 AM without human review, breaking critical systems because they "passed all tests."
+- **Untraceable Bugs**: When a feature breaks, there's no audit trail showing *why* design decisions were made, making debugging a archaeological expedition.
+- **Compliance Nightmares**: Regulatory auditors ask "Where's your requirements traceability matrix?" and teams spend weeks manually reconstructing what should have been automated from day one.
+
 ## ✨ **The Solution: Agile V Framework**
 
 Transform unreliable AI agents into **Verifiable Engineering Systems** with:
 
+### Core Protection Mechanisms
+
 - ✅ **Formal Traceability** — Every line of code links to `REQ-XXXX` → `ART-XXXX` → `TC-XXXX`
+  - *Why it matters:* When a bug appears in production, you can instantly trace it back to the original requirement, see which tests should have caught it, and understand the design rationale. No more archeological debugging.
+  
 - ✅ **Independent Verification** — Red Team Verifier tests what Build Agent creates (no self-grading)
+  - *Why it matters:* Two separate agents with fresh contexts means bugs the Build Agent missed get caught before production. It's like having a dedicated QA engineer who hasn't seen the implementation details.
+  
 - ✅ **Hardware Awareness** — Agents ask about RAM/CPU/GPU before optimizing (no "works on my machine")
+  - *Why it matters:* Code optimized for cloud servers crashes on Raspberry Pi. Code written for development laptops fails on production embedded devices. Agile V validates constraints upfront.
+  
 - ✅ **Human Gates** — Evidence Summaries before deployments (no autonomous production releases)
+  - *Why it matters:* You get a comprehensive summary of what changed, what was tested, and what risks remain *before* approving deployment. No more surprise 2 AM production incidents.
+  
 - ✅ **Halt on Ambiguity** — Agents stop and ask when requirements are unclear (no silent assumptions)
+  - *Why it matters:* "Make it faster" could mean response time, perceived UX speed, or infrastructure throughput. Agile V agents clarify *before* building, preventing wasted work.
+  
 - ✅ **Compliance-Ready** — Auto-generates ISO 9001, ISO 27001, GxP artifacts from day 1
+  - *Why it matters:* When auditors ask "Show me your requirements traceability matrix," you have it. When regulators demand evidence of independent verification, you have it. Compliance becomes a byproduct of normal development.
+  
 - ✅ **Multi-Platform** — Works with Claude Code, Cursor, VS Code, GitHub Copilot
+  - *Why it matters:* Your engineering standards stay consistent regardless of which IDE or AI provider your team uses. The quality framework is portable.
 
 ---
 
 ## 🚀 **Quick Start**
 
+### Prerequisites
+
+Before installing Agile V skills, ensure you have:
+- One of the supported AI coding tools (Claude Code, Cursor, VS Code, or GitHub Copilot)
+- Basic familiarity with your chosen tool's agent/chat interface
+- A project directory where you want to apply Agile V principles
+
 ### Installation (Choose Your Platform)
 
-**Claude Code:**
+#### Option 1: Claude Code (Simplest)
 ```bash
+# Install via plugin marketplace
 /plugin install agile-v-skills
 ```
+**What happens:** Skills auto-activate when relevant. Type `/` in chat to manually invoke specific skills.
 
-**Cursor:**
+#### Option 2: Cursor
 ```bash
-# Copy project rules to enable auto-apply
-cp -r .cursor/rules/ /path/to/your/project/.cursor/
+# 1. Clone this repository
+git clone git@github.com:Agile-V/agile_v_skills.git
+
+# 2. Copy skills to your project (project-specific)
+cd /path/to/your/project
+mkdir -p .cursor/skills
+cp -r /path/to/agile_v_skills/agile-v-core .cursor/skills/
+cp -r /path/to/agile_v_skills/build-agent .cursor/skills/
+cp -r /path/to/agile_v_skills/requirement-architect .cursor/skills/
+
+# OR install globally (all projects)
+mkdir -p ~/.cursor/skills
+cp -r /path/to/agile_v_skills/agile-v-core ~/.cursor/skills/
+cp -r /path/to/agile_v_skills/build-agent ~/.cursor/skills/
+```
+**What happens:** Cursor auto-discovers skills in `.cursor/skills/` or `~/.cursor/skills/`. Each skill folder must contain a `SKILL.md` file.
+
+#### Option 3: VS Code / GitHub Copilot
+```bash
+# 1. Clone this repository
+git clone git@github.com:Agile-V/agile_v_skills.git
+
+# 2. Copy skills to global directory (recommended)
+mkdir -p ~/.copilot/skills
+cp -r /path/to/agile_v_skills/agile-v-core ~/.copilot/skills/
+cp -r /path/to/agile_v_skills/build-agent ~/.copilot/skills/
+
+# OR to project directory
+mkdir -p .github/skills
+cp -r /path/to/agile_v_skills/agile-v-core .github/skills/
+```
+**What happens:** VS Code/Copilot scans `~/.copilot/skills/`, `.github/skills/`, `.claude/skills/`, or `.agents/skills/`. Type `/` in chat to invoke skills.
+
+#### Language-Specific Extensions
+
+After installing core skills, add domain-specific build agents for your stack:
+
+```bash
+# For Python projects
+cp -r /path/to/agile_v_skills/domains/build-agent-python <your-skills-dir>/
+
+# For JavaScript/TypeScript projects
+cp -r /path/to/agile_v_skills/domains/build-agent-js <your-skills-dir>/
+
+# For NestJS projects
+cp -r /path/to/agile_v_skills/domains/build-agent-nestjs <your-skills-dir>/
+
+# For Dart/Flutter projects
+cp -r /path/to/agile_v_skills/domains/build-agent-dart <your-skills-dir>/
+
+# For embedded C/C++ projects
+cp -r /path/to/agile_v_skills/domains/build-agent-embedded <your-skills-dir>/
 ```
 
-**VS Code / GitHub Copilot:**
-```bash
-# Copy skills to global directory
-cp -r agile-v-core/ ~/.copilot/skills/
-cp -r build-agent/ ~/.copilot/skills/
-```
+### Verification: Is It Working?
+
+After installation, test that skills are active:
+
+1. **Open your AI coding assistant** (Claude Code, Cursor, VS Code, etc.)
+2. **Type a vague request** in the chat:
+   ```
+   "Add user authentication"
+   ```
+3. **Look for Agile V behavior:**
+   - Agent should respond with `⚠️ HALT CONDITION: No requirement specification found`
+   - Agent should offer to invoke the `requirement-architect` skill
+   - Agent should ask clarifying questions before writing code
+
+If you see these behaviors, Agile V is active. If the agent immediately starts generating code without asking questions, see the [Troubleshooting](#troubleshooting) section below.
 
 👉 **See [Installation Guide](#how-to-use) for detailed platform-specific instructions**
 
 ### Your First Verified Build
+
+Here's what a typical Agile V workflow looks like in practice:
 
 ```
 You: "Add user authentication"
@@ -86,6 +182,61 @@ Agent: Ready for Human Gate approval
 ```
 
 **Result:** Production-ready code with full traceability and independent verification.
+
+### Understanding the Agile V Workflow
+
+The framework follows a structured pipeline with built-in quality gates:
+
+```
+┌─────────────────┐
+│  Human Intent   │  "Add user authentication"
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│  Requirement Architect      │  Decomposes into REQ-XXXX with acceptance criteria
+└────────┬────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│  Logic Gatekeeper           │  Validates for ambiguity & constraints
+└────────┬────────────────────┘  Halts if unclear → asks for clarification
+         │
+         ▼
+┌─────────────────────────────┐
+│  HUMAN GATE 1               │  ⚠️ Approve requirements before building
+└────────┬────────────────────┘
+         │
+         ├──────────┬──────────┐
+         ▼          ▼          ▼
+  ┌──────────┐ ┌──────────┐ ┌──────────┐
+  │  Build   │ │   Test   │ │Schematic │  (Run in parallel)
+  │  Agent   │ │ Designer │ │Generator │
+  └─────┬────┘ └────┬─────┘ └────┬─────┘
+        │           │            │
+        └───────────┴────────────┘
+                    │
+                    ▼
+         ┌──────────────────────┐
+         │ Red Team Verifier    │  Independent verification
+         └──────────┬───────────┘  (fresh context, no self-grading)
+                    │
+                    ▼
+         ┌──────────────────────┐
+         │  HUMAN GATE 2        │  ⚠️ Review Evidence Summary before deploy
+         └──────────┬───────────┘
+                    │
+                    ▼
+         ┌──────────────────────┐
+         │  Production Deploy   │  Only after human approval
+         └──────────────────────┘
+```
+
+**Key Principles:**
+- **Left Side (Requirements):** Clarify *what* before *how*. Agents halt on ambiguity.
+- **Apex (Building):** Multiple agents work in parallel, each focused on their domain.
+- **Right Side (Verification):** Independent Red Team catches what Build Agent missed.
+- **Human Gates:** You approve requirements and deployments. Agents never decide alone.
 
 ---
 
@@ -333,21 +484,200 @@ Below are practical ways to use these skills in common editors and agents.
 - **Cursor**  
 Skills are discovered from `.cursor/skills/` (project) or `~/.cursor/skills/` (global). Each skill is a folder containing a `SKILL.md` file with YAML frontmatter. The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into `.cursor/skills/`.
 For more information on how to use Skills in Cursor please refer to the [official documentation](https://cursor.com/docs/context/skills).
+
 - **Claude Code**  
 Skills are discovered from `.claude/skills/` (project) or `~/.claude/skills/` (global). Each skill is a folder containing a `SKILL.md` file with YAML frontmatter. The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into `.claude/skills/`.
 For more information on how to use Skills in Cursor please refer to the [official documentation](https://code.claude.com/docs/en/skills).
+
 - **VS Code**  
 VS Code supports two types of skills. Project skills, stored in your repository like `.github/skills/`, `.claude/skills`, `.agents/skills/` or personal skills stored globally like `~/.copilot/skills/`, `~/.claude/skills`, `~/.agents/skills/`.
 The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into one of the directories mentioned above.
 For more information on how to use Skills in VS Code please refer to the [official documentation](https://code.visualstudio.com/docs/copilot/customization/agent-skills).
+
 - **GitHub Copilot**  
 Github Copilot supports two types of skills. Project skills, stored in your repository like `.github/skills/`, `.claude/skills` or personal skills stored globally like `~/.copilot/skills/`, `~/.claude/skills`.
 The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into one of the directories mentioned above.
 For more information on how to use Skills with Github Copilot please refer to the [official documentation](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills).
+
 - **Other tools (Claude Agent SDK, Windsurf, Continue, Cody, Zed, etc.)**  
 For other tools please refer to the official documentation of your desired tool.
 
 To learn more about skills and how to use skills in general, please follow the [instructions and documentation](https://agentskills.io/integrate-skills) of Agent Skills.
+
+### Practical Workflow Examples
+
+#### Example 1: Starting a New Feature
+
+```
+You: "I need to add a password reset feature to my app"
+
+Agent (using requirement-architect):
+⚠️ HALT CONDITION: Clarification needed
+
+Before I decompose this into requirements, I need to understand:
+1. Delivery method: Email link, SMS code, or security questions?
+2. Token expiry: How long should reset links remain valid?
+3. Rate limiting: Maximum reset attempts per user per hour?
+4. Multi-factor: Required before password reset?
+5. Compliance: Any GDPR, HIPAA, or industry-specific requirements?
+
+You: "Email link, 15-minute expiry, 3 attempts per hour, no MFA for now, 
+      we're GDPR-compliant"
+
+Agent (using requirement-architect):
+✓ Creating formal requirements:
+
+REQ-0042: Password reset via email
+  - System shall send time-limited reset link via email
+  - Token expires after 15 minutes
+  - Maximum 3 reset requests per user per hour
+  - COMPLIANCE: GDPR Article 5 (data minimization)
+  
+REQ-0043: Reset token security
+  - Tokens shall be cryptographically random (256-bit)
+  - One-time use only
+  - Invalidated after successful password change
+  
+[Saved to .agile-v/REQUIREMENTS.md]
+
+Ready for Human Gate 1: Review these requirements?
+
+You: "Approved"
+
+Agent (using build-agent-python):
+✓ Implementing ART-0042 (password reset handler)
+✓ Implementing ART-0043 (token generation service)
+✓ Updated BUILD_MANIFEST.md with traceability
+
+Agent (using test-designer - in parallel):
+✓ Created TC-0042-001: Verify email delivery
+✓ Created TC-0042-002: Verify token expiry after 15min
+✓ Created TC-0042-003: Verify rate limiting (4th attempt blocked)
+✓ Created TC-0043-001: Verify token entropy
+✓ Created TC-0043-002: Verify one-time use
+
+Agent (using red-team-verifier):
+Testing independently...
+  ✓ TC-0042-001: PASS
+  ✓ TC-0042-002: PASS
+  ⚠️ TC-0042-003: FAIL - Rate limit bypassed with different email case
+  ✓ TC-0043-001: PASS
+  ⚠️ TC-0043-002: FAIL - Token reusable within 100ms window
+
+VER-0042-003: CRITICAL - Rate limit case-sensitive bypass
+VER-0043-002: MAJOR - Race condition in token invalidation
+
+Agent (using build-agent-python - auto-fix):
+Fixing VER-0042-003: Normalizing email to lowercase before rate check
+Fixing VER-0043-002: Adding database constraint for token single-use
+
+Agent (using red-team-verifier - re-verification):
+✓ All tests PASS
+
+=== EVIDENCE SUMMARY ===
+Features: Password reset with email delivery
+Requirements: REQ-0042, REQ-0043
+Artifacts: ART-0042, ART-0043
+Tests: 5/5 PASS (2 critical issues found and fixed)
+Compliance: GDPR Article 5 validated
+
+🛑 HUMAN GATE 2: Ready to merge to main?
+```
+
+#### Example 2: Hardware-Constrained Project
+
+```
+You: "Optimize the image processing pipeline"
+
+Agent (using logic-gatekeeper):
+⚠️ HALT CONDITION: Hardware constraints unknown
+
+Before optimizing, I need to validate:
+1. Target platform: (Raspberry Pi 4, cloud server, workstation, smartphone?)
+2. Available RAM: (Total and available for image processing)
+3. CPU cores: (Available for parallel processing)
+4. GPU: (Availability and type)
+5. Image specs: (Resolution, format, expected throughput)
+
+You: "Raspberry Pi 4, 4GB RAM (2GB available), 4 cores, no GPU,
+      processing 1920x1080 JPEGs, ~10 images/minute"
+
+Agent (using logic-gatekeeper):
+✓ Constraints validated and documented in REQUIREMENTS.md
+
+CONSTRAINT-001: Memory
+  - Maximum 2GB RAM available
+  - Cannot use GPU acceleration
+  - Must handle images up to 1920x1080
+  
+CONSTRAINT-002: Processing
+  - 4 ARM Cortex-A72 cores @ 1.5GHz
+  - Target throughput: 10 images/minute = 6 seconds per image
+  
+Agent (using build-agent-python):
+⚠️ OPTIMIZATION DECISION LOGGED
+
+DECISION-001: Sequential processing instead of parallel
+  - RATIONALE: Each 1920x1080 image uses ~8MB decoded
+  - With 4 parallel workers: 32MB + overhead risks OOM
+  - Sequential processing: Safer, predictable memory usage
+  - TRADE-OFF: Slower but stable on constrained hardware
+  - LINKED_CONSTRAINT: CONSTRAINT-001
+
+[Saved to .agile-v/DECISION_LOG.md]
+```
+
+#### Example 3: Handling Ambiguous Requirements
+
+```
+You: "Make the app more secure"
+
+Agent (using logic-gatekeeper):
+⚠️ HALT CONDITION: Ambiguous requirement
+
+"More secure" is too broad to implement safely. Please specify:
+
+A. Application Layer:
+   - Input validation and sanitization?
+   - SQL injection prevention?
+   - XSS protection?
+   
+B. Authentication/Authorization:
+   - Multi-factor authentication?
+   - Session timeout adjustments?
+   - Role-based access control (RBAC)?
+   
+C. Infrastructure:
+   - HTTPS enforcement?
+   - Security headers (CSP, HSTS)?
+   - Rate limiting and DDoS protection?
+   
+D. Data Protection:
+   - Encryption at rest?
+   - Encryption in transit?
+   - PII handling improvements?
+
+Which areas matter most for your current risk profile?
+
+You: "We need to prevent SQL injection and add rate limiting"
+
+Agent (using requirement-architect):
+✓ Creating focused requirements:
+
+REQ-0055: SQL injection prevention
+  - All database queries use parameterized statements
+  - ORM-based queries validated for injection safety
+  - Legacy raw queries converted to parameterized
+  - COMPLIANCE: OWASP Top 10 (A03:2021)
+  
+REQ-0056: API rate limiting
+  - Maximum 100 requests per IP per minute
+  - 429 status code with Retry-After header
+  - Whitelisting for known partners
+  - COMPLIANCE: CWE-770 (Resource allocation without limits)
+  
+Ready for implementation...
+```
 
 
 ## ✅ How to Know It's Working
@@ -387,6 +717,154 @@ Agent: ⚠️ HALT CONDITION: Ambiguous requirement
 
 Which aspect matters most for your use case?
 ```
+
+---
+
+## 🔧 Troubleshooting
+
+### Skills Not Loading
+
+**Problem:** Agent doesn't show Agile V behavior (no HALT conditions, no requirement requests)
+
+**Solutions:**
+1. **Check skill directory location:**
+   ```bash
+   # For Cursor
+   ls ~/.cursor/skills/agile-v-core/SKILL.md
+   # OR
+   ls .cursor/skills/agile-v-core/SKILL.md
+   
+   # For VS Code/Copilot
+   ls ~/.copilot/skills/agile-v-core/SKILL.md
+   # OR
+   ls .github/skills/agile-v-core/SKILL.md
+   ```
+
+2. **Verify SKILL.md format:**
+   Each skill folder must contain a `SKILL.md` file with valid YAML frontmatter:
+   ```yaml
+   ---
+   metadata:
+     name: "agile-v-core"
+     version: "1.6"
+     author: "agile-v.org"
+   ---
+   ```
+
+3. **Restart your IDE:**
+   Skills are loaded at startup. After adding skills, restart Cursor/VS Code/Claude Code.
+
+4. **Manually invoke skills:**
+   Type `/` in chat and search for skill names (e.g., `/requirement-architect`). If they don't appear, skills aren't loaded.
+
+### Agent Starts Coding Without Requirements
+
+**Problem:** Agent generates code immediately without invoking `requirement-architect`
+
+**Solutions:**
+1. **Explicitly request requirements:**
+   ```
+   "Before implementing, create formal requirements using the requirement-architect skill"
+   ```
+
+2. **Check if `agile-v-core` is loaded:**
+   The core skill enforces the halt-on-ambiguity behavior. Without it, other skills won't trigger properly.
+
+3. **Use directive language:**
+   ```
+   "Follow Agile V protocol: decompose this into REQ-XXXX before building"
+   ```
+
+### No `.agile-v/` Directory Created
+
+**Problem:** Working directory doesn't have `.agile-v/` folder with state files
+
+**Solutions:**
+1. **Explicitly request state persistence:**
+   ```
+   "Initialize Agile V state directory in this project"
+   ```
+
+2. **Check current working directory:**
+   ```bash
+   pwd
+   # Ensure you're in the project root, not a subdirectory
+   ```
+
+3. **Manually create structure:**
+   ```bash
+   mkdir -p .agile-v
+   touch .agile-v/REQUIREMENTS.md
+   touch .agile-v/BUILD_MANIFEST.md
+   touch .agile-v/DECISION_LOG.md
+   ```
+
+### Red Team Verifier Not Running
+
+**Problem:** Build Agent verifies its own code (self-grading)
+
+**Solutions:**
+1. **Explicitly request independent verification:**
+   ```
+   "After building, invoke red-team-verifier in a fresh context to test independently"
+   ```
+
+2. **Check if `red-team-verifier` skill is loaded:**
+   ```bash
+   ls ~/.cursor/skills/red-team-verifier/SKILL.md
+   ```
+
+3. **Use separate chat sessions:**
+   For maximum independence, run Build Agent in one chat, then copy artifacts to a new chat and run Red Team Verifier there.
+
+### Skills Working in One IDE But Not Another
+
+**Problem:** Skills work in Cursor but not VS Code (or vice versa)
+
+**Solutions:**
+1. **Check directory conventions:**
+   - Cursor: `.cursor/skills/` or `~/.cursor/skills/`
+   - VS Code: `.github/skills/`, `.agents/skills/`, `~/.copilot/skills/`
+   - Claude Code: `.claude/skills/` or `~/.claude/skills/`
+
+2. **Use global installation for consistency:**
+   ```bash
+   # Install to home directory for all projects
+   cp -r agile_v_skills/agile-v-core ~/.cursor/skills/
+   cp -r agile_v_skills/agile-v-core ~/.copilot/skills/
+   cp -r agile_v_skills/agile-v-core ~/.claude/skills/
+   ```
+
+3. **Check IDE-specific documentation:**
+   Each tool has slightly different skill discovery mechanisms. Refer to platform-specific docs linked in [How to Use](#how-to-use).
+
+### Agent Ignores Hardware Constraints
+
+**Problem:** Agent optimizes code without asking about target platform
+
+**Solutions:**
+1. **Ensure `logic-gatekeeper` skill is loaded:**
+   This skill enforces constraint validation.
+
+2. **Explicitly state constraints upfront:**
+   ```
+   "Target platform: Raspberry Pi 4, 4GB RAM, 4 cores, no GPU"
+   ```
+
+3. **Request constraint documentation:**
+   ```
+   "Document hardware constraints in REQUIREMENTS.md before optimizing"
+   ```
+
+### Getting Help
+
+If issues persist:
+1. **Check Examples:** See [EXAMPLES.md](EXAMPLES.md) for detailed before/after scenarios
+2. **Review Platform Guides:** [CLAUDE.md](CLAUDE.md) and [CURSOR.md](CURSOR.md) have platform-specific tips
+3. **Verify Installation:** Follow [Quick Start](#-quick-start) step-by-step
+4. **Open an Issue:** [GitHub Issues](https://github.com/Agile-V/agile_v_skills/issues) for bug reports or questions
+
+---
 
 ### 3. Independent Verification (Red Team Protocol)
 - ✅ Build Agent implements features
