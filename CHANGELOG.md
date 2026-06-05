@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.3.2](https://github.com/Agile-V/agile_v_skills/compare/v3.3.1...v3.3.2) (2026-06-05)
+
+
+### Bug Fixes
+
+* **P0:** Fix sync workflow, evidence language, and validation ([c3451d0](https://github.com/Agile-V/agile_v_skills/commit/c3451d07dd0cecb0bb06c32696d594c3ae683f40))
+
 ### [3.3.1](https://github.com/Agile-V/agile_v_skills/compare/v3.3.0...v3.3.1) (2026-06-01)
 
 ## [3.3.0](https://github.com/Agile-V/agile_v_skills/compare/v3.2.0...v3.3.0) (2026-05-26)
