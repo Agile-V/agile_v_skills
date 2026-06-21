@@ -1,6 +1,6 @@
 {
   "name": "agile-v-skills",
-  "version": "3.3.3",
+  "version": "3.3.4",
   "description": "🔬 Verifiable AI-Augmented Engineering Framework - Agent Skills for traceable requirements, independent Red Team verification, and compliance-ready artifacts. Stop AI hallucinations with formal traceability (REQ→ART→TC). Enterprise-grade quality for Claude Code, Cursor, VS Code, and GitHub Copilot.",
   "keywords": [
     "ai-agents",
