@@ -11,6 +11,10 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 EXAMPLE = ROOT / "templates" / "agile-v" / "CONTROL_MATRIX.example.yaml"
 SCHEMA = ROOT / "templates" / "agile-v" / "CONTROL_MATRIX.schema.json"
+FIXTURES = ROOT / "tests" / "fixtures"
+INVALID_TOOL_OVERLAP = FIXTURES / "CONTROL_MATRIX.invalid_tool_overlap.yaml"
+INVALID_TBD_OWNERS = FIXTURES / "CONTROL_MATRIX.invalid_tbd_owners.yaml"
+VALID_FIXTURE = FIXTURES / "CONTROL_MATRIX.valid.yaml"
 
 
 def _load_example() -> dict:
@@ -19,6 +23,10 @@ def _load_example() -> dict:
 
 def _load_schema() -> dict:
     return json.loads(SCHEMA.read_text(encoding="utf-8"))
+
+
+def _load_yaml(path: Path) -> dict:
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
 
 
 # ---------------------------------------------------------------------------
@@ -208,3 +216,149 @@ def test_minimum_risk_level_valid():
 def test_default_fail_mode_valid():
     data = _load_example()
     assert data.get("default_fail_mode") in ("closed", "open")
+
+
+# ---------------------------------------------------------------------------
+# Fixture existence
+# ---------------------------------------------------------------------------
+
+
+def test_invalid_tool_overlap_fixture_exists():
+    assert INVALID_TOOL_OVERLAP.exists(), f"Fixture not found: {INVALID_TOOL_OVERLAP}"
+
+
+def test_invalid_tbd_owners_fixture_exists():
+    assert INVALID_TBD_OWNERS.exists(), f"Fixture not found: {INVALID_TBD_OWNERS}"
+
+
+def test_valid_fixture_exists():
+    assert VALID_FIXTURE.exists(), f"Fixture not found: {VALID_FIXTURE}"
+
+
+# ---------------------------------------------------------------------------
+# Valid fixture passes positive checks
+# ---------------------------------------------------------------------------
+
+
+def test_valid_fixture_parses():
+    data = _load_yaml(VALID_FIXTURE)
+    assert isinstance(data, dict)
+    assert "controls" in data
+
+
+def test_valid_fixture_no_tool_overlap():
+    data = _load_yaml(VALID_FIXTURE)
+    for control in data.get("controls", []):
+        cid = control.get("id", "<unknown>")
+        tools = control.get("tools", {})
+        allowed = set(tools.get("allowed", []))
+        forbidden = set(tools.get("forbidden", []))
+        overlap = allowed & forbidden
+        assert not overlap, (
+            f"Valid fixture control {cid} has tool overlap: {sorted(overlap)}"
+        )
+
+
+def test_valid_fixture_no_tbd_owners_on_active():
+    data = _load_yaml(VALID_FIXTURE)
+    for control in data.get("controls", []):
+        if control.get("status") == "active":
+            cid = control.get("id", "<unknown>")
+            owner = control.get("owner", {})
+            for key in (
+                "business_owner",
+                "technical_owner",
+                "security_owner",
+                "reviewer",
+            ):
+                val = owner.get(key, "")
+                assert val not in ("TBD", "", None), (
+                    f"Valid fixture active control {cid} has unresolved owner: {key}={val!r}"
+                )
+
+
+# ---------------------------------------------------------------------------
+# Negative tests: invalid fixtures must fail their respective checks
+# ---------------------------------------------------------------------------
+
+
+def test_invalid_tool_overlap_fixture_detected():
+    """The tool-overlap fixture must trigger an overlap failure."""
+    data = _load_yaml(INVALID_TOOL_OVERLAP)
+    found_overlap = False
+    for control in data.get("controls", []):
+        tools = control.get("tools", {})
+        allowed = set(tools.get("allowed", []))
+        forbidden = set(tools.get("forbidden", []))
+        if allowed & forbidden:
+            found_overlap = True
+            break
+    assert found_overlap, (
+        "Expected CONTROL_MATRIX.invalid_tool_overlap.yaml to contain a tool overlap "
+        "but none was detected — fix the fixture."
+    )
+
+
+def test_invalid_tbd_owners_fixture_detected():
+    """The TBD-owners fixture must have an active control with TBD owner fields."""
+    data = _load_yaml(INVALID_TBD_OWNERS)
+    found_tbd = False
+    for control in data.get("controls", []):
+        if control.get("status") == "active":
+            owner = control.get("owner", {})
+            for key in (
+                "business_owner",
+                "technical_owner",
+                "security_owner",
+                "reviewer",
+            ):
+                if owner.get(key) in ("TBD", "", None):
+                    found_tbd = True
+                    break
+        if found_tbd:
+            break
+    assert found_tbd, (
+        "Expected CONTROL_MATRIX.invalid_tbd_owners.yaml to contain an active control "
+        "with TBD owner fields but none was detected — fix the fixture."
+    )
+
+
+def test_invalid_tool_overlap_would_fail_positive_check():
+    """Confirm the overlap fixture would be caught by the positive test logic."""
+    data = _load_yaml(INVALID_TOOL_OVERLAP)
+    violations = []
+    for control in data.get("controls", []):
+        cid = control.get("id", "<unknown>")
+        tools = control.get("tools", {})
+        allowed = set(tools.get("allowed", []))
+        forbidden = set(tools.get("forbidden", []))
+        overlap = allowed & forbidden
+        if overlap:
+            violations.append((cid, sorted(overlap)))
+    assert violations, (
+        "CONTROL_MATRIX.invalid_tool_overlap.yaml did not produce any violations — "
+        "the fixture is not actually invalid."
+    )
+
+
+def test_invalid_tbd_owners_would_fail_positive_check():
+    """Confirm the TBD-owners fixture would be caught by the positive test logic."""
+    data = _load_yaml(INVALID_TBD_OWNERS)
+    violations = []
+    for control in data.get("controls", []):
+        if control.get("status") == "active":
+            cid = control.get("id", "<unknown>")
+            owner = control.get("owner", {})
+            for key in (
+                "business_owner",
+                "technical_owner",
+                "security_owner",
+                "reviewer",
+            ):
+                val = owner.get(key, "")
+                if val in ("TBD", "", None):
+                    violations.append((cid, key, val))
+    assert violations, (
+        "CONTROL_MATRIX.invalid_tbd_owners.yaml did not produce any violations — "
+        "the fixture is not actually invalid."
+    )
