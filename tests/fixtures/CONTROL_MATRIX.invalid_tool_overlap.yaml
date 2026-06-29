@@ -1,0 +1,77 @@
+# Invalid fixture: read_file appears in both allowed and forbidden tools.
+# Used to verify that the tool-overlap check correctly rejects this matrix.
+version: "1.0.0"
+default_fail_mode: "closed"
+
+controls:
+  - id: "cm-test-tool-overlap"
+    status: "active"
+    description: "Invalid control – tool overlap for negative testing."
+    scope: "task"
+    applies_to:
+      task_types: ["feature"]
+      agent_modes: ["builder"]
+      skills: ["*"]
+    minimum_risk_level: "L1"
+
+    data_class:
+      allowed: ["public"]
+      forbidden: ["secret"]
+      default_if_unknown: "internal"
+      unknown_action: "deny"
+      redaction_required: true
+
+    tools:
+      # INVALID: read_file is in both allowed and forbidden
+      allowed:
+        - "read_file"
+        - "write_file"
+      forbidden:
+        - "read_file"
+        - "deploy_production"
+      requires_gate: []
+
+    model:
+      vendor: "openai"
+      model_name: "gpt-4o"
+      allow_external_vendor: false
+      record_model_in_evidence: true
+
+    logs:
+      storage_location: ".agile-v/logs/control-events.jsonl"
+      include_tool_calls: true
+      redact_personal_data: true
+      retention_days: 90
+
+    max_permissions:
+      file_access: "repo_scoped"
+
+    human_gates:
+      required_before: []
+      checkpoint_file: ".agile-v/CHECKPOINTS.md"
+      approvals_file: ".agile-v/APPROVALS.md"
+      require_resume_token: true
+
+    tests:
+      required: []
+
+    cost_limit:
+      currency: "USD"
+      max_run_cost: 2.00
+      max_daily_cost: 25.00
+      action_on_limit: "stop"
+      cost_log: ".agile-v/logs/costs.jsonl"
+
+    rollback:
+      required: true
+
+    owner:
+      business_owner: "product_owner"
+      technical_owner: "tech_lead"
+      security_owner: "security_team"
+      reviewer: "security_team"
+
+    review:
+      last_reviewed: "2025-01-01"
+      review_cycle_days: 90
+      reviewer_role: "security_owner"
