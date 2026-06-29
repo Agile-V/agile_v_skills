@@ -17,6 +17,7 @@ metadata:
     - Failure Taxonomy (FT codes)
     - Eval Gate & EVAL_RESULTS
     - Verification Record & Validation Summary
+    - Control Matrix Conformance Checks
     - Stub & Anti-Pattern Detection
     - Severity & Disposition
     - Feedback Protocol
@@ -62,6 +63,30 @@ EvalGate: status=[PASS|FAIL|WAIVED] | eval_run_id=[ER-...] | policy_version_ref=
 ## Validation Summary (Gate 2 Handoff)
 
 Include: Scope (ART list, REQ list, TC count), Results (PASS/FAIL/FLAG counts), FLAG items (`VER-ID | REQ-ID | FT-CODE | Issue | Recommendation`), Coverage (`REQ-ID | tests | status`), Audit trail (`TIMESTAMP | agent | VER: assertion | LINKED_REQ`), **EvalGate block** (above). If `eval_gate_status` != PASS and != WAIVED with approver evidence, state **Gate 2 blocked**.
+
+## Control Matrix Conformance Checks
+
+When a control matrix is present (`.agile-v/CONTROL_MATRIX.yaml` or `config/control_matrix.yaml`), verify:
+
+- Build Agent did not use forbidden tools (check tool log vs `tools.forbidden`).
+- Claimed tests match evidence in `EVAL_RESULTS.md` and test logs.
+- Model/vendor was recorded in evidence when `record_model_in_evidence: true`.
+- Rollback evidence exists for `L2+` tasks.
+- No unresolved owner placeholders (`TBD`) remain in active controls.
+- Cost limit was not exceeded without a recorded approval.
+- Every Human Gate requirement has durable approval evidence (`APPROVALS.md` row + resume token).
+
+**Control matrix failure taxonomy:**
+
+| Condition | FT code | Severity |
+|---|---|---|
+| Forbidden tool used | FT-POLICY | CRITICAL |
+| Missing control matrix for L2+ | FT-POLICY | MAJOR (L2), CRITICAL (L3/L4) |
+| Missing owner (TBD in active control) | FT-POLICY | MAJOR |
+| Missing rollback for required risk level | FT-PLAN | MAJOR (L2), CRITICAL (L3/L4) |
+| Self-approved L3/L4 gate (no independent approver) | FT-POLICY | CRITICAL |
+| Cost limit exceeded without approval | FT-POLICY | MAJOR |
+| Gated tool used without approval evidence | FT-POLICY | MAJOR |
 
 ## Stub & Anti-Pattern Detection
 

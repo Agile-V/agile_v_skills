@@ -1,0 +1,21 @@
+name: Validate Control Matrix Templates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate-control-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml jsonschema pytest
+      - name: Run control matrix and frontmatter tests
+        run: pytest tests/test_control_matrix_template.py tests/test_skill_frontmatter.py -q

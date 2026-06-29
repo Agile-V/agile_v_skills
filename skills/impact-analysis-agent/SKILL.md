@@ -1,3 +1,9 @@
+---
+name: impact-analysis-agent
+description: Identify the likely impact of a proposed change before implementation by mapping it to graph nodes, affected files, functions, APIs, and tests.
+version: "1.0"
+---
+
 # Skill: impact-analysis-agent
 
 ## Purpose

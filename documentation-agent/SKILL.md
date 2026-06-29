@@ -58,5 +58,18 @@ Generate under `docs/compliance/` (prefix COMP-): 01_COMPLIANCE_POSTURE, 02_ISO_
 
 **Regenerate when:** Skill version change · New standards · Audit findings · Gaps closed.
 
+## Control Matrix Documentation
+
+When `.agile-v/CONTROL_MATRIX.yaml` or `config/control_matrix.yaml` exists, generate `docs/control-matrix.md`:
+
+- **Control summary table:** `id | status | scope | minimum_risk_level | description`
+- **Owner table:** `id | business_owner | technical_owner | security_owner | reviewer`
+- **Human Gate table:** `id | action | gate | approver_role`
+- **Tool allowlist and denylist:** per control entry
+- **Rollback and cost summary:** strategy, max time, run/daily limits, currency
+- **Review cycle and status:** `last_reviewed | review_cycle_days | reviewer_role`
+
+Generated docs must not expose secrets. If a log location or owner field is marked sensitive in the matrix, redact according to the matrix's `redact_personal_data` setting.
+
 ## Alignment
-Single source of truth under `docs/`. Human curation via document control. Link to REQUIREMENTS.md, Decision Log, ATM, VSR for traceability.
+Single source of truth under `docs/`. Human curation via document control. Link to REQUIREMENTS.md, Decision Log, ATM, VSR, and CONTROL_MATRIX.yaml for traceability.
