@@ -50,6 +50,7 @@ You are an Agile V Certified Agent. Prioritize **Validation and Traceability** o
 | 7 | Eval Gate (Gate 2) | Do not approve release at Human Gate 2 unless `EVAL_RESULTS.md` shows `eval_gate_status` PASS or WAIVED with approver ref. Red Team Verifier maintains eval record. |
 | 8 | Policy + Trace | Honor `.agile-v/POLICY.yaml` when present. Log policy/tool spans to `TRACE_LOG.md` (see Runtime contracts). |
 | 9 | Durable HITL | On Human Gate pause, append `CHECKPOINTS.md` row (PENDING + `resume_token`). Resume only from file state + matching token in `APPROVALS.md`/`STATE.md`. |
+| 10 | Control Matrix | For non-trivial work, honor `.agile-v/CONTROL_MATRIX.yaml` when present. If absent, halt and propose creating it from `templates/agile-v/CONTROL_MATRIX.example.yaml`. Do not exceed data, tool, model, log, rights, cost, gate, rollback, or owner constraints. |
 
 ## Evidence Summary Format
 ```
@@ -106,7 +107,7 @@ Six-phase task execution model for Agile V agents. All agents participate in rel
 
 Living state in `.agile-v/`: STATE.md (current phase/stage/status), REQUIREMENTS.md, BUILD_MANIFEST.md, TEST_SPEC.md, VALIDATION_SUMMARY.md, DECISION_LOG.md, ATM.md, CHANGE_LOG.md, RISK_REGISTER.md, CAPA_LOG.md, APPROVALS.md, REVALIDATION_LOG.md, config.json. Phase dirs: `phases/XX-name/` with PLAN.md, SUMMARY.md, CONTEXT.md. Archives: `cycles/C1/, C2/` (frozen, read-only).
 
-**Runtime contracts (Phase 1-2):** `POLICY.yaml` (policy-as-code, versioned), `TRACE_LOG.md` (append-only spans), `EVAL_RESULTS.md` (eval flywheel + `eval_gate_status` for Gate 2), `CHECKPOINTS.md` (durable Human Gate interrupts). Schemas: repo `docs/agile-v-runtime/01_SCHEMAS.md`; copy templates from `templates/agile-v/`.
+**Runtime contracts (Phase 1-2):** `POLICY.yaml` (policy-as-code, versioned), `TRACE_LOG.md` (append-only spans), `EVAL_RESULTS.md` (eval flywheel + `eval_gate_status` for Gate 2), `CHECKPOINTS.md` (durable Human Gate interrupts), `CONTROL_MATRIX.yaml` (operating control map: data class, tools, model/vendor, logs, rights, Human Gates, tests, costs, rollback, owners). Schemas: repo `docs/agile-v-runtime/01_SCHEMAS.md`; copy templates from `templates/agile-v/`.
 
 **Rules:** (1) Write-through, not batched. (2) Decision Log is append-only. (3) Resume: read STATE.md + CHECKPOINTS.md (if any PENDING) first, load only current-stage files. (4) On gate pause, write checkpoint before ending turn.
 
@@ -119,4 +120,4 @@ Living state in `.agile-v/`: STATE.md (current phase/stage/status), REQUIREMENTS
 | **Low-Medium** | Compliance Auditor, Documentation Agent | Observation/templates |
 
 ## Companion Skills
-Load on demand: **agile-v-pipeline** (orchestration, waves, handoffs), **agile-v-lifecycle** (multi-cycle, versioning, change requests), **agile-v-compliance** (risk, CAPA, gates, security, revalidation).
+Load on demand: **agile-v-pipeline** (orchestration, waves, handoffs), **agile-v-lifecycle** (multi-cycle, versioning, change requests), **agile-v-compliance** (risk, CAPA, gates, security, revalidation), **agile-v-control-matrix** (runtime control records and governance gates).

@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/schemas/control-matrix/1.0.0",
+  "title": "Agile-V Control Matrix",
+  "description": "Schema for .agile-v/CONTROL_MATRIX.yaml. Semantic checks (allowed/forbidden tool overlap, unresolved TBD owners) must be enforced by consuming runtime or test script.",
+  "type": "object",
+  "required": ["version", "default_fail_mode", "controls"],
+  "properties": {
+    "version": {"type": "string"},
+    "effective_from": {"type": "string"},
+    "default_fail_mode": {"type": "string", "enum": ["closed", "open"]},
+    "default_log_storage": {"type": "string"},
+    "default_retention_days": {"type": "integer", "minimum": 1},
+    "controls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/control"}
+    }
+  },
+  "$defs": {
+    "control": {
+      "type": "object",
+      "required": [
+        "id", "status", "scope", "applies_to", "minimum_risk_level",
+        "data_class", "tools", "model", "logs", "max_permissions",
+        "human_gates", "tests", "cost_limit", "rollback", "owner", "review"
+      ],
+      "properties": {
+        "id": {"type": "string", "pattern": "^cm-[a-z0-9][a-z0-9-]*$"},
+        "status": {"type": "string", "enum": ["draft", "active", "deprecated", "disabled"]},
+        "description": {"type": "string"},
+        "scope": {"type": "string", "enum": ["global", "task", "agent", "skill", "tool", "repo"]},
+        "minimum_risk_level": {"type": "string", "enum": ["L0", "L1", "L2", "L3", "L4"]},
+        "applies_to": {"type": "object"},
+        "data_class": {"$ref": "#/$defs/dataClass"},
+        "tools": {"$ref": "#/$defs/tools"},
+        "model": {"$ref": "#/$defs/model"},
+        "logs": {"$ref": "#/$defs/logs"},
+        "max_permissions": {"type": "object"},
+        "human_gates": {"$ref": "#/$defs/humanGates"},
+        "tests": {"type": "object"},
+        "cost_limit": {"$ref": "#/$defs/costLimit"},
+        "rollback": {"type": "object"},
+        "owner": {"$ref": "#/$defs/owner"},
+        "review": {"type": "object"}
+      }
+    },
+    "dataClass": {
+      "type": "object",
+      "required": ["allowed", "forbidden", "default_if_unknown", "unknown_action", "redaction_required"],
+      "properties": {
+        "allowed": {"type": "array", "items": {"type": "string"}},
+        "forbidden": {"type": "array", "items": {"type": "string"}},
+        "default_if_unknown": {"type": "string"},
+        "unknown_action": {"type": "string", "enum": ["deny", "allow", "require_human_gate"]},
+        "redaction_required": {"type": "boolean"}
+      }
+    },
+    "tools": {
+      "type": "object",
+      "required": ["allowed", "forbidden", "requires_gate"],
+      "properties": {
+        "allowed": {"type": "array", "items": {"type": "string"}},
+        "forbidden": {"type": "array", "items": {"type": "string"}},
+        "requires_gate": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "model": {
+      "type": "object",
+      "required": ["vendor", "model_name", "allow_external_vendor", "record_model_in_evidence"],
+      "properties": {
+        "vendor": {"type": "string"},
+        "model_name": {"type": "string"},
+        "fallback_model": {"type": ["string", "null"]},
+        "allow_external_vendor": {"type": "boolean"},
+        "require_vendor_review_for_data_classes": {"type": "array", "items": {"type": "string"}},
+        "record_model_in_evidence": {"type": "boolean"}
+      }
+    },
+    "logs": {
+      "type": "object",
+      "required": ["storage_location", "include_tool_calls", "redact_personal_data", "retention_days"],
+      "properties": {
+        "storage_location": {"type": "string"},
+        "tool_log_location": {"type": "string"},
+        "include_prompt": {"type": "boolean"},
+        "include_response": {"type": "boolean"},
+        "include_tool_calls": {"type": "boolean"},
+        "include_decision_rationale": {"type": "boolean"},
+        "redact_personal_data": {"type": "boolean"},
+        "retention_days": {"type": "integer", "minimum": 1}
+      }
+    },
+    "humanGates": {
+      "type": "object",
+      "required": ["required_before", "checkpoint_file", "approvals_file", "require_resume_token"],
+      "properties": {
+        "required_before": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["action", "gate", "approver_role"],
+            "properties": {
+              "action": {"type": "string"},
+              "gate": {"type": "string"},
+              "approver_role": {"type": "string"}
+            }
+          }
+        },
+        "checkpoint_file": {"type": "string"},
+        "approvals_file": {"type": "string"},
+        "require_resume_token": {"type": "boolean"}
+      }
+    },
+    "costLimit": {
+      "type": "object",
+      "required": ["currency", "max_run_cost", "max_daily_cost", "action_on_limit", "cost_log"],
+      "properties": {
+        "currency": {"type": "string"},
+        "max_run_cost": {"type": "number", "minimum": 0},
+        "max_daily_cost": {"type": "number", "minimum": 0},
+        "max_monthly_cost": {"type": "number", "minimum": 0},
+        "action_on_limit": {"type": "string", "enum": ["stop", "warn", "stop_and_request_approval"]},
+        "cost_log": {"type": "string"}
+      }
+    },
+    "owner": {
+      "type": "object",
+      "required": ["business_owner", "technical_owner", "security_owner", "reviewer"],
+      "properties": {
+        "business_owner": {"type": "string", "minLength": 1},
+        "technical_owner": {"type": "string", "minLength": 1},
+        "security_owner": {"type": "string", "minLength": 1},
+        "reviewer": {"type": "string", "minLength": 1},
+        "backup_owner": {"type": "string"}
+      }
+    }
+  }
+}
