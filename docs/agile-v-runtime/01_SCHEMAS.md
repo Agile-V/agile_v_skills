@@ -8,12 +8,13 @@
 Copy templates from [templates/agile-v/](../../templates/agile-v/) into the project `.agile-v/` directory (same level as `STATE.md`, `DECISION_LOG.md`).
 
 
-| File              | Phase | Description                                                  |
-| ----------------- | ----- | ------------------------------------------------------------ |
-| `POLICY.yaml`     | 2     | Policy-as-code: tool classes, allow/deny, fail mode, version |
-| `TRACE_LOG.md`    | 1     | Append-only trace spans (optional, recommended)              |
-| `EVAL_RESULTS.md` | 1     | Eval runs and thresholds; Human Gate 2 input                 |
-| `CHECKPOINTS.md`  | 2     | Durable HITL: pending/resumed/expired interrupts             |
+| File                    | Phase | Description                                                  |
+| ----------------------- | ----- | ------------------------------------------------------------ |
+| `POLICY.yaml`           | 2     | Policy-as-code: tool classes, allow/deny, fail mode, version |
+| `TRACE_LOG.md`          | 1     | Append-only trace spans (optional, recommended)              |
+| `EVAL_RESULTS.md`       | 1     | Eval runs and thresholds; Human Gate 2 input                 |
+| `CHECKPOINTS.md`        | 2     | Durable HITL: pending/resumed/expired interrupts             |
+| `CONTROL_MATRIX.yaml`   | 2     | Operating control map: data class, tools, model/vendor, logs, rights, Human Gates, tests, costs, rollback, owners |
 
 
 ---
@@ -160,7 +161,16 @@ INTERRUPT-ID|cycle|gate|status|opened_at|due_at|assignee_hint|resume_token|scope
 
 ---
 
+## 6. Control Matrix (`CONTROL_MATRIX.yaml`)
+
+See [02_CONTROL_MATRIX.md](02_CONTROL_MATRIX.md). The matrix is required for non-trivial agentic execution and should be checked before implementation, high-impact tool use, model/vendor changes, and release gates.
+
+`POLICY.yaml` controls tool-class rules at the rule level. `CONTROL_MATRIX.yaml` is the higher-level operating control record that binds task scope, data class, model, logs, rights, gates, tests, costs, rollback, and ownership into a single reviewable artifact.
+
+---
+
 ## Cross-references
 
 - Templates: [templates/agile-v/](../../templates/agile-v/)
+- Control Matrix spec: [02_CONTROL_MATRIX.md](02_CONTROL_MATRIX.md)
 

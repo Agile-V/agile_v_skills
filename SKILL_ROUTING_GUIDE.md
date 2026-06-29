@@ -24,6 +24,11 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 | Verify/test implementation | `red-team-verifier` | "Run verification", "Test the build", "Challenge the code", "Find defects" |
 | Human Gate 2 / eval gate evidence | `red-team-verifier` + `compliance-auditor` | "Eval gate", "EVAL_RESULTS", "FT code on finding", "Gate 2 blocked" |
 | Tool policy / durable approval pause | `agile-v-core` + `agile-v-compliance` | "POLICY.yaml", "CHECKPOINTS", "resume_token", "interrupt pending" |
+| Create a control matrix / Kontrollmatrix | `agile-v-core`, `agile-v-control-matrix`, `compliance-auditor` | "Control matrix", "Kontrollmatrix", "Allowed tools", "Governance record", "Agentic runtime policy" |
+| Define allowed tools or model/vendor rules | `agile-v-control-matrix`, `logic-gatekeeper` | "Allowed tools", "Forbidden tools", "Model policy", "Vendor restrictions" |
+| Review whether an agent may execute | `agile-v-control-matrix`, `red-team-verifier` | "Can this agent run?", "Check tool permissions", "Audit agent access" |
+| Prepare OpenHands / agentic runtime governance | `agile-v-core`, `agile-v-control-matrix`, `compliance-auditor` | "OpenHands setup", "Agentic runtime", "Runtime governance", "Hooks and policies" |
+| Audit Human Gates or approvals | `agile-v-control-matrix`, `compliance-auditor`, `red-team-verifier` | "Gate audit", "Approval evidence", "Human gate missing", "Checkpoint pending" |
 | Security threat modeling | `threat-modeler` | "Identify security threats", "STRIDE analysis", "Privacy assessment", "What are the security risks?" |
 | UX/design specifications | `ux-spec-author` | "Define user flows", "Design spec", "Accessibility requirements", "What should the UX be?" |
 | Sprint planning & backlog management | `agile-v-product-owner` | "Plan sprint", "Prioritize backlog", "Create user stories", "Track velocity" |

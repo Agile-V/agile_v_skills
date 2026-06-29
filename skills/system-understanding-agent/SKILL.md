@@ -1,3 +1,9 @@
+---
+name: system-understanding-agent
+description: Consume Understand Anything outputs and create a concise, reviewable system overview that gives agents sufficient context before modifying code (Gate 0).
+version: "1.0"
+---
+
 # Skill: system-understanding-agent
 
 ## Purpose

@@ -1,0 +1,111 @@
+# Valid fixture for control matrix tests (active control with all owners resolved)
+version: "1.0.0"
+effective_from: "2026-06-28T00:00:00Z"
+default_fail_mode: "closed"
+default_log_storage: ".agile-v/logs/control-events.jsonl"
+default_retention_days: 90
+
+controls:
+  - id: "cm-test-valid"
+    status: "active"
+    description: "Valid active control for testing."
+    scope: "task"
+    applies_to:
+      task_types: ["feature", "test"]
+      agent_modes: ["builder", "verifier"]
+      skills: ["*"]
+    minimum_risk_level: "L1"
+
+    data_class:
+      allowed: ["public", "internal"]
+      forbidden: ["secret", "regulated_health"]
+      default_if_unknown: "internal"
+      unknown_action: "require_human_gate"
+      redaction_required: true
+
+    tools:
+      allowed:
+        - "read_file"
+        - "write_file"
+        - "run_tests"
+        - "git_diff"
+      forbidden:
+        - "deploy_production"
+        - "delete_data"
+      requires_gate:
+        - "shell_exec"
+        - "network_egress"
+
+    model:
+      vendor: "acme-ai"
+      model_name: "acme-model-v1"
+      fallback_model: null
+      allow_external_vendor: false
+      require_vendor_review_for_data_classes: ["confidential"]
+      record_model_in_evidence: true
+
+    logs:
+      storage_location: ".agile-v/logs/control-events.jsonl"
+      tool_log_location: ".agile-v/logs/tool-usage.jsonl"
+      include_prompt: false
+      include_response: false
+      include_tool_calls: true
+      include_decision_rationale: true
+      redact_personal_data: true
+      retention_days: 90
+
+    max_permissions:
+      file_access: "repo_scoped"
+      write_access: "task_allowed_paths_only"
+      network_access: "blocked_unless_approved"
+      database_access: "none"
+      email_access: "none"
+      credential_access: "none"
+      code_execution: "tests_and_local_tools_only"
+      git_access: "diff_status_only"
+
+    human_gates:
+      required_before:
+        - action: "external_effect"
+          gate: "G2"
+          approver_role: "domain_owner"
+        - action: "cost_limit_exception"
+          gate: "G2"
+          approver_role: "business_owner"
+      checkpoint_file: ".agile-v/CHECKPOINTS.md"
+      approvals_file: ".agile-v/APPROVALS.md"
+      require_resume_token: true
+
+    tests:
+      required:
+        - "schema_validation"
+        - "unit_tests"
+      minimum_coverage_percent: 80
+
+    cost_limit:
+      currency: "EUR"
+      max_run_cost: 2.00
+      max_daily_cost: 25.00
+      max_monthly_cost: 500.00
+      action_on_limit: "stop_and_request_approval"
+      cost_log: ".agile-v/logs/costs.jsonl"
+
+    rollback:
+      required: true
+      strategy: "revert_commit"
+      rollback_path_required_for: ["L2", "L3", "L4"]
+      feature_flag_required_for: ["L3", "L4"]
+      max_rollback_time_minutes: 30
+      rollback_owner_role: "technical_owner"
+
+    owner:
+      business_owner: "product-team"
+      technical_owner: "platform-team"
+      security_owner: "security-team"
+      reviewer: "qa-team"
+      backup_owner: "engineering-lead"
+
+    review:
+      last_reviewed: "2026-06-28"
+      review_cycle_days: 90
+      reviewer_role: "security_owner"

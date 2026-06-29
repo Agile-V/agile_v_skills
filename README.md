@@ -295,20 +295,23 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 
 | Skill                 | Category   | Path                            | Purpose                                                                                                                                                                                                    |
 | --------------------- | ---------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| agile-v-core          | Foundation | `agile-v-core/`                 | The baseline "operating system" for all agents. Includes context engineering, orchestration pipeline, state persistence, and model tier guidance.                                                          |
-| requirement-architect | Left Side  | `requirement-architect/`        | Converts intent into atomic, traceable requirements.                                                                                                                                                       |
-| logic-gatekeeper      | Left Side  | `logic-gatekeeper/`             | Validates requirements for ambiguity and physical/hardware constraints.                                                                                                                                    |
-| build-agent           | Apex       | `build-agent/`                  | Generates code, firmware, HDL from approved requirements (language-agnostic). Includes context engineering, pre-execution validation, and post-verification feedback loop.                                 |
-| test-designer         | Apex       | `test-designer/`                | Designs verification suite from requirements only—runs parallel to Build Agent.                                                                                                                            |
-| schematic-generator   | Apex       | `schematic-generator/`          | Generates schematics, netlists, HDL for hardware/PCB projects.                                                                                                                                             |
-| build-agent-python    | Apex       | `domains/build-agent-python/`   | **Comprehensive Python build agent** for backends (FastAPI/Flask/Django), data pipelines, ML, and scripts. Includes architecture patterns, testing strategy, security guidance, and SCOPE-V integration.   |
-| build-agent-js        | Apex       | `domains/build-agent-js/`       | **Comprehensive JavaScript/TypeScript build agent** for React/Next.js frontends and Node.js backends. Includes state management, security patterns, testing strategy, and build tools.                      |
-| build-agent-dart      | Apex       | `domains/build-agent-dart/`     | **Comprehensive Dart/Flutter build agent** for mobile apps. Includes BLoC/Provider state management, platform channels, widget patterns, and testing strategy.                                              |
-| build-agent-embedded  | Apex       | `domains/build-agent-embedded/` | **Comprehensive embedded C/C++ build agent** for safety-critical systems. Includes MISRA-C, RTOS patterns, hardware abstraction, security, and certification support (ISO 26262, IEC 61508).                 |
-| build-agent-nestjs    | Apex       | `domains/build-agent-nestjs/`   | **Comprehensive NestJS build agent** for enterprise backends. Includes dependency injection, TypeORM/Prisma, GraphQL, microservices, and testing patterns.                                                  |
-| red-team-verifier     | Right Side | `red-team-verifier/`            | Challenges build artifacts; produces Validation Summary for Human Gate 2. Includes stub/anti-pattern detection and post-verification feedback protocol.                                                    |
-| compliance-auditor    | Compliance | `compliance-auditor/`           | Automates decision logging, traceability matrix (ATM), and VSR for ISO/GxP.                                                                                                                                |
-| documentation-agent   | Compliance | `documentation-agent/`          | Generates standards-based repo documentation (ISO 9001, V-Model, ISO 27001, optional GAMP 5) into `docs/` with hub README, cross-reference matrix, Mermaid diagrams, and compliance posture documentation. |
+| Skill                   | Category   | Path                            | Purpose                                                                                                                                                                                                    |
+| ----------------------- | ---------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| agile-v-core            | Foundation | `agile-v-core/`                 | The baseline "operating system" for all agents. Includes context engineering, orchestration pipeline, state persistence, and model tier guidance.                                                          |
+| agile-v-control-matrix  | Governance | `agile-v-control-matrix/`       | Defines data class, tool, model/vendor, log, rights, Human Gate, test, cost, rollback, and owner controls for agentic execution. Load when creating, reviewing, or enforcing `CONTROL_MATRIX.yaml`.       |
+| requirement-architect   | Left Side  | `requirement-architect/`        | Converts intent into atomic, traceable requirements.                                                                                                                                                       |
+| logic-gatekeeper        | Left Side  | `logic-gatekeeper/`             | Validates requirements for ambiguity and physical/hardware constraints.                                                                                                                                    |
+| build-agent             | Apex       | `build-agent/`                  | Generates code, firmware, HDL from approved requirements (language-agnostic). Includes context engineering, pre-execution validation, and post-verification feedback loop.                                 |
+| test-designer           | Apex       | `test-designer/`                | Designs verification suite from requirements only—runs parallel to Build Agent.                                                                                                                            |
+| schematic-generator     | Apex       | `schematic-generator/`          | Generates schematics, netlists, HDL for hardware/PCB projects.                                                                                                                                             |
+| build-agent-python      | Apex       | `domains/build-agent-python/`   | **Comprehensive Python build agent** for backends (FastAPI/Flask/Django), data pipelines, ML, and scripts. Includes architecture patterns, testing strategy, security guidance, and SCOPE-V integration.   |
+| build-agent-js          | Apex       | `domains/build-agent-js/`       | **Comprehensive JavaScript/TypeScript build agent** for React/Next.js frontends and Node.js backends. Includes state management, security patterns, testing strategy, and build tools.                      |
+| build-agent-dart        | Apex       | `domains/build-agent-dart/`     | **Comprehensive Dart/Flutter build agent** for mobile apps. Includes BLoC/Provider state management, platform channels, widget patterns, and testing strategy.                                              |
+| build-agent-embedded    | Apex       | `domains/build-agent-embedded/` | **Comprehensive embedded C/C++ build agent** for safety-critical systems. Includes MISRA-C, RTOS patterns, hardware abstraction, security, and certification support (ISO 26262, IEC 61508).                 |
+| build-agent-nestjs      | Apex       | `domains/build-agent-nestjs/`   | **Comprehensive NestJS build agent** for enterprise backends. Includes dependency injection, TypeORM/Prisma, GraphQL, microservices, and testing patterns.                                                  |
+| red-team-verifier       | Right Side | `red-team-verifier/`            | Challenges build artifacts; produces Validation Summary for Human Gate 2. Includes stub/anti-pattern detection, control matrix conformance checks, and post-verification feedback protocol.                |
+| compliance-auditor      | Compliance | `compliance-auditor/`           | Automates decision logging, traceability matrix (ATM), VSR for ISO/GxP, and control matrix audit findings.                                                                                                 |
+| documentation-agent     | Compliance | `documentation-agent/`          | Generates standards-based repo documentation (ISO 9001, V-Model, ISO 27001, optional GAMP 5) and control matrix docs into `docs/`.                                                                        |
 
 
 ## Compliance Documentation
@@ -416,6 +419,31 @@ Version 1.3 introduces the **multi-cycle V-loop** -- the ability to run second a
 ### Runtime governance contracts (v1.4)
 
 Version 1.4 adds **Phase 1-2** adoption from the competitive analysis: machine-readable **trace** (`TRACE_LOG.md`), **eval flywheel** (`EVAL_RESULTS.md` + Human Gate 2 **EvalGate** block in `VALIDATION_SUMMARY.md`), **policy-as-code** (`POLICY.yaml` + templates), **failure taxonomy** (`FT-*` codes on every `VER-*` record), and **durable Human Gate checkpoints** (`CHECKPOINTS.md` with `resume_token` linked to `APPROVALS.md`). Normative schema: [`docs/agile-v-runtime/01_SCHEMAS.md`](docs/agile-v-runtime/01_SCHEMAS.md); copy templates from [`templates/agile-v/`](templates/agile-v/).
+
+### Control Matrix (`CONTROL_MATRIX.yaml` + templates)
+
+The **agile-v-control-matrix** skill and templates add an operating control record for agentic execution. The control matrix defines:
+
+- **Data classes** allowed and forbidden per task scope
+- **Allowed tools**, forbidden tools, and tools requiring Human Gate approval
+- **Model/vendor** constraints and external vendor policy
+- **Log storage** location, retention, and redaction rules
+- **Max permissions** per access dimension (file, network, database, credentials)
+- **Human Gates** with durable checkpoint and approval requirements
+- **Required tests** per risk level (`L0`–`L4`)
+- **Cost limits** per run, per day, per month with overflow action
+- **Rollback** strategy, required risk levels, and max rollback time
+- **Owners** (business, technical, security, reviewer)
+
+**Quick start:**
+
+```bash
+mkdir -p .agile-v
+cp templates/agile-v/CONTROL_MATRIX.example.yaml .agile-v/CONTROL_MATRIX.yaml
+# Edit owner, vendor/model, data class, tool rules, cost limits, rollback, and gates before active use.
+```
+
+Normative spec: [`docs/agile-v-runtime/02_CONTROL_MATRIX.md`](docs/agile-v-runtime/02_CONTROL_MATRIX.md). Schema: [`templates/agile-v/CONTROL_MATRIX.schema.json`](templates/agile-v/CONTROL_MATRIX.schema.json). Consuming runtimes (e.g., `agentic_agile_v`) enforce the matrix via CLI, hooks, and CI gates.
 
 ### Release baseline (v1.6)
 
