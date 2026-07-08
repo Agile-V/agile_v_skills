@@ -1,7 +1,12 @@
 ---
 name: diff-evidence-agent
 description: Create evidence explaining the actual implementation diff and its relationship to the predicted impact, closing the loop between pre-change prediction and post-change reality.
-version: "1.0"
+license: CC-BY-SA-4.0
+compatibility: opencode
+metadata:
+  version: "1.0"
+  standard: "Agile V"
+  author: agile-v.org
 ---
 
 # Skill: diff-evidence-agent

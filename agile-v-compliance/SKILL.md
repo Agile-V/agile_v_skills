@@ -1,6 +1,6 @@
 ---
 name: agile-v-compliance
-description: Risk management, CAPA protocol, human gate approval records, AI agent security controls, and periodic revalidation. Load when running gates, auditing risks, handling CAPAs, or reviewing security posture.
+description: Risk management, CAPA protocol, human gate approval records, AI agent security controls, and periodic revalidation. Load when running gates, handling CAPAs, or auditing compliance and security posture.
 license: CC-BY-SA-4.0
 metadata:
   version: "1.4"

@@ -8,7 +8,7 @@ metadata:
   author: agile-v.org
   adapted_from:
     - name: "Get Shit Done (GSD)"
-      url: "[https://github.com/gsd-build/get-shit-done](https://github.com/gsd-build/get-shit-done)"
+      url: "https://github.com/gsd-build/get-shit-done"
       license: "MIT"
       copyright: "Copyright (c) 2025 Lex Christopherson"
       sections: "Post-Verification Feedback Loop, Stub and Anti-Pattern Detection"

@@ -204,33 +204,9 @@ Before marking artifact complete, verify:
 
 ---
 
-## How to Know This Skill Is Working
+## Load Conditions
 
-Agile V Behavioral is active if you see:
-
-✅ **Fewer unnecessary changes in diffs** (surgical changes working)
-✅ **Clarifying questions come before implementation**, not after mistakes (Think Before Coding working)
-✅ **Minimal code that satisfies REQ** (Simplicity First working)
-✅ **Strong test coverage from requirements** (Goal-Driven Execution working)
-✅ **Decision Log captures interpretation choices** (Agile V + behavioral integration working)
-
-If Red Team Verifier finds issues Build Agent should have caught (e.g., overcomplicated abstractions for single REQ, silent assumptions about constraints), this skill needs stronger enforcement.
-
----
-
-## When to Use This Skill
-
-**Always load with:**
-- `agile-v-core` (foundation)
-- `build-agent` or domain-specific build agents
-
-**Especially useful for:**
-- **Junior developers** using agents (prevents overengineering)
-- **Complex multi-cycle projects** (prevents scope creep during iteration)
-- **Ambiguous business requirements** (forces clarification before coding)
-- **Teams new to Agile V** (reinforces discipline during learning phase)
-
----
+Always load alongside `agile-v-core` and any build agent skill. This skill adds behavioral guardrails that prevent the four most common agent failure modes: silent assumptions, overengineering, scope creep, and weak test criteria.
 
 **License:** CC-BY-SA-4.0 | **Author:** Agile V™  
 **Adapted from:** Karpathy Skills (MIT License) | **Homepage:** https://github.com/Agile-V/agile_v_skills

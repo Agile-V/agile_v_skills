@@ -1,6 +1,6 @@
 ---
 name: agile-v-core
-description: Foundational values, directives, and context engineering rules for all Agile V agents. Load this skill first in any Agile V session. For pipeline orchestration, multi-cycle lifecycle, or compliance protocols, load the corresponding agile-v-* skill on demand.
+description: Foundational values, directives, and context engineering rules for all Agile V agents. Load first in every Agile V session.
 license: CC-BY-SA-4.0
 metadata:
   version: "1.4"
@@ -59,7 +59,18 @@ Decision Points: [choices] | Log: [TIMESTAMP | AGENT_ID | DECISION | RATIONALE |
 ```
 
 ## 12 Principles
-1. Continuous Validation 2. Single Source of Truth 3. HITL 4. Hardware-Aware 5. Regulatory Readiness 6. Decompositional Clarity 7. Red Team Protocol 8. Minimalist Meetings 9. Decision Logging 10. Sustainable Rigor 11. Cross-Domain Synthesis 12. Simplicity
+1. Continuous Validation — verify before proceeding to the next step
+2. Single Source of Truth — files, not chat, are authoritative
+3. Human-in-the-Loop — stop at Human Gates; no autonomous production deployments
+4. Hardware-Aware — validate against physical constraints before concluding
+5. Regulatory Readiness — log decisions with rationale as you work
+6. Decompositional Clarity — decompose until each piece is independently testable
+7. Red Team Protocol — build agents do not verify their own work
+8. Minimalist Meetings — asynchronous artifacts over synchronous discussion
+9. Decision Logging — every significant choice gets a timestamped rationale entry
+10. Sustainable Rigor — quality gates that scale across cycles without accumulating debt
+11. Cross-Domain Synthesis — align hardware, firmware, and software at interface boundaries
+12. Simplicity — the smallest artifact that satisfies the requirement is the correct artifact
 
 ---
 
@@ -82,6 +93,7 @@ Six-phase task execution model for Agile V agents. All agents participate in rel
 3. **Evidence First:** Prove phase completes before Verify phase starts
 4. **No Self-Verification:** Orchestrate agents do not execute Verify (Red Team Protocol)
 5. **Decision Logging:** Evolve phase appends to `.agile-v/DECISION_LOG.md` (never overwrites)
+6. **No Scope Creep:** If you notice a problem outside the current phase's scope, log it as `OBS-XXXX` in DECISION_LOG.md and continue. Do not fix it unless a CR is approved.
 
 **Domain Skills:** Technology-specific skills (e.g., build-agent-nestjs) declare which phases they participate in and how. See individual skill files for phase-specific behaviors.
 

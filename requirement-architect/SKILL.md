@@ -39,6 +39,14 @@ After approval, write to `REQUIREMENTS.md` (default) or user-specified path. For
 ```
 Tell user this file is the source of truth. Logic Gatekeeper validates next; all downstream agents read from file.
 
+## Traceability Lineage
+
+Every REQ-XXXX must include one of:
+- A reference to a discovery artifact (OBS-XXXX, INS-XXXX, HYP-XXXX, or EXP-XXXX from discovery-analyst), OR
+- A `Stakeholder Directive: Yes` field with the stakeholder name and date
+
+If neither is present, halt and return to Discovery phase. Do not create REQs from ambiguous chat alone.
+
 ## Multi-Cycle Management (C2+)
 
 **Status Tags:** `approved [Cn]` · `modified [Cn]` (was/now + CR) · `new [Cn]` · `deprecated [Cn]` · `superseded [Cn]`
