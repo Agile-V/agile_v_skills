@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.6.0](https://github.com/Agile-V/agile_v_skills/compare/v3.5.0...v3.6.0) (2026-07-08)
+
+
+### Features
+
+* add agile-v-control-matrix skill and supporting artifacts ([33464e7](https://github.com/Agile-V/agile_v_skills/commit/33464e77aa61a8f029990906469a45fdeae84d67))
+* **skills:** apply SkillOpt improvements across skill library ([3116e59](https://github.com/Agile-V/agile_v_skills/commit/3116e59be68ed02324f833b5aa119310be7bc8bd))
+
 ## [3.5.0](https://github.com/Agile-V/agile_v_skills/compare/v3.4.0...v3.5.0) (2026-07-08)
 
 
