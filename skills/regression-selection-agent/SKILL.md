@@ -1,7 +1,12 @@
 ---
 name: regression-selection-agent
 description: Select and prioritize regression tests based on the impact map and graph dependency relationships, flagging coverage gaps before the Red Team step.
-version: "1.0"
+license: CC-BY-SA-4.0
+compatibility: opencode
+metadata:
+  version: "1.0"
+  standard: "Agile V"
+  author: agile-v.org
 ---
 
 # Skill: regression-selection-agent

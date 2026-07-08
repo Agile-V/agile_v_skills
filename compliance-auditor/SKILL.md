@@ -72,6 +72,12 @@ Trigger immediately: safety REQ without test · HW constraint override without r
 Severity: [Critical|High|Medium] | Type: [category] | Affected: [ID] | Action: [rec] | Ref: [log entry]
 ```
 
+## Archive Integrity
+
+Cycle archives in `.agile-v/cycles/CN/` are **read-only**. Never modify archived documents. If an archived document appears incorrect, log a non-conformance and escalate to Human — do not edit the archive.
+
+DECISION_LOG.md and CHANGE_LOG.md are never archived — they are append-only timelines that persist across all cycles.
+
 ## Multi-Cycle Traceability
 
 **Cycle-Aware ATM:** `REQ-ID | Status | ART-ID | ART Cycle | VER-ID | VER Cycle | Category | Result`

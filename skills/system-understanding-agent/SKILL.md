@@ -1,7 +1,12 @@
 ---
 name: system-understanding-agent
 description: Consume Understand Anything outputs and create a concise, reviewable system overview that gives agents sufficient context before modifying code (Gate 0).
-version: "1.0"
+license: CC-BY-SA-4.0
+compatibility: opencode
+metadata:
+  version: "1.0"
+  standard: "Agile V"
+  author: agile-v.org
 ---
 
 # Skill: system-understanding-agent

@@ -36,6 +36,19 @@ Compliance Auditor observes all stages.
 
 **Gate 2 prereqs (Phase 1):** `EVAL_RESULTS.md` + `VALIDATION_SUMMARY.md` **EvalGate** line. **Gate pause (Phase 2):** append `CHECKPOINTS.md` (`PENDING` + `resume_token`); resume only with matching `APPROVALS.md` entry (see `agile-v-core`).
 
+## Stage Failure Handling
+
+If a stage fails (e.g., Logic Gatekeeper rejects requirements, Red Team finds CRITICAL issues), the pipeline **stops at that stage**. Do not proceed to the next stage.
+
+| Failure | Action |
+|---------|--------|
+| Gate 1 rejected | Return to Stage 1; Req Architect updates REQUIREMENTS.md |
+| Build Agent HALT | Human resolves blocker; Build Agent resumes; do not skip to Stage 4 |
+| Red Team FAIL | Return to Stage 3; Builder addresses findings; re-verify affected only |
+| Gate 2 blocked | Do not proceed to Stage 5; resolve EVAL gate or get WAIVED approval |
+
+Never advance to Stage 5 with open CRITICAL or MAJOR findings.
+
 ## Wave Execution
 
 Dependency analysis -> Wave assignment (no-deps = Wave 1) -> Parallel within waves (fresh context each) -> Sequential across waves -> Prefer vertical slices (feature > layer).

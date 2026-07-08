@@ -60,7 +60,11 @@ Before writing code, validate: (1) Requirement coverage — every REQ has ≥1 a
 ## Post-Verification Feedback Loop
 > Adapted from GSD.
 
-**Auto-fix** (no Gate): bug fixes, missing validation, broken imports. **Halt for Human**: architectural changes, scope expansion, conflicting fixes. **Max 3 attempts** per artifact per FAIL; then escalate.
+**Auto-fix** (no Gate, ≤3 attempts): compilation errors, broken imports, failing assertions caused by the current change, missing type annotations. Auto-fix only touches the failing artifact.
+
+**Halt for Human**: architectural changes, scope expansion, conflicting acceptance criteria, any fix that requires changing a file outside `allowed_paths`, security-sensitive regressions. If auto-fix attempts exceed 3, stop and escalate — do not keep trying.
+
+**Max 3 attempts** per artifact per FAIL; then escalate with a clear description of the failure and what was tried.
 
 ## Multi-Cycle Artifact Versioning
 

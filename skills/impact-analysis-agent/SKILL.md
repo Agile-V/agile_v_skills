@@ -1,7 +1,12 @@
 ---
 name: impact-analysis-agent
 description: Identify the likely impact of a proposed change before implementation by mapping it to graph nodes, affected files, functions, APIs, and tests.
-version: "1.0"
+license: CC-BY-SA-4.0
+compatibility: opencode
+metadata:
+  version: "1.0"
+  standard: "Agile V"
+  author: agile-v.org
 ---
 
 # Skill: impact-analysis-agent
