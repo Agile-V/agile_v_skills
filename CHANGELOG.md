@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.0](https://github.com/Agile-V/agile_v_skills/compare/v3.3.4...v3.4.0) (2026-07-08)
+
+
+### Features
+
+* add openwiki-agent companion skill for OpenWiki integration ([193a9fe](https://github.com/Agile-V/agile_v_skills/commit/193a9feea2a6bfa81bd3cce6aedbbe8c5446f072))
+* add openwiki-agent companion skill for OpenWiki integration ([3a3dd1d](https://github.com/Agile-V/agile_v_skills/commit/3a3dd1d465fdb4beba3146f4d27537962ede29b4))
+* **business:** add C-Suite and Business Track skills (resolves [#16](https://github.com/Agile-V/agile_v_skills/issues/16) conflict) ([e4ca220](https://github.com/Agile-V/agile_v_skills/commit/e4ca2208d4c51608e560b030aa87e7bb49be787f))
+* **c-suite:** v2.0 token optimization with foundation layer ([5e06056](https://github.com/Agile-V/agile_v_skills/commit/5e06056d6d1a8556e897cfe6901b59f5ff678f7b))
+* **skills:** add C-Suite orchestrator layer (chief-exec, chief-tech, chief-finance, chief-people, chief-ops) ([9dadf9e](https://github.com/Agile-V/agile_v_skills/commit/9dadf9eda8cb5f9e6c56ecc9cbea8eb43e4d19da))
+* **skills:** add c-suite-update skill for periodic executive briefings ([09d51ef](https://github.com/Agile-V/agile_v_skills/commit/09d51ef99eff662f16bd7b31b6cc7a51edc37596))
+
+
+### Bug Fixes
+
+* **merge:** resolve conflict between main and m-josie:main (PR [#16](https://github.com/Agile-V/agile_v_skills/issues/16)) ([32d2b72](https://github.com/Agile-V/agile_v_skills/commit/32d2b7227903f9bd65f030ee8592940008ca77c4))
+
 ### [3.3.4](https://github.com/Agile-V/agile_v_skills/compare/v3.3.3...v3.3.4) (2026-06-21)
 
 ### [3.3.3](https://github.com/Agile-V/agile_v_skills/compare/v3.3.2...v3.3.3) (2026-06-21)
