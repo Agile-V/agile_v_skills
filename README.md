@@ -1017,6 +1017,44 @@ See `docs/understand-anything-integration.md` in that repository.
 
 ---
 
+## OpenWiki Integration
+
+Agile V treats [OpenWiki](https://github.com/langchain-ai/openwiki)-generated
+repository documentation (`openwiki/`) as a validated, evidence-linked knowledge
+layer rather than optional reading material.
+
+This enables:
+
+- Targeted context retrieval (read only the pages relevant to a task)
+- Freshness/validation checks before trusting wiki content
+- A `knowledge_snapshot` evidence artifact recording whether the knowledge
+  layer was valid and current when an agent relied on it
+
+### New skill
+
+| Skill | Path | Purpose |
+|---|---|---|
+| `openwiki-agent` | `skills/openwiki-agent/` | Governs when/how an agent consults and trusts `openwiki/`; records `knowledge_snapshot` evidence |
+
+### Integration docs
+
+See `integrations/openwiki/` for:
+
+- CLI command reference (`agilev wiki init/update/validate/status/snapshot`)
+- Evidence mapping (`knowledge_snapshot` schema and examples)
+- Relationship to the Understand Anything integration (complementary, not redundant)
+- Rationale for keeping GitHub Wiki mirroring out of scope
+
+### Quick positioning
+
+> `openwiki` generates; Agile V tracks, validates, and proves.
+
+The `agentic_agile_v` repository provides the runtime package
+(`src/agilev/wiki/`), CLI (`agilev wiki ...`), CI workflows, and evidence
+schema extension. See `docs/integrations/openwiki.md` in that repository.
+
+---
+
 ## Versioning
 
 - **Repository:** The repo uses [semantic versioning](https://semver.org/) driven by [Conventional Commits](https://www.conventionalcommits.org/). On each push to `main`, a GitHub Action reads the commit message and bumps the version accordingly: `feat:` → minor, `fix:` (and `chore:`, `docs:`, etc.) → patch, `BREAKING CHANGE` or `type!:` → major. It then creates a new git tag (e.g. `v1.5.1`) and updates the root `[package.json](package.json)`. The version field and tag are maintained by the workflow; do not edit `package.json` version by hand for releases. The same file holds repo metadata (name, description, author, repository, license).
