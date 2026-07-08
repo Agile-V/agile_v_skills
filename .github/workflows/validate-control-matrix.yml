@@ -1,0 +1,52 @@
+name: Validate Control Matrix Templates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - "agile-v-control-matrix/**"
+      - "templates/agile-v/**"
+      - "tests/**"
+      - "skills/*/SKILL.md"
+
+jobs:
+  validate-control-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-pyyaml-jsonschema-pytest
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml jsonschema pytest
+      - name: Validate schema file itself against JSON Schema meta-schema
+        run: |
+          python - <<'EOF'
+          import json, sys
+          from jsonschema import Draft202012Validator
+          schema = json.loads(open("templates/agile-v/CONTROL_MATRIX.schema.json").read())
+          meta = Draft202012Validator.META_SCHEMA
+          errors = list(Draft202012Validator(meta).iter_errors(schema))
+          for e in errors:
+              print("META-SCHEMA ERROR:", e.message)
+          sys.exit(len(errors))
+          EOF
+      - name: Run control matrix and frontmatter tests
+        run: pytest tests/test_control_matrix_template.py tests/test_skill_frontmatter.py -q --tb=short
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.python-version }}
+          path: .pytest_cache/

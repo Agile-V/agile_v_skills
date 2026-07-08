@@ -13,6 +13,7 @@ metadata:
     - Policy & Eval Evidence
     - Non-Conformance & HITL Alerts
     - Validation Summary Report (VSR)
+    - Control Matrix Audit
     - Multi-Cycle Traceability
     - Quality Metrics & KPIs
 ---
@@ -46,8 +47,26 @@ Log "Prevented Non-Conformance" when Build Agent violates Logic Gatekeeper const
 ## 4. VSR (Validation Summary Report)
 Structure for regulators: (1) Human Gate Approvals (gate, timestamp, approver, scope). (2) ATM. (3) Decision Log highlights. (4) NC Log. (5) Evidence of Human Curation. **(6) Runtime governance (Phase 1-2):** policy version + eval gate outcome + checkpoint closure references (`INTERRUPT-ID` → `GATE-XXXX`); link `docs/agile-v-runtime/01_SCHEMAS.md` in narrative appendix if needed.
 
+## Control Matrix Audit Duties
+
+Check every active control entry in `.agile-v/CONTROL_MATRIX.yaml` or `config/control_matrix.yaml`:
+
+- Every active control has non-placeholder owners (`business_owner`, `technical_owner`, `security_owner`, `reviewer` must not be `TBD`, empty, or missing).
+- Every `L2+` evidence bundle references a control ID.
+- Human Gates have durable checkpoint and approval references.
+- Log retention is defined and non-zero.
+- Rollback path exists for `L2+` when the matrix requires it.
+- Cost limit is recorded for agentic execution.
+- Include matrix status in VSR.
+
+**Audit finding format:**
+
+```text
+CM-001|CONTROL_MATRIX.yaml|PASS/FAIL/FLAG|field|description|evidence_ref
+```
+
 ## HITL Alerts
-Trigger immediately: safety REQ without test · HW constraint override without rationale · traceability gap · dangling artifact · prevented NC.
+Trigger immediately: safety REQ without test · HW constraint override without rationale · traceability gap · dangling artifact · prevented NC · active control with unresolved owner fields · missing control matrix for L2+ task.
 ```
 ## HITL Alert
 Severity: [Critical|High|Medium] | Type: [category] | Affected: [ID] | Action: [rec] | Ref: [log entry]

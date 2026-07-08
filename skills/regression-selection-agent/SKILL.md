@@ -1,3 +1,9 @@
+---
+name: regression-selection-agent
+description: Select and prioritize regression tests based on the impact map and graph dependency relationships, flagging coverage gaps before the Red Team step.
+version: "1.0"
+---
+
 # Skill: regression-selection-agent
 
 ## Purpose

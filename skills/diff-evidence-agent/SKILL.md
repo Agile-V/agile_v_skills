@@ -1,3 +1,9 @@
+---
+name: diff-evidence-agent
+description: Create evidence explaining the actual implementation diff and its relationship to the predicted impact, closing the loop between pre-change prediction and post-change reality.
+version: "1.0"
+---
+
 # Skill: diff-evidence-agent
 
 ## Purpose

@@ -1,0 +1,305 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agile-v:schemas:control-matrix:1.1.0",
+  "title": "Agile-V Control Matrix",
+  "description": "Schema for config/control_matrix.yaml and .agile-v/CONTROL_MATRIX.yaml. Semantic checks (allowed/forbidden overlap, unresolved TBD owners) are enforced by the Python validator in addition to this schema.",
+  "type": "object",
+  "required": ["version", "default_fail_mode", "controls"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+(\\.\\d+)?$",
+      "description": "Semantic version of this matrix file (e.g. '1.0.0')."
+    },
+    "effective_from": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 datetime when this matrix takes effect."
+    },
+    "default_fail_mode": {
+      "type": "string",
+      "enum": ["closed", "open"],
+      "description": "'closed' blocks on missing controls; 'open' warns only."
+    },
+    "default_log_storage": {"type": "string"},
+    "default_retention_days": {"type": "integer", "minimum": 1},
+    "controls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/control"}
+    }
+  },
+  "$defs": {
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "status", "scope", "applies_to", "minimum_risk_level",
+        "data_class", "tools", "model", "logs", "max_permissions",
+        "human_gates", "tests", "cost_limit", "rollback", "owner", "review"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^cm-[a-z0-9][a-z0-9-]*$",
+          "description": "Unique control identifier (e.g. 'cm-default-agentic-task')."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "active", "deprecated", "disabled"]
+        },
+        "description": {"type": "string"},
+        "scope": {
+          "type": "string",
+          "enum": ["global", "task", "agent", "skill", "tool", "repo"]
+        },
+        "minimum_risk_level": {
+          "type": "string",
+          "enum": ["L0", "L1", "L2", "L3", "L4"]
+        },
+        "applies_to": {"$ref": "#/$defs/appliesTo"},
+        "data_class": {"$ref": "#/$defs/dataClass"},
+        "tools": {"$ref": "#/$defs/tools"},
+        "model": {"$ref": "#/$defs/model"},
+        "logs": {"$ref": "#/$defs/logs"},
+        "max_permissions": {"$ref": "#/$defs/maxPermissions"},
+        "human_gates": {"$ref": "#/$defs/humanGates"},
+        "tests": {"$ref": "#/$defs/tests"},
+        "cost_limit": {"$ref": "#/$defs/costLimit"},
+        "rollback": {"$ref": "#/$defs/rollback"},
+        "owner": {"$ref": "#/$defs/owner"},
+        "review": {"$ref": "#/$defs/review"}
+      }
+    },
+    "appliesTo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "task_types": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Task types this control applies to. Use ['*'] for all."
+        },
+        "agent_modes": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Agent modes this control applies to. Use ['*'] for all."
+        },
+        "skills": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Skill names this control applies to. Use ['*'] for all."
+        }
+      }
+    },
+    "dataClass": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed", "forbidden", "default_if_unknown", "unknown_action", "redaction_required"],
+      "properties": {
+        "allowed": {"type": "array", "items": {"type": "string"}},
+        "forbidden": {"type": "array", "items": {"type": "string"}},
+        "default_if_unknown": {"type": "string"},
+        "unknown_action": {
+          "type": "string",
+          "enum": ["deny", "allow", "require_human_gate"]
+        },
+        "redaction_required": {"type": "boolean"}
+      }
+    },
+    "tools": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed", "forbidden", "requires_gate"],
+      "properties": {
+        "allowed": {"type": "array", "items": {"type": "string"}},
+        "forbidden": {"type": "array", "items": {"type": "string"}},
+        "requires_gate": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["vendor", "model_name", "allow_external_vendor", "record_model_in_evidence"],
+      "properties": {
+        "vendor": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Approved AI vendor name. Must not be a placeholder."
+        },
+        "model_name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Approved model identifier. Must not be a placeholder."
+        },
+        "fallback_model": {"type": ["string", "null"]},
+        "allow_external_vendor": {"type": "boolean"},
+        "require_vendor_review_for_data_classes": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "record_model_in_evidence": {"type": "boolean"}
+      }
+    },
+    "logs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["storage_location", "include_tool_calls", "redact_personal_data", "retention_days"],
+      "properties": {
+        "storage_location": {"type": "string"},
+        "tool_log_location": {"type": "string"},
+        "include_prompt": {"type": "boolean"},
+        "include_response": {"type": "boolean"},
+        "include_tool_calls": {"type": "boolean"},
+        "include_decision_rationale": {"type": "boolean"},
+        "redact_personal_data": {"type": "boolean"},
+        "retention_days": {"type": "integer", "minimum": 1}
+      }
+    },
+    "maxPermissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "file_access": {"type": "string"},
+        "write_access": {"type": "string"},
+        "network_access": {"type": "string"},
+        "database_access": {"type": "string"},
+        "email_access": {"type": "string"},
+        "credential_access": {"type": "string"},
+        "code_execution": {"type": "string"},
+        "git_access": {"type": "string"}
+      }
+    },
+    "humanGates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_before", "checkpoint_file", "approvals_file", "require_resume_token"],
+      "properties": {
+        "required_before": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["action", "gate", "approver_role"],
+            "properties": {
+              "action": {"type": "string"},
+              "gate": {
+                "type": "string",
+                "enum": ["G1", "G2", "G3", "G4"],
+                "description": "Gate tier: G1=security/owner, G2=technical/domain, G3=compliance, G4=executive."
+              },
+              "approver_role": {"type": "string"}
+            }
+          }
+        },
+        "checkpoint_file": {"type": "string"},
+        "approvals_file": {"type": "string"},
+        "require_resume_token": {"type": "boolean"}
+      }
+    },
+    "tests": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Test types required for all risk levels."
+        },
+        "required_for_l3_plus": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Additional test types required for L3 and above."
+        },
+        "required_for_l4": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Additional test types required for L4 only."
+        },
+        "minimum_coverage_percent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "costLimit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["currency", "max_run_cost", "max_daily_cost", "action_on_limit", "cost_log"],
+      "properties": {
+        "currency": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3,
+          "pattern": "^[A-Z]{3}$",
+          "description": "ISO 4217 currency code (e.g. 'EUR', 'USD')."
+        },
+        "max_run_cost": {"type": "number", "minimum": 0},
+        "max_daily_cost": {"type": "number", "minimum": 0},
+        "max_monthly_cost": {"type": "number", "minimum": 0},
+        "action_on_limit": {
+          "type": "string",
+          "enum": ["stop", "warn", "stop_and_request_approval"]
+        },
+        "cost_log": {"type": "string"}
+      }
+    },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "strategy", "rollback_path_required_for"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "strategy": {"type": "string"},
+        "rollback_path_required_for": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["L0", "L1", "L2", "L3", "L4"]
+          }
+        },
+        "feature_flag_required_for": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["L0", "L1", "L2", "L3", "L4"]
+          }
+        },
+        "max_rollback_time_minutes": {"type": "integer", "minimum": 1},
+        "rollback_owner_role": {"type": "string"}
+      }
+    },
+    "owner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["business_owner", "technical_owner", "security_owner", "reviewer"],
+      "properties": {
+        "business_owner": {"type": "string", "minLength": 1},
+        "technical_owner": {"type": "string", "minLength": 1},
+        "security_owner": {"type": "string", "minLength": 1},
+        "reviewer": {"type": "string", "minLength": 1},
+        "backup_owner": {"type": "string"}
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["last_reviewed", "review_cycle_days", "reviewer_role"],
+      "properties": {
+        "last_reviewed": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date of last review (YYYY-MM-DD)."
+        },
+        "review_cycle_days": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Days between mandatory reviews."
+        },
+        "reviewer_role": {"type": "string"}
+      }
+    }
+  }
+}

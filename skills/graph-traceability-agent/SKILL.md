@@ -1,3 +1,9 @@
+---
+name: graph-traceability-agent
+description: Create traceability from Agile V requirements to Understand Anything graph nodes, changed files, and tests, ensuring full evidence chain coverage.
+version: "1.0"
+---
+
 # Skill: graph-traceability-agent
 
 ## Purpose
