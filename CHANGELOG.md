@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.0](https://github.com/Agile-V/agile_v_skills/compare/v3.4.0...v3.5.0) (2026-07-08)
+
+
+### Features
+
+* add agile-v-control-matrix skill and supporting artifacts ([aaf2db8](https://github.com/Agile-V/agile_v_skills/commit/aaf2db8dc3f8ac2eec8719b0d71cd891053acfab))
+* **control-matrix:** harden schema, fixtures, and tests ([ffc2cff](https://github.com/Agile-V/agile_v_skills/commit/ffc2cff6394ae083654a1a08cbf3bceb096bcbb0))
+
 ## [3.4.0](https://github.com/Agile-V/agile_v_skills/compare/v3.3.4...v3.4.0) (2026-07-08)
 
 
