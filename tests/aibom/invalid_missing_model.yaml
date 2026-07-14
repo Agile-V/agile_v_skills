@@ -1,0 +1,38 @@
+# Test: Invalid manifest — model identity missing at L2
+# Expected result: FAIL for L2+ (model/runtime identity required)
+
+aibom_schema_version: "0.1"
+manifest_type: "agile-v-agent-run-bom"
+
+identity:
+  task_id: "AAV-0002"
+  run_id: "RUN-0002"
+  created_at: "2026-07-14T00:00:00Z"
+  created_by: "test-agent"
+  repository: "test/repo"
+  commit_sha: "def456"
+  branch: "main"
+  pull_request: ""
+
+risk:
+  agile_v_risk_level: "L2"
+  ai_influence_level: "substantial"
+  regulated_context: false
+  human_approval_required: false
+
+# INVALID: models list is empty for an L2 task
+models: []
+
+security_and_privacy:
+  secrets_redacted: true
+  hidden_chain_of_thought_excluded: true
+  pii_redacted: true
+  prompt_capture_policy: "metadata_only"
+
+summary:
+  unresolved_items: ["model identity not captured"]
+  verifier_notes: "FAIL: L2 task requires model identity. Models list is empty."
+  human_approval: "not_required"
+
+# Policy check result: FAIL
+# Gate AIBOM-G2 fails: required fields incomplete for L2

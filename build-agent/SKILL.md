@@ -74,5 +74,13 @@ Multi-cycle manifest: `ART-XXXX.N | REQ-XXXX | path | CYCLE | CR | notes`
 
 **Scope Rules:** (1) Only rebuild changed REQs. (2) Verify carry-forward files exist on disk. (3) Document supersession; prior revision in cycle archive.
 
+## AI Influence Traceability
+
+**Before implementation (L1+ tasks):** Confirm `AI_RUN_MANIFEST.yaml` exists or create it. Use template `templates/AI_RUN_MANIFEST.yaml`.
+
+**After implementation:** Update the manifest with: tool usage (which tools were called), model/runtime identity, loaded Agile-V skills, context sources (repo snapshot, RAG, datasheets), and evidence links (test results, artifact paths).
+
+**Never** hide AI-generated or AI-modified artifacts from evidence. Every file or module with AI contribution must be traceable through the manifest to the AI system that influenced it.
+
 ## Halt Conditions
-Halt and do not emit when: ambiguous REQ · missing REQ link · physical constraint violation · conflict with approved Blueprint.
+Halt and do not emit when: ambiguous REQ · missing REQ link · physical constraint violation · conflict with approved Blueprint · L1+ task with no AI_RUN_MANIFEST and AI materially influenced the output.

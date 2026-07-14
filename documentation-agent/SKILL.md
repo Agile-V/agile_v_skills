@@ -71,5 +71,14 @@ When `.agile-v/CONTROL_MATRIX.yaml` or `config/control_matrix.yaml` exists, gene
 
 Generated docs must not expose secrets. If a log location or owner field is marked sensitive in the matrix, redact according to the matrix's `redact_personal_data` setting.
 
+## AI-BOM Documentation Rules
+
+When generating project documentation:
+
+- Document the project's AI-BOM policy (high-level) in `docs/` if `templates/AI_BOM_POLICY.yaml` is in use.
+- Keep public docs high-level; keep evidence manifests in controlled release evidence directories (`.agile-v/aibom/`).
+- Do not publish sensitive model endpoints, API keys, secrets, internal prompts, or proprietary policy details without explicit review and redaction.
+- Reference `docs/ai-influence-traceability.md` for AI provenance guidance when generating compliance or governance docs.
+
 ## Alignment
-Single source of truth under `docs/`. Human curation via document control. Link to REQUIREMENTS.md, Decision Log, ATM, VSR, and CONTROL_MATRIX.yaml for traceability.
+Single source of truth under `docs/`. Human curation via document control. Link to REQUIREMENTS.md, Decision Log, ATM, VSR, CONTROL_MATRIX.yaml, and AI_RUN_MANIFEST (via evidence fragment) for traceability.

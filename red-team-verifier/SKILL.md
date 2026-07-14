@@ -115,6 +115,31 @@ Report as: `VER-XXXX | — | REQ | FLAG:STUB/ANTI/CRITICAL | FT-TOOL | descripti
 
 **Re-Verification:** Re-run only FAIL/FLAG tests + regression on modified files. Append new VER records referencing originals. Update totals.
 
+## AI-BOM Verification Checklist
+
+When verifying any AI-assisted task (L1+), check:
+
+| Check | L0-L1 | L2 | L3-L4 |
+|-------|-------|-----|--------|
+| AI_RUN_MANIFEST present | warn if missing | FAIL if missing | FAIL if missing |
+| Required fields complete for risk level | warn | FAIL | FAIL |
+| Critical model/runtime/tool fields unresolved | warn | FAIL | FAIL |
+| AI context changed since last accepted baseline | warn | require BOM diff | FAIL if diff missing |
+| Required revalidation performed | warn | FAIL if skipped | FAIL if skipped |
+| Hidden chain-of-thought excluded | warn | FAIL | FAIL |
+| Secrets/API keys excluded | FAIL | FAIL | FAIL |
+| RAG sources and repo snapshot documented | warn | FAIL if missing | FAIL if missing |
+| AI influence level consistent with actual task | warn | warn | FAIL |
+| Human approval present | N/A | N/A | FAIL if pending |
+
+**Verifier decision rules:**
+
+- L0-L1: warn on incomplete AI metadata; do not block.
+- L2: fail if model/runtime/tool identity is unresolved.
+- L3-L4: fail if BOM diff is missing or human approval is pending.
+
+Report AI-BOM findings as: `VER-XXXX | — | AIBOM | FLAG:AIBOM-[check] | FT-POLICY | description`
+
 ## Multi-Cycle Verification
 
 **Scope:** Delta verification (new + modified REQs) and Regression verification (unchanged REQs) — reported separately.

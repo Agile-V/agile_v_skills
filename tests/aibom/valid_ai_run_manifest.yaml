@@ -1,0 +1,47 @@
+# Test: Valid minimal AI Run Manifest (L0)
+# Expected result: PASS
+
+aibom_schema_version: "0.1"
+manifest_type: "agile-v-agent-run-bom"
+
+identity:
+  task_id: "AAV-0001"
+  run_id: "RUN-0001"
+  created_at: "2026-07-14T00:00:00Z"
+  created_by: "test-agent"
+  repository: "test/repo"
+  commit_sha: "abc123"
+  branch: "main"
+  pull_request: ""
+
+risk:
+  agile_v_risk_level: "L0"
+  ai_influence_level: "assistive"
+  regulated_context: false
+  human_approval_required: false
+
+models:
+  - name: "test-model"
+    provider: "test-provider"
+    model_id: "test-model-1"
+    model_version: ""
+    endpoint_or_deployment: ""
+    inference_runtime: ""
+    runtime_version: ""
+    context_window: null
+    temperature: null
+    top_p: null
+    tool_calling_enabled: null
+    confidence: "declared"
+    evidence_locator: "session metadata"
+
+security_and_privacy:
+  secrets_redacted: true
+  hidden_chain_of_thought_excluded: true
+  pii_redacted: true
+  prompt_capture_policy: "metadata_only"
+
+summary:
+  unresolved_items: []
+  verifier_notes: ""
+  human_approval: "not_required"

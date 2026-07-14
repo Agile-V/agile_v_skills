@@ -8,7 +8,7 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 
 | User Intent | Skill(s) to Load | Typical Phrases |
 |---|---|---|
-| Consult/validate the repo's OpenWiki knowledge base before changing it | `openwiki-agent` | "Is the wiki up to date?", "Check the docs before you touch this", "openwiki/ present", "knowledge snapshot" |
+| AI/ML-BOM, agent run provenance, AI influence traceability | `agile-v-aibom` | "AI-BOM", "AIBOM", "model inventory", "agent run provenance", "CycloneDX ML-BOM", "k8s-aibom", "AI evidence bundle", "revalidation after model change" |
 | Understand an existing codebase before changing it | `system-understanding-agent` | "What does this system do?", "Analyze the codebase", "Gate 0", "knowledge graph available" |
 | Identify what a change will affect | `impact-analysis-agent` | "What will this impact?", "Impact analysis", "What could break?", "Affected components" |
 | Link requirements to code and tests | `graph-traceability-agent` | "Traceability matrix", "Link requirements to components", "Graph traceability" |
@@ -53,18 +53,6 @@ This guide maps common user phrases and intents to the appropriate Agile V skill
 
 ## Detailed Skill Triggers
 
-### Repository Knowledge Layer (OpenWiki — pre-Gate 0)
-
-Use before `system-understanding-agent` (or alongside it) on any existing
-repository that has `openwiki/` and/or `.agile-v/wiki/manifest.json`.
-
-**`openwiki-agent`**
-- "Is the wiki up to date?"
-- "Check the docs before you touch this"
-- "What does the knowledge base say about X?"
-- "openwiki/ present" / ".agile-v/wiki/manifest.json exists"
-- **Auto-triggered:** `openwiki/` or `.agile-v/wiki/manifest.json` exists
-
 ### System Understanding Phase (Gate 0 — Existing Codebases)
 
 Use these skills when working on an **existing repository**. Run before requirements and build.
@@ -108,6 +96,29 @@ Use these skills when working on an **existing repository**. Run before requirem
 - "Unexpected changes"
 - "Risk delta"
 - "Release impact summary"
+
+---
+
+### AI/ML-BOM and Agent Run Provenance
+
+**`agile-v-aibom`**
+- "Create an AI-BOM for this task"
+- "Inventory AI models, agent runtimes, or AI tools"
+- "Link model/runtime/tool provenance to evidence bundles"
+- "Compare two AI-assisted runs"
+- "Determine whether model/runtime/tool changes require revalidation"
+- "Integrate k8s-aibom or CycloneDX ML-BOM artifacts"
+- "Prepare regulated release evidence for AI-assisted engineering"
+- "AI evidence bundle" / "AIBOM" / "ML-BOM" / "agent run provenance"
+- **Auto-trigger:** Any L1+ AI-assisted task that needs provenance evidence
+
+Common companion skills:
+- `agile-v-core` for lifecycle integration
+- `agile-v-control-matrix` for AIBOM controls
+- `agile-v-quality-gates` for AIBOM gates
+- `red-team-verifier` for independent BOM review
+- `compliance-auditor` for audit evidence
+- `release-manager` for release packaging
 
 ---
 
@@ -414,19 +425,18 @@ Use these skills when working on an **existing repository**. Run before requirem
 
 Use this when the task modifies an existing repository and a knowledge graph is available.
 
-1. **`openwiki-agent`** — Check/validate the OpenWiki knowledge layer, if present (non-blocking)
-2. **`system-understanding-agent`** — Gate 0: system overview, architecture map, gate decision
-3. **`impact-analysis-agent`** — Impact map, affected components, regression candidates
-4. **`regression-selection-agent`** — Select and prioritize regression tests
-5. **`requirement-architect`** — Generate requirements from impact map
-6. **`logic-gatekeeper`** — Validate requirements
-7. **Human Gate 1** — Review impact map + requirements
-8. **`build-agent-*`** + **`test-designer`** — Parallel synthesis (Build Agent receives impact map)
-9. **`graph-traceability-agent`** — Link requirements to changed files and tests
-10. **`diff-evidence-agent`** — Compare predicted vs actual impact
-11. **`red-team-verifier`** — Verify runtime + evidence quality
-12. **Human Gate 2** — Review traceability matrix + evidence bundle
-13. **`compliance-auditor`** — Generate evidence bundle with `00_understanding/` section
+1. **`system-understanding-agent`** — Gate 0: system overview, architecture map, gate decision
+2. **`impact-analysis-agent`** — Impact map, affected components, regression candidates
+3. **`regression-selection-agent`** — Select and prioritize regression tests
+4. **`requirement-architect`** — Generate requirements from impact map
+5. **`logic-gatekeeper`** — Validate requirements
+6. **Human Gate 1** — Review impact map + requirements
+7. **`build-agent-*`** + **`test-designer`** — Parallel synthesis (Build Agent receives impact map)
+8. **`graph-traceability-agent`** — Link requirements to changed files and tests
+9. **`diff-evidence-agent`** — Compare predicted vs actual impact
+10. **`red-team-verifier`** — Verify runtime + evidence quality
+11. **Human Gate 2** — Review traceability matrix + evidence bundle
+12. **`compliance-auditor`** — Generate evidence bundle with `00_understanding/` section
 
 ### Workflow 1: New Project from Scratch
 
@@ -559,7 +569,6 @@ Use this when the task modifies an existing repository and a knowledge graph is 
 - `agile-v-core` — Always load first (foundational values & directives)
 
 ### By Phase
-- **Repository Knowledge Layer (existing repos):** `openwiki-agent`
 - **System Understanding (existing repos):** `system-understanding-agent`, `impact-analysis-agent`, `regression-selection-agent`
 - **Discovery:** `discovery-analyst`, `threat-modeler`, `ux-spec-author`
 - **Requirements:** `requirement-architect`, `logic-gatekeeper`
@@ -591,7 +600,6 @@ Use this when the task modifies an existing repository and a knowledge graph is 
 
 | Skill | Run Alone? | Run in Parallel? | Dependencies |
 |---|---|---|---|
-| `openwiki-agent` | Yes | Yes (parallel with system-understanding-agent) | None |
 | `system-understanding-agent` | Yes (Gate 0) | No (sequential, before impact-analysis) | None |
 | `impact-analysis-agent` | No (requires system overview) | No (after Gate 0) | `system-understanding-agent` |
 | `regression-selection-agent` | No (requires impact map) | Yes (parallel with requirement-architect) | `impact-analysis-agent` |
@@ -622,6 +630,7 @@ Use this when the task modifies an existing repository and a knowledge graph is 
 | `chief-finance` | Yes | Yes (parallel with chief-tech, chief-people, chief-ops) | `agile-v-core`, `chief-exec` |
 | `chief-people` | Yes (standalone domain) | Yes (parallel with chief-tech, chief-finance, chief-ops) | `agile-v-core`, `chief-exec` |
 | `chief-ops` | Yes | Yes (parallel with chief-tech, chief-finance, chief-people) | `agile-v-core`, `chief-exec` |
+| `agile-v-aibom` | Yes (L1+ AI tasks) | Yes (parallel with build/test) | `agile-v-core` |
 
 ## Tips for Effective Skill Use
 

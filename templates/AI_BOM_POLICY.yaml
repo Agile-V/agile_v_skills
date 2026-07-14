@@ -1,0 +1,52 @@
+policy_version: "0.1"
+
+risk_level_requirements:
+  L0:
+    allow_unresolved_model: true
+    require_manifest: true
+    require_bom_diff: false
+    require_human_approval: false
+  L1:
+    allow_unresolved_model: true
+    require_manifest: true
+    require_bom_diff: false
+    require_human_approval: false
+  L2:
+    allow_unresolved_model: false
+    require_manifest: true
+    require_bom_diff: true
+    require_human_approval: false
+  L3:
+    allow_unresolved_model: false
+    require_manifest: true
+    require_bom_diff: true
+    require_independent_verification: true
+    require_human_approval: true
+  L4:
+    allow_unresolved_model: false
+    require_manifest: true
+    require_bom_diff: true
+    require_independent_verification: true
+    require_signed_manifest: true
+    require_human_approval: true
+
+revalidation_triggers:
+  - model_provider_changed
+  - model_id_changed
+  - model_version_changed
+  - inference_runtime_changed
+  - agent_framework_changed
+  - agile_v_skill_changed
+  - tool_access_changed
+  - rag_source_changed
+  - vector_store_changed
+  - embedding_model_changed
+  - sandbox_image_changed
+  - system_prompt_or_policy_changed
+  - unresolved_runtime_attribute_in_l2_plus
+
+privacy_rules:
+  store_hidden_chain_of_thought: false
+  store_api_keys: false
+  store_unredacted_secrets: false
+  prompt_capture_default: "metadata_only"

@@ -1,0 +1,119 @@
+aibom_schema_version: "0.1"
+manifest_type: "agile-v-agent-run-bom"
+
+identity:
+  task_id: "AAV-0000"
+  run_id: "RUN-0000"
+  created_at: "YYYY-MM-DDTHH:MM:SSZ"
+  created_by: "agent-or-human"
+  repository: "owner/repo"
+  commit_sha: ""
+  branch: ""
+  pull_request: ""
+
+risk:
+  agile_v_risk_level: "L0|L1|L2|L3|L4"
+  ai_influence_level: "none|assistive|substantial|critical"
+  regulated_context: false
+  human_approval_required: false
+
+models:
+  - name: ""
+    provider: ""
+    model_id: ""
+    model_version: ""
+    endpoint_or_deployment: ""
+    inference_runtime: ""
+    runtime_version: ""
+    context_window: null
+    temperature: null
+    top_p: null
+    tool_calling_enabled: null
+    confidence: "declared|inferred|verified|unresolved"
+    evidence_locator: ""
+
+agent_runtime:
+  agent_name: ""
+  agent_framework: ""
+  framework_version: ""
+  execution_environment: "local|ci|container|kubernetes|ide|saas|unknown"
+  sandbox_image: ""
+  sandbox_image_digest: ""
+  orchestrator: ""
+  confidence: "declared|inferred|verified|unresolved"
+  evidence_locator: ""
+
+agile_v_skills:
+  - skill: "agile-v-core"
+    version: ""
+    source: "repository|plugin|local|unknown"
+    commit_sha: ""
+    confidence: "declared|inferred|verified|unresolved"
+    evidence_locator: ""
+
+tools:
+  - name: ""
+    type: "code_execution|shell|filesystem|browser|mcp|connector|git|ci|eda|firmware|test|other"
+    version: ""
+    allowed: true
+    used: false
+    confidence: "declared|inferred|verified|unresolved"
+    evidence_locator: ""
+
+rag_and_context:
+  sources:
+    - name: ""
+      type: "repo|vector_db|document|web|ticket|design_doc|datasheet|other"
+      version_or_hash: ""
+      retrieved_at: ""
+      confidence: "declared|inferred|verified|unresolved"
+      evidence_locator: ""
+  embedding_model:
+    name: ""
+    version: ""
+    confidence: "declared|inferred|verified|unresolved"
+  vector_store:
+    name: ""
+    version: ""
+    collection: ""
+    confidence: "declared|inferred|verified|unresolved"
+
+external_services:
+  - name: ""
+    type: "llm_api|telemetry|tracing|vector_db|artifact_store|other"
+    version: ""
+    endpoint_class: "public|private|internal|unknown"
+    confidence: "declared|inferred|verified|unresolved"
+    evidence_locator: ""
+
+runtime_inventory:
+  source: "manual|ci|k8s-aibom|agent-log|openhands-hook|other"
+  imported_bom: ""
+  imported_bom_hash: ""
+  confidence: "declared|inferred|verified|unresolved"
+
+security_and_privacy:
+  secrets_redacted: true
+  hidden_chain_of_thought_excluded: true
+  pii_redacted: true
+  prompt_capture_policy: "metadata_only|redacted|full_allowed|not_captured"
+
+evidence_links:
+  sbom: ""
+  ml_bom: ""
+  agent_log: ""
+  test_results: ""
+  evidence_bundle: ""
+  verification_report: ""
+  release_package: ""
+
+change_control:
+  baseline_manifest: ""
+  bom_diff_required: false
+  revalidation_required: false
+  revalidation_reason: ""
+
+summary:
+  unresolved_items: []
+  verifier_notes: ""
+  human_approval: "not_required|required|approved|rejected|pending"

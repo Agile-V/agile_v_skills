@@ -434,6 +434,43 @@ Include in Evidence Bundle:
 
 ---
 
+## AI-BOM Quality Gates (AIBOM-G0..AIBOM-G7)
+
+These gates extend the evidence bundle validation for AI-assisted tasks.
+
+| Gate | Check | L0 | L1 | L2 | L3 | L4 |
+|------|-------|----|----|----|----|-----|
+| AIBOM-G0 | AI influence declared (level field set) | warn | warn | FAIL | FAIL | FAIL |
+| AIBOM-G1 | AI_RUN_MANIFEST exists | warn | FAIL | FAIL | FAIL | FAIL |
+| AIBOM-G2 | Required fields complete for risk level | warn | warn | FAIL | FAIL | FAIL |
+| AIBOM-G3 | Evidence locators present on material fields | skip | warn | FAIL | FAIL | FAIL |
+| AIBOM-G4 | SBOM and AI/ML-BOM linked in evidence bundle | skip | skip | FAIL | FAIL | FAIL |
+| AIBOM-G5 | BOM diff reviewed when AI context changed | skip | skip | FAIL | FAIL | FAIL |
+| AIBOM-G6 | Revalidation complete when triggered | skip | skip | FAIL | FAIL | FAIL |
+| AIBOM-G7 | Human approval complete for L3/L4 | skip | skip | skip | FAIL | FAIL |
+
+**Gate behavior:**
+- `warn` — Log finding; do not block release.
+- `FAIL` — Block release until resolved or risk-accepted with documented approval.
+- `skip` — Gate not applicable at this risk level.
+
+Add AI-BOM gate results to the Evidence Bundle:
+
+```json
+{
+  "quality_gates": {
+    "aibom_g0": "PASS|WARN|FAIL|SKIP",
+    "aibom_g1": "PASS|WARN|FAIL|SKIP",
+    "aibom_g2": "PASS|WARN|FAIL|SKIP",
+    "aibom_g3": "PASS|WARN|FAIL|SKIP",
+    "aibom_g4": "PASS|WARN|FAIL|SKIP",
+    "aibom_g5": "PASS|WARN|FAIL|SKIP",
+    "aibom_g6": "PASS|WARN|FAIL|SKIP",
+    "aibom_g7": "PASS|WARN|FAIL|SKIP"
+  }
+}
+```
+
 ## Companion Skills
 
 This skill works with:
@@ -441,6 +478,7 @@ This skill works with:
 - **build-agent:** Adds quality checks during implementation
 - **test-designer:** Enhances test quality requirements
 - **red-team-verifier:** Validates quality gate compliance
+- **agile-v-aibom:** AI influence traceability and AIBOM gate evaluation
 
 ---
 

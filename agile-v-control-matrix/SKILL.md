@@ -123,6 +123,25 @@ This skill defines the expected behavior. Runtime enforcement belongs in the con
 - CI workflow
 - policy-as-code engine
 
+## AIBOM Control Family
+
+The following controls govern AI Influence Traceability. Include in `CONTROL_MATRIX.yaml` for tasks with AI involvement.
+
+| Control ID | Name | Evidence Artifact | Verifier Check | Failure Mode |
+|-----------|------|------------------|----------------|--------------|
+| AIBOM-001 | AI Influence Declaration | AI_RUN_MANIFEST.yaml `risk.ai_influence_level` | Field set and non-null | Undeclared AI influence |
+| AIBOM-002 | Agent Run Manifest Required | AI_RUN_MANIFEST.yaml exists | File present for L1+ | Missing manifest |
+| AIBOM-003 | Model and Runtime Identity | `models[]`, `agent_runtime` fields | No `unresolved` at L2+ | Identity unknown |
+| AIBOM-004 | Tool and Skill Inventory | `tools[]`, `agile_v_skills[]` | List non-empty for L1+ | Tool/skill list absent |
+| AIBOM-005 | RAG and Context Source Inventory | `rag_and_context.sources[]` | Present for L2+ | RAG source not documented |
+| AIBOM-006 | Evidence Locator Completeness | `evidence_locator` on all material fields | No empty locators at L2+ | Unverifiable claims |
+| AIBOM-007 | SBOM / ML-BOM Linkage | `evidence_links.sbom`, `ml_bom` | Linked for L2+ | Missing supply-chain link |
+| AIBOM-008 | AI Component Change Detection | AI_BOM_DIFF_REPORT.md | Diff exists when baseline differs | Undetected AI context change |
+| AIBOM-009 | AI-Triggered Revalidation | REVALIDATION_LOG.md | Entry per trigger | Revalidation skipped |
+| AIBOM-010 | Runtime Inventory Import | `runtime_inventory.source` | Import documented for k8s/CI | Missing runtime inventory |
+| AIBOM-011 | Secret and CoT Exclusion | `security_and_privacy` flags | Both flags = true | Secrets or CoT in manifest |
+| AIBOM-012 | Human Approval for High-Risk AI Influence | APPROVALS.md + `summary.human_approval` | Approval recorded for L3/L4 | Missing human approval |
+
 ## Compatibility
 
 | Skills repo artifact | Consuming runtime responsibility |
@@ -132,3 +151,4 @@ This skill defines the expected behavior. Runtime enforcement belongs in the con
 | `CONTROL_MATRIX.schema.json` | Validate in CLI and CI. |
 | `docs/agile-v-runtime/02_CONTROL_MATRIX.md` | Runtime implementation reference. |
 | Human Gate wording | Persist gates in `CHECKPOINTS.md` and `APPROVALS.md`. |
+| `templates/AI_BOM_POLICY.yaml` | Policy for AIBOM controls; copy per project and customize risk-level rules. |

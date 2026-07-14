@@ -1,0 +1,24 @@
+{
+  "evidence_type": "ai_bom",
+  "schema_version": "0.1",
+  "task_id": "AAV-0000",
+  "run_id": "RUN-0000",
+  "risk_level": "L0|L1|L2|L3|L4",
+  "ai_influence_level": "none|assistive|substantial|critical",
+  "manifest_path": ".agile-v/aibom/AAV-0000/AI_RUN_MANIFEST.yaml",
+  "manifest_hash": "sha256:",
+  "cyclonedx_export_path": ".agile-v/aibom/AAV-0000/agent_run.cdx.json",
+  "cyclonedx_export_hash": "sha256:",
+  "sbom_link": "",
+  "observed_runtime_inventory": {
+    "source": "manual|ci|k8s-aibom|agent-log|openhands-hook|other",
+    "path": "",
+    "hash": "sha256:"
+  },
+  "unresolved_items": [],
+  "revalidation_required": false,
+  "revalidation_reason": "",
+  "verifier_status": "not_required|pending|passed|failed",
+  "human_approval_required": false,
+  "human_approval_status": "not_required|pending|approved|rejected"
+}

@@ -53,3 +53,15 @@ Format: `TC-XXXX | REQ-XXXX | Description | Expected | Type | Category | Origin 
 **Delta Generation:** Fresh TCs for new/modified REQs following standard procedures. For modified REQs, verify the changed behavior specifically (was → now).
 
 **Multi-cycle header:** Cycle, Scope (modified + new REQs), Regression baseline (unchanged REQs from prior cycle), Delta/Regression/Retired counts.
+
+## AI Influence and Test Re-execution
+
+Use `AI_RUN_MANIFEST.yaml` to decide whether test re-execution is needed when the AI context changed since the last verified baseline.
+
+**Re-execution required when:**
+- Model ID, version, or provider changed (`model_id_changed`, `model_version_changed`)
+- Agent framework or tool access changed (`agent_framework_changed`, `tool_access_changed`)
+- RAG source or context snapshot changed and tests relied on generated content
+- Agile-V skill version changed and test cases were AI-generated
+
+If the AI_RUN_MANIFEST shows changes, flag affected tests for rerun per `AI_BOM_POLICY.yaml` risk-level rules. Append re-execution rationale to the test specification.
