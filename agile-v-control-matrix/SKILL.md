@@ -5,6 +5,7 @@ license: CC-BY-SA-4.0
 metadata:
   version: "1.0"
   standard: "Agile V"
+  author: agile-v.org
   compliance: "ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"
   sections_index:
     - Purpose
