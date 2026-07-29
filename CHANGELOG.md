@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.7.0](https://github.com/Agile-V/agile_v_skills/compare/v3.6.0...v3.7.0) (2026-07-29)
+
+
+### Features
+
+* **skills:** add agile-v-aibom skill and AI Influence Traceability ([61b5b86](https://github.com/Agile-V/agile_v_skills/commit/61b5b8650a1bcc0cbc0880c6c1c7d97d5b466cfd))
+
+
+### Bug Fixes
+
+* **skills:** add missing metadata.author to agile-v-control-matrix ([0ff893c](https://github.com/Agile-V/agile_v_skills/commit/0ff893cca3dbae0007cc6aec82b92d60e9123eb6))
+
 ## [3.6.0](https://github.com/Agile-V/agile_v_skills/compare/v3.5.0...v3.6.0) (2026-07-08)
 
 
