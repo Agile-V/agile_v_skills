@@ -274,6 +274,7 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 
 ```text
 ├── agile-v-core/           # Foundation: Core philosophy and operational logic
+├── agile-v-aibom/          # AI Influence Traceability: AI/ML-BOM and agent run provenance
 ├── requirement-architect/  # Left Side: Intent and decomposition
 ├── logic-gatekeeper/       # Left Side: Ambiguity and constraint validation
 ├── build-agent/            # Apex: Core build agent (language-agnostic)
@@ -305,6 +306,7 @@ The skills are organized following the **Agile V™ Infinity Loop**. Each skill 
 | Skill                 | Category   | Path                            | Purpose                                                                                                                                                                                                    |
 | --------------------- | ---------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | agile-v-core            | Foundation | `agile-v-core/`                 | The baseline "operating system" for all agents. Includes context engineering, orchestration pipeline, state persistence, and model tier guidance.                                                          |
+| agile-v-aibom           | AI Provenance | `agile-v-aibom/`             | Captures, validates, compares, and summarizes the AI system context that influenced an Agile-V task. Produces AI_RUN_MANIFEST, AI_BOM_EVIDENCE_FRAGMENT, AI_INFLUENCE_SUMMARY, and optional CycloneDX ML-BOM export. |
 | agile-v-control-matrix  | Governance | `agile-v-control-matrix/`       | Defines data class, tool, model/vendor, log, rights, Human Gate, test, cost, rollback, and owner controls for agentic execution. Load when creating, reviewing, or enforcing `CONTROL_MATRIX.yaml`.       |
 | requirement-architect   | Left Side  | `requirement-architect/`        | Converts intent into atomic, traceable requirements.                                                                                                                                                       |
 | logic-gatekeeper        | Left Side  | `logic-gatekeeper/`             | Validates requirements for ambiguity and physical/hardware constraints.                                                                                                                                    |
@@ -540,6 +542,38 @@ cp templates/agile-v/CONTROL_MATRIX.example.yaml .agile-v/CONTROL_MATRIX.yaml
 ```
 
 Normative spec: [`docs/agile-v-runtime/02_CONTROL_MATRIX.md`](docs/agile-v-runtime/02_CONTROL_MATRIX.md). Schema: [`templates/agile-v/CONTROL_MATRIX.schema.json`](templates/agile-v/CONTROL_MATRIX.schema.json). Consuming runtimes (e.g., `agentic_agile_v`) enforce the matrix via CLI, hooks, and CI gates.
+
+### AI Influence Traceability
+
+Agile-V now supports AI/ML-BOM and Agent Run BOM evidence. This allows teams to trace not only requirements, artifacts, tests, and verification evidence, but also the AI systems that influenced engineering outputs.
+
+> SBOM tells us what software components are in the system. AI/ML-BOM and Agent Run BOM tell us what AI components influenced the engineering process and runtime behavior.
+
+This includes:
+
+- Model and provider identity
+- Inference runtime or agent framework
+- Loaded Agile-V skills and versions
+- Tools, plugins, connectors, MCP servers, and execution sandbox
+- RAG/context sources and repository knowledge snapshots
+- Runtime inventory imports (e.g., k8s-aibom for Kubernetes AI workloads)
+- CycloneDX ML-BOM export for external interoperability
+- Revalidation triggers when AI components change
+
+Use the `agile-v-aibom` skill for AI-assisted tasks that require provenance, compliance, or release evidence. For low-risk tasks (L0-L1), a minimal manifest is sufficient. For regulated, security-critical, firmware, PCB, medical, GxP, or release-critical work, AI Influence Traceability is mandatory at L2+.
+
+**Quick start:**
+
+```bash
+mkdir -p .agile-v/aibom/AAV-0000
+cp templates/AI_RUN_MANIFEST.yaml .agile-v/aibom/AAV-0000/AI_RUN_MANIFEST.yaml
+cp templates/AI_BOM_POLICY.yaml .agile-v/AI_BOM_POLICY.yaml
+# Fill in task_id, model identity, runtime, skills, tools, and evidence links.
+```
+
+**Templates:** `templates/AI_RUN_MANIFEST.yaml`, `templates/AI_BOM_POLICY.yaml`, `templates/AI_BOM_EVIDENCE_FRAGMENT.json`, `templates/AI_BOM_DIFF_REPORT.md`, `templates/CYCLONEDX_AGENT_RUN_BOM.cdx.json`
+
+**Docs:** `docs/ai-influence-traceability.md`, `docs/ai-ml-bom-evidence-model.md`, `docs/k8s-aibom-integration.md`, `docs/cyclonedx-ml-bom-export.md`, `docs/ai-bom-revalidation-triggers.md`
 
 ### Release baseline (v1.6)
 
@@ -1158,44 +1192,6 @@ See `integrations/understand-anything/` for:
 The `agentic_agile_v` repository provides the runtime adapter, Python modules, JSON schemas,
 and unit tests. CLI commands are planned for Phase 3 and are not yet available.
 See `docs/understand-anything-integration.md` in that repository.
-
----
-
-## OpenWiki Integration
-
-Agile V treats [OpenWiki](https://github.com/langchain-ai/openwiki)-generated
-repository documentation (`openwiki/`) as a validated, evidence-linked knowledge
-layer rather than optional reading material.
-
-This enables:
-
-- Targeted context retrieval (read only the pages relevant to a task)
-- Freshness/validation checks before trusting wiki content
-- A `knowledge_snapshot` evidence artifact recording whether the knowledge
-  layer was valid and current when an agent relied on it
-
-### New skill
-
-| Skill | Path | Purpose |
-|---|---|---|
-| `openwiki-agent` | `skills/openwiki-agent/` | Governs when/how an agent consults and trusts `openwiki/`; records `knowledge_snapshot` evidence |
-
-### Integration docs
-
-See `integrations/openwiki/` for:
-
-- CLI command reference (`agilev wiki init/update/validate/status/snapshot`)
-- Evidence mapping (`knowledge_snapshot` schema and examples)
-- Relationship to the Understand Anything integration (complementary, not redundant)
-- Rationale for keeping GitHub Wiki mirroring out of scope
-
-### Quick positioning
-
-> `openwiki` generates; Agile V tracks, validates, and proves.
-
-The `agentic_agile_v` repository provides the runtime package
-(`src/agilev/wiki/`), CLI (`agilev wiki ...`), CI workflows, and evidence
-schema extension. See `docs/integrations/openwiki.md` in that repository.
 
 ---
 

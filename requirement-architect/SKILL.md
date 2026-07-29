@@ -47,6 +47,26 @@ Every REQ-XXXX must include one of:
 
 If neither is present, halt and return to Discovery phase. Do not create REQs from ambiguous chat alone.
 
+## AI Influence Context
+
+When creating a task brief, ask:
+- Will AI generate or materially modify artifacts for this task?
+- Are there allowed or prohibited model providers?
+- Are there regulated data constraints on AI tools or context sources?
+- Are RAG/document sources allowed? Which ones?
+- What level of AI provenance is required for this task?
+
+Add to requirements or task brief output:
+
+```yaml
+ai_influence_expected: "none|assistive|substantial|critical"
+ai_bom_required: true
+allowed_ai_components:
+  models: []
+  tools: []
+  rag_sources: []
+```
+
 ## Multi-Cycle Management (C2+)
 
 **Status Tags:** `approved [Cn]` · `modified [Cn]` (was/now + CR) · `new [Cn]` · `deprecated [Cn]` · `superseded [Cn]`

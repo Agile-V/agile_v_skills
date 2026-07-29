@@ -131,5 +131,24 @@ Living state in `.agile-v/`: STATE.md (current phase/stage/status), REQUIREMENTS
 | **Medium** | Build Agent (synthesis), Test Designer, Red Team Verifier | Well-defined tasks |
 | **Low-Medium** | Compliance Auditor, Documentation Agent | Observation/templates |
 
+## AI Influence Traceability
+
+When an AI agent materially influences requirements, architecture, code, tests, schematics, firmware, documentation, verification, or release evidence, create or update an `AI_RUN_MANIFEST.yaml` and link it to the evidence bundle.
+
+Do not store hidden chain-of-thought, secrets, API keys, or unredacted proprietary prompts. Store auditable metadata: model identity, runtime identity, tool access, skill versions, context sources, artifact hashes, test evidence, and confidence/evidence locators.
+
+**SCOPE-V AI Influence Integration:**
+
+| Phase | AI Influence Duty |
+|-------|------------------|
+| Specify | Identify AI influence expectations; note allowed models, tools, skills |
+| Constrain | Define allowed/forbidden AI components; set regulated context flag |
+| Orchestrate | Select agent/runtime; create `AI_RUN_MANIFEST.yaml` |
+| Prove | Link tests and evidence to AI run context; attach evidence fragment |
+| Evolve | Diff AI run context when changes occur; log revalidation triggers |
+| Verify | Confirm BOM completeness; confirm revalidation status |
+
+**Rule:** Do not treat AI-generated output as fully traceable unless the influencing AI system context is documented. When model/runtime/tool/skill/context changes occur after verification, trigger revalidation according to risk level.
+
 ## Companion Skills
-Load on demand: **agile-v-pipeline** (orchestration, waves, handoffs), **agile-v-lifecycle** (multi-cycle, versioning, change requests), **agile-v-compliance** (risk, CAPA, gates, security, revalidation), **agile-v-control-matrix** (runtime control records and governance gates).
+Load on demand: **agile-v-pipeline** (orchestration, waves, handoffs), **agile-v-lifecycle** (multi-cycle, versioning, change requests), **agile-v-compliance** (risk, CAPA, gates, security, revalidation), **agile-v-control-matrix** (runtime control records and governance gates), **agile-v-aibom** (AI/ML-BOM and agent run provenance for L1+ AI-assisted tasks).

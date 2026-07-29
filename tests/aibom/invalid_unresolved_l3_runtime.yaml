@@ -1,0 +1,62 @@
+# Test: Invalid manifest — unresolved runtime at L3
+# Expected result: FAIL for L3 (no unresolved critical fields allowed)
+
+aibom_schema_version: "0.1"
+manifest_type: "agile-v-agent-run-bom"
+
+identity:
+  task_id: "AAV-0003"
+  run_id: "RUN-0003"
+  created_at: "2026-07-14T00:00:00Z"
+  created_by: "test-agent"
+  repository: "test/repo"
+  commit_sha: "ghi789"
+  branch: "main"
+  pull_request: ""
+
+risk:
+  agile_v_risk_level: "L3"
+  ai_influence_level: "critical"
+  regulated_context: true
+  human_approval_required: true
+
+models:
+  - name: "test-model"
+    provider: "test-provider"
+    model_id: "test-model-1"
+    model_version: "v2"
+    endpoint_or_deployment: "api.test.com"
+    inference_runtime: "test-runtime"
+    runtime_version: "1.0"
+    context_window: 100000
+    temperature: 0.0
+    top_p: null
+    tool_calling_enabled: true
+    confidence: "declared"
+    evidence_locator: "session config"
+
+# INVALID: agent_runtime confidence is "unresolved" for an L3 task
+agent_runtime:
+  agent_name: "unknown-agent"
+  agent_framework: ""
+  framework_version: ""
+  execution_environment: "unknown"
+  sandbox_image: ""
+  sandbox_image_digest: ""
+  orchestrator: ""
+  confidence: "unresolved"
+  evidence_locator: ""
+
+security_and_privacy:
+  secrets_redacted: true
+  hidden_chain_of_thought_excluded: true
+  pii_redacted: true
+  prompt_capture_policy: "metadata_only"
+
+summary:
+  unresolved_items: ["agent_runtime: framework and version unknown"]
+  verifier_notes: "FAIL: L3 task cannot have unresolved critical fields. Agent runtime identity required."
+  human_approval: "pending"
+
+# Policy check result: FAIL
+# Gate AIBOM-G2 fails: unresolved critical fields present at L3

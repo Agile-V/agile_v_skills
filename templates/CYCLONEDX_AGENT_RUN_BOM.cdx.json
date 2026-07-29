@@ -1,0 +1,81 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:00000000-0000-0000-0000-000000000000",
+  "version": 1,
+  "metadata": {
+    "timestamp": "YYYY-MM-DDTHH:MM:SSZ",
+    "tools": [
+      {
+        "vendor": "agile-v.org",
+        "name": "agile-v-aibom",
+        "version": "1.0"
+      }
+    ],
+    "properties": [
+      { "name": "agile-v:task_id", "value": "AAV-0000" },
+      { "name": "agile-v:run_id", "value": "RUN-0000" },
+      { "name": "agile-v:risk_level", "value": "L0|L1|L2|L3|L4" },
+      { "name": "agile-v:ai_influence_level", "value": "none|assistive|substantial|critical" },
+      { "name": "agile-v:manifest_path", "value": ".agile-v/aibom/AAV-0000/AI_RUN_MANIFEST.yaml" },
+      { "name": "agile-v:manifest_hash", "value": "sha256:" }
+    ]
+  },
+  "components": [
+    {
+      "type": "machine-learning-model",
+      "name": "MODEL_NAME",
+      "version": "MODEL_VERSION",
+      "supplier": {
+        "name": "MODEL_PROVIDER"
+      },
+      "properties": [
+        { "name": "agile-v:confidence", "value": "declared|inferred|verified|unresolved" },
+        { "name": "agile-v:evidence_locator", "value": "" },
+        { "name": "agile-v:inference_runtime", "value": "" }
+      ]
+    },
+    {
+      "type": "framework",
+      "name": "AGENT_FRAMEWORK",
+      "version": "FRAMEWORK_VERSION",
+      "description": "Agent execution framework",
+      "properties": [
+        { "name": "agile-v:confidence", "value": "declared|inferred|verified|unresolved" },
+        { "name": "agile-v:evidence_locator", "value": "" }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "name": "EXTERNAL_LLM_API",
+      "version": "",
+      "description": "External LLM API dependency",
+      "endpoints": [],
+      "properties": [
+        { "name": "agile-v:confidence", "value": "declared|inferred|verified|unresolved" },
+        { "name": "agile-v:endpoint_class", "value": "public|private|internal|unknown" }
+      ]
+    }
+  ],
+  "externalReferences": [
+    {
+      "type": "other",
+      "url": "",
+      "comment": "Agile-V AI_RUN_MANIFEST source",
+      "hashes": [
+        { "alg": "SHA-256", "content": "" }
+      ]
+    },
+    {
+      "type": "other",
+      "url": "",
+      "comment": "SBOM link"
+    },
+    {
+      "type": "other",
+      "url": "",
+      "comment": "Evidence bundle"
+    }
+  ]
+}

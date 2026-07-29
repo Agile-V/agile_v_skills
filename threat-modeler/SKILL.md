@@ -115,6 +115,22 @@ Add revision header: `<!-- Revision: C2 | Date: ... | Changes: Added THREAT-0008
 
 - CRITICAL/HIGH threat with no mitigation · PII collected with no legal basis · Cross-border transfer with no DPA · Security REQ has no verification method
 
+## AI Supply-Chain Threat Prompts
+
+When the system uses AI agents, models, or AI-generated code, extend STRIDE analysis to include:
+
+| Threat | Question |
+|--------|----------|
+| Model integrity | Could a model/runtime/tool change alter generated output quality or security posture? |
+| RAG poisoning | Could a compromised or altered RAG source influence implementation decisions? |
+| Tool abuse | Could an agent tool provide unauthorized access or exfiltrate data? |
+| API leakage | Could an untracked external LLM endpoint leak PII or proprietary data? |
+| Embedding/vector drift | Could a vector database or embedding model change invalidate traceability or test results? |
+| Malicious MCP/connector | Could a malicious MCP server or connector modify artifacts outside approved scope? |
+| Prompt injection | Could externally sourced content inject instructions into the agent's context? |
+
+For each identified AI supply-chain threat, generate a CANDIDATE-SEC-XXXX candidate requirement that addresses the threat. Mark AI supply-chain threats with `source: AI-supply-chain` for traceability to `AI_RUN_MANIFEST.yaml`.
+
 ## Integration Notes
 
 **With requirement-architect:** Security/privacy REQs → CRITICAL priority (never downgrade without Human approval)
@@ -122,3 +138,4 @@ Add revision header: `<!-- Revision: C2 | Date: ... | Changes: Added THREAT-0008
 **With test-designer:** Creates security test cases (automated scans + manual pen tests)
 **With red-team-verifier:** Executes security tests; CRITICAL defect if exploit succeeds
 **With observability-planner:** Security metrics (failed login rate, suspicious activity, rate limit hits)
+**With agile-v-aibom:** AI supply-chain threats link to AI_RUN_MANIFEST evidence; model/runtime changes may activate threat re-assessment

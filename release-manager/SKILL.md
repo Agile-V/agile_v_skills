@@ -203,9 +203,35 @@ As Human-Action checkpoint:
 
 Do not automate beyond approved scope. Production deployments require human approval at each phase.
 
+## AI-BOM Release Checklist
+
+Add to Pre-Release Checklist for AI-assisted tasks:
+
+```
+AI Provenance:
+[ ] AI_RUN_MANIFEST present for all AI-assisted release tasks
+[ ] AI_BOM_EVIDENCE_FRAGMENT linked in evidence bundle
+[ ] CycloneDX ML-BOM export attached (L3+ or on request)
+[ ] AI component changes since baseline reviewed (BOM diff)
+[ ] Revalidation complete or risk-accepted with approval reference
+[ ] Human approval captured for L3/L4 AI-influenced tasks
+```
+
+Release summary must include (for AI-assisted releases):
+
+```
+AI Provenance Summary:
+- Models used: [model names and versions]
+- AI runtimes/tools used: [framework and tool list]
+- BOM hashes: [manifest hash, CycloneDX hash]
+- Unresolved AI inventory items: [list or "none"]
+- Revalidation status: complete | risk-accepted | not-required
+- Risk acceptance decisions: [APPROVALS.md refs or "none"]
+```
+
 ## Halt Conditions
 
-- Gate 2 not approved (CRITICAL defects open) · Pre-release checklist incomplete · Rollback plan undefined · No monitoring configured (observability-planner not run) · Deployment window conflicts with freeze
+- Gate 2 not approved (CRITICAL defects open) · Pre-release checklist incomplete · Rollback plan undefined · No monitoring configured (observability-planner not run) · Deployment window conflicts with freeze · L3/L4 AI-assisted tasks with pending AI provenance human approval
 
 ## Integration with Agile V
 

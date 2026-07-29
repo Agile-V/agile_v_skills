@@ -36,6 +36,7 @@ build agents under `domains/`.
 
 ```
 ├── agile-v-core/           # Foundation skill (load first in any session)
+├── agile-v-aibom/          # AI Influence Traceability: AI/ML-BOM and agent run provenance
 ├── agile-v-pipeline/       # Orchestration, waves, handoffs
 ├── agile-v-lifecycle/      # Multi-cycle management, change requests
 ├── agile-v-compliance/     # Risk, CAPA, gates, security, revalidation
@@ -166,6 +167,15 @@ Skills MUST be context-efficient. Target guidelines from PERFORMANCE.md:
 4. **Red Team Protocol** — Build Agent never verifies its own work
 5. **Human Gates** — always stop at critical decision points for human approval
 6. **Decision Logging** — log the "Why" behind every output (Principle #9)
+7. **AI Influence Traceability** — when AI materially influences any artifact, create or update `AI_RUN_MANIFEST.yaml` and link it to the evidence bundle (see `agile-v-aibom`)
+
+## AI Influence Traceability Rule
+
+When an AI agent materially influences requirements, architecture, code, tests, PCB artifacts, firmware, documentation, verification, or release evidence, create or update an `AI_RUN_MANIFEST.yaml` and link it to the evidence bundle.
+
+Do not store hidden chain-of-thought, secrets, API keys, or unredacted proprietary prompts. Store auditable metadata: model identity, runtime identity, tool access, skill versions, context sources, artifact hashes, test evidence, and confidence/evidence locators.
+
+**Templates:** `templates/AI_RUN_MANIFEST.yaml` (source of truth), `templates/AI_BOM_POLICY.yaml` (risk-level rules), `templates/AI_BOM_EVIDENCE_FRAGMENT.json` (evidence bundle attachment).
 
 ### Attribution
 

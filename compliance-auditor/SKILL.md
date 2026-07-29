@@ -104,5 +104,22 @@ Compute and report at each Gate 2:
 
 **Trend Analysis (C2+):** Compare to prior cycles. Flag: degrading first-pass rate, rising defect density, stalled CAPAs (>2 cycles), coverage <100%.
 
+## AI Influence Audit Outputs
+
+For AI-assisted tasks, generate:
+
+| Output | Description |
+|--------|-------------|
+| AI influence inventory summary | List of models, runtimes, tools, skills, RAG sources used |
+| AI BOM completeness score | % of required fields populated per risk level |
+| AI component change history | Changes detected across runs for each task |
+| Runtime inventory gap report | Missing k8s-aibom or observed inventory for L2+ tasks |
+| Revalidation trigger report | Which triggers fired and whether revalidation was completed |
+| Release AI provenance statement | Summary of AI provenance for the release evidence bundle |
+
+Add to ATM optional columns when AI_RUN_MANIFEST is present: `ai_manifest_path`, `ai_manifest_hash`, `ai_bom_completeness`, `ai_revalidation_status`.
+
+Add to HITL Alerts: missing AI_RUN_MANIFEST for L1+ AI-assisted tasks; unresolved AI fields at L2+; pending human approval for L3/L4 AI-influenced tasks.
+
 ## Output Style
 Tone: objective, forensic, precise. Focus: evidence over narrative.
