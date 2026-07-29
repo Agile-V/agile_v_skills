@@ -41,7 +41,7 @@ The `AI_RUN_MANIFEST.yaml` is the internal source of truth for Agile-V AI proven
 | `rag_and_context` | sources, embedding_model, vector_store | L2+ |
 | `evidence_links` | sbom, ml_bom, evidence_bundle | L2+ |
 | `change_control` | baseline, bom_diff_required | L2+ |
-| `security_and_privacy` | secrets_redacted, hidden_CoT_excluded | L0+ |
+| `security_and_privacy` | secrets_redacted, hidden_chain_of_thought_excluded | L0+ |
 
 ## Evidence Fragment
 
