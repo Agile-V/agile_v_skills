@@ -6,6 +6,7 @@ metadata:
   version: "1.0"
   standard: "Agile V"
   author: agile-v.org
+  status: draft
   sections_index:
     - Purpose and Trigger Conditions
     - Required Behavior
