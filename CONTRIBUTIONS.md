@@ -102,8 +102,6 @@ This document provides a comprehensive list of all academic papers, open-source 
    - **Contribution**: NestJS-specific development patterns and best practices
    - **Referenced in**:
      - `domains/build-agent-nestjs/NOTICE.md:5`
-     - `NESTJS_INTEGRATION_PLAN_MODERN.md:240,331,453`
-     - `agentic-agile-v-nestjs-skill-integration-plan.md:5`
    - **Integration**: Adapted for SCOPE-V framework and Agile-V traceability requirements
    - **Attribution**: Full NOTICE.md file maintains original copyright
 
@@ -119,7 +117,6 @@ This document provides a comprehensive list of all academic papers, open-source 
    - **Contribution**: Primary specification for skill format, metadata, and structure
    - **Referenced in**:
      - `README.md:6,505,1023,1032`
-     - `NESTJS_INTEGRATION_PLAN_MODERN.md:9,391,555,582`
      - All skill SKILL.md files follow this specification
    - **Compliance**: All skills in this repository follow AgentSkills.io v1.0 specification
 
