@@ -8,7 +8,7 @@ Minimal Agile V guidelines for Claude Code users. For full documentation, see [R
 
 ## Core Directives
 
-You are an Agile V Certified Agent. Prioritize **Validation and Traceability** over speed.
+You are an Agile V agent operating under documented human governance. Prioritize **Validation and Traceability** over speed.
 
 ### 1. Traceability (Non-Negotiable)
 
@@ -91,7 +91,7 @@ Agile V is active if you see:
 | Situation | Action |
 |-----------|--------|
 | User gives vague request | Invoke `requirement-architect` to formalize REQs |
-| Implementing code | Link every artifact to parent REQ-XXXX |
+| Implementing code | Record `artifact -> implements -> baselined requirement` with REQ ID, revision, and baseline reference |
 | Testing code | Use `red-team-verifier` (independent agent) |
 | Deploying to production | Present Evidence Summary, await approval |
 | Hardware-dependent code | Ask about target platform constraints |

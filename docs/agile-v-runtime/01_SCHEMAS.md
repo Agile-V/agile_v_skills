@@ -5,7 +5,7 @@
 
 ## File placement
 
-Copy templates from [templates/agile-v/](../../templates/agile-v/) into the project `.agile-v/` directory (same level as `STATE.md`, `DECISION_LOG.md`).
+Copy runtime starters from the repository source directory [`templates/agile-v/`](../../templates/agile-v/) into the consuming project's `.agile-v/` directory (same level as `STATE.md`, `DECISION_LOG.md`). Root AI-provenance templates are separate: [`templates/`](../../templates/).
 
 
 | File                    | Phase | Description                                                  |
@@ -15,6 +15,8 @@ Copy templates from [templates/agile-v/](../../templates/agile-v/) into the proj
 | `EVAL_RESULTS.md`       | 1     | Eval runs and thresholds; Human Gate 2 input                 |
 | `CHECKPOINTS.md`        | 2     | Durable HITL: pending/resumed/expired interrupts             |
 | `CONTROL_MATRIX.yaml`   | 2     | Operating control map: data class, tools, model/vendor, logs, rights, Human Gates, tests, costs, rollback, owners |
+| `AGENT_TOOL_RECORD.yaml` | 3 | Per-tool/MCP identity, schema, auth, scope, side-effect, and execution evidence; source: [`templates/AGENT_TOOL_RECORD.yaml`](../../templates/AGENT_TOOL_RECORD.yaml) |
+| `AGENT_DELEGATION_RECORD.yaml` | 3 | Authenticated A2A handoff, delegation scope, correlation, expiry, and acceptance evidence; source: [`templates/AGENT_DELEGATION_RECORD.yaml`](../../templates/AGENT_DELEGATION_RECORD.yaml) |
 
 
 ---
@@ -173,4 +175,4 @@ See [02_CONTROL_MATRIX.md](02_CONTROL_MATRIX.md). The matrix is required for non
 
 - Templates: [templates/agile-v/](../../templates/agile-v/)
 - Control Matrix spec: [02_CONTROL_MATRIX.md](02_CONTROL_MATRIX.md)
-
+- Agent tool and delegation contract: [05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md](05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md)

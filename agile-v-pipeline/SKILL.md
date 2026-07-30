@@ -3,7 +3,7 @@ name: agile-v-pipeline
 description: Orchestration pipeline, wave execution, handoff protocols, and checkpoint types for the Agile V 5-stage workflow. Load when orchestrating multi-agent pipelines or managing stage transitions.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.5"
   standard: "Agile V"
   author: agile-v.org
   sections_index: ["Pipeline", "Handoffs", "Wave Execution", "Checkpoint Types"]
@@ -22,15 +22,15 @@ Orchestration pipeline for Agile V. Requires **agile-v-core** loaded first.
 ## Pipeline
 
 ```
-Stage 1: Requirements -> Stage 2: Validation -> [Human Gate 1] -> Stage 3: Synthesis (Build Agent || Test Designer) -> Stage 4: Verification -> [Human Gate 2] -> Stage 5: Acceptance
+Stage 1: draft persisted -> Stage 2: independent findings -> Stage 1: architect revisions -> [Human Gate 1] -> approved/baselined -> Stage 3: Synthesis (Build Agent || Test Designer) -> Stage 4: Verification -> [Human Gate 2] -> Stage 5: Acceptance
 Compliance Auditor observes all stages.
 ```
 
 ## Handoffs
 
-1. Req Architect emits REQUIREMENTS.md -> Logic Gatekeeper reads.
-2. Gatekeeper -> Gate 1 (Evidence Summary, Human approves).
-3. Build Agent || Test Designer from REQUIREMENTS.md, no shared context.
+1. Req Architect persists draft `REQUIREMENTS.md` -> Logic Gatekeeper reads without editing.
+2. Gatekeeper records independent findings -> Req Architect revises -> Gate 1 (findings + revision evidence, Human approves).
+3. Approval creates a baseline; Build Agent || Test Designer use only that baselined revision, with no shared context.
 4. Build Manifest + Test Cases -> Red Team Verifier.
 5. Validation Summary -> Gate 2.
 
@@ -42,7 +42,7 @@ If a stage fails (e.g., Logic Gatekeeper rejects requirements, Red Team finds CR
 
 | Failure | Action |
 |---------|--------|
-| Gate 1 rejected | Return to Stage 1; Req Architect updates REQUIREMENTS.md |
+| Gate 1 rejected | Return to architect revisions; preserve rejected revision and findings |
 | Build Agent HALT | Human resolves blocker; Build Agent resumes; do not skip to Stage 4 |
 | Red Team FAIL | Return to Stage 3; Builder addresses findings; re-verify affected only |
 | Gate 2 blocked | Do not proceed to Stage 5; resolve EVAL gate or get WAIVED approval |

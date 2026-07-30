@@ -3,7 +3,7 @@ name: build-agent-dart
 description: Dart/Flutter build agent for mobile apps, Flutter widgets, and Dart packages. Extends build-agent with Dart-specific conventions. Use when building Flutter apps, Dart packages, or mobile (iOS/Android) features.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.0"
+  version: "2.2"
   standard: "Agile V"
   domain: "Dart/Flutter/Mobile"
   extends: "build-agent"
@@ -28,7 +28,7 @@ You are the **Dart/Flutter Build Agent** at the Apex of the Agile V infinity loo
 All rules from **build-agent** apply (traceability, manifest, halt conditions, secure coding, pre-execution validation, post-verification feedback loop). This skill adds Dart/Flutter-specific conventions only.
 
 **Core Agile V Behaviors (inherited):**
-- Every artifact → REQ-XXXX (traceability)
+- Synthesis artifacts → `implements` → baselined REQ revision (typed lineage)
 - Build Manifest required for every delivery
 - Red Team Protocol (no self-verification)
 - Human Gates respected (halt on ambiguity)
@@ -451,7 +451,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
   ```
 
 **Escalation Rule:**
-- Any auth, permission, token, session, or identity change = R2+ risk level (see Evidence Requirements)
+- Any auth, permission, token, session, or identity change = L2+ risk level (see `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`)
 
 **Secure Coding (inherited from build-agent + Dart-specific):**
 1. Input validation (validators, form validation)
@@ -608,16 +608,16 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
 ## Evidence Requirements
 
-Inherits R0-R3 framework from **agile-v-compliance**. Dart/Flutter-specific additions below.
+Inherits the L0-L4 framework from `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`. Dart/Flutter-specific additions below; legacy R0-R3 maps as documented there.
 
-### R0: Exploratory
+### L0: Exploratory
 Base evidence applies (short result summary, no production credentials, no production code path changed).
 
 **Dart/Flutter-Specific:** No additions.
 
 ---
 
-### R1: Routine
+### L1: Routine
 Base evidence applies (affected files, diff summary, targeted tests or explanation, lint/typecheck, residual-risk note).
 
 **Dart/Flutter-Specific Additions:**
@@ -627,7 +627,7 @@ Base evidence applies (affected files, diff summary, targeted tests or explanati
 
 ---
 
-### R2: Production
+### L2: Production
 Base evidence applies (task brief with REQ IDs, implementation plan, affected files, executed commands, test results, regression coverage, acceptance criteria → test mapping, security/static check, rollback path, reviewer decision).
 
 **Dart/Flutter-Specific Additions:**
@@ -640,7 +640,7 @@ Base evidence applies (task brief with REQ IDs, implementation plan, affected fi
 
 ---
 
-### R3: High Assurance
+### L3/L4: High Assurance
 Base evidence applies (all R2 evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
 
 **Dart/Flutter-Specific Additions:**
@@ -664,11 +664,11 @@ Halt and do not emit when:
 - Conflict with approved Blueprint (contradicts Human Gate 1 approved design)
 
 **Dart/Flutter-Specific:**
-- **dart analyze errors in production build** (`dart analyze` fails for R2+ tasks without documented exceptions)
+- **dart analyze errors in production build** (`dart analyze` fails for L2+ tasks without documented exceptions)
 - **Missing null safety migration** (code uses legacy null safety or unsound null safety)
 - **Platform channel security issues** (platform channel handles sensitive data without documented security review)
 - **Hardcoded secrets in code** (API keys, tokens, passwords in source files)
-- **Auth change without R2+ risk classification** (authentication, authorization, or session logic changed but classified as R1)
+- **Auth change without L2+ risk classification** (authentication, authorization, or session logic changed below L2)
 - **Missing platform permissions documentation** (platform permissions added without documentation in Build Manifest notes)
 - **Widget tests missing for critical UI** (critical user flows lack widget tests or integration tests)
 
@@ -694,7 +694,8 @@ Inherited from build-agent + these Dart/Flutter considerations:
 
 **Pre-Execution Validation (inherited from build-agent):**
 Before synthesis, validate:
-1. **Requirement coverage:** Every REQ has ≥1 artifact planned
+1. **Input eligibility:** Every in-scope REQ is approved AND baselined; record REQ revision and baseline ID.
+2. **Requirement coverage:** Every in-scope REQ has ≥1 artifact planned
 2. **Artifact completeness:** Widgets, BLoCs/Providers, repositories, models, tests, platform channels (if applicable)
 3. **Dependency order:** No circular imports between modules (analyze imports)
 4. **Scope sanity:** Feature scope fits ≤50% context (split to sub-agents if needed)
@@ -714,7 +715,7 @@ BUILD_MANIFEST.md
 
 Cycle: C1
 Task: REQ-0001 - User authentication via JWT
-Risk Level: R2
+Risk Level: L2
 Generated: 2026-05-22T10:00:00Z
 
 ART-0001 | REQ-0001 | lib/features/auth/presentation/pages/login_page.dart | Login page; BLoC pattern

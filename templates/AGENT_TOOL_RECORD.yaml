@@ -1,0 +1,27 @@
+record_type: "agile-v-agent-tool-record"
+record_id: "TOOLREC-0000"
+task_id: "AAV-0000"
+correlation_id: "CORR-0000"
+timestamp: "2026-01-01T00:00:00Z"
+tool:
+  protocol: "mcp" # Enum: mcp, native, connector, other
+  server_id: "server-id"
+  name: "tool-name"
+  version: ""
+  schema_ref: "schema://tool-name"
+  schema_hash: ""
+identity:
+  caller_id: "agent-id"
+  authentication: "local" # Enum: mTLS, OIDC, API_key, local, other
+  authorization_ref: "CTRL-0000"
+scope:
+  action: "read" # Enum: read, write, execute, external_effect
+  resources: []
+  data_classes: []
+side_effect:
+  class: "none" # Enum: none, internal_state, external_state, irreversible
+  idempotency_key: ""
+  rollback_ref: ""
+decision: "allowed" # Enum: allowed, denied, gated, executed, failed
+approval_ref: "" # Required for gated/external effects; must be scoped and unexpired
+evidence_refs: ["log://evidence"]

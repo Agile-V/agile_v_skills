@@ -3,7 +3,7 @@ name: ux-spec-author
 description: Converts UX/design intent into testable design specifications that feed requirements. Use when defining user flows, accessibility, or design constraints.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -150,7 +150,7 @@ DESIGN.md provides Test Designer with:
 - **Performance tests** — Lighthouse, WebPageTest, budgets
 - **Visual regression** — Screenshot comparison for UI changes
 
-Test Designer reads DESIGN.md (alongside REQUIREMENTS.md) for comprehensive coverage.
+Test Designer uses the baselined REQ revision as test input. It may use DESIGN.md only as lineage/context; if DESIGN.md conflicts with the baseline, halt and route a change request through Requirement Architect and Gate 1.
 
 ## Multi-Cycle Behavior
 

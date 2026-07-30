@@ -12,7 +12,7 @@ Copy these files into your **project** `.agile-v/` directory and adjust `policy_
 | `CONTROL_MATRIX.example.yaml`     | `CONTROL_MATRIX.yaml`     | Operating control map for agentic execution |
 
 
-Full schema definitions: [docs/agile-v-runtime/01_SCHEMAS.md](../../docs/agile-v-runtime/01_SCHEMAS.md).
+Full schema definitions: [docs/agile-v-runtime/01_SCHEMAS.md](../../docs/agile-v-runtime/01_SCHEMAS.md). These are source templates in the skills repository; use the path to your checked-out skills repository when copying them into a consuming project.
 
 Control matrix schema: [CONTROL_MATRIX.schema.json](CONTROL_MATRIX.schema.json).
 
@@ -20,6 +20,6 @@ Control matrix schema: [CONTROL_MATRIX.schema.json](CONTROL_MATRIX.schema.json).
 
 ```bash
 mkdir -p .agile-v
-cp templates/agile-v/CONTROL_MATRIX.example.yaml .agile-v/CONTROL_MATRIX.yaml
+cp <skills-repo>/templates/agile-v/CONTROL_MATRIX.example.yaml .agile-v/CONTROL_MATRIX.yaml
 # Edit: owners, vendor/model, data class, tool rules, cost limits, rollback, status: active
 ```

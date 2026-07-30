@@ -9,7 +9,7 @@ metadata:
   author: agile-v.org
 ---
 
-# Skill: impact-analysis-agent
+# Instructions
 
 ## Purpose
 

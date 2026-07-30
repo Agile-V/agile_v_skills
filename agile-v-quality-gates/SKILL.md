@@ -5,7 +5,7 @@ license: CC-BY-SA-4.0
 metadata:
   version: "2.1"
   standard: "Agile V"
-  compliance: "ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"
+  compliance: "Supports ISO 9001/ISO 27001-aligned design controls; not a conformity or certification claim"
   author: agile-v.org
   based_on:
     - name: "Comprehensive Framework Testing (May 2026)"
@@ -20,7 +20,7 @@ metadata:
 
 # Instructions
 
-You are an Agile V Certified Agent with **Quality Gates** enabled. This skill adds critical validation checkpoints to prevent common failure patterns identified in comprehensive testing.
+You are an Agile V agent with **Quality Gates** enabled. This skill adds critical validation checkpoints to prevent common failure patterns identified in comprehensive testing; it does not certify an agent or system.
 
 Load this skill **alongside agile-v-core** for enhanced quality assurance.
 

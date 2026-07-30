@@ -3,11 +3,11 @@ name: observability-planner
 description: Defines metrics, events, dashboards, alerts, and SLOs to monitor production systems. Use after Gate 2 or with release-manager to ensure production observability.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
-    - Metrics & Events
+    - Metrics, Events & Trace Context
     - Dashboards & Alerts
     - SLOs & Error Budgets
     - Incident Feedback Loop
@@ -42,17 +42,31 @@ Requirements are continuously validated in production. Every metric maps to REQ-
 
 ## MET-XXXX: [Metric Name]
 **Type:** Counter/Gauge/Histogram · **REQ:** REQ-XXXX · **Description:** [What measured]
-**Unit:** req/s, ms, bytes, % · **Labels:** [endpoint, status, user_id] · **Source:** [app middleware, DB driver, business logic]
+**Unit:** req/s, ms, bytes, % · **Labels:** [bounded endpoint template, status class, region] · **Source:** [app middleware, DB driver, business logic]
 **Baseline:** [Normal range: p50=150ms, p95=300ms] · **Threshold:** [p95 >500ms for 5 min → Alert]
-**Collection:** [Prometheus, CloudWatch, Datadog] · **Retention:** [90 days]
+**Collection:** [Prometheus, CloudWatch, Datadog] · **Cardinality Budget:** [labels/value limits] · **Retention:** [90 days]
 
 ## Event Schema (Structured Logs)
 {
   "timestamp": "ISO8601", "level": "ERROR", "event": "checkout_failure",
-  "req_id": "REQ-XXXX", "user_id": "...", "trace_id": "...",
+  "req_id": "REQ-XXXX", "trace_id": "...", "span_id": "...",
   "error_code": "PAYMENT_TIMEOUT", "context": {...}
 }
 ```
+
+### Trace Context, Telemetry Safety, and Versioning
+
+Use W3C Trace Context (`traceparent`, `tracestate`) for inbound, outbound, and asynchronous handoffs. Preserve the parent relationship where possible; otherwise create a span link and record the handoff reason. Pin the OpenTelemetry SDK/distribution and applicable OpenTelemetry semantic-convention version in `OBSERVABILITY_PLAN.md`; do not mix convention versions without a documented migration.
+
+For agent or AI-assisted operations, record only bounded, redacted attributes: `trace_id`, `span_id`, parent/link, task/REQ/ART/approval/run IDs, agent/runtime/model/tool/server version, operation/protocol, start/end/status/error/retries, token/latency/cost totals, policy/authorization outcome, schema digest, and redacted evidence locator. Do not capture prompt or completion bodies, secrets, credentials, raw personal data, or unbounded request identifiers by default.
+
+| Telemetry control | Plan must state |
+|---|---|
+| Redaction and access | Data classification, redaction before export, access roles, audit path |
+| Cardinality | Approved dimensions and per-metric budget; never use user IDs, request IDs, prompt text, or arbitrary URLs as metric labels |
+| Sampling | Head/tail rules, error/slow-trace retention, bias/coverage limits, correlation preservation |
+| Retention | Logs, metrics, traces, evidence retention periods plus deletion/hold policy |
+| Cost and failure handling | Volume/cost budget; exporter failure behavior that does not expose data or break service |
 
 **Common Metrics (examples):**
 - MET-0001: HTTP latency (Histogram, REQ-0015: Dashboard ≤3s) → p95 threshold 3s
@@ -109,6 +123,8 @@ Requirements are continuously validated in production. Every metric maps to REQ-
 - 50% consumed: Alert engineering (informational)
 - 75% consumed: Pause non-critical features, focus reliability
 - 100% consumed: Stop feature work, incident declared, root cause required
+
+**Burn-rate alerts:** Define both fast and slow windows for each critical SLO (for example, a high burn over 1h/5m and a lower sustained burn over 6h/30m), with thresholds derived from the error-budget policy, not copied as universal values. Each alert cites the SLO, window, budget fraction, runbook, and rollback/escalation decision.
 ```
 
 **Examples:**
@@ -116,6 +132,10 @@ Requirements are continuously validated in production. Every metric maps to REQ-
 - SLO-0002: Dashboard p95 ≤3s, 95% of time (REQ-0015) → Budget 5% slow requests
 
 ## Incident Detection & Feedback Loop
+
+### Synthetic Checks
+
+For critical user journeys and externally visible dependencies, define synthetic checks with a bounded test account/data policy: journey/endpoint, region, cadence, timeout, success criteria, alert, ownership, and evidence retention. Run them before rollout and continuously after release. Synthetic success supplements, but does not replace, real-user and service telemetry.
 
 ### Incident Lifecycle
 1. **Detection** — Alert fires (ALR-XXXX) → On-call notified
@@ -140,6 +160,8 @@ Requirements are continuously validated in production. Every metric maps to REQ-
 ```
 
 **Feed into CR-XXXX:** If incident reveals REQ gap or ambiguity → create CR → requirement-architect → Gate 1 approval → next cycle
+
+**Monitoring-to-CAPA linkage:** Every actionable alert, SLO burn, or failed synthetic check that requires corrective action links its alert/check evidence to `INC-XXXX` (when incident criteria are met), `CAPA-XXXX` (cause, corrective/preventive action, owner, due date, effectiveness check), and `CR-XXXX` when a requirement or design change is needed. Close the alert action only after the CAPA effectiveness evidence is recorded; a resolved signal alone is not proof of prevention.
 
 ## Runbooks
 
@@ -174,7 +196,7 @@ Release Manager includes in pre-release checklist: "Monitoring & Alerting config
 
 ## Halt Conditions
 
-- Metric defined with no REQ-XXXX mapping · Alert has no runbook · SLO has no error budget policy · Release planned with no monitoring configured · CRITICAL alert has no PagerDuty
+- Metric defined with no REQ-XXXX mapping · Alert has no runbook · SLO has no error budget policy or burn-rate treatment · Critical journey has no justified synthetic-check decision · Release planned with no monitoring configured · CRITICAL alert has no PagerDuty
 
 ## Output Summary
 

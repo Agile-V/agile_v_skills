@@ -9,7 +9,7 @@ metadata:
   author: agile-v.org
 ---
 
-# Skill: regression-selection-agent
+# Instructions
 
 ## Purpose
 

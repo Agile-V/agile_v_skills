@@ -3,7 +3,7 @@ name: release-manager
 description: Manages post-Gate-2 release activities with Agile V rigor. Rollout plans, rollback procedures, sign-off checklists. Use after Human Gate 2 for production deployment.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -56,6 +56,7 @@ Artifacts verified → approved → safe deployment to production with traceabil
 **Gate 2 Complete:** [ ] All REQs verified (VALIDATION_SUMMARY.md) · [ ] No CRITICAL/MAJOR defects · [ ] ATM complete · [ ] VSR signed
 **Infrastructure:** [ ] Env provisioned · [ ] DB migrations tested · [ ] Secrets rotated · [ ] Monitoring configured (observability-planner) · [ ] Alerts active
 **Artifacts:** [ ] Build from verified code (Git SHA) · [ ] Signed (checksum) · [ ] Rollback ready (prev version)
+**Supply chain:** [ ] SBOM/ML-BOM coverage recorded · [ ] License/vulnerability policy reviewed · [ ] Required signatures verified · [ ] Source/build/artifact/deployment identities bound · [ ] SLSA provenance reviewed if selected · [ ] Reproducibility result or limitation recorded
 **Approvals:** [ ] Product Owner · [ ] Eng Lead · [ ] Security/Compliance · [ ] Business stakeholder
 **Communication:** [ ] Release notes drafted · [ ] Customer comm ready · [ ] Internal notified · [ ] On-call confirmed
 
@@ -229,9 +230,34 @@ AI Provenance Summary:
 - Risk acceptance decisions: [APPROVALS.md refs or "none"]
 ```
 
+## Supply-Chain and Deployment Evidence
+
+For each releasable artifact, record and independently verify the following where selected by the release risk policy. These controls provide evidence for their stated scope; they are not a security, compliance, or reproducibility guarantee.
+
+| Control | Minimum release evidence | Gate rule |
+|---|---|---|
+| Identity binding | Source commit/tag, build job/run, artifact digest, target environment, deploy job/run, deployment identity/service account | Halt if deployed digest cannot be tied to approved artifact |
+| SBOM / ML-BOM | Format/version, digest, generation time, component coverage limits | Record omissions; halt when policy-required inventory is absent |
+| License and vulnerabilities | Scanner/database version and time, results, severity policy, exceptions/waivers and approver | Halt on unapproved policy violations; clean scan is time-bound evidence only |
+| Artifact signature | Signature, signer/key reference, subject digest, verification result and verifier evidence | Verify before deployment; halt on failed or missing required verification |
+| SLSA provenance | Predicate/version, provenance digest, builder identity, source/artifact digests, verification result | Require only at selected assurance level; record non-applicability otherwise |
+| Reproducibility | Rebuild procedure, environment/configuration digests, comparison result; or documented non-reproducibility | Do not claim reproducibility without comparison evidence |
+| Remote agent dependencies | Model endpoint, MCP server, plugin, agent service, version/digest or unresolved status | Review baseline change against release risk |
+| Exceptions | Known anomalies, residual risks, waivers, expiry, owner, approval, rollback linkage | Halt on expired or unapproved exceptions |
+
+```markdown
+## Supply-Chain Release Record
+**Source / Build / Artifact / Deployment:** [commit/tag] · [CI run] · `sha256:...` · [environment + deployment run/identity]
+**Inventories:** SBOM [path + digest + coverage] · ML-BOM [path + digest or N/A]
+**Review:** license [result/policy/waiver] · vulnerabilities [scanner DB time/result/waiver]
+**Integrity:** signature [subject digest/verifier result] · SLSA [predicate/digest/result or N/A]
+**Reproducibility:** reproduced | not-reproduced | not-assessed — [comparison evidence or reason]
+**Dependencies / Exceptions:** [remote AI/MCP/plugin inventory; anomalies; residual risks; approval refs]
+```
+
 ## Halt Conditions
 
-- Gate 2 not approved (CRITICAL defects open) · Pre-release checklist incomplete · Rollback plan undefined · No monitoring configured (observability-planner not run) · Deployment window conflicts with freeze · L3/L4 AI-assisted tasks with pending AI provenance human approval
+- Gate 2 not approved (CRITICAL defects open) · Pre-release checklist incomplete · Rollback plan undefined · No monitoring configured (observability-planner not run) · Required supply-chain evidence missing or failed verification · Deployment window conflicts with freeze · L3/L4 AI-assisted tasks with pending AI provenance human approval
 
 ## Integration with Agile V
 

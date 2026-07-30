@@ -33,7 +33,7 @@ Build Agents (Apex)
 ```
 
 **Positioning Statement:**
-> `build-agent-nestjs` is a technology-specific Agile V domain skill for NestJS backend development. It extends `build-agent` with NestJS architectural patterns, DI conventions, testing strategies, and security best practices. All Agile V lifecycle rules (traceability, gates, evidence, compliance) apply through the core skills.
+> `build-agent-nestjs` is a technology-specific Agile V domain skill for NestJS backend development. It extends `build-agent` with NestJS architectural patterns, DI conventions, testing strategies, and security best practices. It synthesizes only from approved, baselined requirement revisions and records typed lineage (`artifact -> implements -> baselined requirement`).
 
 ---
 
@@ -151,7 +151,7 @@ All rules from **build-agent** apply (traceability, manifest, halt conditions). 
 - **Input Sanitization:** Sanitize user-generated content before storage/output (XSS prevention).
 - **Rate Limiting:** Apply `@Throttle()` to sensitive/high-volume endpoints.
 - **Secrets Management:** Use ConfigService + env vars. No hardcoded secrets (build-agent rule).
-- **Escalation:** Any auth, permission, token, session, or identity change = R2+ (see agile-v-compliance).
+- **Escalation:** Any auth, permission, token, session, or identity change = L2+ (see `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`).
 
 **Secure Coding:** Inherit 7 secure coding rules from build-agent. Add NestJS-specific: parameterized queries (TypeORM/Prisma), guard coverage for protected routes, explicit CORS config.
 
@@ -260,20 +260,21 @@ git pull https://github.com/Kadajett/agent-nestjs-skills.git main
 
 ## Compliance Integration
 
-**Risk Levels (from agile-v-compliance):**
-- **R0:** Exploratory/spike (no production path)
-- **R1:** Routine refactor, internal cleanup
-- **R2:** Public API change, database migration, auth change, production bug fix, dependency upgrade
-- **R3:** Regulated system, payment/medical data, security boundary change, release gate
+**Risk Levels (normative):**
+- **L0:** Isolated exploration; no production or regulated path
+- **L1:** Routine, reversible internal change
+- **L2:** Production-impacting or security-relevant change (including public API, migration, auth, production bug, or dependency upgrade)
+- **L3:** High-impact, regulated, sensitive-data, or trust-boundary change
+- **L4:** Safety-critical or externally assured release decision
 
 **Evidence Requirements:**
-- See `agile-v-compliance/SKILL.md` for R0-R3 evidence gates.
+- See `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md` for L0-L4 evidence gates. Legacy R0-R3 is migration-only.
 - NestJS-specific evidence: migration files, E2E test results, security check (e.g., `npm audit`), API contract documentation.
 
 **Human Gates:**
-- R1: Normal code review
-- R2: Mandatory reviewer approval + rollback plan
-- R3: Explicit sign-off + audit artifact (APPROVALS.md)
+- L1: Normal code review
+- L2: Mandatory reviewer approval + rollback plan
+- L3/L4: Explicit sign-off + audit artifact (`APPROVALS.md`); L4 also requires appropriate independent assurance
 
 ---
 
@@ -298,7 +299,7 @@ Halt and do not emit when:
 - **Circular DI dependency detected** (NestJS-specific)
 - **Schema change without migration artifact** (NestJS-specific)
 - **Public API change without versioning strategy** (NestJS-specific)
-- **Auth/security change without R2+ risk classification** (NestJS-specific)
+- **Auth/security change below L2 risk classification** (NestJS-specific)
 
 ---
 
@@ -363,7 +364,7 @@ Agile V-specific adaptations (SKILL.md structure, traceability integration, evid
 
 ### Phase 3: Integration with Agile V Core
 - [ ] Verify `extends: "build-agent"` relationship
-- [ ] Confirm compliance integration (R0-R3 risk levels)
+- [ ] Confirm compliance integration (L0-L4 risk levels)
 - [ ] Test skill loading in Cursor/Claude Code/VS Code
 - [ ] Update SKILL_ROUTING_GUIDE.md with NestJS triggers
 - [ ] Add to README.md skill table

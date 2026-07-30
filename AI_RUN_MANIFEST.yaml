@@ -1,0 +1,79 @@
+aibom_schema_version: "0.2"
+manifest_type: "agile-v-agent-run-bom"
+identity:
+  task_id: "AAV-RESEARCH-2026-07-30"
+  run_id: "RUN-AGILE-V-SKILLS-RESEARCH-001"
+  created_at: "2026-07-30T00:00:00Z"
+  created_by: "OpenCode agent"
+  repository: "Agile-V/agile_v_skills"
+  commit_sha: "2dad1a3a2f0b2a939e8d2c7d9906a533b02c9f4e"
+  branch: "docs/agile-v-skills-research"
+risk:
+  agile_v_risk_level: "L1"
+  ai_influence_level: "substantial"
+  regulated_context: false
+  human_approval_required: false
+models:
+  - name: "GPT-5.6 Sol"
+    provider: "GitHub Copilot"
+    model_id: "github-copilot/gpt-5.6-sol"
+    endpoint_or_deployment: "OpenCode API runtime"
+    inference_runtime: "OpenCode"
+    tool_calling_enabled: true
+    confidence: "declared"
+    evidence_locator: "runtime session metadata"
+agent_runtime:
+  agent_name: "OpenCode"
+  agent_framework: "OpenCode"
+  execution_environment: "ide"
+  orchestrator: "OpenCode"
+  confidence: "declared"
+agile_v_skills: []
+tools:
+  - name: "OpenCode workspace tools"
+    type: "filesystem"
+    allowed: true
+    used: true
+    confidence: "verified"
+agent_interoperability:
+  untrusted_context_enforced: null
+  tool_records: []
+  delegation_records: []
+context:
+  declared:
+    instruction_bundles: []
+    policies: []
+    sources: []
+    datasets: []
+  observed:
+    sources:
+      - name: "Primary-source register"
+        type: "web"
+        version_or_hash: "SRC-001 through SRC-048"
+        retrieved_at: "2026-07-30T00:00:00Z"
+        evidence_locator: "docs/AGILE_V_SKILLS_RESEARCH_AND_IMPROVEMENT_PLAN.md#10-source-register"
+    tool_calls_evidence: "runtime tool log"
+    policy_decisions_evidence: ""
+    confidence: "verified"
+hashes:
+  - subject_type: "artifact"
+    name_or_id: "docs/AGILE_V_SKILLS_RESEARCH_AND_IMPROVEMENT_PLAN.md"
+    algorithm: "sha256"
+    digest: "sha256:d8a43cd783885c06a3454da31862eb9798b6654b9d3316d7dab83391566845f4"
+artifact_influence:
+  - artifact_id: "docs/AGILE_V_SKILLS_RESEARCH_AND_IMPROVEMENT_PLAN.md"
+    artifact_type: "documentation"
+    contribution: "generated"
+    contribution_description: "Research, repository analysis, synthesis, and drafting."
+    revision_or_hash: "sha256:d8a43cd783885c06a3454da31862eb9798b6654b9d3316d7dab83391566845f4"
+    confidence: "verified"
+security_and_privacy:
+  secrets_redacted: true
+  hidden_chain_of_thought_excluded: true
+  pii_redacted: true
+  prompt_capture_policy: "metadata_only"
+summary:
+  unresolved_items:
+    - "Model and OpenCode runtime version were not exposed by the session."
+  verifier_notes: "Independent review findings were incorporated before final validation."
+  human_approval: "not_required"

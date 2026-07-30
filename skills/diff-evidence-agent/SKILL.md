@@ -9,7 +9,7 @@ metadata:
   author: agile-v.org
 ---
 
-# Skill: diff-evidence-agent
+# Instructions
 
 ## Purpose
 
