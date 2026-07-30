@@ -23,7 +23,7 @@ Skills instruct agents how to behave. The control matrix is the record they chec
 |---|---|
 | `.agile-v/CONTROL_MATRIX.yaml` | Project runtime instance (highest precedence) |
 | `config/control_matrix.yaml` | Repository default (consuming repo fallback) |
-| `templates/agile-v/CONTROL_MATRIX.example.yaml` | Starter template (this skills repo) |
+| [`templates/agile-v/CONTROL_MATRIX.example.yaml`](../../templates/agile-v/CONTROL_MATRIX.example.yaml) | Starter template in this skills repository; copy to `.agile-v/CONTROL_MATRIX.yaml` in the consuming project |
 
 Copy the example template, fill all `TBD` fields, and set `status: active` before enabling fail-closed enforcement.
 
@@ -212,7 +212,7 @@ Skill instructions alone are not sufficient enforcement. An agent may ignore a s
 ```bash
 # Copy template into project runtime
 mkdir -p .agile-v
-cp templates/agile-v/CONTROL_MATRIX.example.yaml .agile-v/CONTROL_MATRIX.yaml
+cp <skills-repo>/templates/agile-v/CONTROL_MATRIX.example.yaml .agile-v/CONTROL_MATRIX.yaml
 # Edit: owners, vendor/model, data class, tools, cost limits, rollback, status: active
 
 # Validate (requires agilev CLI from agentic_agile_v repo)

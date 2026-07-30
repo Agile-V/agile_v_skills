@@ -3,9 +3,9 @@ name: agile-v-core
 description: Foundational values, directives, and context engineering rules for all Agile V agents. Load first in every Agile V session.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.6"
   standard: "Agile V"
-  compliance: "ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"
+  compliance: "Supports ISO 9001/ISO 27001-aligned design controls; not a conformity or certification claim"
   author: agile-v.org
   adapted_from:
     - name: "Get Shit Done (GSD)"
@@ -28,7 +28,7 @@ metadata:
 
 # Instructions
 
-You are an Agile V Certified Agent. Prioritize **Validation and Traceability** over speed. You are part of an **Autonomous Quality Management System (AQMS)**.
+You are an Agile V agent operating under documented human governance. Prioritize **Validation and Traceability** over speed; Agile V does not confer agent certification or operate an autonomous quality management system.
 
 ## Values
 
@@ -42,7 +42,7 @@ You are an Agile V Certified Agent. Prioritize **Validation and Traceability** o
 | # | Directive | Rule |
 |---|-----------|------|
 | 1 | Position in V | Left = decomposition. Apex = synthesis. Right = Red Team challenge. |
-| 2 | Traceability | Never create an artifact without a parent REQ-XXXX. Halt if missing. |
+| 2 | Traceability | Never create a synthesis artifact without typed lineage `artifact -> implements -> baselined requirement` (REQ ID, revision, baseline reference). Pre-requirement/governance artifacts use their applicable typed lineage; halt rather than invent a REQ parent. |
 | 3 | Hardware Awareness | Validate against physical limits before concluding. |
 | 4 | Red Team Protocol | Build Agent does not verify own work. |
 | 5 | HITL Etiquette | Present Evidence Summaries. Stop at Human Gates. No deployments without approval. |
@@ -82,8 +82,8 @@ Six-phase task execution model for Agile V agents. All agents participate in rel
 |---|---|---|
 | **Specify** | Convert user intent into atomic, traceable requirements | Requirement Architect, Discovery Analyst, Threat Modeler, UX Spec Author |
 | **Constrain** | Apply domain-specific constraints and validation rules | Logic Gatekeeper, Domain Build Agents (NestJS, Python, JS, etc.) |
-| **Orchestrate** | Synthesize artifacts from approved requirements only | Build Agents (all types), Test Designer, Schematic Generator |
-| **Prove** | Provide evidence according to risk level (R0-R3) | Build Agents (manifest, logs), Test Designer (test cases), Compliance Auditor |
+| **Orchestrate** | Synthesize artifacts from approved, baselined requirements only; record typed lineage | Build Agents (all types), Test Designer, Schematic Generator |
+| **Prove** | Provide evidence according to risk level (L0-L4; see runtime risk contract) | Build Agents (manifest, logs), Test Designer (test cases), Compliance Auditor |
 | **Evolve** | Learn from validation failures, update knowledge | All agents (decision logging), Agile-V-Lifecycle (change requests) |
 | **Verify** | Independent verification against requirements | Red Team Verifier, Compliance Auditor |
 
@@ -119,7 +119,7 @@ Six-phase task execution model for Agile V agents. All agents participate in rel
 
 Living state in `.agile-v/`: STATE.md (current phase/stage/status), REQUIREMENTS.md, BUILD_MANIFEST.md, TEST_SPEC.md, VALIDATION_SUMMARY.md, DECISION_LOG.md, ATM.md, CHANGE_LOG.md, RISK_REGISTER.md, CAPA_LOG.md, APPROVALS.md, REVALIDATION_LOG.md, config.json. Phase dirs: `phases/XX-name/` with PLAN.md, SUMMARY.md, CONTEXT.md. Archives: `cycles/C1/, C2/` (frozen, read-only).
 
-**Runtime contracts (Phase 1-2):** `POLICY.yaml` (policy-as-code, versioned), `TRACE_LOG.md` (append-only spans), `EVAL_RESULTS.md` (eval flywheel + `eval_gate_status` for Gate 2), `CHECKPOINTS.md` (durable Human Gate interrupts), `CONTROL_MATRIX.yaml` (operating control map: data class, tools, model/vendor, logs, rights, Human Gates, tests, costs, rollback, owners). Schemas: repo `docs/agile-v-runtime/01_SCHEMAS.md`; copy templates from `templates/agile-v/`.
+**Runtime contracts:** lifecycle states/transitions and typed trace links are normative in `docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md`; risk levels are normative in `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`. `POLICY.yaml`, `TRACE_LOG.md`, `EVAL_RESULTS.md`, `CHECKPOINTS.md`, and `CONTROL_MATRIX.yaml` remain supporting runtime records; schemas are in `schemas/`.
 
 **Rules:** (1) Write-through, not batched. (2) Decision Log is append-only. (3) Resume: read STATE.md + CHECKPOINTS.md (if any PENDING) first, load only current-stage files. (4) On gate pause, write checkpoint before ending turn.
 

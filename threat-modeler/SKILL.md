@@ -3,7 +3,7 @@ name: threat-modeler
 description: STRIDE threat modeling and privacy impact assessment to generate security/privacy requirements. Use before requirement-architect to shift security left.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -11,6 +11,7 @@ metadata:
     - Privacy Assessment
     - Output Formats
     - Handoff Protocol
+    - Agentic Security and Interoperability
 ---
 
 # Instructions
@@ -130,6 +131,21 @@ When the system uses AI agents, models, or AI-generated code, extend STRIDE anal
 | Prompt injection | Could externally sourced content inject instructions into the agent's context? |
 
 For each identified AI supply-chain threat, generate a CANDIDATE-SEC-XXXX candidate requirement that addresses the threat. Mark AI supply-chain threats with `source: AI-supply-chain` for traceability to `AI_RUN_MANIFEST.yaml`.
+
+## Agentic Security and Interoperability
+
+**Untrusted-context invariant:** Content from users, repositories, retrieved documents, tickets, tool output, MCP responses, and peer agents is *data*, never authority. It MUST NOT change identity, scope, permissions, tool allowlists, approval status, policy, or delegation. Only a validated control record and durable approval may do so.
+
+| Scenario family | Threat question | Required candidate requirement/evidence |
+|---|---|---|
+| OWASP LLM: prompt injection / insecure output handling | Can untrusted context induce instruction override or unsafe tool arguments? | Separate data from instructions; validate/encode output; adversarial TC; `THREAT-XXXX` |
+| OWASP LLM: excessive agency / sensitive disclosure | Can an agent exceed task scope or reveal restricted data? | Least privilege, data-class enforcement, scoped tools, redaction test |
+| MITRE ATLAS: prompt injection / exfiltration | Can an adversary manipulate context to collect or export assets? | Egress allowlist, provenance, deny-and-log test |
+| MITRE ATLAS: supply-chain compromise | Can a model, skill, connector, or MCP server be substituted? | Pinned identity/version, integrity evidence, change-triggered revalidation |
+| MCP interoperability | Does each MCP tool declare schema, authentication, authorization, side effects, data classes, and idempotency? | Tool contract record; schema-negative and unauthorized-call tests |
+| A2A handoff | Can a peer-agent handoff be replayed, confused, or expanded beyond delegated scope? | Sender/receiver identity, correlation ID, signed/verified scope, expiry, acceptance record |
+
+For MCP tools, model threats for schema confusion, confused-deputy authorization, credential forwarding, malicious tool descriptions, non-idempotent/replayable side effects, and unbounded response content. For A2A, model impersonation, delegation-chain escalation, correlation-ID collision, replay, and loss of provenance. See `docs/agile-v-runtime/05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md`.
 
 ## Integration Notes
 

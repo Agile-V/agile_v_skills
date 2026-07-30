@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/schemas/TRACE_GRAPH.schema.json",
+  "title": "Typed trace graph",
+  "type": "object",
+  "required": ["schema_version", "compatibility", "migration", "fixture_owner", "nodes", "edges"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "compatibility": {"type": "string", "minLength": 1},
+    "migration": {"type": "string", "minLength": 1},
+    "fixture_owner": {"type": "string", "minLength": 1},
+    "nodes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/node"}},
+    "edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}}
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["id", "type", "revision", "state"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]*$"},
+        "type": {"enum": ["source", "goal", "observation", "threat", "law", "requirement", "finding", "approval", "risk", "control", "claim", "assumption", "artifact", "test_case", "verification", "validation", "evidence", "baseline", "release", "incident", "signal", "change_request"]},
+        "revision": {"type": "string", "minLength": 1},
+        "state": {"enum": ["draft_persisted", "independent_findings", "architect_revisions", "gate_1", "approved", "baselined", "changed", "retired", "draft", "validated"]},
+        "baseline_id": {"type": "string", "pattern": "^BASELINE-[A-Z0-9-]+$"},
+        "evidence_locator": {"type": "string", "minLength": 1}
+      },
+      "allOf": [{"if": {"properties": {"type": {"const": "requirement"}, "state": {"const": "baselined"}}, "required": ["type", "state"]}, "then": {"required": ["baseline_id"]}}],
+      "additionalProperties": false
+    },
+    "edge": {
+      "type": "object",
+      "required": ["source", "target", "relation"],
+      "properties": {
+        "source": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]*$"},
+        "target": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]*$"},
+        "relation": {"enum": ["derived_from", "satisfies", "mitigates", "verified_by", "executed_as", "evidenced_by", "validated_by", "included_in", "triggers", "challenges", "resolved_by", "approves", "includes", "supported_by", "bounded_by", "implements", "verifies", "evaluates"]},
+        "requirement_revision": {"type": "string", "minLength": 1},
+        "baseline_id": {"type": "string", "pattern": "^BASELINE-[A-Z0-9-]+$"},
+        "evidence_locator": {"type": "string", "minLength": 1}
+      },
+      "allOf": [
+        {"if": {"properties": {"relation": {"const": "implements"}}, "required": ["relation"]}, "then": {"properties": {"source": {"pattern": "^ART-[A-Z0-9-]+$"}, "target": {"pattern": "^REQ-[A-Z0-9-]+$"}}, "required": ["requirement_revision", "baseline_id"]}},
+        {"if": {"properties": {"relation": {"const": "verifies"}}, "required": ["relation"]}, "then": {"properties": {"source": {"pattern": "^TC-[A-Z0-9-]+$"}, "target": {"pattern": "^REQ-[A-Z0-9-]+$"}}, "required": ["requirement_revision", "baseline_id"]}},
+        {"if": {"properties": {"relation": {"const": "evaluates"}}, "required": ["relation"]}, "then": {"properties": {"source": {"pattern": "^VER-[A-Z0-9-]+$"}, "target": {"pattern": "^(ART|TC)-[A-Z0-9-]+$"}}}}
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,26 @@
+record_type: "agile-v-agent-delegation-record"
+record_id: "DEL-0000"
+task_id: "AAV-0000"
+correlation_id: "CORR-0000"
+parent_correlation_id: ""
+issued_at: "2026-01-01T00:00:00Z"
+expires_at: "2026-01-02T00:00:00Z"
+delegator:
+  agent_id: "delegator-agent"
+  authenticated_identity_ref: "identity://delegator"
+delegate:
+  agent_id: "delegate-agent"
+  authenticated_identity_ref: "identity://delegate"
+delegation_chain: []
+scope:
+  requirements: []
+  allowed_tools: []
+  allowed_data_classes: []
+  permitted_actions: ["read"]
+  max_permissions_ref: "CTRL-0000"
+approval_ref: "" # Required when the matrix gates this delegation/action
+acceptance:
+  status: "pending" # Enum: pending, accepted, rejected, expired, revoked
+  accepted_at: "2026-01-01T00:01:00Z"
+  reason: ""
+evidence_refs: ["log://evidence"]

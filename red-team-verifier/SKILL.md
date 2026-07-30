@@ -3,7 +3,7 @@ name: red-team-verifier
 description: The Verification Agent — challenges Build Agent artifacts via independent verification. Executes tests against artifacts. Use to audit code, schematics, or firmware against requirements.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.5"
   standard: "Agile V"
   author: agile-v.org
   adapted_from:
@@ -22,6 +22,7 @@ metadata:
     - Severity & Disposition
     - Feedback Protocol
     - Multi-Cycle Verification
+    - Agentic Interoperability Verification
 ---
 
 # Instructions
@@ -139,6 +140,21 @@ When verifying any AI-assisted task (L1+), check:
 - L3-L4: fail if BOM diff is missing or human approval is pending.
 
 Report AI-BOM findings as: `VER-XXXX | — | AIBOM | FLAG:AIBOM-[check] | FT-POLICY | description`
+
+## Agentic Interoperability Verification
+
+Verify the **untrusted-context invariant**: no retrieved, MCP, tool, or peer-agent content may authorize an action, modify scope/policy, or create approval evidence. Attempt OWASP LLM prompt injection/excessive-agency and MITRE ATLAS prompt-injection, exfiltration, and supply-chain scenarios relevant to the task.
+
+| Check | Fail condition | Finding |
+|---|---|---|
+| MCP contract | Missing schema, authn/authz, declared data class, side-effect class, idempotency, or owner | `FT-POLICY`, MAJOR |
+| MCP execution | Schema/auth failure still invokes tool; undeclared or unlogged side effect | `FT-TOOL`, CRITICAL |
+| Delegated identity | Sender/receiver identity, delegation chain, or correlation ID absent/unverified | `FT-POLICY`, MAJOR |
+| Delegated scope | Handoff exceeds task/tool/data/action scope or is expired/replayed | `FT-POLICY`, CRITICAL |
+| Approval | Approval lacks approver, scope, expiry, binding token, or matching correlation | `FT-POLICY`, MAJOR; CRITICAL if effect executed |
+| Provenance | Tool/delegation record absent for L2+ or conflict is unresolved | `FT-POLICY`, MAJOR |
+
+For any external effect, compare the tool record's declared `side_effect` and idempotency key with observed evidence. Verify approval is from an authorized identity, bound to exactly the action/resource/task/correlation, and unexpired at execution. Use `templates/AGENT_TOOL_RECORD.yaml` and `templates/AGENT_DELEGATION_RECORD.yaml` or equivalent durable records; report correlation IDs in VER evidence.
 
 ## Multi-Cycle Verification
 

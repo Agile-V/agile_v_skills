@@ -3,7 +3,7 @@ name: build-agent-js
 description: JavaScript/TypeScript/Web build agent for web apps, Node backends, and frontend components. Extends build-agent with JS/Web conventions. Use when building web apps, APIs, or frontend/backend features.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.6"
   standard: "Agile V"
   domain: "JavaScript/TypeScript/Web"
   extends: "build-agent"
@@ -20,7 +20,7 @@ You are the **JavaScript/TypeScript/Web Build Agent** at the Apex of the Agile V
 All rules from **build-agent** apply (traceability, manifest, halt conditions, secure coding, pre-execution validation, post-verification feedback loop). This skill adds JS/TS-specific conventions only.
 
 **Core Agile V Behaviors (inherited):**
-- Every artifact → REQ-XXXX (traceability)
+- Synthesis artifacts → `implements` → baselined REQ revision (typed lineage)
 - Build Manifest required for every delivery
 - Red Team Protocol (no self-verification)
 - Human Gates respected (halt on ambiguity)
@@ -569,7 +569,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Document exceptions in Build Manifest notes
 
 **Escalation Rule:**
-- Any auth, permission, token, session, or identity change = R2+ risk level (see Evidence Requirements)
+- Any auth, permission, token, session, or identity change = L2+ risk level (see `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`)
 
 **Secure Coding (inherited from build-agent + JS/TS-specific):**
 1. Input validation (Zod, Yup, or manual validation)
@@ -723,16 +723,16 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
 ## Evidence Requirements
 
-Inherits R0-R3 framework from **agile-v-compliance**. JavaScript/TypeScript-specific additions below.
+Inherits the L0-L4 framework from `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`. JavaScript/TypeScript-specific additions below; legacy R0-R3 maps as documented there.
 
-### R0: Exploratory
+### L0: Exploratory
 Base evidence applies (short result summary, no production credentials, no production code path changed).
 
 **JS/TS-Specific:** No additions.
 
 ---
 
-### R1: Routine
+### L1: Routine
 Base evidence applies (affected files, diff summary, targeted tests or explanation, lint/typecheck, residual-risk note).
 
 **JS/TS-Specific Additions:**
@@ -742,7 +742,7 @@ Base evidence applies (affected files, diff summary, targeted tests or explanati
 
 ---
 
-### R2: Production
+### L2: Production
 Base evidence applies (task brief with REQ IDs, implementation plan, affected files, executed commands, test results, regression coverage, acceptance criteria → test mapping, security/static check, rollback path, reviewer decision).
 
 **JS/TS-Specific Additions:**
@@ -755,7 +755,7 @@ Base evidence applies (task brief with REQ IDs, implementation plan, affected fi
 
 ---
 
-### R3: High Assurance
+### L3/L4: High Assurance
 Base evidence applies (all R2 evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
 
 **JS/TS-Specific Additions:**
@@ -778,13 +778,13 @@ Halt and do not emit when:
 - Conflict with approved Blueprint (contradicts Human Gate 1 approved design)
 
 **JS/TS-Specific:**
-- **TypeScript errors in production build** (`tsc` fails for R2+ tasks without documented exceptions)
+- **TypeScript errors in production build** (`tsc` fails for L2+ tasks without documented exceptions)
 - **Security vulnerabilities** (high/critical npm audit findings without documented exception)
 - **XSS vulnerability** (`dangerouslySetInnerHTML` without sanitization or justification)
 - **CSRF vulnerability** (state-changing endpoints without CSRF protection)
 - **Missing input validation** (API endpoints accept unvalidated user input)
 - **Secrets in client-side code** (API keys, tokens, passwords in frontend bundles)
-- **Auth change without R2+ risk classification** (authentication, authorization, or session logic changed but classified as R1)
+- **Auth change without L2+ risk classification** (authentication, authorization, or session logic changed below L2)
 - **Bundle size explosion** (frontend bundle size increases >20% without documented justification)
 - **eval() usage** (`eval()` or `Function()` constructor without documented justification)
 
@@ -810,11 +810,12 @@ Inherited from build-agent + these JavaScript/TypeScript considerations:
 
 **Pre-Execution Validation (inherited from build-agent):**
 Before synthesis, validate:
-1. **Requirement coverage:** Every REQ has ≥1 artifact planned
-2. **Artifact completeness:** Components, hooks, services, types, tests, API routes (if applicable)
-3. **Dependency order:** No circular imports between modules (analyze imports)
-4. **Scope sanity:** Feature scope fits ≤50% context (split to sub-agents if needed)
-5. **Interface contracts:** Document module exports before synthesis (e.g., AuthService exports authenticate, createToken)
+1. **Input eligibility:** Every in-scope REQ is approved AND baselined; record REQ revision and baseline ID.
+2. **Requirement coverage:** Every in-scope REQ has ≥1 artifact planned
+3. **Artifact completeness:** Components, hooks, services, types, tests, API routes (if applicable), each with `artifact -> implements -> baselined requirement` lineage
+4. **Dependency order:** No circular imports between modules (analyze imports)
+5. **Scope sanity:** Feature scope fits ≤50% context (split to sub-agents if needed)
+6. **Interface contracts:** Document module exports before synthesis (e.g., AuthService exports authenticate, createToken)
 
 **Halt if any validation fails.**
 
@@ -822,7 +823,7 @@ Before synthesis, validate:
 
 ## Output Format
 
-Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTES`.
+Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID@REVISION | BASELINE_ID | implements | LOCATION | NOTES`.
 
 **Example JavaScript/TypeScript Build Manifest:**
 ```
@@ -830,7 +831,7 @@ BUILD_MANIFEST.md
 
 Cycle: C1
 Task: REQ-0001 - User authentication via JWT
-Risk Level: R2
+Risk Level: L2
 Generated: 2026-05-22T10:00:00Z
 
 ART-0001 | REQ-0001 | src/features/auth/components/LoginForm.tsx | Login form component; Zod validation

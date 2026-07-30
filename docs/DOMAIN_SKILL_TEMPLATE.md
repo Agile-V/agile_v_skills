@@ -46,7 +46,7 @@ metadata:
 
 ```markdown
 # Instructions
-You are the **{Domain} Build Agent** at the Apex of the Agile V infinity loop. You extend the core **build-agent** skill with {domain} domain knowledge. All traceability, requirement linking, and Red Team Protocol rules from build-agent apply.
+You are the **{Domain} Build Agent** at the Apex of the Agile V infinity loop. You extend the core **build-agent** skill with {domain} domain knowledge. Synthesize only from requirements that are approved **and** baselined; use typed lineage `artifact -> implements -> baselined requirement` (REQ ID, revision, baseline reference). All traceability and Red Team Protocol rules from build-agent apply.
 
 ## Inherited Rules
 All rules from **build-agent** apply (traceability, manifest, halt conditions). This skill adds {domain}-specific conventions only.
@@ -182,7 +182,7 @@ app/
 
 **Guidelines:**
 1. Include code examples for each pattern (5-15 lines)
-2. Add traceability comments (// Parent: REQ-XXXX or # Parent: REQ-XXXX)
+2. Add traceability comments that identify `REQ-XXXX@revision`, baseline ID, and `implements` lineage.
 3. Reference real-world tools and libraries
 4. Provide "CORRECT" vs "WRONG" examples for security-critical patterns
 
@@ -193,14 +193,14 @@ app/
 ```markdown
 ## Evidence Requirements
 
-Inherits R0-R3 framework from **agile-v-compliance**. {Domain}-specific additions below.
+Use the `L0`–`L4` framework in `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`. Legacy `R0`–`R3` labels are migration-only and must not be used for new work. {Domain}-specific additions below.
 
-### R0: Exploratory
+### L0: Exploratory
 Base evidence applies (short result summary, no production credentials, no production code path changed).
 
 **{Domain}-Specific Additions:** None (or minimal exploratory additions)
 
-### R1: Routine
+### L1: Routine
 Base evidence applies (affected files, diff summary, targeted tests or explanation, lint/typecheck, residual-risk note).
 
 **{Domain}-Specific Additions:**
@@ -209,7 +209,7 @@ Base evidence applies (affected files, diff summary, targeted tests or explanati
 - {Test framework}: `{command}` results (if applicable)
 - No new {language-specific} warnings without justification
 
-### R2: Production
+### L2: Production-impacting or security-relevant
 Base evidence applies (task brief with REQ IDs, implementation plan, affected files, executed commands, test results, regression coverage, acceptance criteria → test mapping, security/static check, rollback path, reviewer decision).
 
 **{Domain}-Specific Additions:**
@@ -220,8 +220,8 @@ Base evidence applies (task brief with REQ IDs, implementation plan, affected fi
 - **{Domain-specific requirement}:** {Evidence needed}
 - **Dependencies:** If new dependencies added, rationale in manifest + license check
 
-### R3: High Assurance
-Base evidence applies (all R2 evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
+### L3: High-impact or regulated
+Base evidence applies (all L2 evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
 
 **{Domain}-Specific Additions:**
 - **{Safety-critical requirement 1}:** {Evidence needed}
@@ -233,10 +233,11 @@ Base evidence applies (all R2 evidence + independent verification agent review, 
 **Purpose:** Defines what evidence is required at each risk level.
 
 **Customization:**
-- R0: Usually inherits from base only
-- R1: Add linting, type checking, unit tests specific to domain
-- R2: Add integration tests, security scans, domain-specific artifacts (migrations, API docs, etc.)
-- R3: Add compliance artifacts, advanced testing, independent verification
+- L0: Usually inherits from base only
+- L1: Add linting, type checking, unit tests specific to domain
+- L2: Add integration tests, security scans, domain-specific artifacts (migrations, API docs, etc.)
+- L3: Add compliance artifacts, advanced testing, independent verification
+- L4: Add independent assurance appropriate to the governing profile, residual-risk acceptance authority, and release decision evidence.
 
 ---
 
@@ -259,9 +260,9 @@ In addition to base **build-agent** halt conditions, {Domain} Build Agent must H
    - {Description of issue}
    - **Action:** {Remediation steps}
 
-4. **Auth/security change without R2+ risk classification**
-   - Password hashing, auth logic, permission checks changed but classified as R1
-   - **Action:** Escalate to R2, add security evidence
+4. **Auth/security change below L2 risk classification**
+    - Password hashing, auth logic, permission checks changed but classified as L0/L1
+    - **Action:** Escalate to L2, add security evidence
 
 5. **{Domain-specific security issue}**
    - {Description}
@@ -356,13 +357,13 @@ Before submitting a new domain skill:
 - [ ] SCOPE-V Participation section present (4 of 6 phases)
 - [ ] Architecture & Patterns section is comprehensive (300-400 lines minimum)
 - [ ] Code examples include traceability comments
-- [ ] Evidence Requirements section with R0-R3
+- [ ] Evidence Requirements section with L0-L4
 - [ ] Halt Conditions section with 6-10 domain-specific conditions
 - [ ] Context Engineering section present
 - [ ] "When to Use" section with auto-trigger hints
 
 ### Code Examples
-- [ ] All examples include `// Parent: REQ-XXXX` or `# Parent: REQ-XXXX`
+- [ ] All examples include typed lineage, e.g. `// Implements: REQ-XXXX@revision; baseline: BASELINE-XXXX`
 - [ ] Examples are practical and realistic
 - [ ] Security examples show CORRECT vs WRONG patterns
 - [ ] Examples cover common use cases in the domain
@@ -388,7 +389,7 @@ Before submitting a new domain skill:
 |----------|--------|-----------|
 | **Total lines** | 600-800 lines | Optimal balance of quality and context efficiency |
 | **Architecture & Patterns** | 250-400 lines | Core content, streamlined examples |
-| **Evidence Requirements** | 80-120 lines | Complete R0-R3 coverage |
+| **Evidence Requirements** | 80-120 lines | Complete L0-L4 coverage |
 | **Halt Conditions** | 40-60 lines | Critical pre-execution validation |
 | **Code examples** | 8-15 examples | Key patterns with traceability |
 | **Traceability comments** | All code examples | Mandatory for Agile V |

@@ -9,7 +9,7 @@ metadata:
   author: agile-v.org
 ---
 
-# Skill: system-understanding-agent
+# Instructions
 
 ## Purpose
 

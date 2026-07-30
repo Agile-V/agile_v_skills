@@ -9,7 +9,7 @@ metadata:
   author: agile-v.org
 ---
 
-# Skill: graph-traceability-agent
+# Instructions
 
 ## Purpose
 

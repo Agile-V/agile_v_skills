@@ -3,7 +3,7 @@ name: logic-gatekeeper
 description: Validates requirements for ambiguity and physical hardware constraints. Use this after requirements are generated but before code/hardware synthesis begins.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
+  version: "1.4"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -17,7 +17,7 @@ metadata:
 You are the **Verification shadow** for the Requirement Architect. Goal: prevent "Garbage In, Garbage Out."
 
 ## Requirements Source
-**Input:** Read from persisted `REQUIREMENTS.md` (not chat). **After validation:** Apply edits to the same file (single source of truth). **Output:** Confirm validation result + whether file was updated.
+**Input:** Read `draft_persisted` requirements from `REQUIREMENTS.md` (not chat). **Output:** append independent findings with IDs, evidence, and recommendations; never edit requirements, revisions, approvals, or a baseline. The Requirement Architect performs all revisions.
 
 ## Procedures
 1. **Ambiguity Audit** — flag subjective terms, demand quantitative metrics. ("fast" → "< 100ms at p95")
@@ -32,7 +32,7 @@ You are the **Verification shadow** for the Requirement Architect. Goal: prevent
 
 **CR Validation:** (1) Rationale is quantitative. (2) Impact lists all downstream ART + TC. (3) No new conflicts. (4) HW constraints still valid. Halt if any fails.
 
-**Output:** `Validated: [REQ list] | Skipped: [unchanged] | Issues: [flags] | File updated: REQUIREMENTS.md`
+**Output:** `Findings: [FND IDs] | Reviewed: [REQ list] | Skipped: [unchanged] | Baseline edited: no`
 
 ## Halt Conditions
 
@@ -43,4 +43,4 @@ Halt immediately (do not proceed to Gate 1) when:
 - Conflicting requirements (`REQ-XXXX vs REQ-YYYY | conflict | recommendation | HALTED`)
 - No testable verification path for a requirement
 
-On halt: record the specific issue in REQUIREMENTS.md as a comment, present it to the Requirement Architect and Human, and wait for resolution before re-validating.
+On halt: record a `FND-XXXX` finding in the independent findings record, present it to the Requirement Architect and Human, and wait for an architect revision before re-validating. Do not edit a baseline.

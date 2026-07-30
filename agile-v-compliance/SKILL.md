@@ -3,7 +3,7 @@ name: agile-v-compliance
 description: Risk management, CAPA protocol, human gate approval records, AI agent security controls, and periodic revalidation. Load when running gates, handling CAPAs, or auditing compliance and security posture.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.5"
   standard: "Agile V"
   compliance: "ISO 9001 6.1, ISO 13485 8.5, ISO 27001 A.5.23/A.8.3, 21 CFR Part 11, GxP/GAMP 5"
   author: agile-v.org
@@ -16,11 +16,11 @@ Compliance protocols for Agile V. Requires **agile-v-core** loaded first.
 
 ## Risk Management (ISO 9001 6.1 / AS9100D 8.1.1)
 
-Append-only, cycle-tagged register in `.agile-v/RISK_REGISTER.md`: `RISK-ID | Cycle | Category | Description | Likelihood | Impact | Severity | Mitigation | Owner | Status`
+Append-only, cycle-tagged register in `.agile-v/RISK_REGISTER.md`: `RISK-ID | Cycle | Level(L0-L4) | Category | Description | Likelihood | Impact | Controls | Residual Decision | Owner | Status`. Apply `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`; legacy `R0-R3` maps only as documented there.
 
 **Categories:** Technical, Process, Compliance, Security. **Severity matrix:** High x High = Critical, High x Med = High, High x Low / Med x Med = Medium, rest = Low. Critical risks require Human resolution or documented acceptance before Gate 2.
 
-**When:** Stage 1 = Req Architect identifies. Stage 2 = Logic Gatekeeper flags constraints. Stage 4 = Red Team finds residual. Cycle boundary = Compliance Auditor reviews.
+**When:** draft persisted = Req Architect identifies; independent findings = Logic Gatekeeper flags constraints; Stage 4 = Red Team finds residual; cycle boundary = Compliance Auditor reviews. Baselining requires Gate 1 approval and no unresolved mandatory finding.
 
 ## CAPA Protocol (ISO 13485 8.5 / ISO 9001 10.1-10.2)
 

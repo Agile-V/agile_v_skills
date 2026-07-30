@@ -10,3 +10,8 @@
 
 # OS
 Thumbs.db
+
+# Local Python test environment
+.venv/
+__pycache__/
+*.py[cod]

@@ -78,11 +78,10 @@ build agents under `domains/`.
 
 ## Build / Lint / Test Commands
 
-There are **no build, lint, or test commands**. This repository contains only
-Markdown files with YAML frontmatter — no executable source code exists.
+There is no application build or dependency installation. This repository contains Markdown skills plus JSON schemas and Python schema-validation tests; it has no application source code.
 
 - **No `npm install` needed** — `package.json` holds metadata only (no deps).
-- **No test suite** — validation is manual (review YAML frontmatter + content).
+- **Schema validation:** run `python -m pytest tests/test_schemas.py` when Python and `pytest`/`jsonschema` are available; otherwise review frontmatter, JSON schemas, fixtures, and content manually.
 - **No linter configured** — no `.eslintrc`, `.prettierrc`, or `.editorconfig`.
 
 ### Versioning (CI/CD)
@@ -161,7 +160,7 @@ Skills MUST be context-efficient. Target guidelines from PERFORMANCE.md:
 
 ### Key Principles for Skill Content
 
-1. **Traceability** — every artifact must link to a parent `REQ-XXXX`; halt if missing
+1. **Traceability** — synthesis artifacts use `artifact -> implements -> baselined requirement` with REQ ID, revision, and baseline reference; other records use applicable typed lineage. Halt rather than invent a REQ parent.
 2. **Verification** — include a sub-process for checking output against requirements
 3. **Halt-and-Ask** — instruct agents to halt on ambiguous requirements, never guess
 4. **Red Team Protocol** — Build Agent never verifies its own work

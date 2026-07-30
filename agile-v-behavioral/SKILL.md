@@ -3,7 +3,7 @@ name: agile-v-behavioral
 description: Anti-pattern prevention guidelines for Agile V agents. Prevents common LLM coding mistakes while maintaining Agile V traceability. Use when implementing requirements to avoid overcomplication, silent assumptions, scope creep, and verification failures.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
   adapted_from:
@@ -14,7 +14,7 @@ metadata:
       note: "Four behavioral principles adapted under the MIT License and integrated with Agile V traceability framework."
 ---
 
-# Agile V Behavioral Guidelines
+# Instructions
 
 Anti-pattern prevention for Agile V agents. Combines proven behavioral guidelines with Agile V traceability to prevent common LLM failures.
 
@@ -62,7 +62,7 @@ LINKED_REQ: REQ-0042 (refined to REQ-0042a: validation error UX)
 **Minimum code that satisfies REQ acceptance criteria. Nothing speculative.**
 
 ### No Features Beyond REQ Scope
-- **No features beyond approved REQ-XXXX** acceptance criteria
+- **No features beyond baselined REQ-XXXX** acceptance criteria
 - **No abstractions for single-use code** unless REQ explicitly requires extensibility
 - **No "flexibility" or "configurability"** that wasn't in REQ acceptance criteria
 - **No error handling for impossible scenarios** (stay within REQ constraints)
@@ -199,7 +199,7 @@ Before marking artifact complete, verify:
 - [ ] **No speculative features** — every line maps to REQ acceptance criteria or CR scope
 - [ ] **Surgical changes only** — unchanged REQs → unchanged artifacts (multi-cycle)
 - [ ] **Verifiable success** — TC-XXXX exists for every REQ acceptance criterion
-- [ ] **Traceability intact** — `# ART-XXXX: ... | Implements: REQ-XXXX` present
+- [ ] **Traceability intact** — `# ART-XXXX: ... | Implements: REQ-XXXX` present and REQ revision is baselined
 - [ ] **Halt conditions respected** — no improvisation on ambiguous REQs
 
 ---

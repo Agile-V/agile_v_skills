@@ -3,7 +3,7 @@ name: build-agent-nestjs
 description: NestJS backend build agent for REST/GraphQL APIs, microservices, and enterprise backends. Extends build-agent with NestJS architectural patterns, dependency injection, testing strategies, and security best practices. Use when building NestJS applications.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.2"
   standard: "Agile V"
   domain: "NestJS/TypeScript/Backend"
   extends: "build-agent"
@@ -42,7 +42,7 @@ You are the **NestJS Backend Build Agent** at the Apex of the Agile V infinity l
 All rules from **build-agent** apply (traceability, manifest, halt conditions, secure coding, pre-execution validation, post-verification feedback loop). This skill adds NestJS-specific conventions only.
 
 **Core Agile V Behaviors (inherited):**
-- Every artifact → REQ-XXXX (traceability)
+- Synthesis artifacts → `implements` → baselined REQ revision (typed lineage)
 - Build Manifest required for every delivery
 - Red Team Protocol (no self-verification)
 - Human Gates respected (halt on ambiguity)
@@ -152,7 +152,7 @@ All rules from **build-agent** apply (traceability, manifest, halt conditions, s
 - No hardcoded secrets (inherited from build-agent secure coding rule #3)
 
 **Escalation Rule:**
-- Any auth, permission, token, session, or identity change = R2+ risk level (see Evidence Requirements)
+- Any auth, permission, token, session, or identity change = L2+ risk level (see `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`)
 
 **Secure Coding (inherited from build-agent + NestJS-specific):**
 1. Input validation (DTOs + ValidationPipe)
@@ -188,7 +188,7 @@ All rules from **build-agent** apply (traceability, manifest, halt conditions, s
 
 **Rollback Path:**
 - Migration tasks include rollback notes in BUILD_MANIFEST.md
-- Test rollback procedure before R2+ deployment
+- Test rollback procedure before L2+ deployment
 
 **Halt Condition:** Halt if schema change detected without migration artifact.
 
@@ -246,7 +246,7 @@ This skill participates in:
   - API contract requirements (DTO validation, response serialization)
   - Security patterns (guards, sanitization, rate limiting)
   - Database migration requirements (schema changes = migration files)
-- **Orchestrate:** ✅ **Primary role** - synthesizes NestJS artifacts from approved requirements:
+- **Orchestrate:** ✅ **Primary role** - synthesizes NestJS artifacts only from approved, baselined requirements:
   - Modules, controllers, services, DTOs, entities, guards, interceptors, filters, pipes
   - Migration files, test files, configuration files
   - Traceability headers in all files
@@ -263,16 +263,16 @@ This skill participates in:
 
 ## Evidence Requirements
 
-Inherits R0-R3 framework from **agile-v-compliance**. NestJS-specific additions below.
+Inherits the L0-L4 framework from `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`. NestJS-specific additions below; legacy R0-R3 maps as documented there.
 
-### R0: Exploratory
+### L0: Exploratory
 Base evidence applies (short result summary, no production credentials, no production code path changed).
 
 **NestJS-Specific:** No additions.
 
 ---
 
-### R1: Routine
+### L1: Routine
 Base evidence applies (affected files, diff summary, targeted tests or explanation, lint/typecheck, residual-risk note).
 
 **NestJS-Specific Additions:**
@@ -281,7 +281,7 @@ Base evidence applies (affected files, diff summary, targeted tests or explanati
 
 ---
 
-### R2: Production
+### L2: Production
 Base evidence applies (task brief with REQ IDs, implementation plan, affected files, executed commands, test results, regression coverage, acceptance criteria → test mapping, security/static check, rollback path, reviewer decision).
 
 **NestJS-Specific Additions:**
@@ -293,7 +293,7 @@ Base evidence applies (task brief with REQ IDs, implementation plan, affected fi
 
 ---
 
-### R3: High Assurance
+### L3/L4: High Assurance
 Base evidence applies (all R2 evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
 
 **NestJS-Specific Additions:**
@@ -318,11 +318,12 @@ Inherited from build-agent + these NestJS considerations:
 
 **Pre-Execution Validation (inherited from build-agent):**
 Before synthesis, validate:
-1. **Requirement coverage:** Every REQ has ≥1 artifact planned
-2. **Artifact completeness:** Controllers, services, modules, DTOs, tests, migrations (if DB changes)
-3. **Dependency order:** No circular refs between modules (analyze imports)
-4. **Scope sanity:** Feature scope fits ≤50% context (split to sub-agents if needed)
-5. **Interface contracts:** Document module exports before synthesis (e.g., AuthModule exports AuthService)
+1. **Input eligibility:** Every in-scope REQ is approved AND baselined; record REQ revision and baseline ID.
+2. **Requirement coverage:** Every in-scope REQ has ≥1 artifact planned.
+3. **Artifact completeness:** Controllers, services, modules, DTOs, tests, migrations (if DB changes), each with `artifact -> implements -> baselined requirement` lineage.
+4. **Dependency order:** No circular refs between modules (analyze imports)
+5. **Scope sanity:** Feature scope fits ≤50% context (split to sub-agents if needed)
+6. **Interface contracts:** Document module exports before synthesis (e.g., AuthModule exports AuthService)
 
 **Halt if any validation fails.**
 
@@ -330,7 +331,7 @@ Before synthesis, validate:
 
 ## Output Format
 
-Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID | LOCATION | NOTES`.
+Same as build-agent: Build Manifest with `ARTIFACT_ID | REQ_ID@REVISION | BASELINE_ID | implements | LOCATION | NOTES`.
 
 **Example NestJS Build Manifest:**
 ```
@@ -338,7 +339,7 @@ BUILD_MANIFEST.md
 
 Cycle: C1
 Task: REQ-0001 - User authentication via JWT
-Risk Level: R2
+Risk Level: L2
 Generated: 2026-05-22T10:00:00Z
 
 ART-0001 | REQ-0001 | src/auth/auth.module.ts | Auth feature module; imports PassportModule, JwtModule
@@ -442,7 +443,7 @@ Halt and do not emit when:
 - **Circular DI dependency detected** (Module A injects B, B injects A → constructor cycle)
 - **Schema change without migration artifact** (entity modified but no migration file generated)
 - **Public API change without versioning strategy** (breaking change with no `/v1/` → `/v2/` or header versioning)
-- **Auth/security change without R2+ risk classification** (guard logic, auth flow, or permission model changed but classified as R1)
+- **Auth/security change without L2+ risk classification** (guard logic, auth flow, or permission model changed below L2)
 - **Duplicate provider across modules** (same class registered in multiple modules without documented justification)
 
 **Halt Protocol:**

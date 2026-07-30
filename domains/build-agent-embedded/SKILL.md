@@ -3,7 +3,7 @@ name: build-agent-embedded
 description: C/C++ build agent for embedded systems, firmware, and MCU projects. Extends build-agent with embedded constraints. Use when building firmware, bare-metal code, or resource-constrained systems.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.0"
+  version: "2.2"
   standard: "Agile V"
   domain: "Embedded/C/C++"
   extends: "build-agent"
@@ -28,7 +28,7 @@ You are the **Embedded C/C++ Build Agent** at the Apex of the Agile V infinity l
 All rules from **build-agent** apply (traceability, manifest, halt conditions, secure coding, pre-execution validation, post-verification feedback loop). This skill adds embedded C/C++-specific conventions only.
 
 **Core Agile V Behaviors (inherited):**
-- Every artifact → REQ-XXXX (traceability)
+- Synthesis artifacts → `implements` → baselined REQ revision (typed lineage)
 - Build Manifest required for every delivery
 - Red Team Protocol (no self-verification)
 - Human Gates respected (halt on ambiguity)
@@ -458,7 +458,7 @@ void safe_string_copy(char *dest, const char *src, size_t dest_size) {
 ```
 
 **Escalation Rule:**
-- Any security, crypto, or boot code change = R2+ risk level (see Evidence Requirements)
+- Any security, crypto, or boot code change = L2+ risk level (see `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`)
 
 ---
 
@@ -586,7 +586,7 @@ add_custom_command(TARGET firmware POST_BUILD
 - Example: `REQ-0027 | ART-0027 | TC-0027 | Evidence: Unit test pass, MISRA clean, HIL test pass`
 
 **Code Review:**
-- Peer review required for R2+ artifacts
+- Peer review required for L2+ artifacts
 - Build Manifest: `ART-0028 | REQ-0028 | src/safety/brake_control.c | Reviewed by: J.Smith; Findings: 0; Approved: 2026-05-22`
 
 **Static Analysis Reports:**
@@ -594,22 +594,22 @@ add_custom_command(TARGET firmware POST_BUILD
 - Document tool, version, and results
 - Example: `ART-0029 | REQ-0029 | src/safety/brake_control.c | cppcheck v2.10; MISRA-C:2012; 0 warnings`
 
-**Traceability:** Full traceability matrix required for R3 (certification-ready code).
+**Traceability:** Full traceability matrix required for L3/L4; Agile V evidence is not a certification claim.
 
 ---
 
 ## Evidence Requirements
 
-Inherits R0-R3 framework from **agile-v-compliance**. Embedded-specific additions below.
+Inherits the L0-L4 framework from `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`. Embedded-specific additions below; legacy R0-R3 maps as documented there.
 
-### R0: Exploratory
+### L0: Exploratory
 Base evidence applies (short result summary, no production credentials, no production code path changed).
 
 **Embedded-Specific:** No additions.
 
 ---
 
-### R1: Routine
+### L1: Routine
 Base evidence applies (affected files, diff summary, targeted tests or explanation, lint/typecheck, residual-risk note).
 
 **Embedded-Specific Additions:**
@@ -620,7 +620,7 @@ Base evidence applies (affected files, diff summary, targeted tests or explanati
 
 ---
 
-### R2: Production
+### L2: Production
 Base evidence applies (task brief with REQ IDs, implementation plan, affected files, executed commands, test results, regression coverage, acceptance criteria → test mapping, security/static check, rollback path, reviewer decision).
 
 **Embedded-Specific Additions:**
@@ -634,7 +634,7 @@ Base evidence applies (task brief with REQ IDs, implementation plan, affected fi
 
 ---
 
-### R3: High Assurance
+### L3/L4: High Assurance
 Base evidence applies (all R2 evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
 
 **Embedded-Specific Additions:**
@@ -693,7 +693,8 @@ Inherited from build-agent + these embedded considerations:
 
 **Pre-Execution Validation (inherited from build-agent):**
 Before synthesis, validate:
-1. **Requirement coverage:** Every REQ has ≥1 artifact planned
+1. **Input eligibility:** Every in-scope REQ is approved AND baselined; record REQ revision and baseline ID.
+2. **Requirement coverage:** Every in-scope REQ has ≥1 artifact planned
 2. **Artifact completeness:** HAL, drivers, application code, tests, build scripts
 3. **Memory budget:** Estimated RAM/ROM usage fits within MCU limits
 4. **Scope sanity:** Feature scope fits ≤50% context (split to sub-agents if needed)
@@ -713,7 +714,7 @@ BUILD_MANIFEST.md
 
 Cycle: C1
 Task: REQ-0001 - I2C sensor driver for temperature monitoring
-Risk Level: R2
+Risk Level: L2
 Generated: 2026-05-22T10:00:00Z
 Target: STM32F407VG (Cortex-M4, 192KB RAM, 1MB Flash)
 Toolchain: arm-none-eabi-gcc 10.3.1

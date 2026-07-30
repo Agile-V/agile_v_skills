@@ -3,7 +3,7 @@ name: build-agent-python
 description: Python build agent for scripts, backends, data pipelines, and ML projects. Extends build-agent with Python conventions. Use when building Python applications, APIs, data processing, or automation.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.6"
   standard: "Agile V"
   domain: "Python"
   extends: "build-agent"
@@ -20,7 +20,7 @@ You are the **Python Build Agent** at the Apex of the Agile V infinity loop. You
 All rules from **build-agent** apply (traceability, manifest, halt conditions, secure coding, pre-execution validation, post-verification feedback loop). This skill adds Python-specific conventions only.
 
 **Core Agile V Behaviors (inherited):**
-- Every artifact → REQ-XXXX (traceability)
+- Synthesis artifacts → `implements` → baselined REQ revision (typed lineage)
 - Build Manifest required for every delivery
 - Red Team Protocol (no self-verification)
 - Human Gates respected (halt on ambiguity)
@@ -327,7 +327,7 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 - Use Pydantic validators for complex validation logic
 
 **Escalation Rule:**
-- Any auth, permission, token, session, or identity change = R2+ risk level (see Evidence Requirements)
+- Any auth, permission, token, session, or identity change = L2+ risk level (see `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`)
 
 **Secure Coding Checklist (inherited from build-agent + Python-specific):**
 1. Input validation (Pydantic, marshmallow, or manual validation)
@@ -515,16 +515,16 @@ This skill participates in **4 of 6 SCOPE-V phases** (see **agile-v-core** for f
 
 ## Evidence Requirements
 
-Inherits R0-R3 framework from **agile-v-compliance**. Python-specific additions below.
+Inherits the L0-L4 framework from `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`. Python-specific additions below; legacy R0-R3 maps as documented there.
 
-### R0: Exploratory
+### L0: Exploratory
 Base evidence applies (short result summary, no production credentials, no production code path changed).
 
 **Python-Specific:** No additions.
 
 ---
 
-### R1: Routine
+### L1: Routine
 Base evidence applies (affected files, diff summary, targeted tests or explanation, lint/typecheck, residual-risk note).
 
 **Python-Specific Additions:**
@@ -534,7 +534,7 @@ Base evidence applies (affected files, diff summary, targeted tests or explanati
 
 ---
 
-### R2: Production
+### L2: Production
 Base evidence applies (task brief with REQ IDs, implementation plan, affected files, executed commands, test results, regression coverage, acceptance criteria → test mapping, security/static check, rollback path, reviewer decision).
 
 **Python-Specific Additions:**
@@ -547,7 +547,7 @@ Base evidence applies (task brief with REQ IDs, implementation plan, affected fi
 
 ---
 
-### R3: High Assurance
+### L3/L4: High Assurance
 Base evidence applies (all R2 evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
 
 **Python-Specific Additions:**
@@ -574,10 +574,10 @@ Halt and do not emit when:
 - **Missing migration for schema change** (ORM model modified but no Alembic migration file generated)
 - **Secrets in code** (hardcoded API keys, passwords, tokens detected in source files)
 - **SQL injection vulnerability** (raw SQL string concatenation detected)
-- **Auth change without R2+ risk classification** (authentication, authorization, or permission logic changed but classified as R1)
+- **Auth change without L2+ risk classification** (authentication, authorization, or permission logic changed below L2)
 - **Model/dataset loaded into context** (ML model weights or large datasets loaded into agent context)
 - **pip-audit vulnerabilities** (high/critical vulnerabilities in dependencies without documented exception)
-- **Type errors in R2+** (`mypy --strict` fails for R2+ tasks without documented exceptions)
+- **Type errors in L2+** (`mypy --strict` fails for L2+ tasks without documented exceptions)
 - **Async/sync mismatch** (async function called without await, blocking call in async context)
 
 **Halt Protocol:**
@@ -602,7 +602,8 @@ Inherited from build-agent + these Python considerations:
 
 **Pre-Execution Validation (inherited from build-agent):**
 Before synthesis, validate:
-1. **Requirement coverage:** Every REQ has ≥1 artifact planned
+1. **Input eligibility:** Every in-scope REQ is approved AND baselined; record REQ revision and baseline ID.
+2. **Requirement coverage:** Every in-scope REQ has ≥1 artifact planned
 2. **Artifact completeness:** Routes, services, models, schemas, tests, migrations (if DB changes)
 3. **Dependency order:** No circular imports between modules (analyze imports)
 4. **Scope sanity:** Feature scope fits ≤50% context (split to sub-agents if needed)
@@ -622,7 +623,7 @@ BUILD_MANIFEST.md
 
 Cycle: C1
 Task: REQ-0001 - User authentication via JWT
-Risk Level: R2
+Risk Level: L2
 Generated: 2026-05-22T10:00:00Z
 
 ART-0001 | REQ-0001 | src/auth/__init__.py | Auth module exports

@@ -39,7 +39,7 @@ Transform unreliable AI agents into **Verifiable Engineering Systems** with:
 
 ### Core Protection Mechanisms
 
-- ✅ **Formal Traceability** — Every line of code links to `REQ-XXXX` → `ART-XXXX` → `TC-XXXX`
+- ✅ **Formal Traceability** — Typed lineage links baselined requirement revisions to implementation artifacts, tests, and verification evidence
   - *Why it matters:* When a bug appears in production, you can instantly trace it back to the original requirement, see which tests should have caught it, and understand the design rationale. No more archeological debugging.
   
 - ✅ **Independent Verification** — Red Team Verifier tests what Build Agent creates (no self-grading)
@@ -54,7 +54,7 @@ Transform unreliable AI agents into **Verifiable Engineering Systems** with:
 - ✅ **Halt on Ambiguity** — Agents stop and ask when requirements are unclear (no silent assumptions)
   - *Why it matters:* "Make it faster" could mean response time, perceived UX speed, or infrastructure throughput. Agile V agents clarify *before* building, preventing wasted work.
   
-- ✅ **Compliance-Ready** — Auto-generates ISO 9001, ISO 27001, GxP artifacts from day 1
+- ✅ **Compliance-Supporting** — Produces evidence artifacts that can support ISO 9001, ISO 27001, and GxP-aligned processes; it does not itself establish conformity or certification
   - *Why it matters:* When auditors ask "Show me your requirements traceability matrix," you have it. When regulators demand evidence of independent verification, you have it. Compliance becomes a byproduct of normal development.
   
 - ✅ **Multi-Platform** — Works with Claude Code, Cursor, VS Code, GitHub Copilot
@@ -244,7 +244,7 @@ The framework follows a structured pipeline with built-in quality gates:
 
 | Feature | Typical AI Agents | Agile V Framework |
 |---------|------------------|-------------------|
-| **Traceability** | ❌ Code appears without requirements | ✅ Every artifact links to REQ-XXXX |
+| **Traceability** | ❌ Code appears without requirements | ✅ Typed lineage links synthesis artifacts to baselined REQ revisions; other records use their applicable lineage |
 | **Verification** | ❌ Self-tests own code (confirmation bias) | ✅ Independent Red Team Verifier |
 | **Hardware** | ❌ Assumes unlimited resources | ✅ Validates RAM/CPU/GPU constraints |
 | **Deployment** | ❌ Autonomous production pushes | ✅ Human Gates with Evidence Summaries |
@@ -262,7 +262,7 @@ This repository contains the official collection of **Agent Skills** for the Agi
 
 The [Agile V™ Manifesto](https://agile-v.org) provides the philosophy; this repository provides the **mechanics**. 
 
-By deploying these skills, you move away from "unstructured prompting" and toward a formal **Autonomous Quality Management System (AQMS)**. Every skill in this library is built to enforce:
+By deploying these skills, you move away from "unstructured prompting" toward a documented, human-governed quality workflow. Every skill in this library is built to enforce:
 
 - **Traceability:** Every action is linked to a Requirement ID.
 - **Verification:** No artifact is created without a "Red Team" challenge.
