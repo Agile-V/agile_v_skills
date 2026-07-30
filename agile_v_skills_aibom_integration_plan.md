@@ -392,7 +392,7 @@ tools:
 rag_and_context:
   sources:
     - name: ""
-      type: "repo|openwiki|vector_db|document|web|ticket|design_doc|datasheet|other"
+      type: "repo|vector_db|document|web|ticket|design_doc|datasheet|other"
       version_or_hash: ""
       retrieved_at: ""
       confidence: "declared|inferred|verified|unresolved"
@@ -881,7 +881,6 @@ system/developer instruction version
 tool access policy
 MCP/plugin/connector availability
 RAG corpus version
-OpenWiki/context snapshot
 embedding model
 vector store or collection
 sandbox/container image
