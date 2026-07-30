@@ -1,4 +1,4 @@
-name: Validate Control Matrix Templates
+name: Validate Skills and Contracts
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 jobs:
-  validate-control-matrix:
+  validate-skills-and-contracts:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

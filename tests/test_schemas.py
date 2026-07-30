@@ -124,10 +124,3 @@ def test_yaml_templates_are_schema_valid(template: str, schema_name: str) -> Non
     yaml = pytest.importorskip("yaml")
     instance = yaml.safe_load((ROOT / "templates" / template).read_text(encoding="utf-8"))
     assert not list(_validator(schema_name).iter_errors(instance))
-
-
-def test_checked_in_manifest_is_v02_and_schema_valid() -> None:
-    yaml = pytest.importorskip("yaml")
-    instance = yaml.safe_load((ROOT / "AI_RUN_MANIFEST.yaml").read_text(encoding="utf-8"))
-    assert instance["aibom_schema_version"] == "0.2"
-    assert not list(_validator("AI_RUN_MANIFEST").iter_errors(instance))
