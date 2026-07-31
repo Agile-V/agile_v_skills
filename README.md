@@ -60,6 +60,19 @@ Transform unreliable AI agents into **Verifiable Engineering Systems** with:
 - ✅ **Multi-Platform** — Works with Claude Code, Cursor, VS Code, GitHub Copilot
   - *Why it matters:* Your engineering standards stay consistent regardless of which IDE or AI provider your team uses. The quality framework is portable.
 
+### Assurance Features Added in v3.7
+
+| Feature | Why it is useful | Where it is defined |
+|---|---|---|
+| **Baselined requirement lifecycle** | Prevents a draft, an unreviewed edit, or chat context from becoming build input. A rejected Gate 1 returns to revision without losing independent findings. | [Canonical Lifecycle Contract](docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md) |
+| **Typed trace graph** | Distinguishes intent, requirements, risks, implementation, tests, verification, validation, approvals, and evidence instead of forcing every record into a misleading one-to-one REQ link. | [Lifecycle Contract](docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md) and [`schemas/TRACE_GRAPH.schema.json`](schemas/TRACE_GRAPH.schema.json) |
+| **Risk-scaled rigor (`L0`-`L4`)** | Applies appropriate review, rollback, independent verification, and human approval without pretending sector classifications such as ASIL, SIL, or DAL are interchangeable. | [Risk Classification](docs/agile-v-runtime/04_RISK_CLASSIFICATION.md) |
+| **Machine-checkable evidence** | JSON Schemas catch malformed requirements, trace links, risk records, approvals, test results, validation reports, evidence bundles, and AI manifests before release review. | [`schemas/`](schemas/) and [`tests/fixtures/schemas/`](tests/fixtures/schemas/) |
+| **Intended-use validation and safety engineering** | Separates “built correctly” from “right for intended use,” and adds hazards, safety requirements, residual-risk, and assurance-case workflows. | [`validation-agent`](validation-agent/SKILL.md) and [`safety-engineer`](safety-engineer/SKILL.md) |
+| **Agent/tool security controls** | Treats retrieved content and tool output as untrusted data; records scoped MCP calls, A2A delegation, authorization, side effects, expiry, and approvals. | [Tool and Delegation Contract](docs/agile-v-runtime/05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md) |
+| **AI influence provenance** | Records the model, runtime, skills, tools, context, artifact influence, hashes, evaluation, and revalidation scope without storing secrets or hidden reasoning. | [`agile-v-aibom`](agile-v-aibom/SKILL.md) and [`templates/AI_RUN_MANIFEST.yaml`](templates/AI_RUN_MANIFEST.yaml) |
+| **Standards and legal boundaries** | Provides public-scope mappings for lifecycle, AI governance, safety, and EU AI Act screening while avoiding unsupported certification or conformity claims. | [`docs/standards/`](docs/standards/) |
+
 ---
 
 ## 🚀 **Quick Start**
@@ -168,20 +181,63 @@ Before implementing, I'll invoke the Requirement Architect to:
 2. Define acceptance criteria
 3. Identify security and compliance constraints
 
-[Requirement Architect creates REQ-0001, REQ-0002...]
+[Requirement Architect persists draft REQ-0001, REQ-0002...]
 
-Build Agent: ✓ Implementation complete (ART-0001 → REQ-0001)
+Logic Gatekeeper: Records independent ambiguity, constraint, and testability findings
+Requirement Architect: Resolves findings and records rationale
+Human: Approves Gate 1
+Agent: Freezes the approved requirement baseline
+
+Build Agent: ✓ Implementation complete (ART-0001 implements baselined REQ-0001)
+Test Designer: ✓ TC-0001 verifies baselined REQ-0001 (independently specified)
 Red Team Verifier: Testing independently...
   - Found 2 security issues Build Agent missed
   - SECURITY-001: No max password length (DoS risk)
   
-[Build Agent fixes issues based on Red Team feedback]
+[Build Agent fixes the implementation defect against the same baseline; Red Team re-verifies]
+[If the finding requires a requirement change: create CR-XXXX, revise, re-review, obtain Gate 1 approval, and freeze a new baseline first]
 
-Red Team Verifier: ✓ All tests pass
-Agent: Ready for Human Gate approval
+Red Team Verifier: ✓ All tests pass; verification evidence recorded
+Agent: Ready for Human Gate 2 approval
 ```
 
 **Result:** Production-ready code with full traceability and independent verification.
+
+### Use the Assurance Controls
+
+Use this workflow for a new or changed feature. The skills create project evidence under `.agile-v/`; copy templates into that project directory rather than editing this library's source templates.
+
+1. **Install the core set:** Load `agile-v-core`, `requirement-architect`, `logic-gatekeeper`, `build-agent`, the relevant domain build skill, `test-designer`, and `red-team-verifier`. Add `agile-v-compliance` and `agile-v-control-matrix` for L2+ work.
+2. **Create and classify the work:** Record source IDs, affected stakeholders/configuration, delivery level (`L0`-`L4`), category, description, likelihood, impact, uncertainty, rationale, controls, owner, residual-risk decision, and status in `.agile-v/RISK_REGISTER.md`. See [Risk Classification](docs/agile-v-runtime/04_RISK_CLASSIFICATION.md).
+3. **Persist a draft, then validate it:** The Requirement Architect writes a draft requirements record. Logic Gatekeeper creates independent findings; it does not rewrite the requirement. The architect resolves findings and a human approves Gate 1.
+4. **Freeze the baseline:** Create an approved baseline and register it in `.agile-v/ARTIFACT_INDEX.yaml`. Only the baseline revision may be used by Build Agent, Test Designer, or Schematic Generator.
+5. **Build and test independently:** Build Agent records `artifact -> implements -> baselined requirement`; Test Designer records `test_case -> verifies -> baselined requirement` without reading implementation code. Red Team Verifier independently produces verification evidence.
+6. **Add the controls that apply:**
+   - Use `validation-agent` when intended-use, representative-user, or operational-environment validation is needed.
+   - Use `safety-engineer` for hazards, safety requirements, residual-risk, or sector safety profiles.
+   - Use `threat-modeler` early to identify security requirements. Immediately before an L2+ external/state-changing MCP call or A2A delegation, create the required tool/delegation record under the [Tool and Delegation Contract](docs/agile-v-runtime/05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md).
+   - Use `agile-v-aibom` for every AI-influenced task; create `.agile-v/aibom/<task-id>/AI_RUN_MANIFEST.yaml` from the template.
+7. **Validate records before Gate 2:** Validate project instances against the schemas in [`schemas/`](schemas/), confirm no unresolved required control, verify the trace graph, then present the evidence and residual risk to the authorized human approver.
+8. **Release and operate:** Use `release-manager` to apply the selected release-risk policy: signature, reproducibility, SBOM/ML-BOM, SLSA, rollback, and waiver evidence where required. Use `observability-planner` for trace correlation, telemetry privacy, SLOs, burn-rate alerts, and incident-to-CAPA feedback.
+
+Minimal project layout:
+
+```text
+.agile-v/
+  STATE.md
+  RISK_REGISTER.md
+  REQUIREMENTS.md
+  BUILD_MANIFEST.md
+  TEST_SPEC.md
+  VALIDATION_SUMMARY.md
+  APPROVALS.md
+  CHECKPOINTS.md
+  TRACE_LOG.md
+  CONTROL_MATRIX.yaml           # for non-trivial controlled work
+  aibom/<task-id>/AI_RUN_MANIFEST.yaml  # when AI materially influences work
+```
+
+Start from the reusable records in [`templates/agile-v/`](templates/agile-v/) and [`templates/`](templates/). JSON Schema contracts in [`schemas/`](schemas/) define the structured equivalents for integrations and evidence validation. For the exact state and evidence rules, follow the [runtime contracts](docs/agile-v-runtime/).
 
 ### Understanding the Agile V Workflow
 
@@ -194,17 +250,17 @@ The framework follows a structured pipeline with built-in quality gates:
          │
          ▼
 ┌─────────────────────────────┐
-│  Requirement Architect      │  Decomposes into REQ-XXXX with acceptance criteria
+│  Requirement Architect      │  Persists draft requirements with acceptance criteria
 └────────┬────────────────────┘
          │
          ▼
 ┌─────────────────────────────┐
-│  Logic Gatekeeper           │  Validates for ambiguity & constraints
+│  Logic Gatekeeper           │  Records independent findings for ambiguity & constraints
 └────────┬────────────────────┘  Halts if unclear → asks for clarification
          │
          ▼
 ┌─────────────────────────────┐
-│  HUMAN GATE 1               │  ⚠️ Approve requirements before building
+│  Requirement Architect      │  Resolves findings; Human Gate 1 approves; baseline is frozen
 └────────┬────────────────────┘
          │
          ├──────────┬──────────┐
@@ -364,22 +420,29 @@ sequenceDiagram
     participant DA as Documentation Agent
 
     Human->>RA: Product Intent
-    RA->>RA: REQ-XXXX, Blueprint
-    RA->>Human: Human Gate 1: Approve Blueprint
-    Human->>LG: Approved Blueprint
-    LG->>LG: Ambiguity and Constraint Check
+    RA->>RA: Persist draft REQ-XXXX
+    RA->>LG: Draft requirements record
+    LG->>LG: Record independent ambiguity and constraint findings
     opt Unclear constraints or ambiguity
-        LG->>Human: Halt: Clarify ambiguity or constraints
-        Human->>LG: Clarification
+        LG->>RA: Findings requiring revision
+        RA->>Human: Halt: Clarify ambiguity or constraints
+        Human->>RA: Clarification
     end
-    LG->>BA: Approved Requirements
-    LG->>TD: Same Requirements (parallel)
+    RA->>RA: Resolve findings with rationale
+    RA->>Human: Human Gate 1: approve revision
+    Human->>RA: Gate 1 approval
+    RA->>RA: Freeze approved baseline
+    RA->>BA: Baselined requirements
+    RA->>TD: Baselined requirements and referenced constraints
 
     par Apex
         BA->>BA: Generate Artifacts and Build Manifest
         opt Ambiguous requirement
-            BA->>Human: Halt: Clarify requirement
-            Human->>BA: Clarification
+            BA->>RA: Halt: create CR for requirement clarification
+            RA->>LG: Revise and re-submit for independent findings
+            RA->>Human: Gate 1 approval for revised baseline
+            Human->>RA: Approval; freeze new baseline
+            RA->>BA: Resume from revised baseline
         end
         TD->>TD: Generate TC-XXXX from REQ only
     end
@@ -480,7 +543,7 @@ Business Track state lives in `.agile-v/business/`. **Functional skill artifacts
 
 ### Requirements artifact (source of truth)
 
-The Requirement Architect exports the approved Blueprint (after Human Gate 1) to a **requirements file** (default: `REQUIREMENTS.md` in the project root). The Logic Gatekeeper then **reads** that file, validates it (ambiguity, constraints, conflicts), and **writes back** any user-approved adjustments to the same file. All downstream agents (Build Agent, Test Designer, Red Team Verifier, Schematic Generator, Compliance Auditor) **read requirements from this file**, not from in-chat handoff. Using a single persisted file as the requirements source reduces context-window pressure, avoids carrying the full Blueprint in conversation, and lets parallel or sequential agent runs (e.g. build per feature) reference the same canonical artifact.
+The Requirement Architect persists a draft requirements record before independent review. The Logic Gatekeeper reads it and records findings; it never rewrites the requirement or baseline. The architect resolves findings, Human Gate 1 approves, and the project freezes an approved baseline. Build Agent, Test Designer, Red Team Verifier, Schematic Generator, and Compliance Auditor read the registered baseline, not in-chat handoffs. This keeps parallel work on a reproducible input and preserves independent review evidence.
 
 ### Documentation artifact (documentation-agent)
 
