@@ -17,6 +17,8 @@
 | [Community Showcase](SHOWCASE.md) | Submit evidence-based, appropriately redacted case studies |
 | [Outreach Kit](OUTREACH_KIT.md) | Factual release, tutorial, and directory submission copy |
 | [Growth Metrics](GROWTH_METRICS.md) | Ethical discovery baseline and weekly measurement method |
+| [Attribution](ATTRIBUTION.md) | Adapted sources, notices, research, and interoperability references |
+| [Release History](RELEASE_HISTORY.md) | Historical-note archive policy and tag links |
 
 ## Runtime Contracts
 

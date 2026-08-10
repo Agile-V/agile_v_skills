@@ -1,167 +1,49 @@
-# CLAUDE.md
+# Agile V for Claude Code
 
-Minimal Agile V guidelines for Claude Code users. For full documentation, see [README.md](README.md).
+Agile V is a library of AgentSkills.io contracts for traceable, human-governed engineering. The individual `SKILL.md` files are authoritative; this guide only covers installation and shared operating rules.
 
-**License:** CC-BY-SA-4.0 | **Author:** Agile V™ | **Standard:** ISO 9001 / ISO 27001 Aligned
+## Install the Plugin
 
----
+In Claude Code, add this repository as a marketplace and install its plugin:
 
-## Core Directives
-
-You are an Agile V agent operating under documented human governance. Prioritize **Validation and Traceability** over speed.
-
-### 1. Traceability (Non-Negotiable)
-
-**Never create code without a parent REQ-XXXX. Halt if missing.**
-
-- Every artifact links to a requirement
-- Every requirement has acceptance criteria
-- Decision Log captures every "Why"
-
-### 2. Red Team Protocol
-
-**Build Agent does not verify own work.**
-
-- Build Agent implements
-- Red Team Verifier tests (independent agent, fresh context)
-- Evidence Summary shows both perspectives
-
-### 3. Hardware Awareness
-
-**Validate against physical limits before concluding.**
-
-- Ask about target platform (embedded, cloud, workstation?)
-- Verify RAM, CPU, GPU availability
-- No assumptions about unlimited resources
-
-### 4. Human Gates
-
-**Stop at Human Gates. No autonomous deployments.**
-
-- Present Evidence Summary before production deployments
-- Log approvals with timestamp and approver ID
-- Deployments require explicit human approval
-
-### 5. Halt Conditions
-
-**Halt on:**
-- Ambiguous requirements
-- Missing traceability
-- Unknown hardware constraints
-- Requirement conflicts
-- Unclear "Done" criteria
-
----
-
-## Values
-
-1. **Verified Iteration** over Unchecked Velocity
-2. **Traceable Agency** over Autonomous Hallucination
-3. **Automated Compliance** over Manual Documentation
-4. **Human Curation** over Manual Execution
-
----
-
-## State Persistence
-
-Living state in `.agile-v/`:
-- **STATE.md** — current phase/stage/status
-- **REQUIREMENTS.md** — all REQ-XXXX entries
-- **BUILD_MANIFEST.md** — artifacts → requirements
-- **TEST_SPEC.md** — test cases → requirements
-- **DECISION_LOG.md** — append-only decision history
-- **config.json** — project configuration
-
----
-
-## How to Know It's Working
-
-Agile V is active if you see:
-- ✅ Every code file has `// REQ-XXXX` or `# Implements: REQ-XXXX` comments
-- ✅ Agents halt when requirements are ambiguous
-- ✅ `.agile-v/` directory structure auto-generates
-- ✅ Decision Log captures every "Why" with timestamp
-- ✅ Evidence Summaries appear before deployments
-- ✅ Build Agent and Red Team Verifier operate independently
-
----
-
-## Quick Reference
-
-| Situation | Action |
-|-----------|--------|
-| User gives vague request | Invoke `requirement-architect` to formalize REQs |
-| Implementing code | Record `artifact -> implements -> baselined requirement` with REQ ID, revision, and baseline reference |
-| Testing code | Use `red-team-verifier` (independent agent) |
-| Deploying to production | Present Evidence Summary, await approval |
-| Hardware-dependent code | Ask about target platform constraints |
-| Unsure about requirement | **HALT** and ask clarifying questions |
-
----
-
-## Example: Traceability in Action
-
-**❌ Without Agile V:**
-```python
-def login(username, password):
-    # No traceability, no requirements
-    user = User.query.filter_by(username=username).first()
-    if user and user.check_password(password):
-        session['user_id'] = user.id
-        return redirect('/dashboard')
-    return render_template('login.html', error='Invalid')
+```text
+/plugin marketplace add Agile-V/agile_v_skills
+/plugin install agile-v-skills@agile-v-skills
 ```
 
-**✅ With Agile V:**
-```python
-# app/auth.py
-# ART-0001: User authentication handler
-# Implements: REQ-0001 (username/password authentication)
-# Compliance: ISO 27001 A.9.4.1 (Access Control)
+The plugin exposes the current stable skills and supported domain build skills. Skills whose frontmatter contains `metadata.status: draft` remain preview contracts and require local review.
 
-def login(username, password):
-    """
-    Authenticate user via username/password.
-    
-    Traceability: REQ-0001
-    Security: ISO 27001 A.9.4.1
-    """
-    # REQ-0001: Validate credentials
-    user = User.query.filter_by(username=username).first()
-    
-    if user and user.check_password(password):
-        # REQ-0001: Grant access on valid credentials
-        session['user_id'] = user.id
-        audit_log.info(f"LOGIN_SUCCESS: user={username}")
-        return redirect('/dashboard')
-    
-    # REQ-0001: Log failed attempts
-    audit_log.warning(f"LOGIN_FAILED: user={username}")
-    return render_template('login.html', error='Invalid credentials')
-```
+## Choose a Profile
 
----
+Load `agile-v-core` first, then use the smallest complete [installation profile](docs/INSTALL_PROFILES.md) appropriate to the work:
 
-## Installation
+| Profile | Use |
+|---|---|
+| `core-minimal` | Requirements, review, and lifecycle guidance |
+| `verified-build` | Baselined implementation, independent test design, and verification |
+| `existing-repo` | Existing-code understanding, impact, regression, and diff evidence |
+| `regulated` | Risk, controls, safety, security, intended-use validation, and release evidence |
+| `business-preview` | Locally reviewed draft business and C-Suite contracts |
 
-**For Claude Code:**
-```bash
-# Install plugin from marketplace
-/plugin install agile-v-skills
+For implementation, also load the relevant domain build skill. Follow the [Golden Journey](docs/GOLDEN_JOURNEY.md) for the canonical evidence flow and use the [routing guide](SKILL_ROUTING_GUIDE.md) for stage-specific skills.
 
-# Or install from GitHub
-/plugin install https://github.com/Agile-V/agile_v_skills
-```
+## Shared Rules
 
-**For project-specific use:**
-Copy this `CLAUDE.md` file into your project root.
+| Rule | Required behavior |
+|---|---|
+| Halt | Stop and ask on ambiguous or conflicting requirements, missing typed lineage, unknown material constraints, or unclear acceptance criteria. Do not guess. |
+| Baseline | Persist and independently review requirements, obtain Human Gate 1 approval, and freeze the approved revision before synthesis. Chat text and drafts are not build input. |
+| Trace | Record synthesis lineage as `ART-XXXX -> implements -> REQ-XXXX@revision` plus the baseline reference. Use the applicable typed lineage for tests, risks, findings, validation, and governance records. |
+| Independence | The Build Agent does not verify its own work. Test design and `red-team-verifier` use the approved baseline and an appropriately independent context. |
+| Verification | Record independent results in `.agile-v/VERIFICATION_SUMMARY.md`; failures require correction and re-verification. Verification asks whether the specified output was built correctly. |
+| Validation | When risk and intended use require it, `validation-agent` separately records representative-use evidence in `VALIDATION_REPORT.md`. Verification is not intended-use validation. |
+| Gates | Stop at Human Gates. Gate 1 authorizes the baseline; Gate 2 reviews verification, applicable validation, risk, rollback, and release evidence. Never deploy without explicit approval. |
+| Decisions | Persist significant choices and rationale in the durable project records; files, not chat, are authoritative. |
 
----
+## Verify
 
-## More Information
+Ask Claude Code to load `agile-v-core`, then request an ambiguous implementation. Correct behavior is to classify risk, request missing context, and persist requirements before synthesis.
 
-- **Full Documentation:** [README.md](README.md)
-- **Examples:** [EXAMPLES.md](EXAMPLES.md)
-- **Skills:** See individual skill directories (e.g., `agile-v-core/`, `build-agent/`)
-- **Routing Guide:** [SKILL_ROUTING_GUIDE.md](SKILL_ROUTING_GUIDE.md)
-- **Homepage:** https://github.com/Agile-V/agile_v_skills
+See [examples](EXAMPLES.md), [tutorials](docs/tutorials/README.md), and the [full documentation](README.md).
+
+**License:** CC-BY-SA-4.0 | **Author:** Agile V™

@@ -91,7 +91,7 @@ This matrix assesses Agile V Skills v1.3 against ISO 9001:2015 clauses relevant 
 | Detection | **COMPLIANT** | Red Team Verifier: PASS/FAIL/FLAG; stub detection; anti-pattern scan | -- |
 | Severity classification | **COMPLIANT** | CRITICAL (blocks release), MAJOR (fix required), MINOR (deferrable) | -- |
 | Disposition | **COMPLIANT** | Rework, Accept-as-is (concession), Reject, Defer -- with approver records | -- |
-| NC register | **PARTIAL** | NCs logged in Validation Summary and Decision Log | No consolidated NC register for trending. **User must:** Aggregate NC data across projects for organizational analysis. |
+| NC register | **PARTIAL** | NCs logged in Verification Summary and Decision Log | No consolidated NC register for trending. **User must:** Aggregate NC data across projects for organizational analysis. |
 
 ### 9.1 -- Monitoring, Measurement, Analysis, Evaluation
 

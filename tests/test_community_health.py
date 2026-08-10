@@ -37,3 +37,14 @@ def test_public_docs_link_to_growth_resources() -> None:
         assert link in readme
     for link in ("OUTREACH_KIT.md", "GROWTH_METRICS.md"):
         assert link in docs
+
+
+def test_root_documentation_stays_focused() -> None:
+    root_markdown = {path.name for path in ROOT.glob("*.md")}
+    assert not root_markdown & {
+        "V1.5_RELEASE_NOTES.md",
+        "V1.6_RELEASE_NOTES.md",
+        "V2.0_RELEASE_NOTES.md",
+        "CONTRIBUTIONS.md",
+    }
+    assert len((ROOT / "README.md").read_text(encoding="utf-8").splitlines()) <= 350

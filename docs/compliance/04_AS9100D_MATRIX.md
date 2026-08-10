@@ -25,7 +25,7 @@ AS9100D extends ISO 9001 for the aerospace industry, adding operational risk man
 | 8.5.2 | Identification and traceability | **COMPLIANT** | REQ → ART → TC → VER chain. ATM. Cycle-aware partitioning. Dangling artifact detection. | -- |
 | 8.5.4 | Preservation | **PARTIAL** | Cycle archival (`.agile-v/cycles/CN/`). Append-only logs. Write-through persistence. Git provides integrity. | No backup procedure. No media migration plan. No integrity verification (checksums). **User must:** Implement backup and disaster recovery; add hash verification to archival process. |
 | 8.7 | Nonconforming outputs | **PARTIAL** | Severity classification. NC disposition categories. CAPA trigger. | Same as ISO 9001: no consolidated NC register. **User must:** Aggregate NC data across projects for trending. |
-| 9.1.1 | Monitoring and KPIs | **COMPLIANT** | 7 defined KPIs. Cycle-over-cycle trend analysis. Metrics in Validation Summary. | -- |
+| 9.1.1 | Monitoring and KPIs | **COMPLIANT** | 7 defined KPIs. Cycle-over-cycle trend analysis. Metrics in Verification Summary. | -- |
 
 ## Summary
 

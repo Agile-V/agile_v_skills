@@ -129,7 +129,7 @@ This document consolidates all compliance gaps from the per-standard matrices (C
 | Attribute | Detail |
 |-----------|--------|
 | **Standards** | ISO 27001 A.8.29 |
-| **Action Required** | Add `security` as a test type in the Test Designer taxonomy. Integrate SAST/DAST tools into CI pipeline. Include security test results in Validation Summary. |
+| **Action Required** | Add `security` as a test type in the Test Designer taxonomy. Integrate SAST/DAST tools into CI pipeline. Include security test results in Verification Summary. |
 
 #### GAP-013: Document Register and Distribution Control
 | Attribute | Detail |

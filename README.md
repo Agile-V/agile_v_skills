@@ -4,1169 +4,250 @@
 
 [![Standard: Agile V™](https://img.shields.io/badge/Standard-Agile--V™-blueviolet)](https://agile-v.org/)
 [![Spec: AgentSkills.io](https://img.shields.io/badge/Spec-AgentSkills.io-green)](https://agentskills.io/specification)
-[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey)](https://creativecommons.org/licenses/by-sa/4.0/)
+[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey)](LICENSE)
 [![Version](https://img.shields.io/github/v/release/Agile-V/agile_v_skills?label=version)](https://github.com/Agile-V/agile_v_skills/releases)
 [![Validate Skills and Contracts](https://github.com/Agile-V/agile_v_skills/actions/workflows/validate-control-matrix.yml/badge.svg)](https://github.com/Agile-V/agile_v_skills/actions/workflows/validate-control-matrix.yml)
 [![Stars](https://img.shields.io/github/stars/Agile-V/agile_v_skills?style=social)](https://github.com/Agile-V/agile_v_skills/stargazers)
 
-[![ISO 9001 Aligned](https://img.shields.io/badge/ISO_9001-Aligned-blue)](./docs/compliance/02_ISO_9001_MATRIX.md)
-[![ISO 27001 Aligned](https://img.shields.io/badge/ISO_27001-Aligned-blue)](./docs/compliance/05_ISO_27001_MATRIX.md)
-[![GxP Aware](https://img.shields.io/badge/GxP-Aware-blue)](./docs/compliance/06_GXP_GAMP5_MATRIX.md)
+[![ISO 9001 Aligned](https://img.shields.io/badge/ISO_9001-Aligned-blue)](docs/compliance/02_ISO_9001_MATRIX.md)
+[![ISO 27001 Aligned](https://img.shields.io/badge/ISO_27001-Aligned-blue)](docs/compliance/05_ISO_27001_MATRIX.md)
+[![GxP Aware](https://img.shields.io/badge/GxP-Aware-blue)](docs/compliance/06_GXP_GAMP5_MATRIX.md)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-Plugin-orange)](CLAUDE.md)
 [![Cursor](https://img.shields.io/badge/Cursor-Rules-orange)](CURSOR.md)
-[![VS Code](https://img.shields.io/badge/VS_Code-Skills-orange)](README.md#how-to-use)
-[![GitHub Copilot](https://img.shields.io/badge/GitHub_Copilot-Skills-orange)](README.md#how-to-use)
+
+Agile V is a tool-agnostic, human-governed assurance layer for AI-assisted engineering. It gives agents explicit roles, durable evidence, typed traceability, independent challenge, risk-scaled controls, and stop points where accountable people approve requirements and release.
+
+It does not replace your coding agent, engineering process, or judgment. It makes their inputs, outputs, checks, and decisions easier to inspect.
+
+| Without an assurance layer | With Agile V |
+|---|---|
+| Chat context becomes implicit build input | A reviewed requirement revision becomes the frozen baseline |
+| Tests may mirror implementation assumptions | Test design is derived independently from requirements |
+| The builder grades its own output | A separate verifier challenges specified behavior |
+| Approval is implied by agent completion | Human Gates record authority, evidence, and residual risk |
+| Traceability is reconstructed later | Typed links connect requirements, artifacts, tests, and evidence |
+| Tool access follows runtime defaults | Risk-scaled controls bound data, tools, permissions, and side effects |
 
 ## Start in 60 Seconds
+
+Install the minimal requirements profile into a project-level Agent Skills directory:
 
 ```bash
 git clone https://github.com/Agile-V/agile_v_skills.git
 mkdir -p .agents/skills
-cp -R agile_v_skills/agile-v-core agile_v_skills/requirement-architect agile_v_skills/logic-gatekeeper .agents/skills/
+cp -R agile_v_skills/agile-v-core \
+  agile_v_skills/requirement-architect \
+  agile_v_skills/logic-gatekeeper \
+  .agents/skills/
 ```
 
-Ask your coding agent to load `agile-v-core`, then request a change. For implementation, choose a complete [installation profile](docs/INSTALL_PROFILES.md) and follow the [Golden Journey](docs/GOLDEN_JOURNEY.md).
+Ask your agent:
 
 ```text
-Intent -> reviewed REQ baseline -> implementation + independent test design
-       -> independent verification -> human release decision
+Load agile-v-core. Classify the risk of this change, identify missing context,
+and create reviewable requirements before implementation: [describe change]
 ```
 
-| What changes | Uncontrolled agent workflow | Agile V workflow |
-|---|---|---|
-| Build input | Chat context or inferred intent | Approved, immutable requirement revision |
-| Testing | Often designed from the implementation | Designed independently from the baseline |
-| Approval | Implicit agent completion | Durable Human Gates with evidence |
-| Traceability | Reconstructed after the fact | Typed `REQ -> ART`, `REQ -> TC`, and verification links |
+Correct behavior includes halting on material ambiguity, persisting requirements, and waiting for approval before treating a revision as the build baseline. For implementation, select a complete [installation profile](docs/INSTALL_PROFILES.md), then follow the [Golden Journey](docs/GOLDEN_JOURNEY.md).
 
 ## Who It Is For
 
-Use Agile V when AI-assisted work needs reviewable requirements, independent challenge, human authorization, risk-scaled evidence, or controlled change. It is especially relevant to production, security-sensitive, safety-relevant, regulated, and externally reviewed engineering.
+**Use Agile V when:**
 
-It is not a certification product, a replacement for accountable engineering judgment, or necessary for every low-consequence experiment. Start with the smallest profile appropriate to the risk.
+- AI-assisted changes need reviewable requirements and explicit acceptance criteria.
+- Implementation should be challenged independently rather than self-graded.
+- Security, safety, regulatory, contractual, or operational risk requires durable evidence.
+- Multiple agents or sessions need a stable baseline and reproducible handoffs.
+- Humans must authorize requirements, waivers, residual risk, or release.
 
-## Evidence, Not Hype
+**It is not:**
 
-| Repository proof point | Evidence |
+- A certification, conformity assessment, legal opinion, or regulatory approval product.
+- A substitute for domain experts, accountable engineering judgment, or organizational controls.
+- A reason to add heavy process to every prototype or low-consequence experiment.
+- An autonomous deployment system or a guarantee that an AI-generated result is correct.
+
+Choose the smallest profile appropriate to the risk.
+
+## Repository Evidence
+
+| Proof point | Inspect it |
 |---|---|
-| 45 cataloged skills | [`catalog/skills.json`](catalog/skills.json) |
-| 344 deterministic contract tests | [`tests/`](tests/) |
-| 18 machine-readable evidence schemas | [`schemas/`](schemas/) |
-| Five implementation domains | [Python](domains/build-agent-python/SKILL.md), [JavaScript/TypeScript](domains/build-agent-js/SKILL.md), [NestJS](domains/build-agent-nestjs/SKILL.md), [Dart/Flutter](domains/build-agent-dart/SKILL.md), [embedded C/C++](domains/build-agent-embedded/SKILL.md) |
-| Explicit preview boundaries | [`SKILL_ROUTING_GUIDE.md`](SKILL_ROUTING_GUIDE.md) |
+| **45 skills** | Machine-readable [`catalog/skills.json`](catalog/skills.json) and the [Skill Routing Guide](SKILL_ROUTING_GUIDE.md) |
+| **347 contract tests** | Deterministic schema and repository tests under [`tests/`](tests/) |
+| **18 evidence schemas** | Requirements, risk, builds, tests, verification, validation, approvals, traceability, controls, delegation, and AI provenance in [`schemas/`](schemas/) |
+| **Five build domains** | [Python](domains/build-agent-python/SKILL.md), [JavaScript/TypeScript](domains/build-agent-js/SKILL.md), [NestJS](domains/build-agent-nestjs/SKILL.md), [Dart/Flutter](domains/build-agent-dart/SKILL.md), and [embedded C/C++](domains/build-agent-embedded/SKILL.md) |
+| **Public runtime contracts** | [Lifecycle](docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md), [risk classification](docs/agile-v-runtime/04_RISK_CLASSIFICATION.md), and [tool/delegation controls](docs/agile-v-runtime/05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md) |
+| **Reproducible claims policy** | Measurement inputs and methods are defined in [`PERFORMANCE.md`](PERFORMANCE.md) |
 
-## Explore and Contribute
+The repository is currently on the **v3.9.x** line. [`package.json`](package.json) is the repository-version source; each skill also carries its own contract version in YAML frontmatter.
 
-[Tutorials](docs/tutorials/README.md) · [Comparisons](docs/COMPARISONS.md) · [Showcase](docs/SHOWCASE.md) · [Documentation](docs/README.md) · [Contributing](CONTRIBUTING.md) · [Discussions](https://github.com/Agile-V/agile_v_skills/discussions)
+### Assurance Controls
 
-If the evidence-oriented approach is useful, [star the repository](https://github.com/Agile-V/agile_v_skills) so others can discover it. Questions, critical feedback, case studies, and focused contributions are welcome.
-
-## Current v3.9.x Assurance Features
-
-| Feature | Why it is useful | Where it is defined |
-|---|---|---|
-| **Baselined requirement lifecycle** | Prevents a draft, an unreviewed edit, or chat context from becoming build input. A rejected Gate 1 returns to revision without losing independent findings. | [Canonical Lifecycle Contract](docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md) |
-| **Typed trace graph** | Distinguishes intent, requirements, risks, implementation, tests, verification, validation, approvals, and evidence instead of forcing every record into a misleading one-to-one REQ link. | [Lifecycle Contract](docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md) and [`schemas/TRACE_GRAPH.schema.json`](schemas/TRACE_GRAPH.schema.json) |
-| **Risk-scaled rigor (`L0`-`L4`)** | Applies appropriate review, rollback, independent verification, and human approval without pretending sector classifications such as ASIL, SIL, or DAL are interchangeable. | [Risk Classification](docs/agile-v-runtime/04_RISK_CLASSIFICATION.md) |
-| **Machine-checkable evidence** | JSON Schemas catch malformed requirements, trace links, risk records, approvals, test results, validation reports, evidence bundles, and AI manifests before release review. | [`schemas/`](schemas/) and [`tests/fixtures/schemas/`](tests/fixtures/schemas/) |
-| **Intended-use validation and safety engineering** | Separates “built correctly” from “right for intended use,” and adds hazards, safety requirements, residual-risk, and assurance-case workflows. | [`validation-agent`](validation-agent/SKILL.md) and [`safety-engineer`](safety-engineer/SKILL.md) |
-| **Agent/tool security controls** | Treats retrieved content and tool output as untrusted data; records scoped MCP calls, A2A delegation, authorization, side effects, expiry, and approvals. | [Tool and Delegation Contract](docs/agile-v-runtime/05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md) |
-| **AI influence provenance** | Records the model, runtime, skills, tools, context, artifact influence, hashes, evaluation, and revalidation scope without storing secrets or hidden reasoning. | [`agile-v-aibom`](agile-v-aibom/SKILL.md) and [`templates/AI_RUN_MANIFEST.yaml`](templates/AI_RUN_MANIFEST.yaml) |
-| **Standards and legal boundaries** | Provides public-scope mappings for lifecycle, AI governance, safety, and EU AI Act screening while avoiding unsupported certification or conformity claims. | [`docs/standards/`](docs/standards/) |
-
-## Installation Details
-
-### Prerequisites
-
-Before installing Agile V skills, ensure you have:
-- One of the supported AI coding tools (Claude Code, Cursor, VS Code, or GitHub Copilot)
-- Basic familiarity with your chosen tool's agent/chat interface
-- A project directory where you want to apply Agile V principles
-
-### Installation Profiles
-
-Choose one documented profile rather than copying an arbitrary subset:
-
-| Profile | Purpose |
+| Control | Practical effect |
 |---|---|
-| `core-minimal` | Requirements and independent review |
-| `verified-build` | Baselined build, independent test design, and verification |
-| `existing-repo` | Gate 0 understanding, impact, regression, and diff evidence |
-| `regulated` | Risk, controls, safety, intended-use validation, audit, and release evidence |
-| `business-preview` | Locally reviewed preview business and C-Suite contracts |
+| Halt and ask | Agents stop rather than inventing missing material requirements or constraints |
+| Immutable baseline | Build and test roles consume the same approved revision |
+| Independent contexts | Test design and verification avoid implementation-led confirmation bias |
+| Human Gates | Accountable people approve requirements, exceptions, residual risk, and release |
+| Risk scaling | Delivery levels `L0`-`L4` select proportionate review and evidence |
+| Decision logging | Significant choices retain rationale, alternatives, owner, and evidence links |
+| Typed traceability | Records use appropriate lineage instead of forcing every item under one REQ link |
+| Machine validation | JSON Schemas catch malformed structured evidence before release review |
+| AI provenance | Material AI influence is recorded without secrets or hidden chain-of-thought |
 
-See [Installation Profiles](docs/INSTALL_PROFILES.md) for exact directories and copy commands. Add one domain build skill for Python, JavaScript/TypeScript, NestJS, Dart/Flutter, or embedded C/C++ when implementation is in scope.
+These are contracts and records, not proof by themselves. Teams must operate the controls, review the resulting evidence, and resolve failures.
 
-After installation, ask the agent to load `agile-v-core`, then make an ambiguous implementation request. Correct behavior is to classify risk, request missing context, and persist requirements before synthesis; installation alone does not prove lifecycle conformance.
-
-### Canonical Golden Journey
-
-The current onboarding path is: classify risk; persist a draft; record independent findings; resolve findings; obtain Gate 1 approval; freeze the baseline; build and design tests independently; verify independently; pass or authorize a waiver at the Eval Gate; perform intended-use validation when required; complete the AI manifest and evidence bundle; obtain Gate 2 approval; release and monitor.
-
-Follow the evidence, role boundaries, and stop conditions in the [Golden Journey](docs/GOLDEN_JOURNEY.md).
-
-### Use the Assurance Controls
-
-Use this workflow for a new or changed feature. The skills create project evidence under `.agile-v/`; copy templates into that project directory rather than editing this library's source templates.
-
-1. **Install the core set:** Load `agile-v-core`, `requirement-architect`, `logic-gatekeeper`, `build-agent`, the relevant domain build skill, `test-designer`, and `red-team-verifier`. Add `agile-v-compliance` and `agile-v-control-matrix` for L2+ work.
-2. **Create and classify the work:** Record source IDs, affected stakeholders/configuration, delivery level (`L0`-`L4`), category, description, likelihood, impact, uncertainty, rationale, controls, owner, residual-risk decision, and status in `.agile-v/RISK_REGISTER.md`. See [Risk Classification](docs/agile-v-runtime/04_RISK_CLASSIFICATION.md).
-3. **Persist a draft, then review it independently:** The Requirement Architect writes a draft requirements record. Logic Gatekeeper creates independent findings; it does not rewrite the requirement. The architect resolves findings and a human approves Gate 1.
-4. **Freeze the baseline:** Create an approved baseline and register it in `.agile-v/ARTIFACT_INDEX.yaml`. Only the baseline revision may be used by Build Agent, Test Designer, or Schematic Generator.
-5. **Build and test independently:** Build Agent records `artifact -> implements -> baselined requirement`; Test Designer records `test_case -> verifies -> baselined requirement` without reading implementation code. Red Team Verifier independently produces verification evidence.
-6. **Add the controls that apply:**
-   - Use `validation-agent` when intended-use, representative-user, or operational-environment validation is needed.
-   - Use `safety-engineer` for hazards, safety requirements, residual-risk, or sector safety profiles.
-   - Use `threat-modeler` early to identify security requirements. Immediately before an L2+ external/state-changing MCP call or A2A delegation, create the required tool/delegation record under the [Tool and Delegation Contract](docs/agile-v-runtime/05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md).
-    - Create `.agile-v/aibom/<task-id>/AI_RUN_MANIFEST.yaml` for material AI influence. `agile-v-aibom` is a preview skill; use it only under an approved local policy.
-7. **Prepare Gate 2:** Record `.agile-v/VERIFICATION_SUMMARY.md`, run the Eval Gate, perform intended-use validation when required, validate structured records against [`schemas/`](schemas/), confirm no unresolved required control, and present evidence and residual risk to the authorized human approver.
-8. **Release and operate:** Use `release-manager` to apply the selected release-risk policy: signature, reproducibility, SBOM/ML-BOM, SLSA, rollback, and waiver evidence where required. Use `observability-planner` for trace correlation, telemetry privacy, SLOs, burn-rate alerts, and incident-to-CAPA feedback.
-
-Minimal project layout:
+## Canonical Workflow
 
 ```text
-.agile-v/
-  STATE.md
-  RISK_REGISTER.md
-  REQUIREMENTS.md
-  BUILD_MANIFEST.md
-  TEST_SPEC.md
-  VERIFICATION_SUMMARY.md
-  EVAL_RESULTS.md
-  APPROVALS.md
-  CHECKPOINTS.md
-  TRACE_LOG.md
-  CONTROL_MATRIX.yaml           # for non-trivial controlled work
-  aibom/<task-id>/AI_RUN_MANIFEST.yaml  # when AI materially influences work
-  # VALIDATION_REPORT.md is separate and added when intended-use validation applies
+Intent
+  -> risk classification
+  -> persisted draft requirements
+  -> independent ambiguity and constraint findings
+  -> revision and Human Gate 1 approval
+  -> frozen requirement baseline
+  -> implementation + independent test design
+  -> independent verification + Eval Gate
+  -> intended-use validation when required
+  -> evidence bundle + Human Gate 2
+  -> release and monitoring
 ```
 
-Start from the reusable records in [`templates/agile-v/`](templates/agile-v/) and [`templates/`](templates/). JSON Schema contracts in [`schemas/`](schemas/) define the structured equivalents for integrations and evidence validation. For the exact state and evidence rules, follow the [runtime contracts](docs/agile-v-runtime/).
+| Stage | Role and boundary | Evidence |
+|---|---|---|
+| Requirements | `requirement-architect` persists and revises; `logic-gatekeeper` records findings but does not rewrite the draft | Approved `REQ-XXXX` revisions and baseline registration |
+| Build | `build-agent` and one domain skill implement only from the frozen baseline | `ART-XXXX -> implements -> REQ-XXXX` lineage |
+| Test design | `test-designer` derives tests from the baseline, not from implementation | `TC-XXXX -> verifies -> REQ-XXXX` lineage |
+| Verification | `red-team-verifier` independently asks **“Was the specified output built correctly?”** | `.agile-v/VERIFICATION_SUMMARY.md`, test logs, `VER-XXXX`, and eval results |
+| Intended-use validation | `validation-agent`, when required, separately asks **“Was the right system built for representative users and conditions?”** | `VALIDATION_PLAN.md`, `VALIDATION_PROTOCOL.md`, and `VALIDATION_REPORT.md` |
+| Release | An authorized human reviews evidence and residual risk before `release-manager` proceeds | Gate 2 approval, release and rollback evidence |
 
-### Understanding the Agile V Workflow
+Verification does not prove intended-use acceptance. Intended-use validation does not close failed verification. Keep their roles and records separate. See the [canonical lifecycle contract](docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md) for states, lineage, and stop conditions.
 
-The framework follows a structured pipeline with built-in quality gates:
+When separate agents are unavailable, design tests before implementation and use a fresh context for verification to reduce contamination. Never let the Build Agent verify its own work.
 
-```
-┌─────────────────┐
-│  Human Intent   │  "Add user authentication"
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────────────────┐
-│  Requirement Architect      │  Persists draft requirements with acceptance criteria
-└────────┬────────────────────┘
-         │
-         ▼
-┌─────────────────────────────┐
-│  Logic Gatekeeper           │  Records independent findings for ambiguity & constraints
-└────────┬────────────────────┘  Halts if unclear → asks for clarification
-         │
-         ▼
-┌─────────────────────────────┐
-│  Requirement Architect      │  Resolves findings; Human Gate 1 approves; baseline is frozen
-└────────┬────────────────────┘
-         │
-         ├──────────┬──────────┐
-         ▼          ▼          ▼
-  ┌──────────┐ ┌──────────┐ ┌──────────┐
-  │  Build   │ │   Test   │ │Schematic │  (Run in parallel)
-  │  Agent   │ │ Designer │ │Generator │
-  └─────┬────┘ └────┬─────┘ └────┬─────┘
-        │           │            │
-        └───────────┴────────────┘
-                    │
-                    ▼
-         ┌──────────────────────┐
-         │ Red Team Verifier    │  Independent verification
-         └──────────┬───────────┘  (fresh context, no self-grading)
-                    │
-                    ▼
-         ┌──────────────────────┐
-         │  HUMAN GATE 2        │  ⚠️ Review Evidence Summary before deploy
-         └──────────┬───────────┘
-                    │
-                    ▼
-         ┌──────────────────────┐
-         │  Production Deploy   │  Only after human approval
-         └──────────────────────┘
-```
+## Installation Profiles
 
-**Key Principles:**
-- **Left Side (Requirements):** Clarify *what* before *how*. Agents halt on ambiguity.
-- **Apex (Building):** Multiple agents work in parallel, each focused on their domain.
-- **Right Side (Verification):** Independent Red Team catches what Build Agent missed.
-- **Human Gates:** You approve requirements and deployments. Agents never decide alone.
+| Profile | Use when |
+|---|---|
+| `core-minimal` | Requirements, independent review, and lifecycle guidance |
+| `verified-build` | Baselined implementation, independent test design, and verification |
+| `existing-repo` | Gate 0 understanding, impact analysis, regression selection, and diff evidence |
+| `regulated` | L3/L4, safety-relevant, sensitive, regulated, or externally assured work |
+| `business-preview` | Locally evaluating draft business and executive-governance contracts |
 
----
+The [Installation Profiles](docs/INSTALL_PROFILES.md) document lists exact skill directories and copy commands. Add one implementation domain when building. Agent Skills may be installed at project or user level, depending on the platform.
 
-## 🌟 **Why Agile V?**
+## Platforms
 
-| Feature | Typical AI Agents | Agile V Framework |
-|---------|------------------|-------------------|
-| **Traceability** | ❌ Code appears without requirements | ✅ Typed lineage links synthesis artifacts to baselined REQ revisions; other records use their applicable lineage |
-| **Verification** | ❌ Self-tests own code (confirmation bias) | ✅ Independent Red Team Verifier |
-| **Hardware** | ❌ Assumes unlimited resources | ✅ Validates RAM/CPU/GPU constraints |
-| **Deployment** | ❌ Autonomous production pushes | ✅ Human Gates with Evidence Summaries |
-| **Ambiguity** | ❌ Silent assumptions, hallucinations | ✅ Halts and asks clarifying questions |
-| **Compliance** | ❌ Manual audit prep (weeks) | ✅ Auto-generated ISO/GxP artifacts |
-| **Multi-Cycle** | ❌ Fresh start each iteration | ✅ Change Requests, version control, regression tests |
+| Platform | Typical project directory | Guide |
+|---|---|---|
+| Claude Code | `.claude/skills/` | [Repository guide](CLAUDE.md) · [Official docs](https://code.claude.com/docs/en/skills) |
+| Cursor | `.cursor/skills/` | [Repository guide](CURSOR.md) · [Official docs](https://cursor.com/docs/context/skills) |
+| VS Code | `.github/skills/` or `.agents/skills/` | [Official docs](https://code.visualstudio.com/docs/copilot/customization/agent-skills) |
+| GitHub Copilot | `.github/skills/` or `.agents/skills/` | [Official docs](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) |
+| Other compatible agents | Platform-specific skills directory | [AgentSkills.io integration guide](https://agentskills.io/integrate-skills) |
 
----
+For detailed scenarios and retained platform examples, see [`EXAMPLES.md`](EXAMPLES.md), [`CLAUDE.md`](CLAUDE.md), and [`CURSOR.md`](CURSOR.md).
 
-## 💡 **What You Get**
+## Skill Catalog
 
-This repository contains the official collection of **Agent Skills** for the Agile V™ framework. These skills transform standard LLMs into specialized engineering agents capable of building, verifying, and auditing complex systems with mathematical rigor.
+Load `agile-v-core` first, then only the roles needed for the stage and risk.
 
-## The Vision: From Manifesto to Execution
+| Category | Scope | Start here |
+|---|---|---|
+| Foundation and orchestration | Core directives, pipelines, lifecycle, quality gates, behavioral rules | [`agile-v-core`](agile-v-core/SKILL.md) |
+| Discovery and requirements | Research, threats, UX constraints, formal requirements, independent findings | [`requirement-architect`](requirement-architect/SKILL.md) |
+| Build and test | Language-agnostic build, five domains, hardware, independent test design | [`build-agent`](build-agent/SKILL.md) |
+| Assurance | Independent verification, intended-use validation, safety, compliance | [`red-team-verifier`](red-team-verifier/SKILL.md) |
+| Delivery and operations | Product ownership, release, observability | [`release-manager`](release-manager/SKILL.md) |
+| Existing repositories | System understanding, impact, regression, graph, and diff evidence | [`skills/`](skills/) |
+| Business and C-Suite | Functional business execution and executive orchestration | [Preview catalog](SKILL_ROUTING_GUIDE.md#business-preview) |
 
-The [Agile V™ Manifesto](https://agile-v.org) provides the philosophy; this repository provides the **mechanics**. 
+Use the [complete routing guide](SKILL_ROUTING_GUIDE.md) for all 45 skills, prerequisites, status, and intent-to-skill mappings. The machine-readable source is [`catalog/skills.json`](catalog/skills.json).
 
-By deploying these skills, you move away from "unstructured prompting" toward a documented, human-governed quality workflow. Every skill in this library is built to enforce:
+## Preview Boundary
 
-- **Traceability:** Every action is linked to a Requirement ID.
-- **Verification:** No artifact is created without a "Red Team" challenge.
-- **Human Curation:** Automated stops at critical "Human Gates."
+A skill is preview/draft only when its current frontmatter contains `metadata.status: draft`. Presence on `main` does not make its contract stable.
 
-## 🛠 Repository Structure
+Current preview contracts are:
 
-The skills are organized following the **Agile V™ Infinity Loop**. Each skill lives at the root level (or under `domains/` for language-specific extensions) for ease of use. You can reference skills directly with simple paths like `./agile-v-core/SKILL.md` when configuring Cursor or other agent tools.
+- AI influence workflow: `agile-v-aibom`.
+- Functional Business Track: `venture-strategist`, `rd-innovator`, `gtm-executor`, `business-operations`.
+- C-Suite: `c-suite-foundation`, `chief-exec`, `chief-tech`, `chief-finance`, `chief-people`, `chief-ops`, `c-suite-update`.
+
+Review, tailor, approve, and baseline preview outputs locally before operational use. C-Suite skills govern and coordinate; functional skills execute. Current status is maintained in the [routing guide](SKILL_ROUTING_GUIDE.md).
+
+## Standards and Compliance
+
+Agile V provides engineering controls, evidence structures, and public-scope mappings. These materials may support an organization’s assurance work, but **do not establish certification, regulatory approval, legal compliance, product safety, or organizational conformity**. Applicability, tailoring, validation, qualified personnel, and accountable approval remain your responsibility.
+
+| Resource | Scope |
+|---|---|
+| [Compliance posture](docs/compliance/01_COMPLIANCE_POSTURE.md) | Coverage, boundaries, assumptions, and gaps |
+| [Compliance matrices](docs/compliance/) | ISO 9001, ISO 13485, AS9100D, ISO 27001, and GxP/GAMP 5 |
+| [Standards mappings](docs/standards/) | Lifecycle, AI governance, safety profiles, source register, and EU AI Act screening |
+| [Runtime schemas](docs/agile-v-runtime/01_SCHEMAS.md) | Machine-readable evidence contracts and validation model |
+| [Control matrix](docs/agile-v-runtime/02_CONTROL_MATRIX.md) | Data, tool, model, rights, gate, test, cost, and rollback controls |
+| [AI influence traceability](docs/ai-influence-traceability.md) | Model, runtime, context, tool, skill, artifact, and revalidation provenance |
+
+Sector terms such as ASIL, SIL, DAL, GxP, and regulatory risk categories are not interchangeable with Agile V delivery levels `L0`-`L4`. Use the [risk classification contract](docs/agile-v-runtime/04_RISK_CLASSIFICATION.md) and an applicable sector profile.
+
+## Learn and Compare
+
+| Resource | What it provides |
+|---|---|
+| [Tutorials](docs/tutorials/README.md) | Verified authentication, independent-agent verification, AI manifests, and regulated adoption |
+| [Golden Journey](docs/GOLDEN_JOURNEY.md) | Canonical end-to-end onboarding and evidence flow |
+| [Comparisons](docs/COMPARISONS.md) | Bounded comparisons with adjacent methods and tools |
+| [Examples](EXAMPLES.md) | Concrete usage scenarios |
+| [Documentation hub](docs/README.md) | Runtime, standards, compliance, and integration documentation |
+| [Showcase](docs/SHOWCASE.md) | Evidence-based case-study requirements and submission format |
+
+## Repository Structure
 
 ```text
-├── agile-v-core/           # Foundation: Core philosophy and operational logic
-├── agile-v-aibom/          # AI Influence Traceability: AI/ML-BOM and agent run provenance
-├── requirement-architect/  # Left Side: Intent and decomposition
-├── logic-gatekeeper/       # Left Side: Ambiguity and constraint validation
-├── build-agent/            # Apex: Core build agent (language-agnostic)
-├── test-designer/          # Apex: Verification suite design
-├── schematic-generator/    # Apex: Schematics, netlists, HDL
-├── domains/                # Apex: Language-specific build agent extensions
-│   ├── build-agent-dart/
-│   ├── build-agent-embedded/
-│   ├── build-agent-js/
-│   ├── build-agent-nestjs/
-│   └── build-agent-python/
-├── red-team-verifier/      # Right Side: Verification and Red Teaming
-├── validation-agent/       # Intended-use validation in representative conditions
-├── safety-engineer/        # Hazard analysis and safety assurance
-├── release-manager/        # Rollout, rollback, deployment
-├── observability-planner/  # Metrics, alerts, dashboards, SLOs
-├── compliance-auditor/     # Compliance: Audit and governance
-├── documentation-agent/    # Documentation: Standards-based repo docs (ISO 9001, V-Model, ISO 27001)
-├── venture-strategist/     # [Draft] Business Track: Vision, business model, product portfolio
-├── rd-innovator/           # [Draft] Business Track: R&D pipeline, technology radar, prototyping
-├── gtm-executor/           # [Draft] Business Track: Go-to-market, marketing, growth experiments
-├── business-operations/    # [Draft] Business Track: Finance, OKRs, vendors, operational risk
-├── chief-exec/             # [Draft] C-Suite: CEO orchestrator, strategic alignment, board, crisis
-├── chief-tech/             # [Draft] C-Suite: CTO orchestrator, architecture, tech debt, platform
-├── chief-finance/          # [Draft] C-Suite: CFO orchestrator, financial modeling, controls
-├── chief-people/           # [Draft] C-Suite: CHRO orchestrator, org, hiring, compensation, culture
-├── chief-ops/              # [Draft] C-Suite: COO orchestrator, processes, delivery, scaling
-├── c-suite-foundation/     # [Draft] Shared C-Suite governance primitives
-├── c-suite-update/         # [Draft] Periodic executive briefings
-└── skills/                 # Existing-repository understanding and evidence skills
+agile-v-core/                 foundation skill; load first
+agile-v-*/                    lifecycle, governance, and quality skills
+requirement-architect/        formal requirements and baselines
+build-agent/                  language-agnostic implementation contract
+domains/                      five language/platform build skills
+test-designer/                independent baseline-derived test design
+red-team-verifier/            independent verification
+validation-agent/             separate intended-use validation
+skills/                       existing-repository evidence agents
+catalog/                      machine-readable skill catalog
+schemas/                      18 JSON evidence schemas
+templates/                    reusable project evidence records
+tests/                        deterministic contract tests and fixtures
+docs/                         tutorials, runtime, standards, and compliance
 ```
 
-## 📦 Selected Skill Highlights
+Each skill lives in one directory with one `SKILL.md` using the [AgentSkills.io specification](https://agentskills.io/specification). Projects normally persist lifecycle evidence under `.agile-v/`; copy and tailor records from [`templates/agile-v/`](templates/agile-v/) rather than editing library templates in place.
 
+## Troubleshooting
 
-| Skill                 | Category   | Path                            | Purpose                                                                                                                                                                                                    |
-| --------------------- | ---------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| agile-v-core            | Foundation | `agile-v-core/`                 | The baseline "operating system" for all agents. Includes context engineering, orchestration pipeline, state persistence, and model tier guidance.                                                          |
-| agile-v-aibom           | AI Provenance **[Draft]** | `agile-v-aibom/`  | Preview AI influence provenance and AI/ML-BOM workflow; requires local review before operational use. |
-| agile-v-control-matrix  | Governance | `agile-v-control-matrix/`       | Defines data class, tool, model/vendor, log, rights, Human Gate, test, cost, rollback, and owner controls for agentic execution. Load when creating, reviewing, or enforcing `CONTROL_MATRIX.yaml`.       |
-| requirement-architect   | Left Side  | `requirement-architect/`        | Converts intent into atomic, traceable requirements.                                                                                                                                                       |
-| logic-gatekeeper        | Left Side  | `logic-gatekeeper/`             | Validates requirements for ambiguity and physical/hardware constraints.                                                                                                                                    |
-| build-agent             | Apex       | `build-agent/`                  | Generates code, firmware, HDL from approved requirements (language-agnostic). Includes context engineering, pre-execution validation, and post-verification feedback loop.                                 |
-| test-designer           | Apex       | `test-designer/`                | Designs verification suite from requirements only—runs parallel to Build Agent.                                                                                                                            |
-| schematic-generator     | Apex       | `schematic-generator/`          | Generates schematics, netlists, HDL for hardware/PCB projects.                                                                                                                                             |
-| build-agent-python      | Apex       | `domains/build-agent-python/`   | **Comprehensive Python build agent** for backends (FastAPI/Flask/Django), data pipelines, ML, and scripts. Includes architecture patterns, testing strategy, security guidance, and SCOPE-V integration.   |
-| build-agent-js          | Apex       | `domains/build-agent-js/`       | **Comprehensive JavaScript/TypeScript build agent** for React/Next.js frontends and Node.js backends. Includes state management, security patterns, testing strategy, and build tools.                      |
-| build-agent-dart        | Apex       | `domains/build-agent-dart/`     | **Comprehensive Dart/Flutter build agent** for mobile apps. Includes BLoC/Provider state management, platform channels, widget patterns, and testing strategy.                                              |
-| build-agent-embedded    | Apex       | `domains/build-agent-embedded/` | **Comprehensive embedded C/C++ build agent** for safety-critical systems. Includes MISRA-C, RTOS patterns, hardware abstraction, security, and certification support (ISO 26262, IEC 61508).                 |
-| build-agent-nestjs      | Apex       | `domains/build-agent-nestjs/`   | **Comprehensive NestJS build agent** for enterprise backends. Includes dependency injection, TypeORM/Prisma, GraphQL, microservices, and testing patterns.                                                  |
-| red-team-verifier       | Right Side | `red-team-verifier/`            | Independently challenges artifacts and produces `.agile-v/VERIFICATION_SUMMARY.md` for Gate 2. |
-| validation-agent        | Validation | `validation-agent/`             | Separately assesses intended use with representative users and operational conditions; produces `VALIDATION_REPORT.md`. |
-| safety-engineer         | Safety | `safety-engineer/`                    | Tailors hazard analysis, safety requirements, residual-risk, and assurance evidence. |
-| compliance-auditor      | Compliance | `compliance-auditor/`           | Automates decision logging, traceability matrix (ATM), VSR for ISO/GxP, and control matrix audit findings.                                                                                                 |
-| documentation-agent     | Compliance | `documentation-agent/`          | Generates standards-based repo documentation (ISO 9001, V-Model, ISO 27001, optional GAMP 5) and control matrix docs into `docs/`.                                                                        |
-| venture-strategist      | Business Track **[Draft]** | `venture-strategist/`  | Converts vision and market opportunity into traceable business models, product portfolios, and strategic plans. Feeds product intent to discovery-analyst.                   |
-| rd-innovator            | Business Track **[Draft]** | `rd-innovator/`        | Manages R&D pipeline, technology radar, prototyping, and IP tracking. Transfers validated innovations to the engineering pipeline.                                            |
-| gtm-executor            | Business Track **[Draft]** | `gtm-executor/`        | Converts product portfolio into go-to-market strategies, marketing plans, launch campaigns, and growth experiments. Coordinates with release-manager for launch timing.       |
-| business-operations     | Business Track **[Draft]** | `business-operations/` | Manages financial planning, OKRs, team resources, vendor relationships, and operational compliance. The operational backbone for all business track skills.                   |
-| chief-exec              | C-Suite **[Draft]**        | `chief-exec/`          | CEO orchestrator: strategic alignment, cross-C-suite coordination, board relations, crisis management. Top-level business orchestrator.                                       |
-| chief-tech              | C-Suite **[Draft]**        | `chief-tech/`          | CTO orchestrator: architecture governance (ADRs), build-vs-buy, tech debt management, platform strategy, engineering standards, security posture.                             |
-| chief-finance           | C-Suite **[Draft]**        | `chief-finance/`       | CFO orchestrator: financial modeling, cash management, financial controls, fundraising governance, board financial reporting, unit economics.                                  |
-| chief-people            | C-Suite **[Draft]**        | `chief-people/`        | CHRO orchestrator: org design, hiring pipeline, compensation framework, culture code, performance management, DE&I, talent development.                                       |
-| chief-ops               | C-Suite **[Draft]**        | `chief-ops/`           | COO orchestrator: operational playbooks, process design, delivery cadence governance, resource arbitration, vendor escalation, scaling readiness.                             |
-| c-suite-foundation      | C-Suite **[Draft]**        | `c-suite-foundation/`  | Shared preview governance primitives loaded before C-Suite orchestrators. |
-| c-suite-update          | C-Suite **[Draft]**        | `c-suite-update/`      | Aggregates controlled domain evidence into periodic executive briefings. |
+If skills do not load or the agent starts coding without requirements:
 
-The complete 45-skill catalog, including orchestration, governance, quality, delivery, and existing-repository skills, is maintained in the [Skill Routing Guide](SKILL_ROUTING_GUIDE.md). Status comes from current frontmatter: the catalog marks all 12 skills with `metadata.status: draft` as preview.
+1. Confirm the selected directory is supported by your platform and contains `<skill-name>/SKILL.md`.
+2. Restart or reload the agent after installing skills.
+3. Ask the agent to list or explicitly load `agile-v-core`.
+4. Verify that you copied a complete [installation profile](docs/INSTALL_PROFILES.md), not isolated files.
+5. Test with an ambiguous request; expected behavior is to classify risk and ask for missing context before synthesis.
 
-## Compliance Documentation
+See the platform guides for [Claude Code](CLAUDE.md) and [Cursor](CURSOR.md), the [examples](EXAMPLES.md), or [open an issue](https://github.com/Agile-V/agile_v_skills/issues) with the platform, install path, skill names, and observed behavior.
 
-The repository includes a full compliance posture assessment under `[docs/compliance/](docs/compliance/)`. This documentation was generated from a clause-by-clause audit of the v1.3 skills against ISO 9001:2015, ISO 13485:2016, AS9100D, ISO 27001:2022, and GxP/GAMP 5.
+## Community and Contributions
 
+[GitHub Discussions](https://github.com/Agile-V/agile_v_skills/discussions) is the community forum. Use [Issues](https://github.com/Agile-V/agile_v_skills/issues) for reproducible defects and focused proposals, and follow the [Showcase guide](docs/SHOWCASE.md) for case studies.
 
-| Document                                                                | Purpose                                                       |
-| ----------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [Compliance Posture Overview](docs/compliance/01_COMPLIANCE_POSTURE.md) | What the skills cover, what they don't, and the honest scope  |
-| [ISO 9001 Matrix](docs/compliance/02_ISO_9001_MATRIX.md)                | Clause-by-clause status for quality management                |
-| [ISO 13485 Matrix](docs/compliance/03_ISO_13485_MATRIX.md)              | Clause-by-clause status for medical devices                   |
-| [AS9100D Matrix](docs/compliance/04_AS9100D_MATRIX.md)                  | Clause-by-clause status for aerospace                         |
-| [ISO 27001 Matrix](docs/compliance/05_ISO_27001_MATRIX.md)              | Control-by-control status for information security            |
-| [GxP / GAMP 5 Matrix](docs/compliance/06_GXP_GAMP5_MATRIX.md)           | Requirement-by-requirement status for pharma/life sciences    |
-| [Gap Roadmap](docs/compliance/07_GAP_ROADMAP.md)                        | Prioritized action plan with 18 gaps, owners, and Gantt chart |
+Contributions are welcome. Read [`CONTRIBUTING.md`](CONTRIBUTING.md), [`AGENTS.md`](AGENTS.md), the [Code of Conduct](CODE_OF_CONDUCT.md), and the [Security Policy](SECURITY.md) before submitting a pull request. New or changed skills must preserve traceability, halt-on-ambiguity behavior, independent verification, human gates, decision rationale, valid frontmatter, and applicable attribution.
 
+## License and Attribution
 
-> [!NOTE]
-> The skills claim `"ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"`. This is an honest scope -- the skills cover design and development controls, not production, manufacturing, or full organizational QMS. The compliance documentation tells you exactly what you get and what you still need to do for your regulatory context.
+The Agile V™ Agent Skills Library is licensed under [Creative Commons Attribution-ShareAlike 4.0 International](LICENSE). Contributions are accepted under the same license.
 
-## Skill Interaction Flow
+Selected context-engineering patterns are adapted from [Get Shit Done (GSD)](https://github.com/gsd-build/get-shit-done) by Lex Christopherson under the [MIT License](https://github.com/gsd-build/get-shit-done/blob/main/LICENSE). Skill-level adaptations and source details are recorded in YAML `metadata.adapted_from` fields and the [standards source register](docs/standards/SOURCE_REGISTER.md).
 
-```mermaid
-sequenceDiagram
-    participant Human
-    participant RA as Requirement Architect
-    participant LG as Logic Gatekeeper
-    participant BA as Build Agent
-    participant TD as Test Designer
-    participant RTV as Red Team Verifier
-    participant CA as Compliance Auditor
-    participant DA as Documentation Agent
-
-    Human->>RA: Product Intent
-    RA->>RA: Persist draft REQ-XXXX
-    RA->>LG: Draft requirements record
-    LG->>LG: Record independent ambiguity and constraint findings
-    opt Unclear constraints or ambiguity
-        LG->>RA: Findings requiring revision
-        RA->>Human: Halt: Clarify ambiguity or constraints
-        Human->>RA: Clarification
-    end
-    RA->>RA: Resolve findings with rationale
-    RA->>Human: Human Gate 1: approve revision
-    Human->>RA: Gate 1 approval
-    RA->>RA: Freeze approved baseline
-    RA->>BA: Baselined requirements
-    RA->>TD: Baselined requirements and referenced constraints
-
-    par Apex
-        BA->>BA: Generate Artifacts and Build Manifest
-        opt Ambiguous requirement
-            BA->>RA: Halt: create CR for requirement clarification
-            RA->>LG: Revise and re-submit for independent findings
-            RA->>Human: Gate 1 approval for revised baseline
-            Human->>RA: Approval; freeze new baseline
-            RA->>BA: Resume from revised baseline
-        end
-        TD->>TD: Generate TC-XXXX from REQ only
-    end
-
-    BA->>RTV: Artifacts and Manifest
-    TD->>RTV: Test Cases
-    RTV->>RTV: Execute Tests (independent verification)
-    RTV->>Human: Human Gate 2: Verification Summary
-    CA->>CA: Decision Log, ATM, VSR (throughout)
-    opt On request
-        Human->>DA: Generate or refresh docs
-        DA->>DA: docs/ suite (hub, standards, cross-ref)
-    end
-```
-
-
-## Business Track Interaction Flow [Draft]
-
-> [!NOTE]
-> The Business Track skills below are present on `main` but remain **draft preview contracts** because their current frontmatter says `metadata.status: draft`.
-
-The Business Track operates as a **parallel lifecycle** alongside the Engineering Track, with defined integration points:
-
-```mermaid
-sequenceDiagram
-    participant Human
-    participant VS as Venture Strategist
-    participant RDI as R&D Innovator
-    participant GTM as GTM Executor
-    participant BOP as Business Operations
-    participant DA as Discovery Analyst
-    participant RA as Requirement Architect
-    participant RM as Release Manager
-    participant OP as Observability Planner
-
-    Human->>VS: Vision & Market Opportunity
-    VS->>VS: VISION.md, BUSINESS_MODEL.md, PORTFOLIO.md
-    VS->>Human: Business Gate 0: Approve Strategy
-
-    par Business Execution
-        Human->>RDI: R&D Direction (from PORTFOLIO.md)
-        RDI->>RDI: TECH_RADAR.md, PROTOTYPE_LOG.md
-        RDI->>Human: Business Gate 1 (R&D): Approve Portfolio
-
-        Human->>GTM: GTM Direction (from BUSINESS_MODEL.md)
-        GTM->>GTM: GTM_PLAN.md, CHANNEL_STRATEGY.md
-        GTM->>Human: Business Gate 1 (GTM): Approve Strategy
-
-        Human->>BOP: Operational Planning
-        BOP->>BOP: FINANCIAL_PLAN.md, OKR.md
-        BOP->>Human: Business Gate 2: Approve Budget
-    end
-
-    Note over RDI,DA: Product Transfer
-    RDI->>DA: Transfer Package (validated prototypes)
-    VS->>DA: PORTFOLIO.md (product intent)
-    DA->>RA: Candidate Requirements
-
-    Note over GTM,RM: Launch Coordination
-    RM->>GTM: Deployment Confirmation
-    GTM->>GTM: Execute Launch Plan
-
-    Note over OP,VS: Feedback Loop
-    OP->>VS: Production Metrics → Portfolio Decisions
-    GTM->>DA: Market Feedback → Next Cycle Discovery
-```
-
-### C-Suite Orchestrator Layer [Draft]
-
-> [!NOTE]
-> The C-Suite layer below is present on `main` but remains a set of **draft preview contracts**, including `c-suite-foundation` and `c-suite-update`.
-
-The C-Suite layer adds executive-level governance agents that orchestrate the functional Business Track skills. They set policy and strategy; functional skills execute within their governance frameworks.
-
-```
-                        chief-exec (CEO)
-                   Strategic Alignment & Board
-                    ┌───────┼───────┬──────────┐
-              chief-tech  chief-fin  chief-ppl  chief-ops
-              (CTO)       (CFO)      (CHRO)     (COO)
-                │           │          │           │
-           rd-innovator  biz-ops   [standalone  biz-ops
-           build-agent   (finance)  new domain] (ops)
-           observability venture-               release-mgr
-           threat-model  strategist             product-owner
-                         (investors)            gtm-executor
-```
-
-**Key design principles:**
-- **Orchestrator pattern:** C-suite skills delegate to existing functional skills; no functional skills are modified
-- **Executive Gates:** New approval layer (Executive Gates 0-1) above existing Business Gates
-- **Backward compatible:** All engineering and functional business skills work without C-suite layer
-- **CHRO is entirely new:** `chief-people` introduces org design, hiring, compensation, culture, performance, DE&I, and talent development
-
-### Business Track artifacts (state persistence)
-
-Business Track state lives in `.agile-v/business/`. **Functional skill artifacts:** VISION.md, BUSINESS_MODEL.md, PORTFOLIO.md, INVESTOR_LOG.md, RD_PIPELINE.md, TECH_RADAR.md, PROTOTYPE_LOG.md, IP_REGISTER.md, GTM_PLAN.md, LAUNCH_PLAN.md, CHANNEL_STRATEGY.md, GROWTH_METRICS.md, FINANCIAL_PLAN.md, OKR.md, OPERATIONS_LOG.md, VENDOR_REGISTER.md, BUSINESS_DECISION_LOG.md. **C-Suite artifacts:** EXEC_DASHBOARD.md, BOARD_REPORT.md, CRISIS_LOG.md, TECH_STRATEGY.md, ARCH_DECISIONS.md, TECH_DEBT_REGISTER.md, PLATFORM_PLAN.md, FINANCIAL_MODEL.md, CASH_MANAGEMENT.md, FINANCIAL_CONTROLS.md, BOARD_FINANCIALS.md, ORG_DESIGN.md, HIRING_PIPELINE.md, COMPENSATION_FRAMEWORK.md, CULTURE_CODE.md, PERFORMANCE_FRAMEWORK.md, TALENT_PLAN.md, OPS_PLAYBOOK.md, PROCESS_MAP.md, DELIVERY_DASHBOARD.md. All skills reference artifacts by file path for cross-track integration.
-
-### Requirements artifact (source of truth)
-
-The Requirement Architect persists a draft requirements record before independent review. The Logic Gatekeeper reads it and records findings; it never rewrites the requirement or baseline. The architect resolves findings, Human Gate 1 approves, and the project freezes an approved baseline. Build Agent, Test Designer, Red Team Verifier, Schematic Generator, and Compliance Auditor read the registered baseline, not in-chat handoffs. This keeps parallel work on a reproducible input and preserves independent review evidence.
-
-### Documentation artifact (documentation-agent)
-
-The Documentation Agent writes all output into the project's `**docs/`** directory (created if missing). The hub `**docs/README.md**` provides the document map, quick navigation and per-standard tables, cross-reference matrix (concerns × standards), repository structure reference, and applicable standards table. One subdirectory per selected standard, e.g. `**iso9001/**`, `**iso27001/**`, `**v-model/**` by default; (optionally `**gamp5/**` or other standards when the user requests it) contains numbered markdown documents for that standard. Every generated document (except the hub) includes a header (Document ID, Version, Date, Classification, Status), navigation (Back to Documentation Hub, Previous/Next when applicable), and a footer with a Document History table; any diagrams are Mermaid only, embedded in markdown. The default standards are ISO 9001, V-Model (lifecycle), and ISO 27001; additional standards (e.g. GAMP 5) are included only when the user specifies them.
-
-### Context Engineering and Orchestration (v1.2)
-
-Version 1.2 introduces **context engineering**, **orchestration pipeline**, **state persistence**, and **post-verification feedback** patterns adapted from [Get Shit Done (GSD)](https://github.com/gsd-build/get-shit-done) by Lex Christopherson ([MIT License](https://github.com/gsd-build/get-shit-done/blob/main/LICENSE)). These additions address how agents manage context windows, coordinate handoffs, persist project state across sessions, and iterate after verification failures.
-
-**Key additions:**
-
-- **Context Engineering** (`agile-v-core`, `build-agent`, all domain agents): Rules for managing context window quality -- thin orchestrator pattern, fresh context per task, task sizing to 50% of context, passing file paths instead of contents.
-- **Orchestration Pipeline** (`agile-v-core`): Defines pipeline stages, handoff rules, wave-based parallel execution with dependency analysis, and checkpoint types (auto, human-verify, human-decision, human-action).
-- **State Persistence** (`agile-v-core`): Standard `.agile-v/` project directory structure for persisting requirements, build manifests, decision logs, traceability matrices, and session state across sessions.
-- **Pre-Execution Validation** (`build-agent`): 5-dimension check before synthesis -- requirement coverage, artifact completeness, dependency order, scope sanity, and interface contracts.
-- **Post-Verification Feedback Loop** (`build-agent`, `red-team-verifier`): Auto-fix rules, severity classification (CRITICAL/MAJOR/MINOR), 3-attempt limit per failure, and re-verification protocol with append-only records.
-- **Stub and Anti-Pattern Detection** (`red-team-verifier`): 11-item detection checklist for placeholder returns, TODO markers, empty handlers, hardcoded secrets, and more.
-- **Model Tier Guidance** (`agile-v-core`): Recommended model capability tiers per agent role (High for architecture decisions, Medium for code generation, Low for structured logging).
-
-### Iteration Lifecycle and Document Versioning (v1.3)
-
-Version 1.3 introduces the **multi-cycle V-loop** -- the ability to run second and subsequent iterations while preserving full traceability, versioned documents, and audit evidence from prior cycles.
-
-**Key additions:**
-
-- **Iteration Lifecycle** (`agile-v-core`): Defines Cycle IDs (`C1`, `C2`, ...), cycle triggers, re-entry points, document versioning scheme, and cycle archival to `.agile-v/cycles/CN/`. Requirements carry per-REQ status tags (`approved`, `modified`, `new`, `deprecated`, `superseded`) with cycle references.
-- **Change Request Protocol** (`agile-v-core`, `requirement-architect`): `CR-XXXX` records in `.agile-v/CHANGE_LOG.md` that formally track every requirement modification between cycles with rationale, impact analysis, and Human Gate approval.
-- **Multi-Cycle Re-Validation** (`logic-gatekeeper`): Scoped re-validation -- only `new` and `modified` requirements go through full validation; unchanged requirements are skipped unless constraints shifted.
-- **Artifact Versioning** (`build-agent`): `ART-XXXX.N` revision scheme -- unchanged artifacts carry forward without rebuild; modified artifacts get a revision bump with CR reference.
-- **Regression and Delta Testing** (`test-designer`): Test cases classified as `delta` (new/modified REQs) or `regression` (unchanged REQs). Regression baseline carried forward from prior cycle. Retired tests preserved for traceability.
-- **Cycle-Aware Verification** (`red-team-verifier`): Delta and regression results reported separately. Unexpected regression failures (no related CR) are automatically **CRITICAL**.
-- **Cycle-Aware ATM** (`compliance-auditor`): Traceability matrix partitioned by cycle. CR end-to-end chain validation. Cycle boundary audit checklist. VSR extended with Cycle History table.
-
-### Runtime governance contracts (v1.4)
-
-Version 1.4 added **Phase 1-2** runtime governance: machine-readable **trace** (`TRACE_LOG.md`), **eval flywheel** (`EVAL_RESULTS.md` + Human Gate 2 **EvalGate** block, now documented in `VERIFICATION_SUMMARY.md`), **policy-as-code** (`POLICY.yaml` + templates), **failure taxonomy** (`FT-*` codes on every `VER-*` record), and **durable Human Gate checkpoints** (`CHECKPOINTS.md` with `resume_token` linked to `APPROVALS.md`). Normative schema: [`docs/agile-v-runtime/01_SCHEMAS.md`](docs/agile-v-runtime/01_SCHEMAS.md); copy templates from [`templates/agile-v/`](templates/agile-v/).
-
-### Control Matrix (`CONTROL_MATRIX.yaml` + templates)
-
-The **agile-v-control-matrix** skill and templates add an operating control record for agentic execution. The control matrix defines:
-
-- **Data classes** allowed and forbidden per task scope
-- **Allowed tools**, forbidden tools, and tools requiring Human Gate approval
-- **Model/vendor** constraints and external vendor policy
-- **Log storage** location, retention, and redaction rules
-- **Max permissions** per access dimension (file, network, database, credentials)
-- **Human Gates** with durable checkpoint and approval requirements
-- **Required tests** per risk level (`L0`–`L4`)
-- **Cost limits** per run, per day, per month with overflow action
-- **Rollback** strategy, required risk levels, and max rollback time
-- **Owners** (business, technical, security, reviewer)
-
-**Quick start:**
-
-```bash
-mkdir -p .agile-v
-cp templates/agile-v/CONTROL_MATRIX.example.yaml .agile-v/CONTROL_MATRIX.yaml
-# Edit owner, vendor/model, data class, tool rules, cost limits, rollback, and gates before active use.
-```
-
-Normative spec: [`docs/agile-v-runtime/02_CONTROL_MATRIX.md`](docs/agile-v-runtime/02_CONTROL_MATRIX.md). Schema: [`templates/agile-v/CONTROL_MATRIX.schema.json`](templates/agile-v/CONTROL_MATRIX.schema.json). Consuming runtimes (e.g., `agentic_agile_v`) enforce the matrix via CLI, hooks, and CI gates.
-
-### AI Influence Traceability
-
-Agile-V now supports AI/ML-BOM and Agent Run BOM evidence. This allows teams to trace not only requirements, artifacts, tests, and verification evidence, but also the AI systems that influenced engineering outputs.
-
-> SBOM tells us what software components are in the system. AI/ML-BOM and Agent Run BOM tell us what AI components influenced the engineering process and runtime behavior.
-
-This includes:
-
-- Model and provider identity
-- Inference runtime or agent framework
-- Loaded Agile-V skills and versions
-- Tools, plugins, connectors, MCP servers, and execution sandbox
-- RAG/context sources and repository knowledge snapshots
-- Runtime inventory imports (e.g., k8s-aibom for Kubernetes AI workloads)
-- CycloneDX ML-BOM export for external interoperability
-- Revalidation triggers when AI components change
-
-Create AI influence evidence for materially AI-assisted work according to risk and policy. For low-risk tasks (L0-L1), a minimal manifest may be sufficient; for regulated, security-critical, firmware, PCB, medical, GxP, or release-critical work, apply the required L2+ controls. `agile-v-aibom` can assist but remains a preview skill in v3.9.x and requires approved local review before operational use.
-
-**Quick start:**
-
-```bash
-mkdir -p .agile-v/aibom/AAV-0000
-cp templates/AI_RUN_MANIFEST.yaml .agile-v/aibom/AAV-0000/AI_RUN_MANIFEST.yaml
-cp templates/AI_BOM_POLICY.yaml .agile-v/AI_BOM_POLICY.yaml
-# Fill in task_id, model identity, runtime, skills, tools, and evidence links.
-```
-
-**Templates:** `templates/AI_RUN_MANIFEST.yaml`, `templates/AI_BOM_POLICY.yaml`, `templates/AI_BOM_EVIDENCE_FRAGMENT.json`, `templates/AI_BOM_DIFF_REPORT.md`, `templates/CYCLONEDX_AGENT_RUN_BOM.cdx.json`
-
-**Docs:** `docs/ai-influence-traceability.md`, `docs/ai-ml-bom-evidence-model.md`, `docs/k8s-aibom-integration.md`, `docs/cyclonedx-ml-bom-export.md`, `docs/ai-bom-revalidation-triggers.md`
-
-### Release baseline (v1.6)
-
-Version 1.6 consolidates runtime governance adoption by shipping the repository-level runtime schema spec + templates and aligning core routing/docs for Eval Gate evidence and durable HITL workflow. See [v1.6 release notes](V1.6_RELEASE_NOTES.md).
-
-### Compliance Hardening (v1.3)
-
-Version 1.3 also includes compliance hardening based on a clause-by-clause audit against ISO 9001:2015, ISO 13485:2016, AS9100D, ISO 27001:2022, and GxP/GAMP 5. The compliance metadata has been updated from `"ISO/GxP-Ready"` to `"ISO 9001 / ISO 27001 Aligned (Design Phase); GxP-Aware"` to accurately reflect the scope.
-
-**Key additions:**
-
-- **Risk Management** (`agile-v-core`): `RISK_REGISTER.md` with severity matrix, risk categories (technical, process, compliance, security), and assessment rules per pipeline stage. Addresses ISO 9001 6.1, AS9100D 8.1.1.
-- **CAPA Protocol** (`agile-v-core`): `CAPA_LOG.md` with root cause analysis (5-Whys), corrective action, preventive action, and effectiveness verification. Addresses ISO 13485 8.5, ISO 9001 10.1/10.2.
-- **Human Gate Approval Records** (`agile-v-core`): `APPROVALS.md` with approver identity, role/authority, signature method, and evidence reference. Minimum requirements by regulatory context (non-regulated through ISO 13485). Addresses 21 CFR Part 11, Annex 11.
-- **AI Agent Security Controls** (`agile-v-core`): LLM provider documentation in `config.json` (data residency, retention, training usage, confidentiality certification), data classification rules, agent access controls, and file integrity verification. Addresses ISO 27001 A.5.23, A.8.3.
-- **Periodic Review and Revalidation** (`agile-v-core`): `REVALIDATION_LOG.md` with defined triggers (model change, runtime change, skill change, accumulated CRs, 12-month interval). Model version tracking in `config.json`. Addresses GxP/GAMP 5 periodic review.
-- **Quality Metrics and KPIs** (`compliance-auditor`): 7 defined metrics (first-pass verification rate, defect density, requirement coverage, regression pass rate, CR cycle time, open CAPA count, traceability completeness) with trend analysis. Addresses ISO 9001 9.1, AS9100D 9.1.1.
-- **Secure Coding** (`build-agent`): 7 minimum secure coding rules (input validation, error handling, no hardcoded secrets, parameterized queries, bounded operations, least privilege, dependency awareness). Addresses ISO 27001 A.8.28.
-- **Nonconformity Disposition** (`red-team-verifier`): Formal disposition categories (rework, accept-as-is, reject, defer) with CAPA trigger criteria. Addresses ISO 9001 8.7, ISO 13485 8.3.
-
-### Business Track: Parallel Business Lifecycle [Draft]
-
-> **Note:** This historical section describes the v2 Business Track introduction. The skills now exist on `main`, but their current `metadata.status: draft` keeps them preview contracts in v3.9.x.
-
-The v2 work introduced the **Agile V Business Track**: four functional skills and five executive orchestrators. v3.9.x also includes draft `c-suite-foundation` and `c-suite-update`; see the routing guide for the complete current preview catalog.
-
-**Key additions:**
-- **Venture Strategist** (`venture-strategist`): Converts vision and market opportunity into traceable business models (BM-XXXX), product portfolios (PORT-XXXX), and strategic plans (VIS-XXXX). Introduces **Business Gate 0** (Strategy Approval). Portfolio items feed discovery-analyst as product intent.
-- **R&D Innovator** (`rd-innovator`): Manages R&D pipeline (RDI-XXXX) from technology scouting (TECH-XXXX) through prototyping (PROTO-XXXX) to formal product transfer. Technology Radar framework (Assess/Trial/Adopt/Hold). IP tracking (IPR-XXXX). Introduces **Business Gate 1 (R&D)**.
-- **GTM Executor** (`gtm-executor`): Converts business model + portfolio into go-to-market strategies (GTM-XXXX), channel strategies (CHAN-XXXX), launch plans (MKT-XXXX), and growth experiments (GROW-XXXX). Marketing claims must trace to verified REQs. Introduces **Business Gate 1 (GTM)**.
-- **Business Operations** (`business-operations`): Financial planning (FIN-XXXX), OKR cascade (OKR-XXXX), vendor management (VENDOR-XXXX), operational risk (OPS-XXXX). Every budget line traces to strategic rationale. Introduces **Business Gate 2** (Operational Plan Approval).
-
-- **Chief Executive** (`chief-exec`): CEO orchestrator. Strategic alignment, cross-C-suite coordination, board relations (BRD-XXXX), crisis management (CRI-XXXX), executive dashboard (EXEC-XXXX). Introduces **Executive Gate 0**.
-- **Chief Technology Officer** (`chief-tech`): CTO orchestrator. Architecture decisions (ADR-XXXX), tech debt management (TD-XXXX), platform strategy (PLT-XXXX), build-vs-buy governance, security posture, engineering standards. Introduces **Executive Gate 1 (Tech)**.
-- **Chief Financial Officer** (`chief-finance`): CFO orchestrator. Financial modeling (FM-XXXX), cash management (CASH-XXXX), financial controls (CTRL-XXXX), board financial reporting (BFN-XXXX), fundraising governance, unit economics. Introduces **Executive Gate 1 (Finance)**.
-- **Chief People Officer** (`chief-people`): CHRO orchestrator. Entirely new domain: org design (ORG-XXXX), hiring pipeline (HIRE-XXXX), compensation framework (COMP-XXXX), culture code (CULT-XXXX), performance management (PERF-XXXX), talent development (TAL-XXXX), DE&I strategy. Introduces **Executive Gate 1 (People)**.
-- **Chief Operating Officer** (`chief-ops`): COO orchestrator. Operational playbooks (PLAY-XXXX), process design (PROC-XXXX), delivery cadence governance (DEL-XXXX), resource arbitration, vendor escalation, scaling readiness. Introduces **Executive Gate 1 (Ops)**.
-
-**Architecture:** The Business Track runs as a parallel lifecycle with its own gates, artifact IDs, and state directory (`.agile-v/business/`). The C-Suite layer sits above the functional layer, providing executive governance through the Orchestrator pattern -- C-suite skills delegate to functional skills without modifying them. Integration with the Engineering Track occurs through defined handoff points: portfolio → discovery, prototypes → discovery, tech radar → requirements, launch → release coordination, production metrics → business decisions.
-
-### Context and Performance
-
-Skills use section indexes, tables, structure-only templates, cross-references, and file-path handoffs to support stage-focused loading. These patterns do not by themselves prove token savings, latency, model quality, or scalability. See [PERFORMANCE.md](PERFORMANCE.md) for the required reproducible measurement method and [Installation Profiles](docs/INSTALL_PROFILES.md) for explicit load sets.
-
-> [!IMPORTANT]
-> **Maintain Rigorous Test Independence:**  
-> When running the workflow within a **single chat** or environment, **always execute the Test Designer *before* launching the Build Agent**. This ensures the Test Designer derives its test suite solely from the requirements and not from any artifacts, code, or outputs generated by the Build Agent.  
-> By preserving this strict order, you safeguard the impartiality of the verification process and prevent accidental cross-contamination, thereby maximizing the integrity and trustworthiness of your independent test coverage.
-
-> [!TIP]
-> **Scaling the build phase:** With a large number of features or requirements, consider running the build agent **per feature or per small subset** (sequentially) to improve focus and quality. Running **multiple build-agent instances in parallel** can speed things up but may introduce race conditions (e.g. concurrent edits to the same files); use with care and plan your merge or review strategy accordingly. See the **Wave-Based Parallel Execution** section in `agile-v-core` for dependency-aware parallelism guidance.
-
-## How to Use
-
-Below are practical ways to use these skills in common editors and agents.
-
-### Using Agile V™ skills in your editor or agent
-
-- **Cursor**  
-Skills are discovered from `.cursor/skills/` (project) or `~/.cursor/skills/` (global). Each skill is a folder containing a `SKILL.md` file with YAML frontmatter. The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into `.cursor/skills/`.
-For more information on how to use Skills in Cursor please refer to the [official documentation](https://cursor.com/docs/context/skills).
-
-- **Claude Code**  
-Skills are discovered from `.claude/skills/` (project) or `~/.claude/skills/` (global). Each skill is a folder containing a `SKILL.md` file with YAML frontmatter. The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into `.claude/skills/`.
-For more information on how to use Skills in Cursor please refer to the [official documentation](https://code.claude.com/docs/en/skills).
-
-- **VS Code**  
-VS Code supports two types of skills. Project skills, stored in your repository like `.github/skills/`, `.claude/skills`, `.agents/skills/` or personal skills stored globally like `~/.copilot/skills/`, `~/.claude/skills`, `~/.agents/skills/`.
-The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into one of the directories mentioned above.
-For more information on how to use Skills in VS Code please refer to the [official documentation](https://code.visualstudio.com/docs/copilot/customization/agent-skills).
-
-- **GitHub Copilot**  
-Github Copilot supports two types of skills. Project skills, stored in your repository like `.github/skills/`, `.claude/skills` or personal skills stored globally like `~/.copilot/skills/`, `~/.claude/skills`.
-The agent auto-applies relevant skills; you can also invoke a skill manually by typing `/` in Agent chat and searching for the skill name. Clone this repo and copy the skill folders you need (e.g. `agile-v-core/`, `requirement-architect/`, `domains/build-agent-python/`) into one of the directories mentioned above.
-For more information on how to use Skills with Github Copilot please refer to the [official documentation](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills).
-
-- **Other tools (Claude Agent SDK, Windsurf, Continue, Cody, Zed, etc.)**  
-For other tools please refer to the official documentation of your desired tool.
-
-To learn more about skills and how to use skills in general, please follow the [instructions and documentation](https://agentskills.io/integrate-skills) of Agent Skills.
-
-### Practical Workflow Examples
-
-#### Example 1: Starting a New Feature
-
-```
-You: "I need to add a password reset feature to my app"
-
-Agent (using requirement-architect):
-⚠️ HALT CONDITION: Clarification needed
-
-Before I decompose this into requirements, I need to understand:
-1. Delivery method: Email link, SMS code, or security questions?
-2. Token expiry: How long should reset links remain valid?
-3. Rate limiting: Maximum reset attempts per user per hour?
-4. Multi-factor: Required before password reset?
-5. Compliance: Any GDPR, HIPAA, or industry-specific requirements?
-
-You: "Email link, 15-minute expiry, 3 attempts per hour, no MFA for now, 
-      we're GDPR-compliant"
-
-Agent (using requirement-architect):
-✓ Creating formal requirements:
-
-REQ-0042: Password reset via email
-  - System shall send time-limited reset link via email
-  - Token expires after 15 minutes
-  - Maximum 3 reset requests per user per hour
-  - COMPLIANCE: GDPR Article 5 (data minimization)
-  
-REQ-0043: Reset token security
-  - Tokens shall be cryptographically random (256-bit)
-  - One-time use only
-  - Invalidated after successful password change
-  
-[Saved to .agile-v/REQUIREMENTS.md]
-
-Ready for Human Gate 1: Review these requirements?
-
-You: "Approved"
-
-Agent (using build-agent-python):
-✓ Implementing ART-0042 (password reset handler)
-✓ Implementing ART-0043 (token generation service)
-✓ Updated BUILD_MANIFEST.md with traceability
-
-Agent (using test-designer - in parallel):
-✓ Created TC-0042-001: Verify email delivery
-✓ Created TC-0042-002: Verify token expiry after 15min
-✓ Created TC-0042-003: Verify rate limiting (4th attempt blocked)
-✓ Created TC-0043-001: Verify token entropy
-✓ Created TC-0043-002: Verify one-time use
-
-Agent (using red-team-verifier):
-Testing independently...
-  ✓ TC-0042-001: PASS
-  ✓ TC-0042-002: PASS
-  ⚠️ TC-0042-003: FAIL - Rate limit bypassed with different email case
-  ✓ TC-0043-001: PASS
-  ⚠️ TC-0043-002: FAIL - Token reusable within 100ms window
-
-VER-0042-003: CRITICAL - Rate limit case-sensitive bypass
-VER-0043-002: MAJOR - Race condition in token invalidation
-
-Agent (using build-agent-python - auto-fix):
-Fixing VER-0042-003: Normalizing email to lowercase before rate check
-Fixing VER-0043-002: Adding database constraint for token single-use
-
-Agent (using red-team-verifier - re-verification):
-✓ All tests PASS
-
-=== EVIDENCE SUMMARY ===
-Features: Password reset with email delivery
-Requirements: REQ-0042, REQ-0043
-Artifacts: ART-0042, ART-0043
-Tests: 5/5 PASS (2 critical issues found and fixed)
-Compliance: GDPR Article 5 validated
-
-🛑 HUMAN GATE 2: Ready to merge to main?
-```
-
-#### Example 2: Hardware-Constrained Project
-
-```
-You: "Optimize the image processing pipeline"
-
-Agent (using logic-gatekeeper):
-⚠️ HALT CONDITION: Hardware constraints unknown
-
-Before optimizing, I need to validate:
-1. Target platform: (Raspberry Pi 4, cloud server, workstation, smartphone?)
-2. Available RAM: (Total and available for image processing)
-3. CPU cores: (Available for parallel processing)
-4. GPU: (Availability and type)
-5. Image specs: (Resolution, format, expected throughput)
-
-You: "Raspberry Pi 4, 4GB RAM (2GB available), 4 cores, no GPU,
-      processing 1920x1080 JPEGs, ~10 images/minute"
-
-Agent (using logic-gatekeeper):
-✓ Constraints validated and documented in REQUIREMENTS.md
-
-CONSTRAINT-001: Memory
-  - Maximum 2GB RAM available
-  - Cannot use GPU acceleration
-  - Must handle images up to 1920x1080
-  
-CONSTRAINT-002: Processing
-  - 4 ARM Cortex-A72 cores @ 1.5GHz
-  - Target throughput: 10 images/minute = 6 seconds per image
-  
-Agent (using build-agent-python):
-⚠️ OPTIMIZATION DECISION LOGGED
-
-DECISION-001: Sequential processing instead of parallel
-  - RATIONALE: Each 1920x1080 image uses ~8MB decoded
-  - With 4 parallel workers: 32MB + overhead risks OOM
-  - Sequential processing: Safer, predictable memory usage
-  - TRADE-OFF: Slower but stable on constrained hardware
-  - LINKED_CONSTRAINT: CONSTRAINT-001
-
-[Saved to .agile-v/DECISION_LOG.md]
-```
-
-#### Example 3: Handling Ambiguous Requirements
-
-```
-You: "Make the app more secure"
-
-Agent (using logic-gatekeeper):
-⚠️ HALT CONDITION: Ambiguous requirement
-
-"More secure" is too broad to implement safely. Please specify:
-
-A. Application Layer:
-   - Input validation and sanitization?
-   - SQL injection prevention?
-   - XSS protection?
-   
-B. Authentication/Authorization:
-   - Multi-factor authentication?
-   - Session timeout adjustments?
-   - Role-based access control (RBAC)?
-   
-C. Infrastructure:
-   - HTTPS enforcement?
-   - Security headers (CSP, HSTS)?
-   - Rate limiting and DDoS protection?
-   
-D. Data Protection:
-   - Encryption at rest?
-   - Encryption in transit?
-   - PII handling improvements?
-
-Which areas matter most for your current risk profile?
-
-You: "We need to prevent SQL injection and add rate limiting"
-
-Agent (using requirement-architect):
-✓ Creating focused requirements:
-
-REQ-0055: SQL injection prevention
-  - All database queries use parameterized statements
-  - ORM-based queries validated for injection safety
-  - Legacy raw queries converted to parameterized
-  - COMPLIANCE: OWASP Top 10 (A03:2021)
-  
-REQ-0056: API rate limiting
-  - Maximum 100 requests per IP per minute
-  - 429 status code with Retry-After header
-  - Whitelisting for known partners
-  - COMPLIANCE: CWE-770 (Resource allocation without limits)
-  
-Ready for implementation...
-```
-
-
-## ✅ How to Know It's Working
-
-Agile V is actively protecting your development process if you observe these behaviors:
-
-### 1. Traceability Everywhere
-- ✅ Every code file includes `// REQ-XXXX` or `# Implements: REQ-XXXX` comments linking to requirements
-- ✅ `.agile-v/REQUIREMENTS.md` exists with formal requirement specifications
-- ✅ `.agile-v/BUILD_MANIFEST.md` maps every artifact (ART-XXXX) to its parent requirement
-- ✅ Each requirement includes acceptance criteria and rationale
-
-**Example:**
-```python
-# app/auth.py
-# ART-0001: User authentication handler
-# Implements: REQ-0001 (username/password authentication)
-# Compliance: ISO 27001 A.9.4.1
-```
-
-### 2. Agents Halt on Ambiguity
-- ✅ Instead of assuming, agents ask clarifying questions before implementing
-- ✅ `⚠️ HALT CONDITION` messages appear when requirements are unclear or missing
-- ✅ Agents present multiple interpretations when faced with ambiguous requests
-- ✅ No "silent assumptions" about hardware, scope, or user intent
-
-**Example:**
-```
-User: "Make the app faster"
-
-Agent: ⚠️ HALT CONDITION: Ambiguous requirement
-
-"Faster" could mean:
-1. Faster response time (backend optimization)
-2. Faster perceived speed (UI/UX improvements)
-3. Faster time-to-first-byte (infrastructure)
-
-Which aspect matters most for your use case?
-```
-
----
-
-## 🔧 Troubleshooting
-
-### Skills Not Loading
-
-**Problem:** Agent doesn't show Agile V behavior (no HALT conditions, no requirement requests)
-
-**Solutions:**
-1. **Check skill directory location:**
-   ```bash
-   # For Cursor
-   ls ~/.cursor/skills/agile-v-core/SKILL.md
-   # OR
-   ls .cursor/skills/agile-v-core/SKILL.md
-   
-   # For VS Code/Copilot
-   ls ~/.copilot/skills/agile-v-core/SKILL.md
-   # OR
-   ls .github/skills/agile-v-core/SKILL.md
-   ```
-
-2. **Verify SKILL.md format:**
-   Each skill folder must contain a `SKILL.md` file with valid YAML frontmatter:
-   ```yaml
-   ---
-   metadata:
-     name: "agile-v-core"
-     version: "1.6"
-     author: "agile-v.org"
-   ---
-   ```
-
-3. **Restart your IDE:**
-   Skills are loaded at startup. After adding skills, restart Cursor/VS Code/Claude Code.
-
-4. **Manually invoke skills:**
-   Type `/` in chat and search for skill names (e.g., `/requirement-architect`). If they don't appear, skills aren't loaded.
-
-### Agent Starts Coding Without Requirements
-
-**Problem:** Agent generates code immediately without invoking `requirement-architect`
-
-**Solutions:**
-1. **Explicitly request requirements:**
-   ```
-   "Before implementing, create formal requirements using the requirement-architect skill"
-   ```
-
-2. **Check if `agile-v-core` is loaded:**
-   The core skill enforces the halt-on-ambiguity behavior. Without it, other skills won't trigger properly.
-
-3. **Use directive language:**
-   ```
-   "Follow Agile V protocol: decompose this into REQ-XXXX before building"
-   ```
-
-### No `.agile-v/` Directory Created
-
-**Problem:** Working directory doesn't have `.agile-v/` folder with state files
-
-**Solutions:**
-1. **Explicitly request state persistence:**
-   ```
-   "Initialize Agile V state directory in this project"
-   ```
-
-2. **Check current working directory:**
-   ```bash
-   pwd
-   # Ensure you're in the project root, not a subdirectory
-   ```
-
-3. **Manually create structure:**
-   ```bash
-   mkdir -p .agile-v
-   touch .agile-v/REQUIREMENTS.md
-   touch .agile-v/BUILD_MANIFEST.md
-   touch .agile-v/DECISION_LOG.md
-   ```
-
-### Red Team Verifier Not Running
-
-**Problem:** Build Agent verifies its own code (self-grading)
-
-**Solutions:**
-1. **Explicitly request independent verification:**
-   ```
-   "After building, invoke red-team-verifier in a fresh context to test independently"
-   ```
-
-2. **Check if `red-team-verifier` skill is loaded:**
-   ```bash
-   ls ~/.cursor/skills/red-team-verifier/SKILL.md
-   ```
-
-3. **Use separate chat sessions:**
-   For maximum independence, run Build Agent in one chat, then copy artifacts to a new chat and run Red Team Verifier there.
-
-### Skills Working in One IDE But Not Another
-
-**Problem:** Skills work in Cursor but not VS Code (or vice versa)
-
-**Solutions:**
-1. **Check directory conventions:**
-   - Cursor: `.cursor/skills/` or `~/.cursor/skills/`
-   - VS Code: `.github/skills/`, `.agents/skills/`, `~/.copilot/skills/`
-   - Claude Code: `.claude/skills/` or `~/.claude/skills/`
-
-2. **Use global installation for consistency:**
-   ```bash
-   # Install to home directory for all projects
-   cp -r agile_v_skills/agile-v-core ~/.cursor/skills/
-   cp -r agile_v_skills/agile-v-core ~/.copilot/skills/
-   cp -r agile_v_skills/agile-v-core ~/.claude/skills/
-   ```
-
-3. **Check IDE-specific documentation:**
-   Each tool has slightly different skill discovery mechanisms. Refer to platform-specific docs linked in [How to Use](#how-to-use).
-
-### Agent Ignores Hardware Constraints
-
-**Problem:** Agent optimizes code without asking about target platform
-
-**Solutions:**
-1. **Ensure `logic-gatekeeper` skill is loaded:**
-   This skill enforces constraint validation.
-
-2. **Explicitly state constraints upfront:**
-   ```
-   "Target platform: Raspberry Pi 4, 4GB RAM, 4 cores, no GPU"
-   ```
-
-3. **Request constraint documentation:**
-   ```
-   "Document hardware constraints in REQUIREMENTS.md before optimizing"
-   ```
-
-### Getting Help
-
-If issues persist:
-1. **Check Examples:** See [EXAMPLES.md](EXAMPLES.md) for detailed before/after scenarios
-2. **Review Platform Guides:** [CLAUDE.md](CLAUDE.md) and [CURSOR.md](CURSOR.md) have platform-specific tips
-3. **Verify Installation:** Follow [Quick Start](#-quick-start) step-by-step
-4. **Open an Issue:** [GitHub Issues](https://github.com/Agile-V/agile_v_skills/issues) for bug reports or questions
-
----
-
-### 3. Independent Verification (Red Team Protocol)
-- ✅ Build Agent implements features
-- ✅ Red Team Verifier tests independently (separate agent, fresh context)
-- ✅ Red Team finds issues Build Agent didn't self-detect
-- ✅ Evidence Summaries show both perspectives before Human Gates
-
-**Example:**
-```
-Build Agent: Implementation complete ✓
-Red Team Verifier: Found 4 security issues Build Agent missed
-  - SECURITY-001: No maximum password length (DoS risk)
-  - SECURITY-002: Unicode character bypass
-```
-
-### 4. Hardware Constraints Validated
-- ✅ Agents ask about target platform before optimizing (embedded vs cloud vs workstation)
-- ✅ Implementations stay within specified resource limits (RAM, CPU, GPU)
-- ✅ No assumptions about unlimited compute resources
-- ✅ Physical constraints documented in requirements
-
-**Example:**
-```
-Agent: ⚠️ HALT CONDITION: Hardware constraints unknown
-
-Before optimizing image processing:
-1. Target platform? (RPi4, workstation, cloud?)
-2. Available RAM?
-3. GPU availability?
-```
-
-### 5. Human Gates with Evidence Summaries
-- ✅ Before deployments, comprehensive Evidence Summaries appear
-- ✅ Approvals logged with timestamp and approver ID
-- ✅ No autonomous production deployments
-- ✅ Clear decision points documented
-
-**Example:**
-```
-=== EVIDENCE SUMMARY ===
-Scope: Deploy API v2.1.0 to production
-Traceability: REQ-0101 to REQ-0115 (15 requirements) ✓
-Test Results: 47/47 PASS
-Risk Assessment: RISK-003 mitigated ✓
-
-🛑 AWAITING HUMAN APPROVAL
-```
-
-### 6. Decision Log Captures "Why"
-- ✅ `.agile-v/DECISION_LOG.md` is append-only audit trail
-- ✅ Every significant choice includes timestamp, agent ID, rationale, and linked requirement
-- ✅ Alternative approaches considered and documented
-- ✅ Compliance-ready audit evidence
-
-**Example:**
-```markdown
-TIMESTAMP: 2026-05-26T10:30:00Z
-AGENT_ID: build-agent-python
-DECISION: Use sequential processing instead of parallel
-RATIONALE: Target hardware (RPi4) has only 4GB RAM
-LINKED_REQ: REQ-0010
-ALTERNATIVE_CONSIDERED: ProcessPoolExecutor with 2 workers
-ALTERNATIVE_REJECTED: Still risks OOM with high-res images
-```
-
-### 7. Multi-Cycle Lifecycle Support
-- ✅ Change Requests (CR-XXXX) tracked in `.agile-v/CHANGE_LOG.md`
-- ✅ Prior cycle artifacts archived to `.agile-v/cycles/C1/`, `C2/`, etc.
-- ✅ Requirements carry status tags (`new`, `modified`, `deprecated`, `superseded`)
-- ✅ Regression testing distinguishes delta tests from baseline tests
-
-### 8. Compliance-Ready Artifacts
-- ✅ Requirements map to compliance standards (ISO 9001, ISO 27001, GxP)
-- ✅ Traceability matrix (ATM) auto-generated in `.agile-v/ATM.md`
-- ✅ Risk register and CAPA log maintained
-- ✅ Verification Summary Report (VSR) ready for audits
-
----
-
-**If you're NOT seeing these behaviors**, the Agile V skills may not be properly loaded or configured. See [EXAMPLES.md](EXAMPLES.md) for concrete before/after scenarios, or refer to [CLAUDE.md](CLAUDE.md) and [CURSOR.md](CURSOR.md) for platform-specific setup guides.
-
-
-## 🏢 Enterprise & Team Integration: Standardizing Excellence
-
-Agile V™ is built to function as the quality layer between your team’s expertise and any AI agent they use. Whether teams rely on proprietary LLMs, local models, or different IDEs, the **engineering standard remains consistent** across the organization.
-Thanks to Agent Skills every agent behaves according to the same engineering principles, no matter where or how it runs.
-
-### 🧩 Encoding Company Knowledge into "Agent DNA"
-
-Organizations can extend the public Agile V™ skills (e.g., `agile-v-core`) with private **Company Skills** that embed institutional knowledge directly into agent behavior.
-
-- **Internal Compliance:** Wrap Agile V™ skills with company-specific safety protocols, regulatory checklists, or GxP requirements so every agent interaction is compliant by default.
-- **Legacy Wisdom:** Capture “lessons learned” from past projects in a **Gatekeeper Skill** that prevents agents from repeating known failure modes or architectural mistakes.
-- **Tool Agnostic Logic:** Because Agile V™ focuses on *Logic Gates* and *Traceability*, it works whether your team uses GitHub Copilot, Cursor, custom LangChain flows, or manual prompting.
-
-Your standards live in the skills, not in the tool.
-
-### 🛡️ Quality as a Constant
-
-Agile V™ establishes a minimum quality floor across all teams and agents.
-
-1. **Uniform Audits:** Every developer, regardless of experience level, uses agents that follow the same **Red Team Protocol** and quality checks.
-2. **Decoupled Intelligence:** When switching from one AI model to another, your **Agile V™ Skills** preserve engineering constraints, review gates, and your Definition of Done.
-3. **Institutional Memory:** With Principle #9 (Decision Logging), the reasoning behind engineering choices is stored in the repository, not in individual developers’ heads, ensuring long-term maintainability.
-
-> [!TIP] 
-> Teams can maintain a private `/internal-skills` directory that inherits from the root-level skills (e.g., `agile-v-core/`). This enables a **“Global Standard, Local Context”** workflow; shared principles with company-specific adaptations.
-
-## Understand Anything Integration
-
-Agile V can consume an [Understand Anything](https://github.com/Lum1104/Understand-Anything)
-knowledge graph to add codebase-understanding, impact analysis, graph traceability, and
-regression-test selection to the Agile V lifecycle.
-
-This enables:
-
-- Requirement → component → test traceability
-- Change-impact analysis before writing code
-- Regression-test selection from the dependency graph
-- Audit-ready evidence bundles with system context
-- Reviewer-friendly architecture maps
-
-### New skills
-
-| Skill | Path | Purpose |
-|---|---|---|
-| `system-understanding-agent` | `skills/system-understanding-agent/` | Gate 0: consume graph, produce system overview |
-| `impact-analysis-agent` | `skills/impact-analysis-agent/` | Map change request to affected components |
-| `graph-traceability-agent` | `skills/graph-traceability-agent/` | Link REQs to graph nodes, files, and tests |
-| `regression-selection-agent` | `skills/regression-selection-agent/` | Select and prioritize regression tests |
-| `diff-evidence-agent` | `skills/diff-evidence-agent/` | Compare predicted vs actual impact |
-
-### Integration docs
-
-See `integrations/understand-anything/` for:
-
-- Adapter contract (graph format → Agile V schema)
-- Evidence mapping (which artifacts go where in the bundle)
-- Graph assumptions and tolerant loading strategy
-- Security and privacy guidance for evidence exports
-- End-to-end examples
-
-### Quick positioning
-
-> Understand the system. Change it safely. Prove what changed.
-
-The `agentic_agile_v` repository provides the runtime adapter, Python modules, JSON schemas,
-and unit tests. CLI commands are planned for Phase 3 and are not yet available.
-See `docs/understand-anything-integration.md` in that repository.
-
----
-
-## Versioning
-
-- **Repository:** The repo uses [semantic versioning](https://semver.org/) driven by [Conventional Commits](https://www.conventionalcommits.org/). On each push to `main`, a GitHub Action reads the commit message and bumps the version accordingly: `feat:` → minor, `fix:` (and `chore:`, `docs:`, etc.) → patch, `BREAKING CHANGE` or `type!:` → major. It then creates a new git tag (e.g. `v1.5.1`) and updates the root `[package.json](package.json)`. The version field and tag are maintained by the workflow; do not edit `package.json` version by hand for releases. The same file holds repo metadata (name, description, author, repository, license).
-- **Skills:** Each skill is versioned independently via `metadata.version` in its `SKILL.md` frontmatter ([agentskills.io](https://agentskills.io/specification) style). Skills are not version-locked to each other; bump a skill’s version only when that skill’s content or contract changes.
-
-## 🤝 Contributing New Skills
-
-We welcome contributions! To add a new skill to the Agile V™ ecosystem, it must adhere to the following rules:
-
-1. **Strict Traceability:** The skill must include procedures for logging the "Why" behind every output.
-2. **Verification Step:** If the skill generates an artifact, it must include a sub-process for checking that artifact against its parent requirement.
-3. **No Hallucination:** The skill must be instructed to "Halt and Ask" when requirements are ambiguous.
-4. **Format:** Must include a SKILL.md with valid YAML frontmatter as per the [agentskills.io spec](https://agentskills.io/specification).
-5. **License:** The skill must be licensed under **CC-BY-SA-4.0** (Creative Commons Attribution-ShareAlike 4.0). Include `license: CC-BY-SA-4.0` in the frontmatter.
-6. **Metadata:** The skill must include `metadata.author` (e.g., `agile-v.org`) and `metadata.version` (e.g., `"1.0"`). Each skill has its own version; maintainers bump it when that skill changes.
-
-> [!NOTE]
-> **Contribution guidelines in progress:** We are currently developing comprehensive contribution guidelines for the community. The rules above are the current minimum requirements. A full spec, including review process, quality checklist, and community standards, will be published soon. Watch this space or check [agile-v.org](https://agile-v.org) for updates.
-
-## 📜 License
-
-The Agile V™ Agent Skills Library is published under the **[Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/legalcode.en)** license.
+Agile V™ is maintained by [agile-v.org](https://agile-v.org/).

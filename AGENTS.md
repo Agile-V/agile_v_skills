@@ -63,12 +63,11 @@ build agents under `domains/`.
 │   ├── build-agent-js/         # JavaScript/TypeScript/Web
 │   ├── build-agent-nestjs/     # NestJS
 │   └── build-agent-python/     # Python
-├── docs/compliance/        # ISO/GxP compliance matrices
+├── docs/                   # Guides, attribution, runtime contracts, standards, compliance
 ├── package.json            # Metadata + version only (no deps, no scripts)
 ├── CHANGELOG.md            # Maintained by Release Please
 ├── PERFORMANCE.md          # Reproducible performance measurement method
-├── SKILL_ROUTING_GUIDE.md  # Maps user intents → skills
-└── V2.0_RELEASE_NOTES.md   # Historical Business Track introduction; current status annotated
+└── SKILL_ROUTING_GUIDE.md  # Maps user intents → skills
 ```
 
 ## Build / Lint / Test Commands
@@ -76,7 +75,7 @@ build agents under `domains/`.
 There is no application build or dependency installation. This repository contains Markdown skills plus JSON schemas and Python schema-validation tests; it has no application source code.
 
 - **No `npm install` needed** — `package.json` holds metadata only (no deps).
-- **Schema validation:** run `python -m pytest tests/test_schemas.py` when Python and `pytest`/`jsonschema` are available; otherwise review frontmatter, JSON schemas, fixtures, and content manually.
+- **Validation:** run `python -m pytest tests -q` when Python and the dependencies in `requirements-test.txt` are available; otherwise review frontmatter, JSON schemas, fixtures, links, and content manually.
 - **No linter configured** — no `.eslintrc`, `.prettierrc`, or `.editorconfig`.
 
 ### Versioning (CI/CD)
