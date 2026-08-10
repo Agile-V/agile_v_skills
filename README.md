@@ -1,11 +1,12 @@
 # Agile V™ Agent Skills Library
 
-### *🔬 Verifiable AI-Augmented Engineering - Stop AI Hallucinations with Formal Traceability*
+**Open Agent Skills for turning AI-assisted engineering into a reviewable chain from approved requirements to implementation, tests, independent verification, and human release decisions.**
 
 [![Standard: Agile V™](https://img.shields.io/badge/Standard-Agile--V™-blueviolet)](https://agile-v.org/)
 [![Spec: AgentSkills.io](https://img.shields.io/badge/Spec-AgentSkills.io-green)](https://agentskills.io/specification)
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey)](https://creativecommons.org/licenses/by-sa/4.0/)
 [![Version](https://img.shields.io/github/v/release/Agile-V/agile_v_skills?label=version)](https://github.com/Agile-V/agile_v_skills/releases)
+[![Validate Skills and Contracts](https://github.com/Agile-V/agile_v_skills/actions/workflows/validate-control-matrix.yml/badge.svg)](https://github.com/Agile-V/agile_v_skills/actions/workflows/validate-control-matrix.yml)
 [![Stars](https://img.shields.io/github/stars/Agile-V/agile_v_skills?style=social)](https://github.com/Agile-V/agile_v_skills/stargazers)
 
 [![ISO 9001 Aligned](https://img.shields.io/badge/ISO_9001-Aligned-blue)](./docs/compliance/02_ISO_9001_MATRIX.md)
@@ -16,51 +17,51 @@
 [![VS Code](https://img.shields.io/badge/VS_Code-Skills-orange)](README.md#how-to-use)
 [![GitHub Copilot](https://img.shields.io/badge/GitHub_Copilot-Skills-orange)](README.md#how-to-use)
 
----
+## Start in 60 Seconds
 
-## 🎯 **The Problem with AI Agents Today**
+```bash
+git clone https://github.com/Agile-V/agile_v_skills.git
+mkdir -p .agents/skills
+cp -R agile_v_skills/agile-v-core agile_v_skills/requirement-architect agile_v_skills/logic-gatekeeper .agents/skills/
+```
 
-**AI agents hallucinate.** They generate code without requirements, skip testing, make silent assumptions, and deploy to production without approval. Great for demos. **Catastrophic for real products.**
+Ask your coding agent to load `agile-v-core`, then request a change. For implementation, choose a complete [installation profile](docs/INSTALL_PROFILES.md) and follow the [Golden Journey](docs/GOLDEN_JOURNEY.md).
 
-### Real-World Failure Scenarios
+```text
+Intent -> reviewed REQ baseline -> implementation + independent test design
+       -> independent verification -> human release decision
+```
 
-Without formal verification frameworks, AI agents commonly produce:
+| What changes | Uncontrolled agent workflow | Agile V workflow |
+|---|---|---|
+| Build input | Chat context or inferred intent | Approved, immutable requirement revision |
+| Testing | Often designed from the implementation | Designed independently from the baseline |
+| Approval | Implicit agent completion | Durable Human Gates with evidence |
+| Traceability | Reconstructed after the fact | Typed `REQ -> ART`, `REQ -> TC`, and verification links |
 
-- **Orphaned Code**: Functions and features appear with no documented requirement or business justification. Six months later, no one knows why they exist or if they can be safely removed.
-- **Silent Assumptions**: An agent optimizes for cloud deployment without asking about target hardware, producing code that crashes on embedded devices with limited RAM.
-- **Self-Grading Bias**: The same agent that writes code also writes its own tests, missing edge cases and security vulnerabilities a fresh perspective would catch.
-- **Deployment Disasters**: Autonomous agents push changes to production at 2 AM without human review, breaking critical systems because they "passed all tests."
-- **Untraceable Bugs**: When a feature breaks, there's no audit trail showing *why* design decisions were made, making debugging a archaeological expedition.
-- **Compliance Nightmares**: Regulatory auditors ask "Where's your requirements traceability matrix?" and teams spend weeks manually reconstructing what should have been automated from day one.
+## Who It Is For
 
-## ✨ **The Solution: Agile V Framework**
+Use Agile V when AI-assisted work needs reviewable requirements, independent challenge, human authorization, risk-scaled evidence, or controlled change. It is especially relevant to production, security-sensitive, safety-relevant, regulated, and externally reviewed engineering.
 
-Transform unreliable AI agents into **Verifiable Engineering Systems** with:
+It is not a certification product, a replacement for accountable engineering judgment, or necessary for every low-consequence experiment. Start with the smallest profile appropriate to the risk.
 
-### Core Protection Mechanisms
+## Evidence, Not Hype
 
-- ✅ **Formal Traceability** — Typed lineage links baselined requirement revisions to implementation artifacts, tests, and verification evidence
-  - *Why it matters:* When a bug appears in production, you can instantly trace it back to the original requirement, see which tests should have caught it, and understand the design rationale. No more archeological debugging.
-  
-- ✅ **Independent Verification** — Red Team Verifier tests what Build Agent creates (no self-grading)
-  - *Why it matters:* Two separate agents with fresh contexts means bugs the Build Agent missed get caught before production. It's like having a dedicated QA engineer who hasn't seen the implementation details.
-  
-- ✅ **Hardware Awareness** — Agents ask about RAM/CPU/GPU before optimizing (no "works on my machine")
-  - *Why it matters:* Code optimized for cloud servers crashes on Raspberry Pi. Code written for development laptops fails on production embedded devices. Agile V validates constraints upfront.
-  
-- ✅ **Human Gates** — Evidence Summaries before deployments (no autonomous production releases)
-  - *Why it matters:* You get a comprehensive summary of what changed, what was tested, and what risks remain *before* approving deployment. No more surprise 2 AM production incidents.
-  
-- ✅ **Halt on Ambiguity** — Agents stop and ask when requirements are unclear (no silent assumptions)
-  - *Why it matters:* "Make it faster" could mean response time, perceived UX speed, or infrastructure throughput. Agile V agents clarify *before* building, preventing wasted work.
-  
-- ✅ **Compliance-Supporting** — Produces evidence artifacts that can support ISO 9001, ISO 27001, and GxP-aligned processes; it does not itself establish conformity or certification
-  - *Why it matters:* When auditors ask "Show me your requirements traceability matrix," you have it. When regulators demand evidence of independent verification, you have it. Compliance becomes a byproduct of normal development.
-  
-- ✅ **Multi-Platform** — Works with Claude Code, Cursor, VS Code, GitHub Copilot
-  - *Why it matters:* Your engineering standards stay consistent regardless of which IDE or AI provider your team uses. The quality framework is portable.
+| Repository proof point | Evidence |
+|---|---|
+| 45 cataloged skills | [`catalog/skills.json`](catalog/skills.json) |
+| 344 deterministic contract tests | [`tests/`](tests/) |
+| 18 machine-readable evidence schemas | [`schemas/`](schemas/) |
+| Five implementation domains | [Python](domains/build-agent-python/SKILL.md), [JavaScript/TypeScript](domains/build-agent-js/SKILL.md), [NestJS](domains/build-agent-nestjs/SKILL.md), [Dart/Flutter](domains/build-agent-dart/SKILL.md), [embedded C/C++](domains/build-agent-embedded/SKILL.md) |
+| Explicit preview boundaries | [`SKILL_ROUTING_GUIDE.md`](SKILL_ROUTING_GUIDE.md) |
 
-### Current v3.8.x Assurance Features
+## Explore and Contribute
+
+[Tutorials](docs/tutorials/README.md) · [Comparisons](docs/COMPARISONS.md) · [Showcase](docs/SHOWCASE.md) · [Documentation](docs/README.md) · [Contributing](CONTRIBUTING.md) · [Discussions](https://github.com/Agile-V/agile_v_skills/discussions)
+
+If the evidence-oriented approach is useful, [star the repository](https://github.com/Agile-V/agile_v_skills) so others can discover it. Questions, critical feedback, case studies, and focused contributions are welcome.
+
+## Current v3.8.x Assurance Features
 
 | Feature | Why it is useful | Where it is defined |
 |---|---|---|
@@ -73,9 +74,7 @@ Transform unreliable AI agents into **Verifiable Engineering Systems** with:
 | **AI influence provenance** | Records the model, runtime, skills, tools, context, artifact influence, hashes, evaluation, and revalidation scope without storing secrets or hidden reasoning. | [`agile-v-aibom`](agile-v-aibom/SKILL.md) and [`templates/AI_RUN_MANIFEST.yaml`](templates/AI_RUN_MANIFEST.yaml) |
 | **Standards and legal boundaries** | Provides public-scope mappings for lifecycle, AI governance, safety, and EU AI Act screening while avoiding unsupported certification or conformity claims. | [`docs/standards/`](docs/standards/) |
 
----
-
-## 🚀 **Quick Start**
+## Installation Details
 
 ### Prerequisites
 

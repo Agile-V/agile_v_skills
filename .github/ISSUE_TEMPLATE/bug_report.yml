@@ -1,0 +1,53 @@
+name: Bug report
+description: Report an incorrect, inconsistent, or unusable repository artifact.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: "Do not report security vulnerabilities here; use the private advisory link in the issue chooser."
+  - type: input
+    id: location
+    attributes:
+      label: Affected file or skill
+      placeholder: "agile-v-core/SKILL.md or schemas/..."
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Repository or skill version
+      placeholder: "3.8.1 or metadata.version"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Explain what is incorrect and its impact.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction or evidence
+      description: Provide minimal steps, excerpts, or validation output without secrets.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: dropdown
+    id: draft
+    attributes:
+      label: Draft contract involved?
+      options:
+        - "No"
+        - "Yes"
+        - "Unsure"
+    validations:
+      required: true

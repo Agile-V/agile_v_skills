@@ -1,0 +1,69 @@
+name: Skill proposal
+description: Propose a new AgentSkills.io skill for the library.
+title: "[Skill]: "
+labels:
+  - enhancement
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Proposed skill name
+      description: Use kebab-case.
+      placeholder: "build-agent-rust"
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Purpose and users
+      description: Define the stage-focused responsibility and intended users.
+    validations:
+      required: true
+  - type: textarea
+    id: gap
+    attributes:
+      label: Gap in existing skills
+      description: Explain why a cross-reference or update to an existing skill is insufficient.
+    validations:
+      required: true
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Inputs, outputs, and role boundaries
+      description: Include traceability, independent verification, human gates, and halt conditions where applicable.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources and adaptations
+      description: List source names, URLs, licenses, copyrights, and adapted sections, or write "None".
+    validations:
+      required: true
+  - type: dropdown
+    id: status
+    attributes:
+      label: Proposed initial status
+      options:
+        - draft
+        - current
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation approach
+      description: Describe schema, fixture, example, link, or manual checks.
+    validations:
+      required: true
+  - type: checkboxes
+    id: requirements
+    attributes:
+      label: Proposal checks
+      options:
+        - label: I will use the required frontmatter, `# Instructions` heading, and CC BY-SA 4.0 license.
+          required: true
+        - label: "I will mark preview content with `metadata.status: draft` and will not present it as stable."
+          required: true
+        - label: I will not make unsupported certification, conformity, performance, or compliance claims.
+          required: true

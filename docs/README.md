@@ -12,6 +12,11 @@
 | [Golden Journey](GOLDEN_JOURNEY.md) | Canonical risk-to-release lifecycle and evidence flow |
 | [Skill Routing Guide](../SKILL_ROUTING_GUIDE.md) | Complete current skill catalog and intent routing |
 | [Performance Measurement](../PERFORMANCE.md) | Reproducible size, token, runtime, and outcome methodology |
+| [Practical Tutorials](tutorials/README.md) | Authentication, independent verification, AI manifests, and regulated adoption |
+| [Approach Comparisons](COMPARISONS.md) | When to use or combine Agile V with adjacent approaches |
+| [Community Showcase](SHOWCASE.md) | Submit evidence-based, appropriately redacted case studies |
+| [Outreach Kit](OUTREACH_KIT.md) | Factual release, tutorial, and directory submission copy |
+| [Growth Metrics](GROWTH_METRICS.md) | Ethical discovery baseline and weekly measurement method |
 
 ## Runtime Contracts
 

@@ -1,0 +1,87 @@
+aibom_schema_version: "0.2"
+manifest_type: "agile-v-agent-run-bom"
+identity:
+  task_id: "AAV-20260810-GITHUB-REACH"
+  run_id: "RUN-20260810-OPENCODE-REACH"
+  created_at: "2026-08-10T00:00:00Z"
+  created_by: "OpenCode"
+  repository: "Agile-V/agile_v_skills"
+risk:
+  agile_v_risk_level: "L1"
+  ai_influence_level: "substantial"
+  regulated_context: false
+  human_approval_required: false
+models:
+  - name: "GPT-5.6 Sol"
+    provider: "GitHub Copilot"
+    model_id: "github-copilot/gpt-5.6-sol"
+    model_version: "gpt-5.6-sol"
+    confidence: "declared"
+agent_runtime:
+  agent_name: "OpenCode"
+  agent_framework: "OpenCode"
+  execution_environment: "ide"
+  confidence: "declared"
+agile_v_skills:
+  - skill: "agile-v-core"
+    version: "1.7"
+    source: "repository"
+    confidence: "verified"
+    evidence_locator: "agile-v-core/SKILL.md"
+  - skill: "agile-v-aibom"
+    version: "1.2"
+    source: "repository"
+    confidence: "verified"
+    evidence_locator: "agile-v-aibom/SKILL.md"
+tools:
+  - name: "OpenCode filesystem, shell, GitHub, and web tools"
+    type: "other"
+    version: "unresolved"
+    allowed: true
+    used: true
+    confidence: "declared"
+agent_interoperability:
+  untrusted_context_enforced: true
+  tool_records: []
+  delegation_records: []
+context:
+  declared:
+    instruction_bundles:
+      - name: "AGENTS.md"
+        version_or_hash: "repository revision"
+        purpose: "Repository contribution policy"
+        evidence_locator: "AGENTS.md"
+    policies: []
+    sources:
+      - name: "Repository files and GitHub metadata"
+        version_or_hash: "main at task start"
+        purpose: "Discoverability and community-health assessment"
+        evidence_locator: "."
+    datasets: []
+  observed:
+    sources:
+      - name: "GitHub traffic aggregate"
+        version_or_hash: "14-day window ending 2026-08-10"
+        purpose: "Growth baseline"
+        evidence_locator: "docs/GROWTH_METRICS.md"
+    tool_calls_evidence: "OpenCode session tool log"
+    policy_decisions_evidence: "AGENTS.md and ethical growth rules"
+    confidence: "verified"
+hashes: []
+artifact_influence:
+  - artifact_id: "ART-GITHUB-REACH"
+    artifact_type: "documentation"
+    contribution: "generated"
+    contribution_description: "Community health, onboarding, tutorials, comparisons, showcase, outreach, and growth measurement content."
+    confidence: "verified"
+    evidence_locator: "git diff"
+security_and_privacy:
+  secrets_redacted: true
+  hidden_chain_of_thought_excluded: true
+  pii_redacted: true
+  prompt_capture_policy: "metadata_only"
+summary:
+  unresolved_items:
+    - "External directory submissions, community posts, and social-preview image upload remain manual actions."
+  verifier_notes: "Repository tests, YAML parsing, links, and GitHub settings are checked before merge."
+  human_approval: "not_required"

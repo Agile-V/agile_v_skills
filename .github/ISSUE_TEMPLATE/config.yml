@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and ideas
+    url: https://github.com/Agile-V/agile_v_skills/discussions
+    about: Ask usage questions, share workflows, and discuss proposals before opening an issue.
+  - name: Security vulnerability
+    url: https://github.com/Agile-V/agile_v_skills/security/advisories/new
+    about: Report suspected vulnerabilities privately.

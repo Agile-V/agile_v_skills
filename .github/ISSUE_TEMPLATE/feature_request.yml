@@ -1,0 +1,47 @@
+name: Feature request
+description: Propose an improvement to an existing skill, template, schema, or document.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: input
+    id: scope
+    attributes:
+      label: Affected area
+      placeholder: "Existing skill, template, schema, or documentation"
+    validations:
+      required: true
+  - type: textarea
+    id: need
+    attributes:
+      label: User need
+      description: State the problem and who encounters it.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the smallest useful change and expected outcome.
+    validations:
+      required: true
+  - type: textarea
+    id: traceability
+    attributes:
+      label: Traceability and assurance impact
+      description: Identify affected IDs, gates, role separation, evidence, or draft status. Write "None" when not applicable.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: true
+  - type: checkboxes
+    id: claims
+    attributes:
+      label: Claim check
+      options:
+        - label: This request makes no unsupported certification, conformity, performance, or compliance claim.
+          required: true

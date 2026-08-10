@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this skills library, please cite it using this metadata."
+title: "Agile V Agent Skills Library"
+type: software
+abstract: "A CC BY-SA 4.0 library of agent skills for traceable requirements, independent verification, human approval gates, and AI influence provenance."
+authors:
+  - name: "Agile V"
+    website: "https://agile-v.org"
+version: "3.8.1"
+date-released: 2026-07-31
+license: CC-BY-SA-4.0
+repository-code: "https://github.com/Agile-V/agile_v_skills"
+url: "https://agile-v.org"
+keywords:
+  - agent skills
+  - requirements engineering
+  - traceability
+  - verification
+  - AI provenance
