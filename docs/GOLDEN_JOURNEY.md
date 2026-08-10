@@ -1,6 +1,6 @@
 # Agile V Golden Journey
 
-> **Repository version:** 3.8.x
+> **Repository version:** 3.9.x
 > **Purpose:** Canonical evidence flow for a new feature or controlled change. Tailor rigor to `L0`-`L4`; do not skip required human or independent roles.
 
 ## Verification and Validation

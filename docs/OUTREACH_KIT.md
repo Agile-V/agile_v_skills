@@ -131,7 +131,7 @@ Use only proof points that remain true at the linked revision.
 
 | Proof point | Evidence |
 |---|---|
-| The v3.8.x catalog contains 45 skills. | [Skill Routing Guide](../SKILL_ROUTING_GUIDE.md) |
+| The v3.9.x catalog contains 45 skills. | [Skill Routing Guide](../SKILL_ROUTING_GUIDE.md) |
 | Skills use AgentSkills.io-compatible Markdown and YAML frontmatter. | Individual `SKILL.md` files and the [AgentSkills.io specification](https://agentskills.io/specification) |
 | Five documented installation profiles cover minimal, verified-build, existing-repository, regulated, and business-preview use. | [Installation Profiles](INSTALL_PROFILES.md) |
 | The canonical lifecycle separates baselining, build, test design, independent verification, intended-use validation when applicable, and human release approval. | [Golden Journey](GOLDEN_JOURNEY.md) |

@@ -1,6 +1,6 @@
 # Agile V Skills: Routing Guide
 
-> **Repository version:** 3.8.x
+> **Repository version:** 3.9.x
 > **Catalog:** 45 skills currently present. **[Preview]** means the skill's current YAML frontmatter contains `metadata.status: draft`; presence on `main` does not make that contract stable.
 
 Load `agile-v-core` first, then only the stage and risk-relevant skills. See [Installation Profiles](docs/INSTALL_PROFILES.md) and the [Golden Journey](docs/GOLDEN_JOURNEY.md).

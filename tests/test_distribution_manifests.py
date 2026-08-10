@@ -29,22 +29,25 @@ def test_distribution_versions_match_package() -> None:
     marketplace = _json(ROOT / ".claude-plugin/marketplace.json")
     catalog = _json(ROOT / "catalog/skills.json")
     release_manifest = _json(ROOT / ".release-please-manifest.json")
+    citation = yaml.safe_load((ROOT / "CITATION.cff").read_text(encoding="utf-8"))
     assert plugin["version"] == version
     assert marketplace["metadata"]["version"] == version
     assert marketplace["plugins"] and all(item["version"] == version for item in marketplace["plugins"])
     assert catalog["integrations"]["claude_plugin"]["version"] == version
     assert release_manifest["."] == version
+    assert citation["version"] == version
 
 
 def test_release_please_updates_every_distribution_version() -> None:
     config = _json(ROOT / "release-please-config.json")
     extra_files = config["packages"]["."]["extra-files"]
-    targets = {(item["path"], item["jsonpath"]) for item in extra_files}
+    targets = {(item["path"], item.get("jsonpath", "")) for item in extra_files}
     assert targets == {
         (".claude-plugin/plugin.json", "$.version"),
         (".claude-plugin/marketplace.json", "$.metadata.version"),
         (".claude-plugin/marketplace.json", "$.plugins[0].version"),
         ("catalog/skills.json", "$.integrations.claude_plugin.version"),
+        ("CITATION.cff", ""),
     }
 
 

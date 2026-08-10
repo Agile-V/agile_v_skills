@@ -1,4 +1,4 @@
-# Agile V Skills 3.8.x Measurement Guide
+# Agile V Skills 3.9.x Measurement Guide
 
 This repository does not publish universal token, latency, quality-zone, throughput, or efficiency guarantees. Those values depend on the exact revision, selected files, tokenizer, model, agent runtime, tool behavior, context policy, project evidence, and cache state.
 

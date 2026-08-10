@@ -4,9 +4,9 @@
 
 ## Repository Context
 
-The current repository line is **v3.8.x on `main`** (`package.json` is the repository-version source). Do not infer release status from old branch names or release-note filenames.
+The current repository line is **v3.9.x on `main`** (`package.json` is the repository-version source). Do not infer release status from old branch names or release-note filenames.
 
-A skill is **preview/draft** only when its current YAML frontmatter contains `metadata.status: draft`. At v3.8.x this applies to `agile-v-aibom`, the four functional Business Track skills, `c-suite-foundation`, five `chief-*` orchestrators, and `c-suite-update`. These files are present on `main`, but their contracts remain preview and require local review before operational use. All other existing skills are current unless their own frontmatter says otherwise.
+A skill is **preview/draft** only when its current YAML frontmatter contains `metadata.status: draft`. At v3.9.x this applies to `agile-v-aibom`, the four functional Business Track skills, `c-suite-foundation`, five `chief-*` orchestrators, and `c-suite-update`. These files are present on `main`, but their contracts remain preview and require local review before operational use. All other existing skills are current unless their own frontmatter says otherwise.
 
 ## Project Overview
 
@@ -88,7 +88,7 @@ Versioning is automated via GitHub Actions on push to `main`:
   edit release versions by hand.
 - **Skill versions:** Each skill has independent `metadata.version` in its
   YAML frontmatter. Bump only when that skill's content/contract changes.
-- **Current line:** v3.8.x. Read the checked-out `package.json`; do not hard-code a branch-specific version here.
+- **Current line:** v3.9.x. Read the checked-out `package.json`; do not hard-code a branch-specific version here.
 
 ## Commit Message Convention
 

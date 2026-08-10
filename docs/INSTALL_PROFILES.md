@@ -1,6 +1,6 @@
 # Agile V Installation Profiles
 
-> **Repository version:** 3.8.x
+> **Repository version:** 3.9.x
 > **Status:** Profile definitions are documentation, not package manifests. Copy each listed skill directory into a skill-discovery directory supported by your agent.
 
 Use the smallest profile that meets the work's risk and lifecycle needs. Add one domain build agent from `domains/` when implementation is in scope.

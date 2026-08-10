@@ -26,6 +26,10 @@
           "type": "json",
           "path": "catalog/skills.json",
           "jsonpath": "$.integrations.claude_plugin.version"
+        },
+        {
+          "type": "generic",
+          "path": "CITATION.cff"
         }
       ]
     }

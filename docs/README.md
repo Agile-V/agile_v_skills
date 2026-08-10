@@ -1,6 +1,6 @@
 # Agile V Skills Documentation Hub
 
-> **Version:** 3.8.x
+> **Version:** 3.9.x
 > **Updated:** 2026-08-10
 > **Status:** Current repository documentation. A skill with `metadata.status: draft` is a preview even when present on `main`.
 

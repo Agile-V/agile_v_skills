@@ -18,7 +18,7 @@ body:
     id: version
     attributes:
       label: Repository or skill version
-      placeholder: "3.8.1 or metadata.version"
+      placeholder: "3.9.0 or metadata.version"
     validations:
       required: true
   - type: textarea

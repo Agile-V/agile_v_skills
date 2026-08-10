@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Security updates are provided for the current `3.8.x` repository line. Older lines are not supported. Individual skills marked `metadata.status: draft` are preview contracts and require local review before operational use.
+Security updates are provided for the current `3.9.x` repository line. Older lines are not supported. Individual skills marked `metadata.status: draft` are preview contracts and require local review before operational use.
 
 ## Report a Vulnerability
 

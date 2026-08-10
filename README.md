@@ -61,7 +61,7 @@ It is not a certification product, a replacement for accountable engineering jud
 
 If the evidence-oriented approach is useful, [star the repository](https://github.com/Agile-V/agile_v_skills) so others can discover it. Questions, critical feedback, case studies, and focused contributions are welcome.
 
-## Current v3.8.x Assurance Features
+## Current v3.9.x Assurance Features
 
 | Feature | Why it is useful | Where it is defined |
 |---|---|---|
@@ -540,7 +540,7 @@ This includes:
 - CycloneDX ML-BOM export for external interoperability
 - Revalidation triggers when AI components change
 
-Create AI influence evidence for materially AI-assisted work according to risk and policy. For low-risk tasks (L0-L1), a minimal manifest may be sufficient; for regulated, security-critical, firmware, PCB, medical, GxP, or release-critical work, apply the required L2+ controls. `agile-v-aibom` can assist but remains a preview skill in v3.8.x and requires approved local review before operational use.
+Create AI influence evidence for materially AI-assisted work according to risk and policy. For low-risk tasks (L0-L1), a minimal manifest may be sufficient; for regulated, security-critical, firmware, PCB, medical, GxP, or release-critical work, apply the required L2+ controls. `agile-v-aibom` can assist but remains a preview skill in v3.9.x and requires approved local review before operational use.
 
 **Quick start:**
 
@@ -576,9 +576,9 @@ Version 1.3 also includes compliance hardening based on a clause-by-clause audit
 
 ### Business Track: Parallel Business Lifecycle [Draft]
 
-> **Note:** This historical section describes the v2 Business Track introduction. The skills now exist on `main`, but their current `metadata.status: draft` keeps them preview contracts in v3.8.x.
+> **Note:** This historical section describes the v2 Business Track introduction. The skills now exist on `main`, but their current `metadata.status: draft` keeps them preview contracts in v3.9.x.
 
-The v2 work introduced the **Agile V Business Track**: four functional skills and five executive orchestrators. v3.8.x also includes draft `c-suite-foundation` and `c-suite-update`; see the routing guide for the complete current preview catalog.
+The v2 work introduced the **Agile V Business Track**: four functional skills and five executive orchestrators. v3.9.x also includes draft `c-suite-foundation` and `c-suite-update`; see the routing guide for the complete current preview catalog.
 
 **Key additions:**
 - **Venture Strategist** (`venture-strategist`): Converts vision and market opportunity into traceable business models (BM-XXXX), product portfolios (PORT-XXXX), and strategic plans (VIS-XXXX). Introduces **Business Gate 0** (Strategy Approval). Portfolio items feed discovery-analyst as product intent.
