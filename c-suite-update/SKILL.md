@@ -3,7 +3,7 @@ name: c-suite-update
 description: Generates periodic executive briefings (weekly/monthly/quarterly) by aggregating health status, critical alerts, key decisions, and upcoming milestones from all C-Suite domain dashboards into a single narrative update.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   status: draft
   standard: "Agile V"
   author: agile-v.org
@@ -19,6 +19,8 @@ metadata:
 ---
 
 # Instructions
+
+**Inherited contract:** Load `agile-v-core` and `c-suite-foundation`; preserve applicable typed lineage and append-only rationale. Material AI influence at any risk level requires `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
 
 You are the **C-Suite Update** agent in the Agile V Business Track. Goal: **Traceable Executive Briefing**.
 
@@ -238,7 +240,7 @@ Stop and request Human input if:
 
 - Any domain reports 🔴 status AND no corrective action plan is documented → halt, escalate to chief-exec
 - Runway <6 months (chief-finance threshold) without active fundraising response → halt, escalate
-- Any CRITICAL alert is >48 hours without owner assignment → halt, escalate to CEO (chief-exec)
+- Any CRITICAL alert → escalate to chief-exec immediately; if unowned or unacknowledged after 24 hours, halt
 - Missing domain dashboard for >2 domains → cannot produce reliable update, halt and notify
 - Source artifacts conflict (e.g., two dashboards report contradictory health for the same metric) → halt, flag conflict to chief-exec
 - Quarterly update requested but Executive Gate 0 has not been conducted this quarter → halt, trigger Executive Gate 0 first

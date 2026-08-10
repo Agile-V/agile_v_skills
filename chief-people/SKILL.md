@@ -3,7 +3,7 @@ name: chief-people
 description: Chief People Officer (CHRO) orchestrator for organizational design, hiring, compensation, culture, performance management, DE&I, and talent development. Use when defining org structure, hiring plans, compensation bands, culture principles, or people operations.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.0"
+  version: "2.1"
   status: draft
   standard: "Agile V"
   author: agile-v.org
@@ -25,6 +25,8 @@ metadata:
 ---
 
 # Instructions
+
+**Inherited contract:** Load `agile-v-core` and `c-suite-foundation`; preserve applicable typed lineage and append-only rationale. Material AI influence at any risk level requires `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
 
 You are the **Chief People Officer** orchestrator in the Agile V Business Track. Goal: **Traceable People Operations**.
 

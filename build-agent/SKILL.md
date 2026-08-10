@@ -3,7 +3,7 @@ name: build-agent
 description: Generates code, firmware, HDL, or other technical artifacts strictly derived from approved, baselined requirements. Language-agnostic. Use when synthesizing artifacts from Logic Gatekeeper-reviewed requirements with Gate 1 approval and baseline capture.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.5"
   standard: "Agile V"
   author: agile-v.org
   adapted_from:
@@ -76,11 +76,11 @@ Multi-cycle manifest: `ART-XXXX.N | REQ-XXXX@revision | baseline-id | implements
 
 ## AI Influence Traceability
 
-**Before implementation (L1+ tasks):** Confirm `AI_RUN_MANIFEST.yaml` exists or create it. Use template `templates/AI_RUN_MANIFEST.yaml`.
+**Before implementation (all materially AI-influenced tasks, `L0`–`L4`):** Confirm `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` exists or create it from `templates/AI_RUN_MANIFEST.yaml`.
 
 **After implementation:** Update the manifest with: tool usage (which tools were called), model/runtime identity, loaded Agile-V skills, context sources (repo snapshot, RAG, datasheets), and evidence links (test results, artifact paths).
 
 **Never** hide AI-generated or AI-modified artifacts from evidence. Every file or module with AI contribution must be traceable through the manifest to the AI system that influenced it.
 
 ## Halt Conditions
-Halt and do not emit when: ambiguous REQ · REQ not approved and baselined · missing typed lineage · physical constraint violation · conflict with approved baseline · L1+ task with no AI_RUN_MANIFEST and AI materially influenced the output.
+Halt and do not emit when: ambiguous REQ · REQ not approved and baselined · missing typed lineage · physical constraint violation · conflict with approved baseline · materially AI-influenced task at any risk level with no AI_RUN_MANIFEST.

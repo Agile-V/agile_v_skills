@@ -232,6 +232,6 @@ The agentic repo (`Agile-V/agentic_agile_v`) enforces the matrix via `agilev con
 ## Cross-references
 
 - Template: [templates/agile-v/CONTROL_MATRIX.example.yaml](../../templates/agile-v/CONTROL_MATRIX.example.yaml)
-- Schema: [templates/agile-v/CONTROL_MATRIX.schema.json](../../templates/agile-v/CONTROL_MATRIX.schema.json)
+- Schema: [schemas/CONTROL_MATRIX.schema.json](../../schemas/CONTROL_MATRIX.schema.json)
 - Schemas index: [01_SCHEMAS.md](01_SCHEMAS.md)
 - Skill: [agile-v-control-matrix/SKILL.md](../../agile-v-control-matrix/SKILL.md)

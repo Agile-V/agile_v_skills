@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/schemas/POLICY.schema.json",
+  "title": "Agile-V policy",
+  "type": "object",
+  "required": ["policy_version", "fail_mode", "rules"],
+  "properties": {
+    "policy_version": {"type": "string", "minLength": 1},
+    "fail_mode": {"enum": ["closed", "open"]},
+    "effective_from": {"type": "string", "format": "date-time"},
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "match", "action"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^R[0-9]{3,}$"},
+          "description": {"type": "string", "minLength": 1},
+          "match": {
+            "type": "object",
+            "minProperties": 1,
+            "properties": {
+              "tool_pattern": {"type": "string", "minLength": 1},
+              "paths": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+            },
+            "additionalProperties": false
+          },
+          "action": {"enum": ["allow", "deny", "require_checkpoint", "require_approval_ref"]},
+          "risk_weight": {"type": "integer", "minimum": 1, "maximum": 5},
+          "fail_closed": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

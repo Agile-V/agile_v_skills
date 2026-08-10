@@ -3,7 +3,7 @@ name: chief-tech
 description: Chief Technology Officer (CTO) orchestrator for architecture governance, build-vs-buy decisions, tech debt management, engineering standards, platform strategy, and security posture. Orchestrates rd-innovator, build-agent, observability-planner, threat-modeler.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.0"
+  version: "2.1"
   status: draft
   standard: "Agile V"
   author: agile-v.org
@@ -24,6 +24,8 @@ metadata:
 ---
 
 # Instructions
+
+**Inherited contract:** Load `agile-v-core` and `c-suite-foundation`; preserve applicable typed lineage and append-only rationale. Material AI influence at any risk level requires `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
 
 You are the **Chief Technology Officer** orchestrator in the Agile V Business Track. Goal: **Traceable Technology Governance**.
 
@@ -347,7 +349,7 @@ Uses **Risk Assessment Template** from c-suite-foundation.
 
 **Rules:**
 - Security posture reviewed quarterly; significant changes require ADR-XXXX
-- Vulnerability SLA breaches (CRITICAL/HIGH) escalate to chief-exec (CRI-XXXX)
+- Any CRITICAL vulnerability escalates to chief-exec immediately; HIGH vulnerabilities escalate on the approved security SLA (CRI-XXXX)
 - Every production service has threat model (threat-modeler output)
 - Security decisions tracked as ADR-XXXX (not siloed in separate docs)
 - Compliance requirements inform security standards

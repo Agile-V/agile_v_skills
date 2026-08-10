@@ -3,7 +3,7 @@ name: agile-v-pipeline
 description: Orchestration pipeline, wave execution, handoff protocols, and checkpoint types for the Agile V 5-stage workflow. Load when orchestrating multi-agent pipelines or managing stage transitions.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.5"
+  version: "1.6"
   standard: "Agile V"
   author: agile-v.org
   sections_index: ["Pipeline", "Handoffs", "Wave Execution", "Checkpoint Types"]
@@ -22,19 +22,19 @@ Orchestration pipeline for Agile V. Requires **agile-v-core** loaded first.
 ## Pipeline
 
 ```
-Stage 1: draft persisted -> Stage 2: independent findings -> Stage 1: architect revisions -> [Human Gate 1] -> approved/baselined -> Stage 3: Synthesis (Build Agent || Test Designer) -> Stage 4: Verification -> [Human Gate 2] -> Stage 5: Acceptance
+Stage 1: draft_persisted -> Stage 2: independent_findings -> Stage 1: architect_revisions -> gate_1 -> approved -> baselined -> Stage 3: Synthesis (Build Agent || Test Designer) -> Stage 4: Verification -> [Human Gate 2] -> Stage 5: Acceptance
 Compliance Auditor observes all stages.
 ```
 
 ## Handoffs
 
-1. Req Architect persists draft `REQUIREMENTS.md` -> Logic Gatekeeper reads without editing.
+1. Req Architect persists draft `.agile-v/REQUIREMENTS.md` -> Logic Gatekeeper reads without editing.
 2. Gatekeeper records independent findings -> Req Architect revises -> Gate 1 (findings + revision evidence, Human approves).
 3. Approval creates a baseline; Build Agent || Test Designer use only that baselined revision, with no shared context.
 4. Build Manifest + Test Cases -> Red Team Verifier.
-5. Validation Summary -> Gate 2.
+5. Verification Summary -> Gate 2; intended-use validation evidence, when required, remains separate.
 
-**Gate 2 prereqs (Phase 1):** `EVAL_RESULTS.md` + `VALIDATION_SUMMARY.md` **EvalGate** line. **Gate pause (Phase 2):** append `CHECKPOINTS.md` (`PENDING` + `resume_token`); resume only with matching `APPROVALS.md` entry (see `agile-v-core`).
+**Gate 2 prereqs (Phase 1):** `.agile-v/EVAL_RESULTS.md` + `.agile-v/VERIFICATION_SUMMARY.md` **EvalGate** line. **Gate pause (Phase 2):** append `.agile-v/CHECKPOINTS.md` (`PENDING` + `resume_token`); resume only with matching `.agile-v/APPROVALS.md` entry (see `agile-v-core`).
 
 ## Stage Failure Handling
 

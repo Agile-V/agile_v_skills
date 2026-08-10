@@ -3,7 +3,7 @@ name: agile-v-lifecycle
 description: Multi-cycle iteration management, document versioning, change requests, re-entry points, archival, and impact analysis. Load when starting a new cycle (C2+), processing change requests, or managing cross-cycle traceability.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
+  version: "1.4"
   standard: "Agile V"
   author: agile-v.org
   sections_index: ["Cycle ID", "Document Versioning", "REQ Status Tags", "Change Requests", "Cycle Triggers", "Re-Entry Points", "Archival", "Impact Analysis"]
@@ -21,20 +21,20 @@ Multi-cycle lifecycle management for Agile V. Requires **agile-v-core** loaded f
 
 | Document | Rule | Example |
 |---|---|---|
-| REQUIREMENTS.md | Revision header + per-REQ status | `<!-- Revision: C2 -->` |
+| `.agile-v/REQUIREMENTS.md` | Revision header + per-REQ lifecycle state | `<!-- Revision: C2 -->` |
 | BUILD_MANIFEST.md | ART-XXXX.N suffix | ART-0001.2 |
 | TEST_SPEC.md | TC origin cycle | TC-0001 [C1] |
-| VALIDATION_SUMMARY.md | One per cycle; prior archived | VALIDATION_SUMMARY_C1.md |
+| `.agile-v/VERIFICATION_SUMMARY.md` | One per cycle; prior archived | `VERIFICATION_SUMMARY_C1.md` |
 | DECISION_LOG.md | Cycle-tagged entries | [C2] DECISION: ... |
 | ATM.md | Partitioned by cycle | See compliance-auditor |
 
-## REQ Status Tags
+## REQ Lifecycle States
 
-`approved [Cn]` | `modified [Cn]` (was/now + CR ref) | `new [Cn]` | `deprecated [Cn]` | `superseded [Cn]`
+Use canonical states `draft_persisted -> independent_findings -> architect_revisions -> gate_1 -> approved -> baselined`; changes create a new revision in `architect_revisions`, while retirement uses `retired`. Record cycle and change class (`new`, `modified`, `unchanged`) separately. Legacy values require the migration mapping in the canonical lifecycle contract.
 
 ## Change Requests
 
-Append-only in CHANGE_LOG.md. Format: `CR-XXXX` with Cycle, Affected REQ, Change, Rationale, Impact (ART + TC), Requested by, Approved status. Flow: Req Architect creates -> Logic Gatekeeper validates -> Human approves at Gate 1.
+Append-only in `.agile-v/CHANGE_LOG.md`. Format: `CR-XXXX` with Cycle, affected `REQ-XXXX` revision/baseline, change, rationale, ART/TC impact, requester, and approval status. Flow: Requirement Architect creates a new draft revision -> Logic Gatekeeper records findings without editing -> Requirement Architect resolves findings -> Human decides at Gate 1 -> approved revision is captured in a new immutable baseline.
 
 ## Cycle Triggers
 

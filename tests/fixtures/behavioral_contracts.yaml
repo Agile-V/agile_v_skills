@@ -1,0 +1,125 @@
+system_understanding_cases:
+  activation:
+    - id: AC-001
+      signal: .understand-anything/knowledge-graph.json
+      expected: activate
+    - id: AC-002
+      signal: what does this system do?
+      expected: activate
+    - id: AC-003
+      signal: what will this change affect?
+      expected: activate
+    - id: AC-004
+      facts: {existing_repository: true}
+      expected: activate
+    - id: AC-005
+      signal: onboarding guide
+      expected: activate
+    - id: AC-006
+      facts: {changed_files: 4}
+      expected: activate
+    - id: AC-007
+      facts: {risk_level: L3}
+      expected: activate
+    - id: AC-008
+      signal: traceability matrix
+      expected: activate
+  decisions:
+    - id: NC-001
+      facts: {ambiguous_change: true, context_available: true, confidence: High}
+      expected: halt
+    - id: NC-002
+      facts: {graph_invalid: true, context_available: true, confidence: High}
+      expected: halt
+    - id: NC-003
+      facts: {context_available: true, confidence: Low, human_acknowledged: false}
+      expected: halt
+    - id: NC-004
+      facts: {context_available: false, confidence: Low}
+      expected: halt
+    - id: PC-001
+      facts: {context_available: true, graph_available: false, confidence: Medium}
+      expected: proceed
+    - id: PC-002
+      facts: {context_available: true, graph_available: true, confidence: Low, human_acknowledged: true}
+      expected: proceed
+
+routing_cases:
+  - id: ROUTE-001
+    phrase: What does this system do?
+    expected_skill: system-understanding-agent
+  - id: ROUTE-002
+    phrase: What could break?
+    expected_skill: impact-analysis-agent
+  - id: ROUTE-003
+    phrase: Check for ambiguity
+    expected_skill: logic-gatekeeper
+  - id: ROUTE-004
+    phrase: Implement the features
+    expected_skill: build-agent
+  - id: ROUTE-005
+    phrase: Design verification suite
+    expected_skill: test-designer
+  - id: ROUTE-006
+    phrase: Challenge the code
+    expected_skill: red-team-verifier
+
+approval_cases:
+  - id: APPROVAL-001
+    facts: {external_effect: deployment, approval: missing}
+    expected: halt
+  - id: APPROVAL-002
+    facts: {external_effect: deployment, approval: rejected}
+    expected: halt
+  - id: APPROVAL-003
+    facts: {external_effect: deployment, approval: approved}
+    expected: proceed
+  - id: APPROVAL-004
+    facts: {external_effect: none, approval: missing}
+    expected: proceed
+  - id: APPROVAL-005
+    facts: {external_effect: deployment, approval: approved, resume_token_matches: false}
+    expected: halt
+
+trace_cases:
+  - id: TRACE-001
+    record: {artifact_id: ART-0042, relation: implements, requirement_id: REQ-0042, revision: r3, baseline: BL-2026-08}
+    expected: complete
+  - id: TRACE-002
+    record: {artifact_id: ART-0042, relation: implements, requirement_id: REQ-0042, revision: r3}
+    expected: incomplete
+  - id: TRACE-003
+    record: {artifact_id: ART-0042, relation: implements, requirement_id: REQ-0042, baseline: BL-2026-08}
+    expected: incomplete
+  - id: TRACE-004
+    record: {artifact_id: ART-0042, relation: implements, revision: r3, baseline: BL-2026-08}
+    expected: incomplete
+  - id: TRACE-005
+    record: {artifact_id: ART-0042, relation: relates_to, requirement_id: REQ-0042, revision: r3, baseline: BL-2026-08}
+    expected: incomplete
+
+draft_skills:
+  - venture-strategist
+  - rd-innovator
+  - gtm-executor
+  - business-operations
+  - chief-exec
+  - chief-tech
+  - chief-finance
+  - chief-people
+  - chief-ops
+
+artifact_contract:
+  always:
+    - system_overview.md
+    - architecture_map.md
+    - system_understanding_confidence.md
+    - understanding_gate_decision.md
+  with_graph:
+    - knowledge_graph_summary.md
+    - knowledge_graph_hash.txt
+  overview_sections:
+    - Summary
+    - Main Architectural Layers
+    - Key Entry Points
+    - Confidence

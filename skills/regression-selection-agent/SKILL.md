@@ -4,7 +4,7 @@ description: Select and prioritize regression tests based on the impact map and 
 license: CC-BY-SA-4.0
 compatibility: opencode
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
 ---
@@ -35,10 +35,10 @@ Use this skill when:
 ## Inputs
 
 ```text
-- .agile-v/impact/impact_map.md                 required
-- .agile-v/impact/affected_components.json      required
+- .agile-v/phases/01-impact/impact_map.md       required
+- .agile-v/phases/01-impact/affected_components.json required
 - test inventory (discovered from test/ directory or graph test nodes)   required
-- .agile-v/understanding/normalized_graph.json  optional but preferred
+- .agile-v/phases/00-understanding/normalized_graph.json optional but preferred
 - previous test results (if available)          optional
 ```
 
@@ -46,7 +46,7 @@ Use this skill when:
 
 ## Outputs
 
-All outputs are written to `.agile-v/regression/`.
+All outputs are written to canonical `.agile-v/phases/03-regression/`.
 
 ```text
 required_regression_tests.md
@@ -95,7 +95,7 @@ For each selected test, record:
 
 | Test | Linked Component | Linked Requirement | Risk Covered | Priority |
 |---|---|---|---|---|
-| tests/auth/session.test.ts | src/auth/session.ts | REQ-003 | Session regression | High |
+| tests/auth/session.test.ts | src/auth/session.ts | REQ-0003 | Session regression | High |
 
 ## Missing Regression Tests
 
@@ -114,7 +114,7 @@ For each selected test, record:
     "test_path": "test/auth/auth.e2e-spec.ts",
     "test_name": "should login with valid credentials",
     "linked_component_ids": ["node-042"],
-    "linked_requirement_ids": ["REQ-001"],
+    "linked_requirement_ids": ["REQ-0001"],
     "risk_covered": "Core login path not broken",
     "priority": "high",
     "selection_reason": "Directly tests the affected login endpoint."
@@ -130,6 +130,8 @@ For each selected test, record:
 - Do not skip gap identification even if the test suite seems comprehensive.
 - Do not assign High priority to tests with no clear link to affected components.
 - Do not generate new test implementations in this skill (that is `test-designer`).
+
+Every requirement link must identify a baselined `REQ-XXXX` revision and baseline; selected tests use `test_case -> verifies -> requirement` lineage. Apply inherited `agile-v-core` halt/decision rules and `agile-v-aibom` manifest capture for materially AI-influenced output at any risk level.
 
 ---
 

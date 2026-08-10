@@ -3,7 +3,7 @@ name: logic-gatekeeper
 description: Validates requirements for ambiguity and physical hardware constraints. Use this after requirements are generated but before code/hardware synthesis begins.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.5"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -28,7 +28,7 @@ You are the **Verification shadow** for the Requirement Architect. Goal: prevent
 
 ## Multi-Cycle Re-Validation (C2+)
 
-**Scope:** `new [Cn]` = full validation. `modified [Cn]` = full + verify CR rationale + impact completeness. `unchanged` = skip unless shared constraint changed.
+**Scope:** lifecycle state remains canonical; cycle change class is separate. `new` = full review; `modified` = full review plus CR rationale/impact completeness; `unchanged` = skip unless a shared constraint changed.
 
 **CR Validation:** (1) Rationale is quantitative. (2) Impact lists all downstream ART + TC. (3) No new conflicts. (4) HW constraints still valid. Halt if any fails.
 

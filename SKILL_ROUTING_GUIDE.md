@@ -1,708 +1,107 @@
 # Agile V Skills: Routing Guide
 
-> **Note:** Entries marked **[Draft]** refer to Business Track skills under development on the `feature-business` branch. They are not part of the official v1.5 release.
+> **Repository version:** 3.8.x
+> **Catalog:** 45 skills currently present. **[Preview]** means the skill's current YAML frontmatter contains `metadata.status: draft`; presence on `main` does not make that contract stable.
 
-This guide maps common user phrases and intents to the appropriate Agile V skill(s). Use this to quickly identify which skill(s) to load for a given task.
+Load `agile-v-core` first, then only the stage and risk-relevant skills. See [Installation Profiles](docs/INSTALL_PROFILES.md) and the [Golden Journey](docs/GOLDEN_JOURNEY.md).
 
-## Quick Reference Table
+## Complete Catalog
 
-| User Intent | Skill(s) to Load | Typical Phrases |
-|---|---|---|
-| AI/ML-BOM, agent run provenance, AI influence traceability | `agile-v-aibom` | "AI-BOM", "AIBOM", "model inventory", "agent run provenance", "CycloneDX ML-BOM", "k8s-aibom", "AI evidence bundle", "revalidation after model change" |
-| Understand an existing codebase before changing it | `system-understanding-agent` | "What does this system do?", "Analyze the codebase", "Gate 0", "knowledge graph available" |
-| Identify what a change will affect | `impact-analysis-agent` | "What will this impact?", "Impact analysis", "What could break?", "Affected components" |
-| Link requirements to code and tests | `graph-traceability-agent` | "Traceability matrix", "Link requirements to components", "Graph traceability" |
-| Select regression tests from an impact map | `regression-selection-agent` | "Which tests need to run?", "Regression test selection", "Coverage gaps" |
-| Explain diff vs predicted impact | `diff-evidence-agent` | "What actually changed?", "Predicted vs actual", "Diff evidence", "Unexpected changes" |
-| Convert user research/feedback into requirements | `discovery-analyst` | "Analyze user interviews", "Convert feedback to requirements", "I have customer insights" |
-| Write formal requirements from product intent | `requirement-architect` | "Write PRD", "Create requirements", "Define features", "I need a blueprint" |
-| Check requirements for ambiguity/conflicts | `logic-gatekeeper` | "Validate requirements", "Check for ambiguity", "Review constraints", "Are requirements testable?" |
-| Generate code from requirements | `build-agent` + domain-specific | "Implement features", "Generate code", "Build from requirements" |
-| Generate Python code | `build-agent-python` | "Build Python API", "FastAPI/Flask/Django", "Python data pipeline", "ML implementation" |
-| Generate JavaScript/TypeScript code | `build-agent-js` | "Build React app", "Next.js app", "Node.js backend", "TypeScript API" |
-| Generate Dart/Flutter code | `build-agent-dart` | "Build Flutter app", "Mobile app", "Cross-platform app" |
-| Generate embedded C/C++ code | `build-agent-embedded` | "Build firmware", "RTOS app", "Microcontroller code", "Safety-critical system" |
-| Generate NestJS backend code | `build-agent-nestjs` | "Build NestJS API", "Implement NestJS auth", "Create microservice", "NestJS GraphQL" |
-| Design test cases | `test-designer` | "Create tests", "Design verification suite", "How do we verify this?" |
-| Verify/test implementation | `red-team-verifier` | "Run verification", "Test the build", "Challenge the code", "Find defects" |
-| Human Gate 2 / eval gate evidence | `red-team-verifier` + `compliance-auditor` | "Eval gate", "EVAL_RESULTS", "FT code on finding", "Gate 2 blocked" |
-| Tool policy / durable approval pause | `agile-v-core` + `agile-v-compliance` | "POLICY.yaml", "CHECKPOINTS", "resume_token", "interrupt pending" |
-| Create a control matrix / Kontrollmatrix | `agile-v-core`, `agile-v-control-matrix`, `compliance-auditor` | "Control matrix", "Kontrollmatrix", "Allowed tools", "Governance record", "Agentic runtime policy" |
-| Define allowed tools or model/vendor rules | `agile-v-control-matrix`, `logic-gatekeeper` | "Allowed tools", "Forbidden tools", "Model policy", "Vendor restrictions" |
-| Review whether an agent may execute | `agile-v-control-matrix`, `red-team-verifier` | "Can this agent run?", "Check tool permissions", "Audit agent access" |
-| Prepare OpenHands / agentic runtime governance | `agile-v-core`, `agile-v-control-matrix`, `compliance-auditor` | "OpenHands setup", "Agentic runtime", "Runtime governance", "Hooks and policies" |
-| Audit Human Gates or approvals | `agile-v-control-matrix`, `compliance-auditor`, `red-team-verifier` | "Gate audit", "Approval evidence", "Human gate missing", "Checkpoint pending" |
-| Security threat modeling | `threat-modeler` | "Identify security threats", "STRIDE analysis", "Privacy assessment", "What are the security risks?" |
-| UX/design specifications | `ux-spec-author` | "Define user flows", "Design spec", "Accessibility requirements", "What should the UX be?" |
-| Sprint planning & backlog management | `agile-v-product-owner` | "Plan sprint", "Prioritize backlog", "Create user stories", "Track velocity" |
-| Release planning & deployment | `release-manager` | "Plan release", "Create rollout plan", "Deployment checklist", "How do we deploy?" |
-| Production monitoring & metrics | `observability-planner` | "Define metrics", "Create dashboards", "Set up alerts", "Monitor production" |
-| Generate compliance documentation | `compliance-auditor` | "Audit trail", "Traceability matrix", "VSR", "ISO compliance", "Decision log" |
-| Generate repository documentation | `documentation-agent` | "Generate docs", "Create README", "Document architecture", "ISO 9001 docs" |
-| Orchestrate full pipeline | `agile-v-pipeline` + others | "Run full workflow", "Execute pipeline", "End-to-end process" |
-| Multi-cycle management | `agile-v-lifecycle` | "Start Cycle 2", "Manage iterations", "Change requests", "Version requirements" |
-| Business strategy & vision **[Draft]** | `venture-strategist` | "Define vision", "Business model", "Product portfolio", "Competitive analysis", "Fundraising" |
-| R&D & innovation pipeline **[Draft]** | `rd-innovator` | "Evaluate technology", "Prototype", "R&D pipeline", "Technology radar", "Patent tracking" |
-| Go-to-market & marketing **[Draft]** | `gtm-executor` | "Launch plan", "Marketing strategy", "Growth experiments", "Sales enablement", "Channel strategy" |
-| Financial & operational planning **[Draft]** | `business-operations` | "Budget", "OKRs", "Vendor management", "Resource planning", "Runway" |
-| Executive strategy & alignment **[Draft]** | `chief-exec` | "Board report", "Strategic alignment", "Crisis management", "Executive dashboard", "Quarterly review" |
-| Architecture & tech governance **[Draft]** | `chief-tech` | "Architecture decisions", "Build vs buy", "Tech debt", "Platform strategy", "Engineering standards" |
-| Financial governance & modeling **[Draft]** | `chief-finance` | "Financial model", "Cash management", "Fundraising terms", "Board financials", "Unit economics" |
-| People & org operations **[Draft]** | `chief-people` | "Org design", "Hiring pipeline", "Compensation bands", "Culture code", "Performance reviews", "DE&I" |
-| Operational excellence **[Draft]** | `chief-ops` | "Operational playbooks", "Process design", "Delivery cadence", "Resource arbitration", "Scaling readiness" |
-
-## Detailed Skill Triggers
-
-### System Understanding Phase (Gate 0 — Existing Codebases)
-
-Use these skills when working on an **existing repository**. Run before requirements and build.
-
-**`system-understanding-agent`**
-- "What does this system do?"
-- "Understand the codebase before changing it"
-- "Generate a system overview"
-- "Gate 0"
-- "Knowledge graph available"
-- "Onboarding guide"
-- "What architecture is this?"
-- **Auto-triggered:** `.understand-anything/knowledge-graph.json` exists
-
-**`impact-analysis-agent`**
-- "What will this change affect?"
-- "Impact analysis"
-- "What could break?"
-- "Affected components"
-- "Identify regression risks"
-- "Pre-change risk map"
-
-**`graph-traceability-agent`**
-- "Link requirements to components"
-- "Graph traceability matrix"
-- "Requirement to code to test"
-- "Audit traceability chain"
-- "Orphan requirements"
-- "Orphan changes"
-
-**`regression-selection-agent`**
-- "Which tests need to run?"
-- "Select regression tests"
-- "Test coverage gaps"
-- "Prioritize existing tests"
-
-**`diff-evidence-agent`**
-- "What actually changed vs predicted?"
-- "Predicted vs actual impact"
-- "Diff evidence"
-- "Unexpected changes"
-- "Risk delta"
-- "Release impact summary"
-
----
-
-### AI/ML-BOM and Agent Run Provenance
-
-**`agile-v-aibom`**
-- "Create an AI-BOM for this task"
-- "Inventory AI models, agent runtimes, or AI tools"
-- "Link model/runtime/tool provenance to evidence bundles"
-- "Compare two AI-assisted runs"
-- "Determine whether model/runtime/tool changes require revalidation"
-- "Integrate k8s-aibom or CycloneDX ML-BOM artifacts"
-- "Prepare regulated release evidence for AI-assisted engineering"
-- "AI evidence bundle" / "AIBOM" / "ML-BOM" / "agent run provenance"
-- **Auto-trigger:** Any L1+ AI-assisted task that needs provenance evidence
-
-Common companion skills:
-- `agile-v-core` for lifecycle integration
-- `agile-v-control-matrix` for AIBOM controls
-- `agile-v-quality-gates` for AIBOM gates
-- `red-team-verifier` for independent BOM review
-- `compliance-auditor` for audit evidence
-- `release-manager` for release packaging
-
----
-
-### Discovery Phase (Pre-Requirements)
-
-**`discovery-analyst`**
-- "I have user interview transcripts"
-- "Convert customer feedback to requirements"
-- "Analyze support tickets for patterns"
-- "We did user research, now what?"
-- "Create discovery log"
-- "Identify assumptions and hypotheses"
-- "Plan experiments to validate ideas"
-
-**`threat-modeler`**
-- "What are the security risks?"
-- "Perform threat modeling"
-- "STRIDE analysis"
-- "Privacy impact assessment"
-- "Identify security requirements"
-- "We need to assess data privacy"
-- "What threats should we consider?"
-
-**`ux-spec-author`**
-- "Define user flows"
-- "Create design specification"
-- "What are the accessibility requirements?"
-- "Design the interaction patterns"
-- "Error states and edge cases"
-- "Performance budgets for UX"
-- "Convert wireframes to requirements"
-
-### Requirements Phase (Left Side of V)
-
-**`requirement-architect`**
-- "Write PRD"
-- "Create requirements document"
-- "Convert product intent to requirements"
-- "Define features formally"
-- "Generate requirement IDs"
-- "Blueprint approval"
-- "Formalize candidate requirements"
-
-**`logic-gatekeeper`**
-- "Validate requirements"
-- "Check for ambiguity"
-- "Are the requirements testable?"
-- "Review physical constraints"
-- "Check for conflicts"
-- "Verify requirement completeness"
-- "Validate priority assignments"
-
-### Synthesis Phase (Apex of V)
-
-**`build-agent`** (core, language-agnostic)
-- "Implement the features"
-- "Generate artifacts"
-- "Build from requirements"
-- "Create build manifest"
-
-**`build-agent-python`**
-- "Build Python backend"
-- "Implement in Python"
-- "Create Python package"
-- "FastAPI/Flask/Django application"
-- "Python data pipeline"
-- "ML model implementation"
-- "Python CLI tool"
-- **Auto-detected:** `requirements.txt`, `pyproject.toml`, `setup.py`, `.py` files
-
-**`build-agent-js`**
-- "Build React app"
-- "Implement in TypeScript"
-- "Create Node.js backend"
-- "Next.js/Express application"
-- "Build frontend"
-- "JavaScript API"
-- **Auto-detected:** `package.json`, `.js`, `.ts`, `.jsx`, `.tsx` files
-
-**`build-agent-dart`**
-- "Build Flutter app"
-- "Implement in Dart"
-- "Create mobile application"
-- "Flutter widget"
-- "Cross-platform app"
-- **Auto-detected:** `pubspec.yaml`, `.dart` files
-
-**`build-agent-embedded`**
-- "Build firmware"
-- "Implement for microcontroller"
-- "C/C++ embedded code"
-- "Hardware integration"
-- "RTOS application"
-- "Safety-critical system"
-- **Auto-detected:** `CMakeLists.txt`, `Makefile`, `.c`, `.cpp` files with embedded patterns
-
-**`build-agent-nestjs`**
-- "Build NestJS backend"
-- "Implement NestJS API"
-- "Create NestJS microservice"
-- "NestJS authentication"
-- "NestJS GraphQL API"
-- "TypeORM integration"
-- "Prisma integration"
-
-**`test-designer`**
-- "Design test cases"
-- "Create verification suite"
-- "How do we test this?"
-- "Generate test specification"
-- "Define acceptance tests"
-
-**`schematic-generator`**
-- "Generate schematic"
-- "Create PCB design"
-- "Hardware design from requirements"
-- "Netlist generation"
-
-### Verification Phase (Right Side of V)
-
-**`red-team-verifier`**
-- "Run verification"
-- "Test the implementation"
-- "Verify against requirements"
-- "Find defects"
-- "Challenge the build"
-- "Execute test suite"
-- "Validation summary"
-
-### Compliance & Documentation
-
-**`compliance-auditor`**
-- "Generate traceability matrix"
-- "Create decision log"
-- "Audit trail"
-- "VSR (Validation Summary Report)"
-- "ISO 9001 compliance"
-- "Quality metrics"
-- "Track defects and CAPAs"
-
-**`documentation-agent`**
-- "Generate repository docs"
-- "Create README and architecture docs"
-- "ISO 9001 documentation"
-- "V-Model documentation"
-- "Standards compliance docs"
-
-### Agile Delivery
-
-**`agile-v-product-owner`**
-- "Plan sprint"
-- "Create backlog"
-- "Prioritize user stories"
-- "Sprint planning"
-- "Retrospective"
-- "Track velocity"
-- "Convert REQs to stories"
-- "Generate change requests from retro"
-
-### Release & Operations
-
-**`release-manager`**
-- "Plan release"
-- "Create rollout plan"
-- "Deployment strategy"
-- "Release notes"
-- "Rollback procedure"
-- "Pre-release checklist"
-- "Post-release validation"
-
-**`observability-planner`**
-- "Define production metrics"
-- "Create monitoring dashboards"
-- "Set up alerts"
-- "SLO definition"
-- "Monitor production"
-- "Incident detection"
-- "Error budget tracking"
-
-### Business Track (Strategy, R&D, GTM, Operations) [Draft]
-
-**`venture-strategist`**
-- "Define the product vision"
-- "Create business model"
-- "Build product portfolio"
-- "Competitive analysis"
-- "Market positioning"
-- "Fundraising strategy"
-- "Investor pitch materials"
-- "Strategic OKRs"
-
-**`rd-innovator`**
-- "Evaluate this technology"
-- "Create technology radar"
-- "Start R&D initiative"
-- "Build a prototype"
-- "Track patents and IP"
-- "Transfer prototype to engineering"
-- "Technology scouting"
-- "Innovation pipeline"
-
-**`gtm-executor`**
-- "Plan product launch"
-- "Marketing strategy"
-- "Define ideal customer profile"
-- "Channel strategy"
-- "Growth experiments"
-- "Sales battle cards"
-- "Pricing strategy"
-- "Customer acquisition plan"
-
-**`business-operations`**
-- "Create budget"
-- "Financial planning"
-- "Set up OKRs"
-- "Vendor evaluation"
-- "Resource planning"
-- "Team capacity"
-- "Operational risk assessment"
-- "Track burn rate and runway"
-
-### C-Suite Orchestrator Layer (Executive Governance) [Draft]
-
-**`chief-exec`** (CEO)
-- "Prepare board report"
-- "Strategic alignment review"
-- "Crisis response"
-- "Cross-functional conflict"
-- "Quarterly strategic review"
-- "Executive dashboard"
-- "Company health overview"
-
-**`chief-tech`** (CTO)
-- "Architecture decision"
-- "Build vs buy analysis"
-- "Tech debt strategy"
-- "Platform plan"
-- "Engineering standards"
-- "Security posture review"
-- "Technology adoption governance"
-
-**`chief-finance`** (CFO)
-- "Financial model"
-- "Cash management and runway"
-- "Fundraising strategy and terms"
-- "Board financial report"
-- "Unit economics thresholds"
-- "Financial controls and approvals"
-- "Dilution analysis"
-
-**`chief-people`** (CHRO)
-- "Org design and team structure"
-- "Hiring pipeline"
-- "Compensation framework"
-- "Culture code and values"
-- "Performance review process"
-- "DE&I strategy"
-- "Onboarding playbooks"
-- "Talent development and succession"
-
-**`chief-ops`** (COO)
-- "Operational playbooks"
-- "Process design and optimization"
-- "Delivery cadence governance"
-- "Resource arbitration"
-- "Vendor escalation"
-- "Scaling readiness assessment"
-- "Cross-functional coordination"
-
-### Orchestration & Lifecycle
-
-**`agile-v-core`**
-- Load first in any Agile V session (foundational)
-- "What are Agile V principles?"
-- "Explain directives"
-- "Context engineering rules"
-- "Cost governance"
-
-**`agile-v-pipeline`**
-- "Orchestrate the workflow"
-- "Run the full pipeline"
-- "Stage handoffs"
-- "Priority-ordered execution"
-- "Checkpoint types"
-
-**`agile-v-lifecycle`**
-- "Start Cycle 2"
-- "Manage iterations"
-- "Create change request"
-- "Multi-cycle management"
-- "Versioned requirements"
-- "Archive previous cycle"
-
-**`agile-v-compliance`**
-- "Risk management"
-- "CAPA protocol"
-- "Canary tests"
-- "Revalidation triggers"
-- "Security controls"
-
-## Common Workflows
-
-### Workflow 0: Change to an Existing Codebase (with Understand Anything)
-
-Use this when the task modifies an existing repository and a knowledge graph is available.
-
-1. **`system-understanding-agent`** — Gate 0: system overview, architecture map, gate decision
-2. **`impact-analysis-agent`** — Impact map, affected components, regression candidates
-3. **`regression-selection-agent`** — Select and prioritize regression tests
-4. **`requirement-architect`** — Generate requirements from impact map
-5. **`logic-gatekeeper`** — Validate requirements
-6. **Human Gate 1** — Review impact map + requirements
-7. **`build-agent-*`** + **`test-designer`** — Parallel synthesis (Build Agent receives impact map)
-8. **`graph-traceability-agent`** — Link requirements to changed files and tests
-9. **`diff-evidence-agent`** — Compare predicted vs actual impact
-10. **`red-team-verifier`** — Verify runtime + evidence quality
-11. **Human Gate 2** — Review traceability matrix + evidence bundle
-12. **`compliance-auditor`** — Generate evidence bundle with `00_understanding/` section
-
-### Workflow 1: New Project from Scratch
-
-1. **`discovery-analyst`** — Convert user research → candidate REQs
-2. **`threat-modeler`** — Identify security/privacy REQs
-3. **`ux-spec-author`** — Define design constraints → candidate REQs
-4. **`requirement-architect`** — Formalize all candidate REQs → REQUIREMENTS.md
-5. **`logic-gatekeeper`** — Validate requirements
-6. **Human Gate 1** — Approve blueprint
-7. **`build-agent-*`** + **`test-designer`** — Parallel synthesis
-8. **`red-team-verifier`** — Execute tests
-9. **Human Gate 2** — Approve validation
-10. **`release-manager`** — Plan deployment
-11. **`observability-planner`** — Set up monitoring
-12. **`compliance-auditor`** — Generate audit trail
-
-### Workflow 2: Add New Feature (Cycle 2)
-
-1. **`agile-v-lifecycle`** — Start Cycle 2
-2. **`discovery-analyst`** — (if new research) Convert insights
-3. **`requirement-architect`** — Create CR-XXXX, add new REQs
-4. **`logic-gatekeeper`** — Validate new/modified REQs only
-5. **Human Gate 1** — Approve changes
-6. Continue with build → verify → release
-
-### Workflow 3: Sprint-Based Delivery
-
-1. **`requirement-architect`** + **`logic-gatekeeper`** — Full REQ set for cycle
-2. **Human Gate 1** — Approve
-3. **`agile-v-product-owner`** — Decompose into backlog, plan Sprint 1
-4. For each sprint:
-   - **`build-agent-*`** — Build sprint scope
-   - **`test-designer`** — Design tests for sprint scope
-   - **`red-team-verifier`** — Verify sprint artifacts
-   - **`agile-v-product-owner`** — Sprint review + retro
-5. After all sprints → **Human Gate 2** → Release
-
-### Workflow 4: Security-First Development
-
-1. **`threat-modeler`** — STRIDE analysis → security REQs
-2. **`requirement-architect`** — Formalize security REQs (CRITICAL priority)
-3. **`logic-gatekeeper`** — Validate
-4. **Human Gate 1** — Approve
-5. **`build-agent-*`** — Implement security controls
-6. **`test-designer`** — Create security test cases (SQLMap, XSS, etc.)
-7. **`red-team-verifier`** — Execute security tests + penetration testing
-8. **Human Gate 2** — Security sign-off required
-
-### Workflow 5: Production Incident Response
-
-1. **Incident occurs** → `observability-planner` detects via alert
-2. **`release-manager`** — Execute rollback plan
-3. **`observability-planner`** — Log incident (INC-XXXX)
-4. Root cause analysis → identify REQ gap
-5. **`agile-v-lifecycle`** — Create CR-XXXX
-6. **`requirement-architect`** — Update REQ-XXXX
-7. **`logic-gatekeeper`** — Re-validate
-8. Re-enter pipeline for fix
-
-### Workflow 6: Business Track — New Venture [Draft]
-
-1. **`venture-strategist`** — Vision, business model, product portfolio
-2. **Business Gate 0** — Approve strategy
-3. **`rd-innovator`** — Technology assessment, R&D initiatives, prototyping
-4. **`gtm-executor`** — Go-to-market strategy, channel planning
-5. **Business Gate 1** — Approve R&D portfolio + GTM strategy
-6. **`business-operations`** — Financial plan, OKRs, resource allocation
-7. **Business Gate 2** — Approve budget + operational plan
-8. **Enter Engineering Pipeline** — `discovery-analyst` (portfolio → product intent)
-9. Continue: Requirements → Build → Verify → Release → Monitor
-10. **Feedback** — Production metrics + growth data → inform next business cycle
-
-### Workflow 7: Business Track — Product Launch [Draft]
-
-1. **`venture-strategist`** — Confirm PORT-XXXX launch decision
-2. **`gtm-executor`** — Launch plan (MKT-XXXX), marketing materials, campaigns
-3. **`business-operations`** — Budget allocation (FIN-XXXX)
-4. **`release-manager`** — Engineering deployment coordination
-5. **`gtm-executor`** — Execute launch phases (pre-launch → launch → post-launch)
-6. **`observability-planner`** — Monitor production metrics
-7. **`gtm-executor`** — Growth experiments (GROW-XXXX), iterate
-8. **Feedback** — Results → `venture-strategist` (portfolio updates), `discovery-analyst` (next cycle)
-
-### Workflow 8: Business Track — R&D to Product [Draft]
-
-1. **`venture-strategist`** — Strategic direction (VIS-XXXX, PORT-XXXX)
-2. **`rd-innovator`** — Technology scouting (TECH-XXXX), R&D initiative (RDI-XXXX)
-3. **`rd-innovator`** — Prototype (PROTO-XXXX), validate against success criteria
-4. **Business Gate 1 (R&D)** — Approve transfer to engineering
-5. **`rd-innovator`** — Create Transfer Package
-6. **`discovery-analyst`** — Convert transfer package → OBS/INS/HYP entries
-7. Continue: Requirements → Build → Verify → Release
-8. **`rd-innovator`** — Production feedback updates TECH_RADAR.md
-
-### Workflow 9: C-Suite Orchestrated Business [Draft]
-
-1. **`chief-exec`** -- Set strategic direction, align C-suite
-2. **Executive Gate 0** -- Approve strategic alignment
-3. **`chief-tech`** -- Architecture governance, tech strategy, platform plan
-4. **`chief-finance`** -- Financial model, controls, fundraising governance
-5. **`chief-people`** -- Org design, hiring plan, compensation framework
-6. **`chief-ops`** -- Process design, delivery cadence, operational playbooks
-7. **Executive Gate 1** -- Approve domain strategies (Tech + Finance + People + Ops)
-8. **`venture-strategist`** -- Vision, business model, portfolio (governed by chief-exec)
-9. **Business Gate 0** -- Approve strategy
-10. **Continue standard Business + Engineering pipeline**
-11. **Quarterly:** `chief-exec` -- Strategic review, board report, direction update
-
-### Workflow 10: Architecture Governance [Draft]
-
-1. **`chief-tech`** -- Technology strategy, principles (TS-XXXX)
-2. **`chief-tech`** -- ADR-XXXX for significant decisions (build-vs-buy, framework, platform)
-3. **Executive Gate 1 (Tech)** -- Approve architecture decisions
-4. **`rd-innovator`** -- Technology scouting, prototypes (governed by CTO adoption approval)
-5. **`build-agent-*`** -- Implementation within ADR constraints
-6. **`chief-tech`** -- Tech debt triage (TD-XXXX), security posture review
-
-### Workflow 11: People Operations Lifecycle [Draft]
-
-1. **`chief-people`** -- Org design (ORG-XXXX), culture code (CULT-XXXX)
-2. **`chief-people`** -- Compensation framework (COMP-XXXX), performance framework (PERF-XXXX)
-3. **Executive Gate 1 (People)** -- Approve org + compensation
-4. **`chief-people`** -- Open roles (HIRE-XXXX) based on capacity gaps
-5. **`chief-people`** -- Interview, hire, onboard (30/60/90 plans)
-6. **`chief-people`** -- Quarterly: performance reviews, talent development, DE&I reporting
-
-## Skill Loading Recommendations
-
-### Essential Core (Load First)
-- `agile-v-core` — Always load first (foundational values & directives)
-
-### By Phase
-- **System Understanding (existing repos):** `system-understanding-agent`, `impact-analysis-agent`, `regression-selection-agent`
-- **Discovery:** `discovery-analyst`, `threat-modeler`, `ux-spec-author`
-- **Requirements:** `requirement-architect`, `logic-gatekeeper`
-- **Synthesis:** `build-agent-*` (domain-specific), `test-designer`
-- **Verification:** `red-team-verifier`, `graph-traceability-agent`, `diff-evidence-agent`
-- **Release:** `release-manager`, `observability-planner`
-- **Compliance:** `compliance-auditor`, `documentation-agent`
-- **Agile Delivery:** `agile-v-product-owner`
-
-### By Business Phase
-- **Strategy:** `venture-strategist`
-- **Innovation:** `rd-innovator`
-- **Market Execution:** `gtm-executor`
-- **Operations:** `business-operations`
-
-### By C-Suite Domain [Draft]
-- **CEO / Strategic Alignment:** `chief-exec`
-- **CTO / Tech Governance:** `chief-tech`
-- **CFO / Financial Governance:** `chief-finance`
-- **CHRO / People Operations:** `chief-people`
-- **COO / Operational Excellence:** `chief-ops`
-
-### On Demand
-- `agile-v-pipeline` — When orchestrating multi-agent workflows
-- `agile-v-lifecycle` — When managing multi-cycle iterations
-- `agile-v-compliance` — When risk/CAPA/revalidation needed
-
-## Skill Compatibility Matrix
-
-| Skill | Run Alone? | Run in Parallel? | Dependencies |
+| Intent | Skill | Location | Status |
 |---|---|---|---|
-| `system-understanding-agent` | Yes (Gate 0) | No (sequential, before impact-analysis) | None |
-| `impact-analysis-agent` | No (requires system overview) | No (after Gate 0) | `system-understanding-agent` |
-| `regression-selection-agent` | No (requires impact map) | Yes (parallel with requirement-architect) | `impact-analysis-agent` |
-| `graph-traceability-agent` | No (requires diff + tests) | No (after build + test) | `build-agent-*`, `test-designer` |
-| `diff-evidence-agent` | No (requires diff + traceability) | No (after graph-traceability) | `graph-traceability-agent` |
-| `agile-v-core` | Yes (always load first) | N/A | None |
-| `discovery-analyst` | Yes | No (sequential before requirement-architect) | None |
-| `threat-modeler` | Yes | Yes (parallel with ux-spec-author) | None |
-| `ux-spec-author` | Yes | Yes (parallel with threat-modeler) | None |
-| `requirement-architect` | Yes | No (wait for discovery/threat/ux inputs) | `agile-v-core` |
-| `logic-gatekeeper` | No (requires REQUIREMENTS.md) | No | `requirement-architect` |
-| `build-agent-*` | No (requires approved REQs) | Yes (parallel with test-designer) | `logic-gatekeeper` |
-| `test-designer` | No (requires approved REQs) | Yes (parallel with build-agent) | `logic-gatekeeper` |
-| `red-team-verifier` | No (requires artifacts + tests) | No | `build-agent-*`, `test-designer` |
-| `release-manager` | No (requires Gate 2 approval) | Yes (parallel with observability-planner) | `red-team-verifier` |
-| `observability-planner` | No (requires REQs) | Yes (parallel with release-manager) | `requirement-architect` |
-| `compliance-auditor` | Yes (observes all stages) | Yes (runs continuously) | None |
-| `documentation-agent` | Yes (on demand) | Yes | None |
-| `agile-v-product-owner` | No (requires REQs) | No (orchestrates sprints) | `requirement-architect` |
-| `agile-v-pipeline` | No (orchestrates others) | N/A | `agile-v-core` |
-| `agile-v-lifecycle` | No (manages cycles) | N/A | `agile-v-core` |
-| `venture-strategist` | Yes | No (upstream of all business skills) | `agile-v-core` |
-| `rd-innovator` | Yes | Yes (parallel with gtm-executor) | `venture-strategist` |
-| `gtm-executor` | No (requires PORTFOLIO.md) | Yes (parallel with rd-innovator) | `venture-strategist` |
-| `business-operations` | No (requires strategic OKRs) | Yes (parallel with rd-innovator, gtm-executor) | `venture-strategist` |
-| `chief-exec` | Yes (top-level orchestrator) | No (coordinates all C-suite) | `agile-v-core` |
-| `chief-tech` | Yes | No (governs engineering skills) | `agile-v-core`, `chief-exec` |
-| `chief-finance` | Yes | Yes (parallel with chief-tech, chief-people, chief-ops) | `agile-v-core`, `chief-exec` |
-| `chief-people` | Yes (standalone domain) | Yes (parallel with chief-tech, chief-finance, chief-ops) | `agile-v-core`, `chief-exec` |
-| `chief-ops` | Yes | Yes (parallel with chief-tech, chief-finance, chief-people) | `agile-v-core`, `chief-exec` |
-| `agile-v-aibom` | Yes (L1+ AI tasks) | Yes (parallel with build/test) | `agile-v-core` |
+| Foundation, directives, context and lifecycle rules | `agile-v-core` | `agile-v-core/` | Current |
+| Multi-agent waves and handoffs | `agile-v-pipeline` | `agile-v-pipeline/` | Current |
+| Cycle 2+, change requests, archival | `agile-v-lifecycle` | `agile-v-lifecycle/` | Current |
+| Risk, CAPA, approvals, security, revalidation | `agile-v-compliance` | `agile-v-compliance/` | Current |
+| Runtime control matrix | `agile-v-control-matrix` | `agile-v-control-matrix/` | Current |
+| Interface, test, data-type, and time-allocation checks | `agile-v-quality-gates` | `agile-v-quality-gates/` | Current |
+| Coding anti-pattern prevention | `agile-v-behavioral` | `agile-v-behavioral/` | Current |
+| AI run provenance and AI/ML-BOM | `agile-v-aibom` | `agile-v-aibom/` | **[Preview]** |
+| User research to candidate requirements | `discovery-analyst` | `discovery-analyst/` | Current |
+| Security/privacy threat analysis | `threat-modeler` | `threat-modeler/` | Current |
+| UX, accessibility, interaction constraints | `ux-spec-author` | `ux-spec-author/` | Current |
+| Formal requirements and baselines | `requirement-architect` | `requirement-architect/` | Current |
+| Independent ambiguity/constraint findings | `logic-gatekeeper` | `logic-gatekeeper/` | Current |
+| Language-agnostic implementation | `build-agent` | `build-agent/` | Current |
+| Python implementation | `build-agent-python` | `domains/build-agent-python/` | Current |
+| JavaScript/TypeScript/Web implementation | `build-agent-js` | `domains/build-agent-js/` | Current |
+| NestJS implementation | `build-agent-nestjs` | `domains/build-agent-nestjs/` | Current |
+| Dart/Flutter implementation | `build-agent-dart` | `domains/build-agent-dart/` | Current |
+| Embedded C/C++ and firmware | `build-agent-embedded` | `domains/build-agent-embedded/` | Current |
+| Hardware schematics, netlists, HDL | `schematic-generator` | `schematic-generator/` | Current |
+| Independent test design from baseline | `test-designer` | `test-designer/` | Current |
+| Independent execution and verification | `red-team-verifier` | `red-team-verifier/` | Current |
+| Representative intended-use validation | `validation-agent` | `validation-agent/` | Current |
+| Hazard analysis and safety assurance | `safety-engineer` | `safety-engineer/` | Current |
+| Decision logs, traceability, audit evidence | `compliance-auditor` | `compliance-auditor/` | Current |
+| Standards-based repository documentation | `documentation-agent` | `documentation-agent/` | Current |
+| Backlog, sprint, and Product Owner work | `agile-v-product-owner` | `agile-v-product-owner/` | Current |
+| Rollout, rollback, and deployment plan | `release-manager` | `release-manager/` | Current |
+| Metrics, dashboards, alerts, SLOs | `observability-planner` | `observability-planner/` | Current |
+| Existing-system Gate 0 overview | `system-understanding-agent` | `skills/system-understanding-agent/` | Current |
+| Pre-change impact map | `impact-analysis-agent` | `skills/impact-analysis-agent/` | Current |
+| Impact-based regression selection | `regression-selection-agent` | `skills/regression-selection-agent/` | Current |
+| Requirement/component/test graph links | `graph-traceability-agent` | `skills/graph-traceability-agent/` | Current |
+| Predicted-versus-actual diff evidence | `diff-evidence-agent` | `skills/diff-evidence-agent/` | Current |
+| Business vision, model, portfolio | `venture-strategist` | `venture-strategist/` | **[Preview]** |
+| R&D pipeline, radar, prototypes, IP | `rd-innovator` | `rd-innovator/` | **[Preview]** |
+| Go-to-market, launch, growth | `gtm-executor` | `gtm-executor/` | **[Preview]** |
+| Finance, OKRs, resources, vendors | `business-operations` | `business-operations/` | **[Preview]** |
+| Shared C-Suite governance primitives | `c-suite-foundation` | `c-suite-foundation/` | **[Preview]** |
+| CEO orchestration and strategic alignment | `chief-exec` | `chief-exec/` | **[Preview]** |
+| CTO architecture governance | `chief-tech` | `chief-tech/` | **[Preview]** |
+| CFO financial governance | `chief-finance` | `chief-finance/` | **[Preview]** |
+| CHRO people governance | `chief-people` | `chief-people/` | **[Preview]** |
+| COO operational governance | `chief-ops` | `chief-ops/` | **[Preview]** |
+| Periodic executive briefing aggregation | `c-suite-update` | `c-suite-update/` | **[Preview]** |
 
-## Tips for Effective Skill Use
+## Key Routing Distinctions
 
-1. **Always start with `agile-v-core`** — It sets foundational values and directives.
+| User asks for | Route | Boundary |
+|---|---|---|
+| “Check the requirements” | `logic-gatekeeper` | Records independent findings; never rewrites the draft or baseline |
+| “Build this” | `build-agent` + one domain build skill | Requires Gate 1-approved, frozen baseline |
+| “Design the tests” | `test-designer` | Reads the baseline, not implementation |
+| “Verify it works as specified” | `red-team-verifier` | Produces `.agile-v/VERIFICATION_SUMMARY.md` and `VER-XXXX` evidence |
+| “Validate it with users/in operations” | `validation-agent` | Produces intended-use validation plan/protocol/report after verification |
+| “Run Eval Gate / prepare Gate 2” | `red-team-verifier` + `compliance-auditor` | `EVAL_RESULTS.md` status must be `PASS` or authorized `WAIVED`; link it from `VERIFICATION_SUMMARY.md` |
+| “Assess hazards or unacceptable harm” | `safety-engineer` | Tailors safety methods and assurance; does not replace verification or validation |
+| “Can the agent/tool execute?” | `agile-v-control-matrix` + `agile-v-compliance` | Check data, tool, model, rights, approval, rollback, and evidence controls |
+| “Understand this existing repo/change impact” | `system-understanding-agent` then impact/regression skills | Complete Gate 0 before requirements and build |
+| “Plan a release” | `release-manager` | Starts after Gate 2 approval; no autonomous production release |
+| “Set strategy/govern the business” | relevant preview business/C-Suite skill | Preview contracts require local approval and baselining |
 
-2. **Discovery before requirements** — Run `discovery-analyst`, `threat-modeler`, `ux-spec-author` *before* `requirement-architect` for complete requirements.
+## Canonical Workflows
 
-3. **Parallel synthesis** — Run `build-agent-*` and `test-designer` in parallel (fresh context each) for speed.
+### New or Changed Feature
 
-4. **Independent verification** — Never let `red-team-verifier` inherit context from `build-agent` (prevents bias).
+`agile-v-core -> risk classification -> requirement-architect (persist draft) -> logic-gatekeeper (independent findings) -> architect revision -> Human Gate 1 -> frozen baseline -> build-agent + test-designer (independent) -> red-team-verifier -> Eval Gate -> validation-agent when intended-use validation is required -> AI manifest/evidence bundle -> Human Gate 2 -> release-manager -> observability-planner`
 
-5. **Continuous compliance** — `compliance-auditor` can observe all stages; doesn't block workflow.
+Follow the evidence and stop conditions in the [Golden Journey](docs/GOLDEN_JOURNEY.md).
 
-6. **Sprint-based flexibility** — Use `agile-v-product-owner` to break large cycles into manageable sprints.
+### Existing Repository
 
-7. **Post-release rigor** — Don't skip `release-manager` and `observability-planner` — they close the feedback loop.
+1. `system-understanding-agent` creates the Gate 0 system overview.
+2. `impact-analysis-agent` predicts affected components, interfaces, risks, and tests.
+3. `regression-selection-agent` selects existing regression coverage and flags gaps.
+4. Continue the canonical feature flow through a persisted draft and Gate 1 baseline.
+5. After implementation, `graph-traceability-agent` links requirements, components, changes, and tests.
+6. `diff-evidence-agent` compares predicted and actual impact before independent verification and Gate 2.
 
-8. **Security shifts left** — Run `threat-modeler` early (before code) to catch threats before implementation.
+### Regulated or Safety-Relevant Work
 
-9. **Multi-cycle evolution** — Use `agile-v-lifecycle` for Cycle 2+ to manage change requests and versioning.
+Use the `regulated` install profile. Classify `L0`-`L4`; add `threat-modeler`, `safety-engineer`, and `validation-agent` according to scope; maintain control, trace, approval, verification, applicable validation, release, and AI influence evidence. Skills and templates support an assurance process but do not establish certification or regulatory conformity.
 
-10. **Context optimization** — Load only the skills you need for the current stage; use file paths in handoffs (not full file contents).
+### Business Preview
 
-11. **Business before engineering** — Run `venture-strategist` before `discovery-analyst` when starting a new product. Strategy defines *what* to build; engineering defines *how*.
+Load `c-suite-foundation` before a relevant `chief-*` skill. C-Suite skills govern and delegate; functional skills execute strategy, R&D, GTM, and operations. Use `c-suite-update` only to aggregate already controlled domain evidence. Do not treat preview outputs as approved decisions without accountable human review.
 
-12. **Traceable marketing** — Always run `gtm-executor` with access to `VALIDATION_SUMMARY.md` — marketing claims must trace to verified capabilities.
+## Loading Rules
 
-13. **R&D is not engineering** — Prototypes from `rd-innovator` are *not* production code. Transfer to engineering means fresh build from requirements.
-
-14. **C-Suite governs, not executes** — `chief-*` skills set policy and strategy; functional skills (`business-operations`, `rd-innovator`, etc.) execute. Don't load C-suite skills for execution tasks.
-
-15. **Start with chief-exec for full business suite** — When running the complete business suite, `chief-exec` coordinates all other C-suite agents. Load it first, then domain C-suite skills as needed.
-
-16. **chief-people is standalone** — Unlike other C-suite skills that orchestrate existing functional skills, `chief-people` owns an entirely new domain (org, hiring, compensation, culture). It has no functional skill dependency.
-
-## Troubleshooting
-
-**"I'm not sure which skill to use"**
-- Start with `agile-v-core` for foundational guidance
-- Check the Quick Reference Table above
-- When in doubt, ask: "What phase am I in?" (Discovery → Requirements → Synthesis → Verification → Release)
-
-**"Can I skip a skill?"**
-- Discovery skills (discovery-analyst, threat-modeler, ux-spec-author): Optional if requirements are already clear
-- `requirement-architect`: Required (no REQs = no traceability)
-- `logic-gatekeeper`: Required (prevents ambiguous REQs)
-- `build-agent-*`: Required for code generation
-- `test-designer`: Required for independent verification
-- `red-team-verifier`: Required (Gate 2 depends on it)
-- `release-manager`, `observability-planner`: Recommended for production deployment
-- `compliance-auditor`: Recommended for audit trail (required for regulated industries)
-
-**"Skills seem to overlap"**
-- `requirement-architect` vs `discovery-analyst`: Discovery analyzes messy inputs; Requirement Architect formalizes them
-- `build-agent` (core) vs `build-agent-python`: Core is language-agnostic; domain-specific extends it
-- `release-manager` vs `observability-planner`: Release handles deployment; Observability handles monitoring
-- `agile-v-pipeline` vs `agile-v-lifecycle`: Pipeline orchestrates stages within a cycle; Lifecycle manages multiple cycles
-- `venture-strategist` vs `discovery-analyst`: Venture Strategist defines *what product to build* (business); Discovery Analyst converts *user research into requirements* (engineering)
-- `gtm-executor` vs `release-manager`: GTM handles market launch (marketing, campaigns); Release Manager handles technical deployment
-- `rd-innovator` vs `build-agent`: R&D explores and prototypes (disposable); Build Agent creates production artifacts from requirements
-- `business-operations` vs `compliance-auditor`: Business Operations manages financial/operational compliance; Compliance Auditor manages engineering/regulatory compliance
-- `chief-tech` vs `rd-innovator`: CTO governs technology adoption (approves Trial→Adopt); R&D Innovator scouts and prototypes
-- `chief-finance` vs `business-operations`: CFO sets financial policy and models; Business Operations executes budgets and tracking
-- `chief-ops` vs `business-operations`: COO sets operational process policy; Business Operations executes operational tracking
-- `chief-people` vs `business-operations` (resource planning): CHRO owns org design, hiring, and compensation; Business Operations tracks headcount costs and capacity
-- `chief-exec` vs `venture-strategist`: CEO governs strategic execution and cross-C-suite alignment; Venture Strategist produces strategy artifacts
-
-**"How do I know when to move to the next skill?"**
-- Each skill produces a **handoff artifact** (REQUIREMENTS.md, BUILD_MANIFEST.md, VALIDATION_SUMMARY.md, etc.)
-- Wait for **Human Gate approval** before proceeding past Gate 1 or Gate 2
-- Check **Halt Conditions** in each skill — if any are true, stop and resolve before proceeding
-
----
-
-For more information, see the [Agile V Skills README](README.md) or visit [agile-v.org](https://agile-v.org).
+1. Load `agile-v-core` first.
+2. Use the smallest applicable [installation profile](docs/INSTALL_PROFILES.md).
+3. Preserve independence with separate fresh contexts; if one context is unavoidable, design tests before implementation.
+4. Pass durable file references, not chat-only handoffs.
+5. Requirement changes after Gate 1 require a change request, independent review, approval, and a new baseline.
+6. Keep verification and intended-use validation evidence separate.
+7. A skill's frontmatter status controls preview labeling; branch location does not override it.

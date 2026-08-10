@@ -1,16 +1,16 @@
 {
   "name": "graph-traceability-agent",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Links Agile V requirements to knowledge graph nodes, changed files, and test evidence. Produces the graph traceability matrix for the evidence bundle.",
   "category": "traceability",
   "lifecycle_position": "post-build",
   "inputs": [
-    ".agile-v/requirements/requirements.md",
-    ".agile-v/impact/impact_map.md",
-    ".agile-v/impact/affected_components.json",
+    ".agile-v/REQUIREMENTS.md",
+    ".agile-v/phases/01-impact/impact_map.md",
+    ".agile-v/phases/01-impact/affected_components.json",
     "implementation diff",
     "test results",
-    ".agile-v/understanding/normalized_graph.json"
+    ".agile-v/phases/00-understanding/normalized_graph.json"
   ],
   "outputs": [
     "graph_traceability_matrix.md",

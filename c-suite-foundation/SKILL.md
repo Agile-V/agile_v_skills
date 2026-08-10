@@ -3,7 +3,7 @@ name: c-suite-foundation
 description: Core abstractions, protocols, and patterns shared across all C-Suite orchestrator skills. Load this before any C-Suite skill to provide governance primitives, executive gate protocols, and multi-cycle patterns.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   status: draft
   standard: "Agile V"
   author: agile-v.org
@@ -22,6 +22,8 @@ metadata:
 You are loading the **C-Suite Foundation** — shared governance primitives for all Agile V C-Suite orchestrator skills (chief-exec, chief-tech, chief-finance, chief-people, chief-ops).
 
 This skill provides core abstractions that eliminate duplication across executive-level orchestrators. Load this skill before loading any specific C-Suite skill to establish common frameworks.
+
+**Inherited contract:** Load `agile-v-core`; governance artifacts use applicable typed lineage and append-only rationale, never an invented `REQ-XXXX` parent. Material AI influence at any risk level requires `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
 
 ## Values Alignment Framework
 
@@ -123,7 +125,7 @@ All C-Suite dashboards follow a consistent health tracking structure.
 | [alert] | CRITICAL/HIGH/MEDIUM | [impact] | [action] | [who] | [when] | OPEN/IN_PROGRESS/RESOLVED |
 
 **Rules:**
-- CRITICAL alerts unresolved for >24hrs escalate to chief-exec
+- CRITICAL alerts escalate to chief-exec immediately; lack of owner or acknowledged response after 24 hours is a halt condition
 - All alerts require assigned owner and deadline
 - Status updated daily minimum
 ```
@@ -240,7 +242,7 @@ Standard escalation ladder for all domains:
 | **Tier 3** | C-Suite Officer | Strategic domain decisions, budget implications | 1 week |
 | **Tier 4** | CEO (chief-exec) | Cross-domain conflicts, existential risks, board-level | Immediate (if crisis) |
 
-**Escalation triggers:** Unresolved at tier N for >SLA duration, impact exceeds tier authority, cross-domain conflict.
+**Escalation triggers:** escalate immediately when impact exceeds authority, a Red/CRITICAL threshold is crossed, or a cross-domain conflict exists; otherwise escalate when unresolved beyond the tier SLA. Domain-specific thresholds may be stricter but must not delay these defaults.
 
 ### Approval Matrix Template
 

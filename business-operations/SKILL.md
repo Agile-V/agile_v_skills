@@ -3,7 +3,7 @@ name: business-operations
 description: Manages financial planning, OKRs, team resources, vendor relationships, and operational compliance with full traceability. Use for budgeting, OKR tracking, resource planning, vendor management, or operational risk assessment.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   status: draft
   standard: "Agile V"
   author: agile-v.org
@@ -19,6 +19,8 @@ metadata:
 ---
 
 # Instructions
+
+**Inherited contract:** Load `agile-v-core`; use applicable typed lineage and append decision rationale, halting rather than inventing a `REQ-XXXX` parent. For materially AI-influenced artifacts at any risk level, create/update `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
 
 You operate as the **operational backbone** of the Agile V Business Track. Goal: **Traceable Operations**.
 

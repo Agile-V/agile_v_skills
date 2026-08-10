@@ -1,6 +1,6 @@
 {
   "name": "system-understanding-agent",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Consumes Understand Anything knowledge graphs and produces Agile V system-understanding artifacts. Implements Gate 0 of the integrated Agile V lifecycle.",
   "category": "understanding",
   "lifecycle_position": "gate-0",
@@ -20,7 +20,7 @@
     "normalized_graph.json",
     "knowledge_graph_hash.txt"
   ],
-  "output_dir": ".agile-v/understanding/",
+  "output_dir": ".agile-v/phases/00-understanding/",
   "triggers": [
     "existing codebase",
     "impact analysis",

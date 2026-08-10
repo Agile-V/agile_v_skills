@@ -3,7 +3,7 @@ name: build-agent-embedded
 description: C/C++ build agent for embedded systems, firmware, and MCU projects. Extends build-agent with embedded constraints. Use when building firmware, bare-metal code, or resource-constrained systems.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.2"
+  version: "2.3"
   standard: "Agile V"
   domain: "Embedded/C/C++"
   extends: "build-agent"
@@ -635,7 +635,7 @@ Base evidence applies (task brief with REQ IDs, implementation plan, affected fi
 ---
 
 ### L3/L4: High Assurance
-Base evidence applies (all R2 evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
+Base evidence applies (all `L2` evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
 
 **Embedded-Specific Additions:**
 - **Full traceability matrix:** REQ → SSR/SRS → ART → TC → Evidence mapping in ATM.md

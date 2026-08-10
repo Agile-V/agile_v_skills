@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/schemas/skill-catalog.schema.json",
+  "title": "Agile V Skill Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_version", "skills", "integrations"],
+  "properties": {
+    "$schema": {"const": "./skill-catalog.schema.json"},
+    "schema_version": {"const": "1.0"},
+    "skills": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/skill"}
+    },
+    "integrations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claude_plugin"],
+      "properties": {
+        "claude_plugin": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["manifest", "version", "skills"],
+          "properties": {
+            "manifest": {"const": ".claude-plugin/plugin.json"},
+            "version": {"$ref": "#/$defs/version"},
+            "skills": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {"$ref": "#/$defs/skillName"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+(?:\\.[0-9]+)?(?:-[0-9A-Za-z.-]+)?$"},
+    "skillName": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "skill": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "path", "version", "status", "category", "routing"],
+      "properties": {
+        "name": {"$ref": "#/$defs/skillName"},
+        "path": {"type": "string", "pattern": "^(?:domains/|skills/)?[a-z0-9]+(?:-[a-z0-9]+)*/SKILL\\.md$"},
+        "version": {"$ref": "#/$defs/version"},
+        "status": {"enum": ["released", "draft"]},
+        "category": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "routing": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["intent", "prerequisites"],
+          "properties": {
+            "intent": {"type": "string", "minLength": 10},
+            "prerequisites": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {"$ref": "#/$defs/skillName"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

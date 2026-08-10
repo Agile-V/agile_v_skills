@@ -1,42 +1,40 @@
 name: Sync skills to Cursor plugin repo
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '**/SKILL.md'
-      - 'agile-v-core/**'
-      - 'build-agent/**'
-      - 'compliance-auditor/**'
-      - 'documentation-agent/**'
-      - 'logic-gatekeeper/**'
-      - 'red-team-verifier/**'
-      - 'requirement-architect/**'
-      - 'schematic-generator/**'
-      - 'test-designer/**'
-      - 'domains/**'
+  release:
+    types: [published]
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-cursor-plugin
+  cancel-in-progress: false
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout skills repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          fetch-depth: 0
+          path: source
 
-      - name: Clone plugin repo
-        env:
-          PLUGIN_REPO_TOKEN: ${{ secrets.PLUGIN_REPO_TOKEN }}
-        run: |
-          git clone "https://x-access-token:${PLUGIN_REPO_TOKEN}@github.com/Agile-V/agile_v_cursor_plugin.git" plugin-repo
-          cd plugin-repo
+      - name: Checkout plugin repo without persisting credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: Agile-V/agile_v_cursor_plugin
+          token: ${{ secrets.PLUGIN_REPO_TOKEN }}
+          path: plugin-repo
+          persist-credentials: false
 
       - name: Ensure Cursor plugin structure
         working-directory: plugin-repo
         run: |
           mkdir -p .cursor-plugin skills
+          VERSION="$(node -p "require('../source/package.json').version")"
           cat > .cursor-plugin/plugin.json << 'EOF'
           {
             "name": "agile-v-skills",
@@ -47,9 +45,11 @@ jobs:
               "email": "info@agile-v.org"
             },
             "keywords": ["agile v", "v model", "product development"],
-            "license": "CC-BY-SA-4.0"
+            "license": "CC-BY-SA-4.0",
+            "version": "__VERSION__"
           }
           EOF
+          sed -i "s/__VERSION__/${VERSION}/" .cursor-plugin/plugin.json
           
           # Validate generated JSON
           jq -e . .cursor-plugin/plugin.json >/dev/null || {
@@ -60,40 +60,44 @@ jobs:
           echo "✅ plugin.json is valid"
 
       - name: Copy skill directories into skills/
-        working-directory: plugin-repo
+        working-directory: source
         run: |
-          # Find all directories containing SKILL.md files
-          find .. -mindepth 2 -maxdepth 2 -name SKILL.md -print \
-            | sed 's#^../##; s#/SKILL.md$##' \
-            | sort \
-            > /tmp/agile_v_skill_dirs.txt
+          # Rebuild destination to remove stale or newly-draft skills.
+          rm -rf ../plugin-repo/skills
+          mkdir -p ../plugin-repo/skills
+          find . -type f -name SKILL.md \
+            \( -path './*/SKILL.md' -o -path './domains/*/SKILL.md' -o -path './skills/*/SKILL.md' \) \
+            -print0 | sort -z > /tmp/agile_v_skill_paths
           
           echo "📋 Discovered skill directories:"
-          cat /tmp/agile_v_skill_dirs.txt
+          tr '\0' '\n' < /tmp/agile_v_skill_paths
           
           # Copy only validated skill directories
-          while IFS= read -r dir; do
-            # Skip certain paths even if they contain SKILL.md
-            case "$dir" in
-              .github/*|docs/*|templates/*|test-*|integrations/*|plugin-repo/*) 
-                echo "⏭️  Skipping: $dir"
-                continue 
-                ;;
-            esac
-            
+          while IFS= read -r -d '' skill_path; do
+            dir="${skill_path%/SKILL.md}"
+            if sed -n '/^---$/,/^---$/p' "$skill_path" | grep -Eq '^[[:space:]]*status:[[:space:]]*draft([[:space:]]|$)'; then
+              echo "⏭️  Excluding draft: $dir"
+              continue
+            fi
             name="$(basename "$dir")"
+            test ! -e "../plugin-repo/skills/$name" || { echo "Duplicate skill name: $name" >&2; exit 1; }
             echo "📦 Copying: $dir -> skills/$name"
-            rm -rf "skills/$name"
-            mkdir -p "skills/$name"
-            cp -r "../$dir"/* "skills/$name/"
-          done < /tmp/agile_v_skill_dirs.txt
+            mkdir -p "../plugin-repo/skills/$name"
+            cp -a "$dir/." "../plugin-repo/skills/$name/"
+          done < /tmp/agile_v_skill_paths
           
           echo "✅ Skill copy complete"
 
       - name: Commit and push to plugin repo
         working-directory: plugin-repo
+        env:
+          PLUGIN_REPO_TOKEN: ${{ secrets.PLUGIN_REPO_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git diff --staged --quiet || (git commit -m "Sync skills from agile_v_skills@${{ github.sha }}" && git push)
+          git add -- .cursor-plugin/plugin.json skills
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(sync): update skills from agile_v_skills@${{ github.sha }}"
+            AUTH="$(printf 'x-access-token:%s' "$PLUGIN_REPO_TOKEN" | base64 | tr -d '\n')"
+            git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic ${AUTH}" push origin HEAD
+          fi

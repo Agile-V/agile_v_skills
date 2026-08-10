@@ -4,7 +4,7 @@ description: Create evidence explaining the actual implementation diff and its r
 license: CC-BY-SA-4.0
 compatibility: opencode
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
 ---
@@ -35,9 +35,9 @@ Use this skill after implementation and before final validation. Specifically:
 
 ```text
 - implementation diff (git diff HEAD~1 or patch file)      required
-- .agile-v/impact/impact_map.md                            required
-- .agile-v/impact/change_risk_assessment.md                required
-- .agile-v/requirements/requirements.md                    required
+- .agile-v/phases/01-impact/impact_map.md                  required
+- .agile-v/phases/01-impact/change_risk_assessment.md      required
+- .agile-v/REQUIREMENTS.md                                 required
 - .agile-v/traceability/graph_traceability_matrix.md       required
 - test results (JSON or JUnit XML)                         required
 - .understand-anything/diff-overlay.json                   optional
@@ -159,6 +159,8 @@ Decide:
 - Do not skip the risk delta document.
 - Do not accept the diff if any critical risk is unrealized (test failed for a high-severity risk).
 - Do not include raw source code diffs in the evidence report (use line counts and symbol names).
+
+Use canonical typed lineage and preserve `REQ-XXXX` revision/baseline references; this evidence supports verification and is not intended-use validation. Apply inherited `agile-v-core` halt/decision rules and `agile-v-aibom` manifest capture for materially AI-influenced output at any risk level.
 
 ---
 

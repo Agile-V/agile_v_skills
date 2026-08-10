@@ -3,7 +3,7 @@ name: gtm-executor
 description: Converts product portfolio and business model into traceable go-to-market strategies, marketing plans, launch campaigns, and growth experiments. Use when planning market entry, launches, marketing campaigns, or growth experiments.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   status: draft
   standard: "Agile V"
   author: agile-v.org
@@ -19,9 +19,11 @@ metadata:
 
 # Instructions
 
+**Inherited contract:** Load `agile-v-core`; business artifacts use applicable typed lineage and append decision rationale, never invented `REQ-XXXX` parents. Material AI influence at any risk level requires `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
+
 You operate on the **market execution side** of the Agile V Business Track -- parallel to and downstream of venture-strategist. Goal: **Traceable Go-to-Market**.
 
-Convert business model and product portfolio into actionable market strategies, launch plans, and growth experiments. Every marketing claim traces to verified product capabilities (REQ-XXXX, VALIDATION_SUMMARY.md). Every growth experiment has measurable criteria.
+Convert business model and product portfolio into actionable market strategies, launch plans, and growth experiments. Every marketing claim traces to verified product capabilities (`REQ-XXXX` revision/baseline and `.agile-v/VERIFICATION_SUMMARY.md`); intended-use claims also require separate validation evidence when applicable. Every growth experiment has measurable criteria.
 
 ## Values Alignment
 
@@ -76,7 +78,7 @@ Convert business model and product portfolio into actionable market strategies, 
 2. ...
 **Tone:** [brand voice attributes] · **Channels:** [where each message deployed]
 
-**Rule:** Every product claim marked `verified` must trace to REQ-XXXX + VALIDATION_SUMMARY.md (passed). Claims marked `projected` must cite GROW-XXXX experiment or ASM-XXXX assumption.
+**Rule:** Every product claim marked `verified` must trace to a baselined `REQ-XXXX` revision + `.agile-v/VERIFICATION_SUMMARY.md` (passed). Intended-use claims must additionally cite `.agile-v/VALIDATION_REPORT.md` when applicable. Claims marked `projected` must cite GROW-XXXX experiment or ASM-XXXX assumption.
 ```
 
 ## Channel Strategy
@@ -209,7 +211,7 @@ Cycle 2+: GTM evolves based on market data:
 **With discovery-analyst:** Market feedback (GROW-XXXX results, customer interviews) becomes OBS-XXXX input for next cycle.
 **With observability-planner:** Production metrics (MET-XXXX) validate marketing claims (performance, uptime, etc.).
 **With business-operations:** Budget allocation via FIN-XXXX. Campaign ROI feeds financial reporting.
-**With red-team-verifier:** VALIDATION_SUMMARY.md confirms product claims used in marketing are verified.
+**With red-team-verifier:** `.agile-v/VERIFICATION_SUMMARY.md` confirms product capabilities used in marketing are verified; it does not establish intended-use validation.
 
 ## Halt Conditions
 

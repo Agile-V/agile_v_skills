@@ -19,7 +19,7 @@
 
 | Requirement | Graph Node | File/Symbol | Change Type | Test Evidence | Status |
 |---|---|---|---|---|---|
-| `REQ-001` | `node-xxx` | `src/path/file.ts::Symbol` | `modified / added / removed / no-change` | `tests/path/test.spec.ts::test_name` | `Verified / Failed / Missing / Not applicable` |
+| `REQ-0001` | `node-xxx` | `src/path/file.ts::Symbol` | `modified / added / removed / no-change` | `tests/path/test.spec.ts::test_name` | `Verified / Failed / Missing / Not applicable` |
 
 <!-- Add one row per requirement. -->
 

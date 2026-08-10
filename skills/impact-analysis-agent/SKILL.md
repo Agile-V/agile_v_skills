@@ -4,7 +4,7 @@ description: Identify the likely impact of a proposed change before implementati
 license: CC-BY-SA-4.0
 compatibility: opencode
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
 ---
@@ -36,8 +36,8 @@ Use this skill when:
 
 ```text
 - change_request.md                            required
-- .agile-v/understanding/system_overview.md    required
-- .agile-v/understanding/normalized_graph.json optional but strongly preferred
+- .agile-v/phases/00-understanding/system_overview.md    required
+- .agile-v/phases/00-understanding/normalized_graph.json optional but strongly preferred
 - .understand-anything/diff-overlay.json       optional
 - existing requirements (if any)               optional
 ```
@@ -46,7 +46,7 @@ Use this skill when:
 
 ## Outputs
 
-All outputs are written to `.agile-v/impact/`.
+All outputs are written to canonical `.agile-v/phases/01-impact/`.
 
 ```text
 impact_map.md
@@ -136,13 +136,15 @@ See `integrations/understand-anything/examples/impact_analysis_example.md`.
 - Do not generate implementation code.
 - Do not mark files as affected just because they are large or important.
 - Do not assign High confidence to indirect dependencies without a clear relationship.
-- Do not skip the risk assessment step for L3/L4 changes.
+- Do not skip the risk assessment step for `L3`/`L4` changes.
+
+Inherited obligations: apply `agile-v-core` halt, decision-log, and applicable typed-lineage rules; if AI materially influences these outputs at any risk level, create/update `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
 
 ---
 
-## Gate 1 contribution
+## Gate 1 evidence contribution
 
-The impact map feeds into Gate 1 (Scope and Contract Gate). Gate 1 requires:
+The impact map informs Human Gate 1 but does not redefine it. Gate 1 reviews the persisted requirement revision plus independent findings; this supporting evidence must be reviewed where applicable:
 
 - Impact map reviewed and accepted.
 - Interface contract reviewed.

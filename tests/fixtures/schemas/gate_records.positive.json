@@ -1,0 +1,52 @@
+{
+  "POLICY": {
+    "policy_version": "1.0.0",
+    "fail_mode": "closed",
+    "effective_from": "2026-04-26T00:00:00Z",
+    "rules": [{"id": "R001", "description": "Gate shell use.", "match": {"tool_pattern": "shell"}, "action": "require_checkpoint", "risk_weight": 4, "fail_closed": true}]
+  },
+  "EVAL_RESULTS": {
+    "eval_run_id": "ER-2026-001",
+    "eval_timestamp": "2026-04-26T12:00:00Z",
+    "policy_version_ref": "1.0.0",
+    "eval_gate_status": "PASS",
+    "eval_gate_rationale": "Thresholds met.",
+    "thresholds": {"critical_max_fail": 0, "major_max_fail": 0, "minor_max_fail": 3},
+    "runs": [{"eval_run_id": "ER-2026-001", "suite_id": "suite-core", "mode": "offline", "pass_count": 42, "fail_count": 0, "threshold_met": true, "linked_cycle": "C1", "notes": "TC-0001"}]
+  },
+  "CONTROL_MATRIX": {
+    "version": "1.0.0",
+    "default_fail_mode": "closed",
+    "controls": [{
+      "id": "cm-fixture", "status": "active", "scope": "task", "minimum_risk_level": "L1",
+      "applies_to": {"task_types": ["test"]},
+      "data_class": {"allowed": ["internal"], "forbidden": ["secret"], "default_if_unknown": "internal", "unknown_action": "deny", "redaction_required": true},
+      "tools": {"allowed": ["read_file"], "forbidden": ["deploy_production"], "requires_gate": ["shell_exec"]},
+      "model": {"vendor": "vendor", "model_name": "model", "allow_external_vendor": false, "record_model_in_evidence": true},
+      "logs": {"storage_location": ".agile-v/logs/control.jsonl", "include_tool_calls": true, "redact_personal_data": true, "retention_days": 90},
+      "max_permissions": {"file_access": "repo_scoped"},
+      "human_gates": {"required_before": [{"action": "external_effect", "gate": "G2", "approver_role": "technical_owner"}], "checkpoint_file": ".agile-v/CHECKPOINTS.md", "approvals_file": ".agile-v/APPROVALS.md", "require_resume_token": true},
+      "tests": {"required": ["schema_validation"]},
+      "cost_limit": {"currency": "EUR", "max_run_cost": 2, "max_daily_cost": 25, "action_on_limit": "stop", "cost_log": ".agile-v/logs/costs.jsonl"},
+      "rollback": {"required": true, "strategy": "revert_commit"},
+      "owner": {"business_owner": "product", "technical_owner": "platform", "security_owner": "security", "reviewer": "qa"},
+      "review": {"last_reviewed": "2026-06-28"}
+    }]
+  },
+  "BUILD_MANIFEST": {
+    "manifest_id": "BM-C1",
+    "artifacts": [{"artifact_id": "ART-0001", "requirement_id": "REQ-0001", "requirement_revision": "2", "baseline_id": "BASELINE-C1", "relation": "implements", "path": "src/example.py", "notes": "C1 output"}]
+  },
+  "VERIFICATION_SUMMARY": {
+    "summary_id": "VS-C1",
+    "verifier": "independent-verifier",
+    "scope": {"artifact_ids": ["ART-0001"], "requirement_ids": ["REQ-0001"], "test_case_count": 1},
+    "result_counts": {"pass": 1, "fail": 0, "flag": 0},
+    "result_refs": ["VER-0001"],
+    "coverage": [{"requirement_id": "REQ-0001", "test_ids": ["TC-0001"], "status": "covered"}],
+    "audit_trail_refs": [".agile-v/TRACE_LOG.md#TR-0001"],
+    "validation_report_refs": ["VAL-0001"],
+    "eval_gate": {"status": "PASS", "eval_run_id": "ER-2026-001", "policy_version_ref": "1.0.0", "eval_results_path": ".agile-v/EVAL_RESULTS.md"},
+    "gate_2_readiness": "ready_for_human_review"
+  }
+}

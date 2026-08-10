@@ -1,7 +1,7 @@
 {
   "name": "agile-v-skills",
   "description": "Verifiable AI-Augmented Engineering framework with traceable requirements, independent verification, and compliance-ready artifacts",
-  "version": "1.5.0",
+  "version": "3.8.1",
   "author": {
     "name": "Agile V",
     "url": "https://agile-v.org"
@@ -24,14 +24,36 @@
   "skills": [
     "./agile-v-core",
     "./agile-v-behavioral",
-    "./agile-v-pipeline",
+    "./agile-v-compliance",
+    "./agile-v-control-matrix",
     "./agile-v-lifecycle",
+    "./agile-v-pipeline",
+    "./agile-v-product-owner",
+    "./agile-v-quality-gates",
     "./build-agent",
-    "./test-designer",
-    "./red-team-verifier",
-    "./discovery-analyst",
-    "./requirement-architect",
     "./compliance-auditor",
-    "./release-manager"
+    "./discovery-analyst",
+    "./documentation-agent",
+    "./logic-gatekeeper",
+    "./observability-planner",
+    "./red-team-verifier",
+    "./release-manager",
+    "./requirement-architect",
+    "./safety-engineer",
+    "./schematic-generator",
+    "./test-designer",
+    "./threat-modeler",
+    "./ux-spec-author",
+    "./validation-agent",
+    "./domains/build-agent-dart",
+    "./domains/build-agent-embedded",
+    "./domains/build-agent-js",
+    "./domains/build-agent-nestjs",
+    "./domains/build-agent-python",
+    "./skills/diff-evidence-agent",
+    "./skills/graph-traceability-agent",
+    "./skills/impact-analysis-agent",
+    "./skills/regression-selection-agent",
+    "./skills/system-understanding-agent"
   ]
 }

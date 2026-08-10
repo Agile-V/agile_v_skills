@@ -12,9 +12,9 @@
 
 | Test | Linked Component | Linked Requirement | Risk Covered | Priority |
 |---|---|---|---|---|
-| `test/auth/auth.e2e-spec.ts::should login with valid credentials` | `src/auth/auth.controller.ts` | REQ-001 | Core login path not broken | High |
-| `test/auth/auth.e2e-spec.ts::should reject invalid credentials` | `src/auth/auth.controller.ts` | REQ-001 | Error handling not broken | High |
-| `src/auth/auth.controller.spec.ts::login unit tests` | `src/auth/auth.controller.ts` | REQ-001, REQ-002 | Controller logic not broken | High |
+| `test/auth/auth.e2e-spec.ts::should login with valid credentials` | `src/auth/auth.controller.ts` | REQ-0001 | Core login path not broken | High |
+| `test/auth/auth.e2e-spec.ts::should reject invalid credentials` | `src/auth/auth.controller.ts` | REQ-0001 | Error handling not broken | High |
+| `src/auth/auth.controller.spec.ts::login unit tests` | `src/auth/auth.controller.ts` | REQ-0001, REQ-0002 | Controller logic not broken | High |
 | `test/auth/auth.e2e-spec.ts::should return 429 after 5 attempts` | `src/auth/guards/rate-limit.guard.ts` | REQ-003 | Rate limiting enforced | High |
 | `test/auth/auth.e2e-spec.ts::rate limit resets after 60s` | `src/auth/guards/rate-limit.guard.ts` | REQ-004 | Reset behavior correct | Medium |
 | `test/app/app.e2e-spec.ts` | `src/app.module.ts` | — | App module not broken | Medium |

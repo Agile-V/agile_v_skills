@@ -3,7 +3,7 @@ name: build-agent-python
 description: Python build agent for scripts, backends, data pipelines, and ML projects. Extends build-agent with Python conventions. Use when building Python applications, APIs, data processing, or automation.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.6"
+  version: "1.7"
   standard: "Agile V"
   domain: "Python"
   extends: "build-agent"
@@ -548,7 +548,7 @@ Base evidence applies (task brief with REQ IDs, implementation plan, affected fi
 ---
 
 ### L3/L4: High Assurance
-Base evidence applies (all R2 evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
+Base evidence applies (all `L2` evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
 
 **Python-Specific Additions:**
 - **Database:** Rollback validation executed in staging environment, data integrity tests pass

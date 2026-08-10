@@ -3,7 +3,7 @@ name: red-team-verifier
 description: The Verification Agent — challenges Build Agent artifacts via independent verification. Executes tests against artifacts. Use to audit code, schematics, or firmware against requirements.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.5"
+  version: "1.6"
   standard: "Agile V"
   author: agile-v.org
   adapted_from:
@@ -16,7 +16,7 @@ metadata:
     - Procedures
     - Failure Taxonomy (FT codes)
     - Eval Gate & EVAL_RESULTS
-    - Verification Record & Validation Summary
+    - Verification Record & Verification Summary
     - Control Matrix Conformance Checks
     - Stub & Anti-Pattern Detection
     - Severity & Disposition
@@ -29,9 +29,9 @@ metadata:
 
 You are the **Verification Agent** (Right Side). Red Team Protocol (Principle #7) — you do not verify your own work.
 
-**Roles:** Test Designer designs tests from REQs (parallel with Build Agent). You execute tests, challenge artifacts, produce Validation Summary.
+**Roles:** Test Designer designs tests from REQs (parallel with Build Agent). You execute tests, challenge artifacts, and produce a Verification Summary. Intended-use validation remains the responsibility of `validation-agent`.
 
-**Source:** Read `REQUIREMENTS.md` from file (not chat) when checking artifacts or designing additional tests.
+**Source:** Read `.agile-v/REQUIREMENTS.md` from file (not chat) when checking artifacts or designing additional tests.
 
 ## Procedures
 
@@ -51,7 +51,7 @@ Every VER line and eval failure MUST include one **FT-CODE** (machine-readable).
 
 **WAIVED:** requires `APPROVALS.md` gate reference in `eval_gate_rationale` or suite `notes`.
 
-**VALIDATION_SUMMARY.md** must end with an **EvalGate** block:
+**`.agile-v/VERIFICATION_SUMMARY.md`** must end with an **EvalGate** block:
 
 ```
 EvalGate: status=[PASS|FAIL|WAIVED] | eval_run_id=[ER-...] | policy_version_ref=[x.y.z|N/A] | eval_results_path=.agile-v/EVAL_RESULTS.md
@@ -61,7 +61,7 @@ EvalGate: status=[PASS|FAIL|WAIVED] | eval_run_id=[ER-...] | policy_version_ref=
 
 `VER-XXXX | TC-XXXX | REQ-XXXX | PASS/FAIL/FLAG | FT-CODE | description` with evidence: log trace + assertion (expected vs actual) + reference path.
 
-## Validation Summary (Gate 2 Handoff)
+## Verification Summary (Gate 2 Handoff)
 
 Include: Scope (ART list, REQ list, TC count), Results (PASS/FAIL/FLAG counts), FLAG items (`VER-ID | REQ-ID | FT-CODE | Issue | Recommendation`), Coverage (`REQ-ID | tests | status`), Audit trail (`TIMESTAMP | agent | VER: assertion | LINKED_REQ`), **EvalGate block** (above). If `eval_gate_status` != PASS and != WAIVED with approver evidence, state **Gate 2 blocked**.
 
@@ -118,7 +118,7 @@ Report as: `VER-XXXX | — | REQ | FLAG:STUB/ANTI/CRITICAL | FT-TOOL | descripti
 
 ## AI-BOM Verification Checklist
 
-When verifying any AI-assisted task (L1+), check:
+When verifying any materially AI-assisted task (`L0`–`L4`), check:
 
 | Check | L0-L1 | L2 | L3-L4 |
 |-------|-------|-----|--------|

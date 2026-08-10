@@ -9,12 +9,17 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "schemas"
 FIXTURES = ROOT / "tests" / "fixtures" / "schemas"
-CATALOG = {
+LEGACY_CATALOG = {
     "AGENT_DELEGATION_RECORD", "AGENT_TOOL_RECORD", "AI_RUN_MANIFEST",
     "APPROVAL", "ARTIFACT_INDEX", "CHECKPOINT", "EVIDENCE_BUNDLE",
     "REQUIREMENTS", "RISK_REGISTER", "TEST_SPEC", "TRACE_GRAPH",
     "VALIDATION_REPORT", "VERIFICATION_RESULT",
 }
+GATE_RECORD_CATALOG = {
+    "BUILD_MANIFEST", "CONTROL_MATRIX", "EVAL_RESULTS", "POLICY",
+    "VERIFICATION_SUMMARY",
+}
+CATALOG = LEGACY_CATALOG | GATE_RECORD_CATALOG
 
 
 def _load(path: Path) -> dict[str, object]:
@@ -41,12 +46,21 @@ def test_schema_catalog_is_complete_and_json() -> None:
 @pytest.mark.parametrize("fixture_name, valid", [("positive", True), ("negative", False)])
 def test_schema_fixtures(fixture_name: str, valid: bool) -> None:
     fixtures = _load(FIXTURES / f"{fixture_name}.json")
-    assert set(fixtures) == CATALOG
+    assert set(fixtures) == LEGACY_CATALOG
     for name, instance in fixtures.items():
         errors = list(_validator(name).iter_errors(instance))
         assert bool(errors) is not valid, f"{fixture_name} fixture for {name}: {[e.message for e in errors]}"
         if valid and name == "TRACE_GRAPH":
             _assert_trace_graph_semantics(instance)
+
+
+@pytest.mark.parametrize("fixture_name, valid", [("positive", True), ("negative", False)])
+def test_gate_record_schema_fixtures(fixture_name: str, valid: bool) -> None:
+    fixtures = _load(FIXTURES / f"gate_records.{fixture_name}.json")
+    assert set(fixtures) == GATE_RECORD_CATALOG
+    for name, instance in fixtures.items():
+        errors = list(_validator(name).iter_errors(instance))
+        assert bool(errors) is not valid, f"{fixture_name} fixture for {name}: {[e.message for e in errors]}"
 
 
 def test_trace_graph_semantic_references_and_unique_node_ids() -> None:
@@ -121,6 +135,17 @@ def test_trace_graph_rejects_invalid_canonical_lineage(
      ("AGENT_DELEGATION_RECORD.yaml", "AGENT_DELEGATION_RECORD")],
 )
 def test_yaml_templates_are_schema_valid(template: str, schema_name: str) -> None:
+    yaml = pytest.importorskip("yaml")
+    instance = yaml.safe_load((ROOT / "templates" / template).read_text(encoding="utf-8"))
+    assert not list(_validator(schema_name).iter_errors(instance))
+
+
+@pytest.mark.parametrize(
+    "template, schema_name",
+    [("agile-v/POLICY.example.yaml", "POLICY"),
+     ("agile-v/CONTROL_MATRIX.example.yaml", "CONTROL_MATRIX")],
+)
+def test_runtime_yaml_templates_are_schema_valid(template: str, schema_name: str) -> None:
     yaml = pytest.importorskip("yaml")
     instance = yaml.safe_load((ROOT / "templates" / template).read_text(encoding="utf-8"))
     assert not list(_validator(schema_name).iter_errors(instance))

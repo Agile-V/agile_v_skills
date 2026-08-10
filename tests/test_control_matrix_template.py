@@ -10,7 +10,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 EXAMPLE = ROOT / "templates" / "agile-v" / "CONTROL_MATRIX.example.yaml"
-SCHEMA = ROOT / "templates" / "agile-v" / "CONTROL_MATRIX.schema.json"
+SCHEMA = ROOT / "schemas" / "CONTROL_MATRIX.schema.json"
 
 
 def _load_example() -> dict:

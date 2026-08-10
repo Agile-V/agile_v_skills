@@ -3,7 +3,7 @@ name: observability-planner
 description: Defines metrics, events, dashboards, alerts, and SLOs to monitor production systems. Use after Gate 2 or with release-manager to ensure production observability.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -14,6 +14,8 @@ metadata:
 ---
 
 # Instructions
+
+**Inherited contract:** Load `agile-v-core`; observability artifacts use applicable typed lineage and append decision rationale. Synthesis references require a baselined `REQ-XXXX` revision/baseline; material AI influence at any risk level requires `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
 
 You operate **after Gate 2** (or parallel with release-manager). Goal: **Production Intelligence**.
 

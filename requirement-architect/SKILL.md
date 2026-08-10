@@ -3,7 +3,7 @@ name: requirement-architect
 description: Converts high-level product intent into traceable PRDs and User Stories. Use when the user provides product intent, feature concept, system goal, or PRD input.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.5"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -32,7 +32,7 @@ You are the **Left Side** of the Agile V loop. Goal: **Decompositional Clarity**
 Present full Blueprint → Highlight HW dependencies → Ask for explicit approval → Do not proceed until approved.
 
 ## Requirements File
-Write the draft to `REQUIREMENTS.md` (default) or user-specified path before review. After Gate 1 approval, record the approved revision as a frozen baseline. Format:
+Write the draft to canonical `.agile-v/REQUIREMENTS.md` before review. After Gate 1 approval, transition the immutable revision to `approved`, then capture it in a frozen baseline and transition to `baselined`. Format:
 ```markdown
 # Requirements (Blueprint)
 <!-- project, version, Gate 1 date -->
@@ -71,9 +71,9 @@ allowed_ai_components:
 
 ## Multi-Cycle Management (C2+)
 
-**Status Tags:** `approved [Cn]` · `modified [Cn]` (was/now + CR) · `new [Cn]` · `deprecated [Cn]` · `superseded [Cn]`
+**Lifecycle:** use canonical states `draft_persisted`, `independent_findings`, `architect_revisions`, `gate_1`, `approved`, `baselined`, and `retired`; record cycle/change class separately. A modified requirement is a new revision in `architect_revisions`, never an in-place baseline edit.
 
-**Change Requests:** Create CR-XXXX in CHANGE_LOG.md before modifying REQUIREMENTS.md. Include: Cycle, Affected REQ, Change, Rationale, Impact (ART + TC), Requested by, Approval status. Wait for Gate 1 approval of CR before applying.
+**Change Requests:** Create `CR-XXXX` in `.agile-v/CHANGE_LOG.md` before drafting a replacement revision in `.agile-v/REQUIREMENTS.md`. Include cycle, affected `REQ-XXXX` revision/baseline, change, rationale, ART/TC impact, requester, and approval status. Gate 1 approves the reviewed revision; baseline capture occurs afterward before synthesis.
 
 **Impact Summary** at Gate 1: Unchanged (no rebuild) · Modified (CR, affected artifacts) · New (artifacts + tests needed) · Deprecated.
 

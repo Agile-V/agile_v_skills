@@ -1,6 +1,6 @@
 # Agile V Runtime Schemas (Phase 1 and 2)
 
-> **Purpose:** Machine-readable contracts for trace, evaluation, policy, failure taxonomy, and durable Human Gate checkpoints under `.agile-v/`.
+> **Purpose:** Machine-readable contracts for required Gate 1/Gate 2 records, trace, evaluation, policy, failure taxonomy, and durable Human Gate checkpoints under `.agile-v/`.
 > **Normative references:** `agile-v-core`, `red-team-verifier`, `compliance-auditor`, `agile-v-compliance` skills (v1.4+).
 
 ## File placement
@@ -17,6 +17,8 @@ Copy runtime starters from the repository source directory [`templates/agile-v/`
 | `CONTROL_MATRIX.yaml`   | 2     | Operating control map: data class, tools, model/vendor, logs, rights, Human Gates, tests, costs, rollback, owners |
 | `AGENT_TOOL_RECORD.yaml` | 3 | Per-tool/MCP identity, schema, auth, scope, side-effect, and execution evidence; source: [`templates/AGENT_TOOL_RECORD.yaml`](../../templates/AGENT_TOOL_RECORD.yaml) |
 | `AGENT_DELEGATION_RECORD.yaml` | 3 | Authenticated A2A handoff, delegation scope, correlation, expiry, and acceptance evidence; source: [`templates/AGENT_DELEGATION_RECORD.yaml`](../../templates/AGENT_DELEGATION_RECORD.yaml) |
+| `BUILD_MANIFEST.md` | 1 | Build artifact lineage to a specific baselined requirement revision |
+| `VERIFICATION_SUMMARY.md` | 1 | Independent verification aggregate and EvalGate handoff for Human Gate 2 |
 
 
 ---
@@ -168,6 +170,22 @@ INTERRUPT-ID|cycle|gate|status|opened_at|due_at|assignee_hint|resume_token|scope
 See [02_CONTROL_MATRIX.md](02_CONTROL_MATRIX.md). The matrix is required for non-trivial agentic execution and should be checked before implementation, high-impact tool use, model/vendor changes, and release gates.
 
 `POLICY.yaml` controls tool-class rules at the rule level. `CONTROL_MATRIX.yaml` is the higher-level operating control record that binds task scope, data class, model, logs, rights, gates, tests, costs, rollback, and ownership into a single reviewable artifact.
+
+---
+
+## 7. Canonical structured equivalents
+
+The Draft 2020-12 contracts in [`schemas/`](../../schemas/) validate structured equivalents used by integrations. Markdown records may retain their documented presentation while parsers map them to these shapes.
+
+| Record | Schema | Gate role |
+|---|---|---|
+| `POLICY.yaml` | [`POLICY.schema.json`](../../schemas/POLICY.schema.json) | Policy evidence used at both gates |
+| `EVAL_RESULTS.md` | [`EVAL_RESULTS.schema.json`](../../schemas/EVAL_RESULTS.schema.json) | Eval prerequisite for Gate 2 |
+| `CONTROL_MATRIX.yaml` | [`CONTROL_MATRIX.schema.json`](../../schemas/CONTROL_MATRIX.schema.json) | Required control map for non-trivial work |
+| `BUILD_MANIFEST.md` | [`BUILD_MANIFEST.schema.json`](../../schemas/BUILD_MANIFEST.schema.json) | Post-Gate-1 synthesis lineage |
+| `VERIFICATION_SUMMARY.md` | [`VERIFICATION_SUMMARY.schema.json`](../../schemas/VERIFICATION_SUMMARY.schema.json) | Independent verification handoff for Gate 2 |
+
+`VERIFICATION_SUMMARY` aggregates requirement-conformance evidence. Intended-use validation is separate and remains governed by [`VALIDATION_REPORT.schema.json`](../../schemas/VALIDATION_REPORT.schema.json); a verification summary may reference validation reports but must not represent them as verification results.
 
 ---
 

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/schemas/nested-skill-metadata.schema.json",
+  "title": "Agile V Nested Skill Companion Metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name", "version", "description", "category", "lifecycle_position",
+    "inputs", "outputs", "output_dir", "triggers", "dependencies",
+    "evidence_level", "evidence_section", "human_gate_required",
+    "blocks_on_low_confidence", "compatible_frameworks"
+  ],
+  "properties": {
+    "name": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+(?:\\.[0-9]+)?(?:-[0-9A-Za-z.-]+)?$"},
+    "description": {"type": "string", "minLength": 10},
+    "category": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "lifecycle_position": {"type": "string", "minLength": 1},
+    "inputs": {"$ref": "#/$defs/nonEmptyStrings"},
+    "outputs": {"$ref": "#/$defs/nonEmptyStrings"},
+    "output_dir": {"type": "string", "minLength": 1},
+    "triggers": {"$ref": "#/$defs/nonEmptyStrings"},
+    "dependencies": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "evidence_level": {"enum": ["primary", "supporting"]},
+    "evidence_section": {"type": "string", "minLength": 1},
+    "human_gate_required": {"type": "boolean"},
+    "human_gate_name": {"type": "string", "minLength": 1},
+    "blocks_on_low_confidence": {"type": "boolean"},
+    "compatible_frameworks": {"$ref": "#/$defs/nonEmptyStrings"},
+    "previous_skill": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "next_skill": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"human_gate_required": {"const": true}}},
+      "then": {"required": ["human_gate_name"]}
+    }
+  ],
+  "$defs": {
+    "nonEmptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    }
+  }
+}

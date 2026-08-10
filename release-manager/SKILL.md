@@ -3,7 +3,7 @@ name: release-manager
 description: Manages post-Gate-2 release activities with Agile V rigor. Rollout plans, rollback procedures, sign-off checklists. Use after Human Gate 2 for production deployment.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -53,7 +53,7 @@ Artifacts verified → approved → safe deployment to production with traceabil
 **Total:** [N] | **Critical:** [X] | **High:** [Y]
 
 ## Pre-Release Checklist
-**Gate 2 Complete:** [ ] All REQs verified (VALIDATION_SUMMARY.md) · [ ] No CRITICAL/MAJOR defects · [ ] ATM complete · [ ] VSR signed
+**Gate 2 Complete:** [ ] All REQs verified (`.agile-v/VERIFICATION_SUMMARY.md`) · [ ] required intended-use validation separately accepted · [ ] No CRITICAL/MAJOR defects · [ ] ATM complete · [ ] VSR signed
 **Infrastructure:** [ ] Env provisioned · [ ] DB migrations tested · [ ] Secrets rotated · [ ] Monitoring configured (observability-planner) · [ ] Alerts active
 **Artifacts:** [ ] Build from verified code (Git SHA) · [ ] Signed (checksum) · [ ] Rollback ready (prev version)
 **Supply chain:** [ ] SBOM/ML-BOM coverage recorded · [ ] License/vulnerability policy reviewed · [ ] Required signatures verified · [ ] Source/build/artifact/deployment identities bound · [ ] SLSA provenance reviewed if selected · [ ] Reproducibility result or limitation recorded
@@ -98,7 +98,7 @@ Artifacts verified → approved → safe deployment to production with traceabil
 1. Stop new version · 2. Restore backup · 3. Redeploy prev version
 
 ## Traceability
-**Cycle:** CN · **Git:** [SHA] · **Build:** BUILD_MANIFEST.md · **Validation:** VALIDATION_SUMMARY.md · **ATM:** ATM.md
+**Cycle:** CN · **Git:** [SHA] · **Build:** `.agile-v/BUILD_MANIFEST.md` · **Verification:** `.agile-v/VERIFICATION_SUMMARY.md` · **Validation:** `.agile-v/VALIDATION_REPORT.md` when applicable · **ATM:** `.agile-v/ATM.md`
 ```
 
 **Tone:** User-facing, non-technical. Benefits, not implementation.
@@ -261,7 +261,7 @@ For each releasable artifact, record and independently verify the following wher
 
 ## Integration with Agile V
 
-- **Input:** VALIDATION_SUMMARY.md (from red-team-verifier), REQUIREMENTS.md, ATM.md
+- **Input:** `.agile-v/VERIFICATION_SUMMARY.md` (from red-team-verifier), `.agile-v/VALIDATION_REPORT.md` when intended-use validation is required, `.agile-v/REQUIREMENTS.md`, `.agile-v/ATM.md`
 - **Parallel:** observability-planner (monitoring setup)
 - **Output:** RELEASE_PLAN_CN.md, RELEASE_NOTES_vX.Y.Z.md, post-release validation
 - **Feedback:** INC-XXXX → CAPA-XXXX → CR-XXXX → agile-v-lifecycle → next cycle

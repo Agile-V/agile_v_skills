@@ -3,7 +3,7 @@ name: build-agent-nestjs
 description: NestJS backend build agent for REST/GraphQL APIs, microservices, and enterprise backends. Extends build-agent with NestJS architectural patterns, dependency injection, testing strategies, and security best practices. Use when building NestJS applications.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.2"
+  version: "1.3"
   standard: "Agile V"
   domain: "NestJS/TypeScript/Backend"
   extends: "build-agent"
@@ -294,7 +294,7 @@ Base evidence applies (task brief with REQ IDs, implementation plan, affected fi
 ---
 
 ### L3/L4: High Assurance
-Base evidence applies (all R2 evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
+Base evidence applies (all `L2` evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
 
 **NestJS-Specific Additions:**
 - **Database:** Rollback validation executed in staging environment, data integrity tests pass

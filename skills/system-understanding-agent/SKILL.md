@@ -4,7 +4,7 @@ description: Consume Understand Anything outputs and create a concise, reviewabl
 license: CC-BY-SA-4.0
 compatibility: opencode
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
 ---
@@ -52,7 +52,7 @@ Activate this skill when:
 
 ## Outputs
 
-All outputs are written to `.agile-v/understanding/`.
+All outputs are written to canonical `.agile-v/phases/00-understanding/`.
 
 ```text
 system_overview.md
@@ -188,6 +188,8 @@ Produce `understanding_gate_decision.md` that records:
 - Do not begin implementation. This is a read-only analysis step.
 - Do not pass a Low-confidence gate without explicit human acknowledgment.
 - Do not include raw source code in the system overview.
+
+Inherited obligations: apply `agile-v-core` halt, decision-log, and typed-lineage rules; if AI materially influences these outputs at any risk level, create/update the task manifest under `.agile-v/aibom/<task_id>/` per `agile-v-aibom`.
 
 ---
 

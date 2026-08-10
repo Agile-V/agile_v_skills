@@ -10,7 +10,7 @@ CR-001: Add rate limiting to the login endpoint.
 
 | Requirement | Graph Node | File/Symbol | Change Type | Test Evidence | Status |
 |---|---|---|---|---|---|
-| REQ-001: Login continues to work | node-042 | `src/auth/auth.controller.ts::login` | Modified | `auth.e2e-spec.ts::should login with valid credentials` | Verified |
+| REQ-0001: Login continues to work | node-042 | `src/auth/auth.controller.ts::login` | Modified | `auth.e2e-spec.ts::should login with valid credentials` | Verified |
 | REQ-002: 5 attempts allowed | node-044 | `src/auth/guards/rate-limit.guard.ts` | Added | `auth.e2e-spec.ts::boundary test` | Verified |
 | REQ-003: 6th attempt returns 429 | node-044 | `src/auth/guards/rate-limit.guard.ts` | Added | `auth.e2e-spec.ts::should return 429` | Verified |
 | REQ-004: Retry-After header present | node-044 | `src/auth/guards/rate-limit.guard.ts` | Added | `auth.e2e-spec.ts::headers test` | Verified |

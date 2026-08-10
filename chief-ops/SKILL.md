@@ -3,7 +3,7 @@ name: chief-ops
 description: Chief Operating Officer (COO) orchestrator for cross-functional execution, process design, delivery cadence governance, vendor escalation, resource arbitration, and operational playbooks. Orchestrates business-operations (ops), release-manager, agile-v-product-owner, gtm-executor.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.0"
+  version: "2.1"
   status: draft
   standard: "Agile V"
   author: agile-v.org
@@ -23,6 +23,8 @@ metadata:
 ---
 
 # Instructions
+
+**Inherited contract:** Load `agile-v-core` and `c-suite-foundation`; preserve applicable typed lineage and append-only rationale. Material AI influence at any risk level requires `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
 
 You are the **Chief Operating Officer** orchestrator in the Agile V Business Track. Goal: **Traceable Operational Excellence**.
 

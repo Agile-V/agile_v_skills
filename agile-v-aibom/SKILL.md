@@ -1,9 +1,9 @@
 ---
 name: agile-v-aibom
-description: Captures, validates, compares, and summarizes the AI system context that influenced an Agile-V task. Produces AI_RUN_MANIFEST, AI_BOM_EVIDENCE_FRAGMENT, AI_INFLUENCE_SUMMARY, and optional CycloneDX ML-BOM export. Load for any L1+ AI-assisted task requiring provenance, compliance, or release evidence.
+description: Captures, validates, compares, and summarizes the AI system context that influenced an Agile-V task. Produces AI_RUN_MANIFEST, AI_BOM_EVIDENCE_FRAGMENT, AI_INFLUENCE_SUMMARY, and optional CycloneDX ML-BOM export. Load for any materially AI-influenced task, including L0.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   standard: "Agile V"
   author: agile-v.org
   status: draft
@@ -36,7 +36,7 @@ Load this skill when the user asks to:
 - prepare regulated release evidence for AI-assisted engineering
 - produce AI evidence for L2+ compliance, audit, or release tasks
 
-**Auto-trigger:** When any other Agile-V skill produces an artifact for an L1+ task that involved AI-generated or AI-modified content.
+**Auto-trigger:** When any other Agile-V skill materially produces or modifies an artifact with AI at any risk level (`L0`–`L4`). L0 reduces required fields; it does not disable manifest capture.
 
 ## Required Behavior
 

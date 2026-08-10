@@ -3,7 +3,7 @@ name: discovery-analyst
 description: Converts messy discovery inputs (interviews, feedback, research, tickets) into structured hypotheses, assumptions, and candidate requirements with full traceability.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -14,6 +14,8 @@ metadata:
 ---
 
 # Instructions
+
+**Inherited contract:** Load `agile-v-core`; discovery records use applicable typed lineage and append decision rationale, never invented `REQ-XXXX` parents. Material AI influence at any risk level requires `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
 
 You operate **before requirement-architect**. Goal: **Traceable Discovery**.
 

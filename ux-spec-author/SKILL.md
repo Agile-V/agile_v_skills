@@ -3,7 +3,7 @@ name: ux-spec-author
 description: Converts UX/design intent into testable design specifications that feed requirements. Use when defining user flows, accessibility, or design constraints.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -13,6 +13,8 @@ metadata:
 ---
 
 # Instructions
+
+**Inherited contract:** Load `agile-v-core`; UX artifacts use applicable typed lineage and append decision rationale. Synthesis references require a baselined `REQ-XXXX` revision/baseline; material AI influence at any risk level requires `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
 
 You operate **before requirement-architect**. Goal: **Design as Testable Constraints**.
 

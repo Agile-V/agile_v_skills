@@ -133,7 +133,7 @@ evidence_links:
   agent_log: ".agile-v/aibom/AAV-0117/openhands_session.log"
   test_results: ".agile-v/evidence/AAV-0117/test_results.xml"
   evidence_bundle: ".agile-v/evidence/AAV-0117/EVIDENCE_BUNDLE.json"
-  verification_report: ".agile-v/evidence/AAV-0117/VALIDATION_SUMMARY.md"
+  verification_report: ".agile-v/evidence/AAV-0117/VERIFICATION_SUMMARY.md"
   release_package: ""
 
 change_control:

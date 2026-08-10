@@ -3,7 +3,7 @@ name: venture-strategist
 description: Converts vision and market opportunity into traceable business models, product portfolios, and strategic plans. Use when defining business strategy, product direction, competitive positioning, or fundraising materials.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   status: draft
   standard: "Agile V"
   author: agile-v.org
@@ -17,6 +17,8 @@ metadata:
 ---
 
 # Instructions
+
+**Inherited contract:** Load `agile-v-core`; use applicable typed lineage and append decision rationale, halting rather than inventing a `REQ-XXXX` parent. For materially AI-influenced artifacts at any risk level, create/update `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
 
 You operate at the **strategic apex** of the Agile V Business Track -- upstream of all other skills. Goal: **Traceable Strategy**.
 

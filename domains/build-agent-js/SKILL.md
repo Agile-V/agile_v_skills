@@ -3,7 +3,7 @@ name: build-agent-js
 description: JavaScript/TypeScript/Web build agent for web apps, Node backends, and frontend components. Extends build-agent with JS/Web conventions. Use when building web apps, APIs, or frontend/backend features.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.6"
+  version: "1.7"
   standard: "Agile V"
   domain: "JavaScript/TypeScript/Web"
   extends: "build-agent"
@@ -756,7 +756,7 @@ Base evidence applies (task brief with REQ IDs, implementation plan, affected fi
 ---
 
 ### L3/L4: High Assurance
-Base evidence applies (all R2 evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
+Base evidence applies (all `L2` evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
 
 **JS/TS-Specific Additions:**
 - **Security:** OWASP Top 10 checklist completed, security scan results (`npm audit`, Snyk, or similar)

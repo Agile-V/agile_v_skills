@@ -1,0 +1,7 @@
+{
+  "POLICY": {"policy_version": "1.0.0", "fail_mode": "sometimes", "rules": []},
+  "EVAL_RESULTS": {"eval_run_id": "ER-1", "eval_timestamp": "not-a-date", "policy_version_ref": "1.0.0", "eval_gate_status": "WAIVED", "eval_gate_rationale": "Exception", "thresholds": {"critical_max_fail": 0, "major_max_fail": 0, "minor_max_fail": 0}, "runs": []},
+  "CONTROL_MATRIX": {"version": "1.0.0", "default_fail_mode": "closed", "controls": []},
+  "BUILD_MANIFEST": {"manifest_id": "BM-C1", "artifacts": [{"artifact_id": "ART-0001", "requirement_id": "REQ-0001", "requirement_revision": "1", "baseline_id": "BASELINE-C1", "relation": "verifies", "path": "src/example.py", "notes": "wrong relation"}]},
+  "VERIFICATION_SUMMARY": {"summary_id": "VS-C1", "verifier": "builder", "scope": {"artifact_ids": ["ART-0001"], "requirement_ids": ["REQ-0001"], "test_case_count": 1}, "result_counts": {"pass": 0, "fail": 0, "flag": 1}, "result_refs": [], "coverage": [], "eval_gate": {"status": "WAIVED", "eval_run_id": "ER-1", "policy_version_ref": "1.0.0", "eval_results_path": ".agile-v/EVAL_RESULTS.md"}, "gate_2_readiness": "approved"}
+}

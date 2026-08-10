@@ -3,7 +3,7 @@ name: agile-v-product-owner
 description: REQ-aware Product Owner for backlog and sprint management with full traceability. Use for sprint planning, backlog prioritization, or converting REQs to INVEST stories.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -98,7 +98,7 @@ Every backlog item maps to REQ-XXXX. Every sprint feeds Agile V lifecycle artifa
 ## Handoff to Pipeline
 **Committed REQs:** [REQ-XXXX, REQ-YYYY] (for build-agent, test-designer)
 **Cycle Scope:** Sprint N covers [X]% of Cycle C
-**Compliance:** Sprint contributes to Cycle C Validation Summary (Gate 2)
+**Compliance:** Sprint contributes to the Cycle C Verification Summary (Gate 2); intended-use validation remains separate when required.
 ```
 
 ### Planning Procedure
@@ -189,7 +189,7 @@ Update SPRINT_PLAN_CN.md daily: `Todo → In Progress → Review → Done`
 ### Cycle & Sprints
 Sprints are sub-phases within Cycle. Example:
 - **Cycle 1** = 3 sprints: Sprint 1 (REQ-0001–0010 CRITICAL), Sprint 2 (REQ-0011–0025 HIGH), Sprint 3 (REQ-0026–0040 MEDIUM)
-- End of Cycle 1 → **Gate 2** (Red Team → Validation Summary → Human approval)
+- End of Cycle 1 → **Gate 2** (Red Team → `.agile-v/VERIFICATION_SUMMARY.md` → Human approval)
 
 ### Compliance Handoff
 End of each sprint:

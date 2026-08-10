@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/schemas/VERIFICATION_SUMMARY.schema.json",
+  "title": "Agile-V verification summary",
+  "description": "Independent verification evidence summarized for Human Gate 2; intended-use validation remains a separate VALIDATION_REPORT record.",
+  "type": "object",
+  "required": ["summary_id", "verifier", "scope", "result_counts", "result_refs", "coverage", "eval_gate", "gate_2_readiness"],
+  "properties": {
+    "summary_id": {"type": "string", "pattern": "^VS-[A-Z0-9-]+$"},
+    "verifier": {"type": "string", "minLength": 1},
+    "scope": {
+      "type": "object",
+      "required": ["artifact_ids", "requirement_ids", "test_case_count"],
+      "properties": {
+        "artifact_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^ART-[A-Z0-9.-]+$"}},
+        "requirement_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^REQ-[A-Z0-9-]+$"}},
+        "test_case_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "result_counts": {
+      "type": "object",
+      "required": ["pass", "fail", "flag"],
+      "properties": {
+        "pass": {"type": "integer", "minimum": 0},
+        "fail": {"type": "integer", "minimum": 0},
+        "flag": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "result_refs": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^VER-[A-Z0-9-]+$"}},
+    "flag_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["verification_id", "requirement_id", "failure_code", "issue", "recommendation"],
+        "properties": {
+          "verification_id": {"type": "string", "pattern": "^VER-[A-Z0-9-]+$"},
+          "requirement_id": {"type": "string", "pattern": "^REQ-[A-Z0-9-]+$"},
+          "failure_code": {"type": "string", "pattern": "^FT-(PLAN|TOOL|MISP|UNSUPPORT|POLICY|SYS)$"},
+          "issue": {"type": "string", "minLength": 1},
+          "recommendation": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "coverage": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["requirement_id", "test_ids", "status"],
+        "properties": {
+          "requirement_id": {"type": "string", "pattern": "^REQ-[A-Z0-9-]+$"},
+          "test_ids": {"type": "array", "items": {"type": "string", "pattern": "^TC-[A-Z0-9-]+$"}},
+          "status": {"enum": ["covered", "partial", "not_covered"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "audit_trail_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "validation_report_refs": {
+      "description": "Optional intended-use validation evidence; not verification evidence.",
+      "type": "array",
+      "items": {"type": "string", "pattern": "^VAL-[A-Z0-9-]+$"}
+    },
+    "eval_gate": {
+      "type": "object",
+      "required": ["status", "eval_run_id", "policy_version_ref", "eval_results_path"],
+      "properties": {
+        "status": {"enum": ["PASS", "FAIL", "WAIVED"]},
+        "eval_run_id": {"type": "string", "pattern": "^ER-[A-Z0-9-]+$"},
+        "policy_version_ref": {"type": "string", "minLength": 1},
+        "eval_results_path": {"type": "string", "minLength": 1},
+        "waiver_approval_ref": {"type": "string", "minLength": 1}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "WAIVED"}}, "required": ["status"]},
+          "then": {"required": ["waiver_approval_ref"]}
+        }
+      ],
+      "additionalProperties": false
+    },
+    "gate_2_readiness": {"enum": ["ready_for_human_review", "blocked"]}
+  },
+  "additionalProperties": false
+}

@@ -14,7 +14,7 @@ This is a planning and evidence crosswalk, not a reproduction of licensed ISO/IE
 |---|---|---|---|
 | ISO/IEC 42001:2023 | AIMS policy, objectives, accountability, continual improvement | `CONTROL_MATRIX.yaml`; `RISK_REGISTER.md`; `DECISION_LOG.md`; `CAPA_LOG.md` | Human approval of policy/owners; management review remains organizational |
 | ISO/IEC 23894:2023 | AI risk identification, treatment, monitoring | Linked AI/security/privacy risks; `REVALIDATION_LOG.md` | Risk acceptance before Gate 2; review after material model/runtime change |
-| ISO/IEC 5338:2023 | AI lifecycle process selection and lifecycle evidence | `REQUIREMENTS.md`; `BUILD_MANIFEST.md`; `TEST_SPEC.md`; `VALIDATION_SUMMARY.md` | Gate 1 approves intended use and requirements; Gate 2 reviews independent evidence |
+| ISO/IEC 5338:2023 | AI lifecycle process selection and lifecycle evidence | `REQUIREMENTS.md`; `BUILD_MANIFEST.md`; `TEST_SPEC.md`; `VERIFICATION_SUMMARY.md` | Gate 1 approves intended use and requirements; Gate 2 reviews independent evidence |
 | ISO/IEC 42005:2025 | AI impact assessment | Impact assessment linked to stakeholders, intended purpose, harms, mitigations | Gate 1 blocks when assessment or accountable reviewer is unresolved |
 | ISO/IEC 22989 / 23053 | Shared AI/ML terminology and concept boundaries | Glossary, system boundary, data/model/pipeline inventory | Architecture/requirements review; no taxonomy claim without source review |
 | NIST AI RMF 1.0 / GenAI Profile | Govern, Map, Measure, Manage evidence view | Risk register, evaluation rubric/results, incidents, monitoring and CAPA links | Independent review of evaluation evidence; record framework version used |

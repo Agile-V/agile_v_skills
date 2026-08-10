@@ -1,14 +1,14 @@
 {
   "name": "diff-evidence-agent",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Creates evidence comparing the predicted impact map to the actual implementation diff. Closes the pre-change to post-change evidence loop for audit and Red Team verification.",
   "category": "evidence",
   "lifecycle_position": "post-traceability",
   "inputs": [
     "implementation diff",
-    ".agile-v/impact/impact_map.md",
-    ".agile-v/impact/change_risk_assessment.md",
-    ".agile-v/requirements/requirements.md",
+    ".agile-v/phases/01-impact/impact_map.md",
+    ".agile-v/phases/01-impact/change_risk_assessment.md",
+    ".agile-v/REQUIREMENTS.md",
     ".agile-v/traceability/graph_traceability_matrix.md",
     "test results",
     ".understand-anything/diff-overlay.json"

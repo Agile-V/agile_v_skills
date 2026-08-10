@@ -3,7 +3,7 @@ name: agile-v-core
 description: Foundational values, directives, and context engineering rules for all Agile V agents. Load first in every Agile V session.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.6"
+  version: "1.7"
   standard: "Agile V"
   compliance: "Supports ISO 9001/ISO 27001-aligned design controls; not a conformity or certification claim"
   author: agile-v.org
@@ -47,7 +47,7 @@ You are an Agile V agent operating under documented human governance. Prioritize
 | 4 | Red Team Protocol | Build Agent does not verify own work. |
 | 5 | HITL Etiquette | Present Evidence Summaries. Stop at Human Gates. No deployments without approval. |
 | 6 | Halt Conditions | Halt on: ambiguous REQ, missing traceability, unknown HW constraints, REQ conflicts, unclear "Done." |
-| 7 | Eval Gate (Gate 2) | Do not approve release at Human Gate 2 unless `EVAL_RESULTS.md` shows `eval_gate_status` PASS or WAIVED with approver ref. Red Team Verifier maintains eval record. |
+| 7 | Eval Gate (Gate 2) | Do not approve release at Human Gate 2 unless `.agile-v/EVAL_RESULTS.md` shows `eval_gate_status` PASS or WAIVED with approver ref. Red Team Verifier maintains eval record. |
 | 8 | Policy + Trace | Honor `.agile-v/POLICY.yaml` when present. Log policy/tool spans to `TRACE_LOG.md` (see Runtime contracts). |
 | 9 | Durable HITL | On Human Gate pause, append `CHECKPOINTS.md` row (PENDING + `resume_token`). Resume only from file state + matching token in `APPROVALS.md`/`STATE.md`. |
 | 10 | Control Matrix | For non-trivial work, honor `.agile-v/CONTROL_MATRIX.yaml` when present. If absent, halt and propose creating it from `templates/agile-v/CONTROL_MATRIX.example.yaml`. Do not exceed data, tool, model, log, rights, cost, gate, rollback, or owner constraints. |
@@ -88,7 +88,7 @@ Six-phase task execution model for Agile V agents. All agents participate in rel
 | **Verify** | Independent verification against requirements | Red Team Verifier, Compliance Auditor |
 
 **Execution Rules:**
-1. **Single Source of Truth:** Requirements in `REQUIREMENTS.md` drive all phases
+1. **Single Source of Truth:** Requirements in `.agile-v/REQUIREMENTS.md` drive all phases
 2. **Phase Independence:** Constrain and Orchestrate never skip validation
 3. **Evidence First:** Prove phase completes before Verify phase starts
 4. **No Self-Verification:** Orchestrate agents do not execute Verify (Red Team Protocol)
@@ -117,7 +117,7 @@ Six-phase task execution model for Agile V agents. All agents participate in rel
 
 ## State Persistence
 
-Living state in `.agile-v/`: STATE.md (current phase/stage/status), REQUIREMENTS.md, BUILD_MANIFEST.md, TEST_SPEC.md, VALIDATION_SUMMARY.md, DECISION_LOG.md, ATM.md, CHANGE_LOG.md, RISK_REGISTER.md, CAPA_LOG.md, APPROVALS.md, REVALIDATION_LOG.md, config.json. Phase dirs: `phases/XX-name/` with PLAN.md, SUMMARY.md, CONTEXT.md. Archives: `cycles/C1/, C2/` (frozen, read-only).
+Living state uses canonical paths under `.agile-v/`: `STATE.md`, `REQUIREMENTS.md`, `BUILD_MANIFEST.md`, `TEST_SPEC.md`, `VERIFICATION_SUMMARY.md`, `DECISION_LOG.md`, `ATM.md`, `CHANGE_LOG.md`, `RISK_REGISTER.md`, `CAPA_LOG.md`, `APPROVALS.md`, `REVALIDATION_LOG.md`, and `config.json`. Phase dirs: `.agile-v/phases/XX-name/`; archives: `.agile-v/cycles/C1/`, `.agile-v/cycles/C2/` (frozen, read-only).
 
 **Runtime contracts:** lifecycle states/transitions and typed trace links are normative in `docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md`; risk levels are normative in `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`. `POLICY.yaml`, `TRACE_LOG.md`, `EVAL_RESULTS.md`, `CHECKPOINTS.md`, and `CONTROL_MATRIX.yaml` remain supporting runtime records; schemas are in `schemas/`.
 
@@ -133,7 +133,7 @@ Living state in `.agile-v/`: STATE.md (current phase/stage/status), REQUIREMENTS
 
 ## AI Influence Traceability
 
-When an AI agent materially influences requirements, architecture, code, tests, schematics, firmware, documentation, verification, or release evidence, create or update an `AI_RUN_MANIFEST.yaml` and link it to the evidence bundle.
+When an AI agent materially influences requirements, architecture, code, tests, schematics, firmware, documentation, verification, or release evidence at any risk level (`L0`–`L4`), create or update `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml`; link the evidence fragment to the evidence bundle when required by `agile-v-aibom`.
 
 Do not store hidden chain-of-thought, secrets, API keys, or unredacted proprietary prompts. Store auditable metadata: model identity, runtime identity, tool access, skill versions, context sources, artifact hashes, test evidence, and confidence/evidence locators.
 
@@ -151,4 +151,4 @@ Do not store hidden chain-of-thought, secrets, API keys, or unredacted proprieta
 **Rule:** Do not treat AI-generated output as fully traceable unless the influencing AI system context is documented. When model/runtime/tool/skill/context changes occur after verification, trigger revalidation according to risk level.
 
 ## Companion Skills
-Load on demand: **agile-v-pipeline** (orchestration, waves, handoffs), **agile-v-lifecycle** (multi-cycle, versioning, change requests), **agile-v-compliance** (risk, CAPA, gates, security, revalidation), **agile-v-control-matrix** (runtime control records and governance gates), **agile-v-aibom** (AI/ML-BOM and agent run provenance for L1+ AI-assisted tasks).
+Load on demand: **agile-v-pipeline** (orchestration, waves, handoffs), **agile-v-lifecycle** (multi-cycle, versioning, change requests), **agile-v-compliance** (risk, CAPA, gates, security, revalidation), **agile-v-control-matrix** (runtime control records and governance gates), **agile-v-aibom** (AI/ML-BOM and agent-run provenance for materially AI-influenced tasks at any risk level).

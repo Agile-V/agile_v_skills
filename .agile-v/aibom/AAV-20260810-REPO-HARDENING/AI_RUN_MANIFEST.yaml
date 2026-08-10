@@ -1,0 +1,93 @@
+aibom_schema_version: "0.2"
+manifest_type: "agile-v-agent-run-bom"
+identity:
+  task_id: "AAV-20260810-REPO-HARDENING"
+  run_id: "RUN-20260810-OPENCODE"
+  created_at: "2026-08-10T00:00:00Z"
+  created_by: "OpenCode"
+  repository: "Agile-V/agile_v_skills"
+risk:
+  agile_v_risk_level: "L2"
+  ai_influence_level: "substantial"
+  regulated_context: false
+  human_approval_required: true
+models:
+  - name: "GPT-5.6 Sol"
+    provider: "GitHub Copilot"
+    model_id: "github-copilot/gpt-5.6-sol"
+    model_version: "gpt-5.6-sol"
+    confidence: "declared"
+agent_runtime:
+  agent_name: "OpenCode"
+  agent_framework: "OpenCode"
+  execution_environment: "ide"
+  confidence: "declared"
+agile_v_skills:
+  - skill: "agile-v-core"
+    version: "1.7"
+    source: "repository"
+    confidence: "verified"
+    evidence_locator: "agile-v-core/SKILL.md"
+  - skill: "agile-v-aibom"
+    version: "1.2"
+    source: "repository"
+    confidence: "verified"
+    evidence_locator: "agile-v-aibom/SKILL.md"
+tools:
+  - name: "OpenCode filesystem and shell tools"
+    type: "other"
+    version: "unresolved"
+    allowed: true
+    used: true
+    confidence: "declared"
+agent_interoperability:
+  untrusted_context_enforced: true
+  tool_records: []
+  delegation_records: []
+context:
+  declared:
+    instruction_bundles:
+      - name: "AGENTS.md"
+        version_or_hash: "repository revision"
+        purpose: "Repository contribution policy"
+        evidence_locator: "AGENTS.md"
+    policies: []
+    sources:
+      - name: "Repository working tree"
+        version_or_hash: "3.8.x"
+        purpose: "Repository hardening source corpus"
+        evidence_locator: "."
+    datasets: []
+  observed:
+    sources:
+      - name: "Repository files and test outputs"
+        version_or_hash: "working tree"
+        purpose: "Observed validation evidence"
+        evidence_locator: "tests/"
+    tool_calls_evidence: "OpenCode session tool log"
+    policy_decisions_evidence: "AGENTS.md and canonical runtime contracts"
+    confidence: "verified"
+hashes: []
+artifact_influence:
+  - artifact_id: "ART-REPO-HARDENING"
+    artifact_type: "documentation"
+    contribution: "modified"
+    contribution_description: "Repository skills, contracts, schemas, tests, workflows, manifests, and documentation were revised during repository hardening."
+    confidence: "verified"
+    evidence_locator: "git diff"
+  - artifact_id: "ART-RELEASE-GOVERNANCE"
+    artifact_type: "release_evidence"
+    contribution: "modified"
+    contribution_description: "Release automation migrated to Release Please, branch protection enabled, and legacy verification naming removed."
+    confidence: "verified"
+    evidence_locator: ".github/workflows/release-please.yml"
+security_and_privacy:
+  secrets_redacted: true
+  hidden_chain_of_thought_excluded: true
+  pii_redacted: true
+  prompt_capture_policy: "metadata_only"
+summary:
+  unresolved_items:
+    - "Live LLM behavioral evaluation remains intentionally out of scope; deterministic static contract tests are the approved evaluation mode."
+  verifier_notes: "Static contracts and repository tests are recorded in the final session report. Human review remains required before merge."
+  human_approval: "pending"

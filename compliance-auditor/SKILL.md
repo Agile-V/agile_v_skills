@@ -3,7 +3,7 @@ name: compliance-auditor
 description: Automates Principle No. 9 (Decision Logging) and Principle No. 5 (Regulatory Readiness). The 'Chronicler' ensuring every choice is backed by a 'Why' and mapped to a requirement for ISO/GxP auditability.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.5"
+  version: "1.6"
   standard: "Agile V"
   compliance_scope: "ISO 9001, ISO 13485, AS9100, GxP"
   author: agile-v.org
@@ -39,7 +39,7 @@ REQ-ID | ART-ID | VER-ID | Status
 **Optional columns (Phase 1-2):** `FT-CODE` (from Red Team VER lines), `policy_version` (from `POLICY.yaml` or `N/A`), `eval_run_id` (from `EVAL_RESULTS.md` header). Include when files exist.
 
 ## 2b. Policy & Eval Evidence
-At Gate 2 compile footers: **Policy** — `policy_version` from `.agile-v/POLICY.yaml` (or `not-used`). **Eval** — `eval_gate_status` + `eval_run_id` from `.agile-v/EVAL_RESULTS.md`; cross-check `VALIDATION_SUMMARY.md` **EvalGate** block matches. **Checkpoints** — list any `CHECKPOINTS.md` rows still `PENDING` (block release) or link `resume_token` → `GATE-XXXX` for audit chain.
+At Gate 2 compile footers: **Policy** — `policy_version` from `.agile-v/POLICY.yaml` (or `not-used`). **Eval** — `eval_gate_status` + `eval_run_id` from `.agile-v/EVAL_RESULTS.md`; cross-check `.agile-v/VERIFICATION_SUMMARY.md` **EvalGate** block matches. **Checkpoints** — list any `.agile-v/CHECKPOINTS.md` rows still `PENDING` (block release) or link `resume_token` → `GATE-XXXX` for audit chain.
 
 ## 3. Non-Conformance Alerting
 Log "Prevented Non-Conformance" when Build Agent violates Logic Gatekeeper constraints.
@@ -119,7 +119,7 @@ For AI-assisted tasks, generate:
 
 Add to ATM optional columns when AI_RUN_MANIFEST is present: `ai_manifest_path`, `ai_manifest_hash`, `ai_bom_completeness`, `ai_revalidation_status`.
 
-Add to HITL Alerts: missing AI_RUN_MANIFEST for L1+ AI-assisted tasks; unresolved AI fields at L2+; pending human approval for L3/L4 AI-influenced tasks.
+Add to HITL Alerts: missing AI_RUN_MANIFEST for materially AI-assisted tasks at any risk level; unresolved AI fields at L2+; pending human approval for L3/L4 AI-influenced tasks.
 
 ## Output Style
 Tone: objective, forensic, precise. Focus: evidence over narrative.

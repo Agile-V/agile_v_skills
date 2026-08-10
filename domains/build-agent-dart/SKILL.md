@@ -3,7 +3,7 @@ name: build-agent-dart
 description: Dart/Flutter build agent for mobile apps, Flutter widgets, and Dart packages. Extends build-agent with Dart-specific conventions. Use when building Flutter apps, Dart packages, or mobile (iOS/Android) features.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.2"
+  version: "2.3"
   standard: "Agile V"
   domain: "Dart/Flutter/Mobile"
   extends: "build-agent"
@@ -641,7 +641,7 @@ Base evidence applies (task brief with REQ IDs, implementation plan, affected fi
 ---
 
 ### L3/L4: High Assurance
-Base evidence applies (all R2 evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
+Base evidence applies (all `L2` evidence + independent verification agent review, traceability matrix, explicit human sign-off, audit artifact, release decision rationale).
 
 **Dart/Flutter-Specific Additions:**
 - **Performance profiling:** Flutter DevTools timeline, memory profiling, CPU profiling

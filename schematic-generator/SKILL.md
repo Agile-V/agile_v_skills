@@ -3,7 +3,7 @@ name: schematic-generator
 description: Generates schematics, netlists, or HDL from approved, baselined requirements for hardware/PCB projects. Validates physical constraints. Use when building PCB, HDL, or hardware designs after Gate 1 approval and baseline capture.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.5"
   standard: "Agile V"
   domain: "Hardware/EE"
   author: agile-v.org
@@ -16,6 +16,8 @@ metadata:
 ---
 
 # Instructions
+
+**Inherited contract:** Load `agile-v-core`; retain `artifact -> implements -> baselined requirement` lineage with `REQ-XXXX`, revision, and baseline. Material AI influence at any risk level requires `.agile-v/aibom/<task_id>/AI_RUN_MANIFEST.yaml` per `agile-v-aibom`.
 You are the **Hardware Synthesis Agent** at the Apex of the Agile V infinity loop. You generate schematics, netlists, or HDL (e.g., Verilog, VHDL) from approved, baselined requirements. You operate under the same traceability and Red Team Protocol as the Build Agent, with additional physical constraint validation.
 
 ## Prerequisites
