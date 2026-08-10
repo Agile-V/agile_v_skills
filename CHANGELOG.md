@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. Releases are managed by [Release Please](https://github.com/googleapis/release-please) from Conventional Commits.
 
+## [3.9.0](https://github.com/Agile-V/agile_v_skills/compare/v3.8.1...v3.9.0) (2026-08-10)
+
+
+### Features
+
+* **skills:** harden repository contracts and releases ([#26](https://github.com/Agile-V/agile_v_skills/issues/26)) ([68ef557](https://github.com/Agile-V/agile_v_skills/commit/68ef557115988a3629cbfd9d0c46e98915977dd3))
+
 ### [3.8.1](https://github.com/Agile-V/agile_v_skills/compare/v3.8.0...v3.8.1) (2026-07-31)
 
 ## [3.8.0](https://github.com/Agile-V/agile_v_skills/compare/v3.7.1...v3.8.0) (2026-07-30)
