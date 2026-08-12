@@ -44,6 +44,19 @@
   },
   "skills": [
     {
+      "name": "agile-v-adr",
+      "path": "agile-v-adr/SKILL.md",
+      "version": "0.1",
+      "status": "draft",
+      "category": "governance",
+      "routing": {
+        "intent": "Author, approve, and supersede Architecture Decision Records (ADRs) as immutable records.",
+        "prerequisites": [
+          "agile-v-core"
+        ]
+      }
+    },
+    {
       "name": "agile-v-aibom",
       "path": "agile-v-aibom/SKILL.md",
       "version": "1.2",

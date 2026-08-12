@@ -17,6 +17,7 @@ Load `agile-v-core` first, then only the stage and risk-relevant skills. See [In
 | Interface, test, data-type, and time-allocation checks | `agile-v-quality-gates` | `agile-v-quality-gates/` | Current |
 | Coding anti-pattern prevention | `agile-v-behavioral` | `agile-v-behavioral/` | Current |
 | AI run provenance and AI/ML-BOM | `agile-v-aibom` | `agile-v-aibom/` | **[Preview]** |
+| Architecture Decision Records (immutable, supersession) | `agile-v-adr` | `agile-v-adr/` | **[Draft]** |
 | User research to candidate requirements | `discovery-analyst` | `discovery-analyst/` | Current |
 | Security/privacy threat analysis | `threat-modeler` | `threat-modeler/` | Current |
 | UX, accessibility, interaction constraints | `ux-spec-author` | `ux-spec-author/` | Current |
