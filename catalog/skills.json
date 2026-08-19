@@ -107,6 +107,19 @@
       }
     },
     {
+      "name": "agile-v-sop-adapter",
+      "path": "agile-v-sop-adapter/SKILL.md",
+      "version": "0.2",
+      "status": "draft",
+      "category": "compliance",
+      "routing": {
+        "intent": "Bind controlled SOPs to Agile-V controls, artifacts, and gates so execution conforms to the SOPs.",
+        "prerequisites": [
+          "agile-v-core"
+        ]
+      }
+    },
+    {
       "name": "agile-v-core",
       "path": "agile-v-core/SKILL.md",
       "version": "1.7",

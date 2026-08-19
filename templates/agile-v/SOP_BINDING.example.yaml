@@ -1,0 +1,99 @@
+# Agile-V SOP Binding. Copy to `.agile-v/SOP_BINDING.yaml`.
+#
+# Purpose: bind an organization's controlled SOPs to the Agile-V controls,
+# artifacts, and Human Gates that satisfy them, so execution conforms to the SOPs.
+#
+# Authority flows SOP -> binding -> execution. The SOP is normative; this file
+# is a derived, controlled mapping of it.
+#
+# CONFIDENTIALITY: all values below are fictional placeholders for illustration.
+# A populated binding contains real SOP clause references, external-system
+# identifiers, and owners; it is confidential and belongs ONLY in the
+# organization's private repository. Never copy protected SOP text here, and
+# never commit a populated binding to a public repository.
+
+schema_version: "0.1"
+
+sop_framework:
+  name: "Example Quality System"           # generic label only; not protected content
+  version: "2026.1"             # the SOP baseline this binding is valid against
+
+source_of_truth: "sop"          # authority stays in the SOPs
+owner: "quality-owner"          # accountable role for this binding
+
+bindings:
+  - id: "bind-lifecycle-flow"
+    sop_ref: "SOP-100 §5"       # clause identifier only; no protected text
+    title: "Development lifecycle phases and phase gates"
+    applies_to: "lifecycle"
+    agile_v:
+      control: "cm-default-agentic-task"
+      artifact: "TRACE_GRAPH"
+    deliverables:
+      - "LIFECYCLE_PLAN"
+    human_gate: "gate-1-baseline"
+    verification: "review"
+    evidence_locator: ".agile-v/STATE.md"
+    status: "mapped"
+    owner: "quality-owner"
+
+  - id: "bind-user-requirements"
+    sop_ref: "SOP-101 §5"
+    title: "User requirements are controlled, atomic, and verifiable"
+    applies_to: "requirements"
+    agile_v:
+      artifact: "REQUIREMENTS"
+    deliverables:
+      - "REQ"                   # typed requirement items (REQ-XXXX)
+      - "ACCEPTANCE_CRITERIA"
+    human_gate: "gate-1-baseline"
+    verification: "trace"
+    evidence_locator: ".agile-v/REQUIREMENTS.md"
+    status: "mapped"
+    owner: "requirement-owner"
+
+  - id: "bind-verification"
+    sop_ref: "SOP-110 §5"
+    title: "Independent verification against approved requirements"
+    applies_to: "verification"
+    agile_v:
+      artifact: "VERIFICATION_RESULT"
+    deliverables:
+      - "TC"                    # typed test cases (TC-XXXX)
+      - "VERIFICATION_SUMMARY"
+    human_gate: "gate-2-verification"
+    verification: "test"
+    evidence_locator: ".agile-v/evidence/"
+    status: "mapped"
+    owner: "verification-owner"
+
+  - id: "bind-records-and-signatures"
+    sop_ref: "SOP-120 §5"
+    title: "Electronic records and signatures for approvals"
+    applies_to: "governance"
+    agile_v:
+      control: "cm-default-agentic-task"
+      artifact: "APPROVAL"
+    deliverables:
+      - "APPROVAL_RECORD"
+    human_gate: "gate-2-verification"
+    verification: "inspection"
+    evidence_locator: ".agile-v/APPROVALS.md"
+    status: "mapped"
+    owner: "quality-owner"
+
+  # Example of an unmapped obligation recorded as a conformance gap rather than
+  # being silently dropped or weakened.
+  - id: "bind-periodic-review"
+    sop_ref: "SOP-130 §5"
+    title: "Periodic review of validated systems"
+    applies_to: "operation"
+    agile_v:
+      artifact: "VALIDATION_REPORT"
+    deliverables:
+      - "REVALIDATION_RECORD"
+    human_gate: "none"
+    verification: "review"
+    evidence_locator: ".agile-v/REVALIDATION_LOG.md"
+    status: "gap"               # no mapped control yet; remediation owned below
+    owner: "quality-owner"

@@ -14,6 +14,7 @@ Load `agile-v-core` first, then only the stage and risk-relevant skills. See [In
 | Cycle 2+, change requests, archival | `agile-v-lifecycle` | `agile-v-lifecycle/` | Current |
 | Risk, CAPA, approvals, security, revalidation | `agile-v-compliance` | `agile-v-compliance/` | Current |
 | Runtime control matrix | `agile-v-control-matrix` | `agile-v-control-matrix/` | Current |
+| Bind controlled SOPs to Agile-V controls/gates (SOP conformance) | `agile-v-sop-adapter` | `agile-v-sop-adapter/` | **[Draft]** |
 | Interface, test, data-type, and time-allocation checks | `agile-v-quality-gates` | `agile-v-quality-gates/` | Current |
 | Coding anti-pattern prevention | `agile-v-behavioral` | `agile-v-behavioral/` | Current |
 | AI run provenance and AI/ML-BOM | `agile-v-aibom` | `agile-v-aibom/` | **[Preview]** |
