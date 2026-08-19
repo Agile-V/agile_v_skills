@@ -109,7 +109,7 @@
     {
       "name": "agile-v-sop-adapter",
       "path": "agile-v-sop-adapter/SKILL.md",
-      "version": "0.1",
+      "version": "0.2",
       "status": "draft",
       "category": "compliance",
       "routing": {

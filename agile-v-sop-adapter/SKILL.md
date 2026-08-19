@@ -3,7 +3,7 @@ name: agile-v-sop-adapter
 description: Bind an organization's controlled SOPs (Standard Operating Procedures) to Agile-V controls, artifacts, and Human Gates so Agile-V execution conforms to the SOPs. Load when creating or checking `.agile-v/SOP_BINDING.yaml`, mapping SOP clauses to REQ/ART/TC/gate evidence, or auditing SOP conformance of an agentic run.
 license: CC-BY-SA-4.0
 metadata:
-  version: "0.1"
+  version: "0.2"
   standard: "Agile V"
   status: draft
   compliance: "Supports ISO 9001/ISO 27001-aligned design controls and GxP/GAMP 5 lifecycle mapping; not a conformity or certification claim"
@@ -123,12 +123,23 @@ Conformance evidence should include: the binding path and version, the SOP frame
 
 ## Runtime Contract
 
-This skill defines expected behavior. Enforcement belongs in the consuming repo, for example:
+This skill defines expected behavior. **Enforcement runs in the consuming project
+repository's CI, not in the SOP source-of-truth repository.** A reference
+validator ships with this skill:
 
-- a CLI validator (`agilev sop validate`) that checks `SOP_BINDING.yaml` against the schema and the conformance checks above
+- `agile-v-sop-adapter/validate.py` — checks `.agile-v/SOP_BINDING.yaml` against
+  `templates/agile-v/SOP_BINDING.schema.json` and the conformance checks above.
+  Run `python validate.py --binding .agile-v/SOP_BINDING.yaml` in CI; add
+  `--strict` in release CI to fail on any `status: gap`. It exits non-zero on
+  failure and includes a leak guard against embedded SOP body text.
 - a pre-gate hook that blocks sign-off when a mapped obligation lacks evidence
-- an evidence-bundle validator and a CI workflow that fail on `status: gap` for in-scope obligations
-- a leak check that fails when protected SOP text or external-system IDs appear outside the private binding
+- an evidence-bundle validator and a CI workflow that fail on `status: gap` for
+  in-scope obligations
+
+The populated `SOP_BINDING.yaml` is authored and version-controlled in the
+organization's SOP/QMS repository (source of truth) and **distributed** to each
+project repository (for example as a versioned package or a pinned fetch); the
+validator then runs against the project's own `.agile-v/` evidence.
 
 ## Confidentiality
 
@@ -140,6 +151,8 @@ The public binding schema and examples use placeholder values only. The organiza
 |---|---|
 | `agile-v-sop-adapter/SKILL.md` | Load during governance, planning, verification, and audit tasks that must follow SOPs. |
 | `templates/agile-v/SOP_BINDING.example.yaml` | Copy into `.agile-v/SOP_BINDING.yaml` and fill SOP refs/owners privately before active use. |
+| `agile-v-sop-adapter/validate.py` | Run in project CI to validate `.agile-v/SOP_BINDING.yaml`; `--strict` in release CI. |
+| `templates/agile-v/SOP_BINDING.schema.json` | Shape reference for the binding; validate in CLI and CI. |
 | `agile-v-control-matrix` | Provides the control IDs a binding entry references. |
 | `agile-v-compliance` | Provides Human Gate, approval, CAPA, and revalidation records the binding relies on. |
 | `docs/compliance/*` | Standard-to-control matrices the binding aligns SOP obligations to. |
