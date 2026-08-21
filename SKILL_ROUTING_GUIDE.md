@@ -1,7 +1,7 @@
 # Agile V Skills: Routing Guide
 
 > **Repository version:** 3.9.x
-> **Catalog:** 45 skills currently present. **[Preview]** means the skill's current YAML frontmatter contains `metadata.status: draft`; presence on `main` does not make that contract stable.
+> **Catalog:** 48 skills currently present. **[Preview]** means the skill's current YAML frontmatter contains `metadata.status: draft`; presence on `main` does not make that contract stable.
 
 Load `agile-v-core` first, then only the stage and risk-relevant skills. See [Installation Profiles](docs/INSTALL_PROFILES.md) and the [Golden Journey](docs/GOLDEN_JOURNEY.md).
 
@@ -14,6 +14,7 @@ Load `agile-v-core` first, then only the stage and risk-relevant skills. See [In
 | Cycle 2+, change requests, archival | `agile-v-lifecycle` | `agile-v-lifecycle/` | Current |
 | Risk, CAPA, approvals, security, revalidation | `agile-v-compliance` | `agile-v-compliance/` | Current |
 | Runtime control matrix | `agile-v-control-matrix` | `agile-v-control-matrix/` | Current |
+| Bainbridge-aware Human Oversight Case for L2+ Human Gates | `agile-v-human-oversight` | `agile-v-human-oversight/` | **[Draft]** |
 | Bind controlled SOPs to Agile-V controls/gates (SOP conformance) | `agile-v-sop-adapter` | `agile-v-sop-adapter/` | **[Draft]** |
 | Interface, test, data-type, and time-allocation checks | `agile-v-quality-gates` | `agile-v-quality-gates/` | Current |
 | Coding anti-pattern prevention | `agile-v-behavioral` | `agile-v-behavioral/` | Current |
@@ -65,6 +66,7 @@ Load `agile-v-core` first, then only the stage and risk-relevant skills. See [In
 | “Build this” | `build-agent` + one domain build skill | Requires Gate 1-approved, frozen baseline |
 | “Design the tests” | `test-designer` | Reads the baseline, not implementation |
 | “Verify it works as specified” | `red-team-verifier` | Produces `.agile-v/VERIFICATION_SUMMARY.md` and `VER-XXXX` evidence |
+| “Is this human approval real oversight, or just a signature?” | `agile-v-human-oversight` | Requires a blind precommit, claim-specific independence, and recovery evidence — a second agent is not independent assurance |
 | “Validate it with users/in operations” | `validation-agent` | Produces intended-use validation plan/protocol/report after verification |
 | “Run Eval Gate / prepare Gate 2” | `red-team-verifier` + `compliance-auditor` | `EVAL_RESULTS.md` status must be `PASS` or authorized `WAIVED`; link it from `VERIFICATION_SUMMARY.md` |
 | “Assess hazards or unacceptable harm” | `safety-engineer` | Tailors safety methods and assurance; does not replace verification or validation |
@@ -92,7 +94,7 @@ Follow the evidence and stop conditions in the [Golden Journey](docs/GOLDEN_JOUR
 
 ### Regulated or Safety-Relevant Work
 
-Use the `regulated` install profile. Classify `L0`-`L4`; add `threat-modeler`, `safety-engineer`, and `validation-agent` according to scope; maintain control, trace, approval, verification, applicable validation, release, and AI influence evidence. Skills and templates support an assurance process but do not establish certification or regulatory conformity.
+Use the `regulated` install profile. Classify `L0`-`L4`; add `threat-modeler`, `safety-engineer`, and `validation-agent` according to scope; maintain control, trace, approval, verification, applicable validation, release, and AI influence evidence. Load `agile-v-human-oversight` at Human Gates for L2+ work so approval is oversight-effectiveness evidence, not only authority evidence. Skills and templates support an assurance process but do not establish certification or regulatory conformity.
 
 ### Business Preview
 

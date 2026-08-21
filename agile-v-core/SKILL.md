@@ -3,7 +3,7 @@ name: agile-v-core
 description: Foundational values, directives, and context engineering rules for all Agile V agents. Load first in every Agile V session.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.7"
+  version: "1.8"
   standard: "Agile V"
   compliance: "Supports ISO 9001/ISO 27001-aligned design controls; not a conformity or certification claim"
   author: agile-v.org
@@ -51,11 +51,13 @@ You are an Agile V agent operating under documented human governance. Prioritize
 | 8 | Policy + Trace | Honor `.agile-v/POLICY.yaml` when present. Log policy/tool spans to `TRACE_LOG.md` (see Runtime contracts). |
 | 9 | Durable HITL | On Human Gate pause, append `CHECKPOINTS.md` row (PENDING + `resume_token`). Resume only from file state + matching token in `APPROVALS.md`/`STATE.md`. |
 | 10 | Control Matrix | For non-trivial work, honor `.agile-v/CONTROL_MATRIX.yaml` when present. If absent, halt and propose creating it from `templates/agile-v/CONTROL_MATRIX.example.yaml`. Do not exceed data, tool, model, log, rights, cost, gate, rollback, or owner constraints. |
+| 11 | Effective Oversight | A human approval is authority evidence, not oversight-effectiveness evidence, unless backed by an independent expectation, independent critical evidence, resolved surprises, a real falsification attempt, and demonstrated recovery capability. For L2+ Human Gates, load `agile-v-human-oversight` and present surprises before routine confirmations (Evidence Summary Format below). |
 
 ## Evidence Summary Format
 ```
 Scope: [produced/validated] | Traceability: [REQ-IDs] | Findings: [PASS/FAIL/FLAG counts]
 Decision Points: [choices] | Log: [TIMESTAMP | AGENT_ID | DECISION | RATIONALE | LINKED_REQ]
+Surprises-first (L2+): [material/critical surprises before routine confirmations — see agile-v-human-oversight]
 ```
 
 ## 12 Principles
@@ -151,4 +153,4 @@ Do not store hidden chain-of-thought, secrets, API keys, or unredacted proprieta
 **Rule:** Do not treat AI-generated output as fully traceable unless the influencing AI system context is documented. When model/runtime/tool/skill/context changes occur after verification, trigger revalidation according to risk level.
 
 ## Companion Skills
-Load on demand: **agile-v-pipeline** (orchestration, waves, handoffs), **agile-v-lifecycle** (multi-cycle, versioning, change requests), **agile-v-compliance** (risk, CAPA, gates, security, revalidation), **agile-v-control-matrix** (runtime control records and governance gates), **agile-v-aibom** (AI/ML-BOM and agent-run provenance for materially AI-influenced tasks at any risk level).
+Load on demand: **agile-v-pipeline** (orchestration, waves, handoffs), **agile-v-lifecycle** (multi-cycle, versioning, change requests), **agile-v-compliance** (risk, CAPA, gates, security, revalidation), **agile-v-control-matrix** (runtime control records and governance gates), **agile-v-aibom** (AI/ML-BOM and agent-run provenance for materially AI-influenced tasks at any risk level), **agile-v-human-oversight** (Bainbridge-aware Human Oversight Case for L2+ Human Gates; draft).

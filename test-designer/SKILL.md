@@ -3,7 +3,7 @@ name: test-designer
 description: Designs the verification suite from approved, baselined requirements only — never from code. Prevents success bias. Use when building test cases in parallel with the Build Agent after Gate 1 approval and baseline capture.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.5"
+  version: "1.6"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -11,6 +11,7 @@ metadata:
     - Output Format
     - Test Specification Structure
     - Multi-Cycle Regression & Delta
+    - Human Concern Coverage (L2+)
     - Agentic Security Tests
 ---
 
@@ -66,6 +67,10 @@ Use `AI_RUN_MANIFEST.yaml` to decide whether test re-execution is needed when th
 - Agile-V skill version changed and test cases were AI-generated
 
 If the AI_RUN_MANIFEST shows changes, flag affected tests for rerun per `AI_BOM_POLICY.yaml` risk-level rules. Append re-execution rationale to the test specification.
+
+## Human Concern Coverage (L2+)
+
+When a `HUMAN_OVERSIGHT_CASE_<task_id>.yaml` blind precommit records a falsifiable failure hypothesis, generate a corresponding TC-XXXX from the requirement — never from the implementation — and mark it `origin: human-concern`. If the concern is not testable without reading implementation, flag it for the Logic Gatekeeper as a possible requirement gap rather than silently dropping it.
 
 ## Agentic Security Tests
 

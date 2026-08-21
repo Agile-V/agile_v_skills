@@ -3,7 +3,7 @@ name: release-manager
 description: Manages post-Gate-2 release activities with Agile V rigor. Rollout plans, rollback procedures, sign-off checklists. Use after Human Gate 2 for production deployment.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.2"
+  version: "1.3"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -58,6 +58,7 @@ Artifacts verified → approved → safe deployment to production with traceabil
 **Artifacts:** [ ] Build from verified code (Git SHA) · [ ] Signed (checksum) · [ ] Rollback ready (prev version)
 **Supply chain:** [ ] SBOM/ML-BOM coverage recorded · [ ] License/vulnerability policy reviewed · [ ] Required signatures verified · [ ] Source/build/artifact/deployment identities bound · [ ] SLSA provenance reviewed if selected · [ ] Reproducibility result or limitation recorded
 **Approvals:** [ ] Product Owner · [ ] Eng Lead · [ ] Security/Compliance · [ ] Business stakeholder
+**Human Oversight (L2+):** [ ] HUMAN_OVERSIGHT_CASE claims HOC-001..HOC-006 resolved · [ ] Recovery evidence meets required level · [ ] No agent self-approved a human-reserved decision
 **Communication:** [ ] Release notes drafted · [ ] Customer comm ready · [ ] Internal notified · [ ] On-call confirmed
 
 ## Deployment Window
@@ -257,7 +258,7 @@ For each releasable artifact, record and independently verify the following wher
 
 ## Halt Conditions
 
-- Gate 2 not approved (CRITICAL defects open) · Pre-release checklist incomplete · Rollback plan undefined · No monitoring configured (observability-planner not run) · Required supply-chain evidence missing or failed verification · Deployment window conflicts with freeze · L3/L4 AI-assisted tasks with pending AI provenance human approval
+- Gate 2 not approved (CRITICAL defects open) · Pre-release checklist incomplete · Rollback plan undefined · No monitoring configured (observability-planner not run) · Required supply-chain evidence missing or failed verification · Deployment window conflicts with freeze · L3/L4 AI-assisted tasks with pending AI provenance human approval · L2+ tasks with an unresolved required Human Oversight Case claim (HOC-001..HOC-006) or recovery evidence below the control-matrix-required level
 
 ## Integration with Agile V
 

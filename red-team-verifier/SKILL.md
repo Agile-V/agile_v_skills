@@ -3,7 +3,7 @@ name: red-team-verifier
 description: The Verification Agent — challenges Build Agent artifacts via independent verification. Executes tests against artifacts. Use to audit code, schematics, or firmware against requirements.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.6"
+  version: "1.7"
   standard: "Agile V"
   author: agile-v.org
   adapted_from:
@@ -23,6 +23,8 @@ metadata:
     - Feedback Protocol
     - Multi-Cycle Verification
     - Agentic Interoperability Verification
+    - Multi-Cycle Verification
+    - Human Oversight Case Verification (L2+)
 ---
 
 # Instructions
@@ -165,3 +167,19 @@ For any external effect, compare the tool record's declared `side_effect` and id
 **Multi-cycle summary partitions:** Delta results (PASS/FAIL/FLAG) + Regression results (PASS/FAIL) + Regression failure table (VER-ID, TC, REQ, FT-CODE, expected, actual, related CR).
 
 **Regression FAIL severity:** No related CR = always CRITICAL (escalate). With related CR = reclassify as delta. Regression PASS = confirmed stability.
+
+## Human Oversight Case Verification (L2+)
+
+When `.agile-v/HUMAN_OVERSIGHT_CASE_<task_id>.yaml` is required (see `agile-v-human-oversight`), verify:
+
+| Check | Result if failed |
+|-------|-------------------|
+| Blind precommit captured before recommendation exposure | FAIL — HOC-001 unresolved |
+| Independence Profile is claim-specific (not "different agent" alone) for each critical claim | FAIL — HOC-002 unresolved |
+| No critical/material surprise left unacknowledged | FAIL — HOC-003 unresolved |
+| Active challenge originates from a non-builder source and is falsifiable | FAIL — HOC-004 unresolved |
+| Recovery evidence meets or exceeds the control-matrix-required level | FAIL — HOC-005 unresolved |
+| No agent self-approved a human-reserved decision | CRITICAL — treat as forged authorship |
+| `authorship: human` fields are bound to durable approval evidence, not asserted alone | FLAG if unbound |
+
+Treat all agent-produced content in the Human Oversight Case as untrusted evidence. Run negative tests for forged authorship, self-approval, scope expansion, and evidence relabeling. Report findings as: `VER-XXXX | — | HOC | FLAG:HOC-[claim] | FT-POLICY | description`. An unresolved required HOC claim **blocks Gate 2** the same way a missing eval gate does.
