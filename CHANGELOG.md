@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. Releases are managed by [Release Please](https://github.com/googleapis/release-please) from Conventional Commits.
 
+## [3.10.0](https://github.com/Agile-V/agile_v_skills/compare/v3.9.0...v3.10.0) (2026-08-25)
+
+
+### Features
+
+* add agile-v-adr skill for Architecture Decision Records ([#35](https://github.com/Agile-V/agile_v_skills/issues/35)) ([85ec71e](https://github.com/Agile-V/agile_v_skills/commit/85ec71e98d52d7c5c38a554023b1b369def3de86))
+* **gxp:** add draft GxP qualification profile (DQ/IQ/OQ/PQ) ([#40](https://github.com/Agile-V/agile_v_skills/issues/40)) ([f1d7efb](https://github.com/Agile-V/agile_v_skills/commit/f1d7efb5177f56f7cdd7d7930ca84fad873ddbbf))
+* **skills:** add agile-v-human-oversight draft skill ([#39](https://github.com/Agile-V/agile_v_skills/issues/39)) ([dca43f0](https://github.com/Agile-V/agile_v_skills/commit/dca43f026b175ad9a0388d18b2c75701801ea3eb))
+* **skills:** add agile-v-sop-adapter draft skill ([#37](https://github.com/Agile-V/agile_v_skills/issues/37)) ([5efc967](https://github.com/Agile-V/agile_v_skills/commit/5efc967f441ccdcf39362bc797e59870da09de44))
+
 ## [3.9.0](https://github.com/Agile-V/agile_v_skills/compare/v3.8.1...v3.9.0) (2026-08-10)
 
 
