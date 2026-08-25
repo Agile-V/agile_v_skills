@@ -249,3 +249,28 @@ def test_static_trace_contract_requires_typed_complete_lineage():
     assert "req xxxx revision and baseline reference" in designer
     assert "do not invent traceability links" in graph
     assert "orphan requirement" in graph and "orphan change" in graph
+
+
+def test_gxp_qualification_skill_exists_and_is_draft():
+    skill_path = ROOT / "agile-v-gxp-qualification" / "SKILL.md"
+    assert skill_path.exists()
+    frontmatter = yaml.safe_load(skill_path.read_text(encoding="utf-8").split("---", 2)[1])
+    assert frontmatter["name"] == "agile-v-gxp-qualification"
+    assert frontmatter["metadata"]["status"] == "draft"
+
+
+def test_gxp_qualification_role_boundaries():
+    gxp = _normalized(_text("agile-v-gxp-qualification/SKILL.md"))
+    logic = _normalized(_text("logic-gatekeeper/SKILL.md"))
+    build = _normalized(_text("build-agent/SKILL.md"))
+    verifier = _normalized(_text("red-team-verifier/SKILL.md"))
+    assert "evidence stages" in gxp and "not agent names" in gxp
+    assert "does not complete dq" in logic
+    assert ("never mark its own installation as iq" in build) or ("never approve dq" in build)
+    assert "it does not establish pq or intended use acceptance" in verifier
+
+
+def test_core_routes_regulated_work_to_gxp_qualification():
+    core = _normalized(_text("agile-v-core/SKILL.md"))
+    assert "agile v gxp qualification" in core
+    assert "treat dq iq oq and pq as evidence stages not agent names" in core

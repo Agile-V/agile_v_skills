@@ -1,0 +1,124 @@
+{
+  "QUALIFICATION_PLAN": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "plan": {
+      "plan_id": "bad-id",
+      "subject": {"subject_type": "target_system", "name": "X"},
+      "intended_use_ref": "ref",
+      "strategy": {"approach": "gxp-standard", "stages_required": ["ZZ"]},
+      "status": "approved"
+    }
+  },
+  "SYSTEM_DESCRIPTION": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "description": {
+      "system_id": "SYS-0007",
+      "version_scope": "4.7.x",
+      "intended_use": "review",
+      "boundary": "app"
+    }
+  },
+  "SYSTEM_BASELINE": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "baseline": {
+      "baseline_id": "BASELINE-QUAL-0001",
+      "subject_id": "SYS-0007",
+      "application": {"release": "4.7.1"},
+      "environment": {"environment_id": "GMP-VAL-01"},
+      "configuration": {"configuration_ref": "config", "secret_values_recorded": true},
+      "captured_at": "2026-02-10T10:00:00Z",
+      "review_status": "approved"
+    }
+  },
+  "QUALIFICATION_PROTOCOL": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "protocol": {
+      "protocol_id": "PQ-0009",
+      "revision": "1",
+      "stage": "PQ",
+      "subject_ref": "SYS-0007",
+      "plan_ref": "QPLAN-0001",
+      "approval": {"status": "approved"}
+    }
+  },
+  "QUALIFICATION_EXECUTION": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "execution": {
+      "execution_id": "EXEC-OQ-0007-01",
+      "protocol_id": "OQ-0007",
+      "protocol_revision": "1",
+      "baseline_ref": "BASELINE-QUAL-0001",
+      "started_at": "2026-02-11T09:00:00Z",
+      "executor": {"identity_ref": "identity-ref"},
+      "test_case_results": [{
+        "test_id": "TC-0042",
+        "result": "PASS",
+        "step_results": [{"step": 1, "result": "PASS"}]
+      }],
+      "review": {"status": "approved"}
+    }
+  },
+  "QUALIFICATION_DEVIATION": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "deviation": {
+      "deviation_id": "QDEV-0001",
+      "stage": "OQ",
+      "subject_ref": "SYS-0007",
+      "baseline_ref": "BASELINE-QUAL-0001",
+      "what_differed": "timestamp issue",
+      "detected_at": "2026-02-11T09:20:00Z",
+      "impact_assessment": {"product_quality": "none", "data_integrity": "medium"},
+      "disposition": {"decision": "capa_raised", "approver_ref": "quality-owner"}
+    }
+  },
+  "QUALIFICATION_SUMMARY": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "summary": {
+      "summary_id": "QSUM-0001",
+      "subject_ref": "SYS-0007",
+      "plan_ref": "QPLAN-0001",
+      "baseline_ref": "BASELINE-QUAL-0001",
+      "stages": {
+        "OQ": {"required": true, "status": "CONDITIONALLY_ACCEPTED"}
+      },
+      "conclusion": {"decision": "ACCEPTED FOR INTENDED USE", "distinguishes": {"passing_tests": true, "stage_acceptance": "ok", "intended_use_acceptance": "ok", "release_authority": "quality"}, "release_authority_ref": "quality-owner"}
+    }
+  },
+  "REQUALIFICATION_ASSESSMENT": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "assessment": {
+      "assessment_id": "REQUAL-0001",
+      "trigger": "unknown_trigger",
+      "change_description": "patch",
+      "old_baseline": "BASELINE-QUAL-0001",
+      "new_baseline": "BASELINE-QUAL-0002",
+      "outcome": "TARGETED REGRESSION",
+      "approver_ref": "quality-owner",
+      "rationale": "low risk"
+    }
+  }
+}

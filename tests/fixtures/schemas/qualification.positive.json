@@ -1,0 +1,219 @@
+{
+  "QUALIFICATION_PLAN": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "plan": {
+      "plan_id": "QPLAN-0001",
+      "subject": {"subject_type": "target_system", "name": "Laboratory Result Review System", "system_id": "SYS-0007", "version_scope": "4.7.x"},
+      "regulatory_context": {"gxp_applicable": true, "annex_11_applicable": true},
+      "intended_use_ref": ".agile-v/REQUIREMENTS.md#REQ-0001",
+      "system_description_ref": ".agile-v/qualification/SYSTEM_DESCRIPTION.yaml",
+      "risk_refs": ["RISK-0012"],
+      "strategy": {"approach": "gxp-standard", "stages_required": ["DQ", "IQ", "OQ", "PQ"], "combined_stages": [], "supplier_evidence_reuse": "controlled", "qualification_of_toolchain_required": true},
+      "roles": {"system_owner": "role-ref", "quality_owner": "role-ref"},
+      "independence": {"builder_may_approve": false, "independent_review_required_from": "L3"},
+      "evidence_controls": {"hash_required": true},
+      "stage_release": {"conditional_release_allowed": true, "conditional_release_authority": "quality-owner"},
+      "requalification": {"periodic_review_interval_months": 12},
+      "status": "approved",
+      "approval_ref": "GATE-QPLAN-0001"
+    }
+  },
+  "SYSTEM_DESCRIPTION": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "description": {
+      "system_id": "SYS-0007",
+      "version_scope": "4.7.x",
+      "intended_use": "Review and release laboratory results under GMP QC control.",
+      "process_supported": "QC result review and release",
+      "boundary": "Application, database, identity provider integration; excludes instrument firmware.",
+      "components": ["web app", "postgres", "message bus"],
+      "user_types": ["QC_VIEWER", "QC_APPROVER"],
+      "records_and_data": ["result records", "audit trail"],
+      "data_classifications": ["GMP", "personal"],
+      "data_flows": ["LIMS -> review app -> archive"],
+      "interfaces": ["LIMS REST v6"],
+      "decision_functions": ["result release control"],
+      "audit_trail_scope": "all record CRUD and release actions",
+      "electronic_signature_scope": "result release requires e-signature",
+      "backup_restore_archive_retention": "nightly backup, 10-year archive",
+      "recovery_expectations": "RTO 4h, RPO 1h",
+      "security_boundaries": "closed system behind SSO",
+      "supplier_dependencies": ["LIMS vendor"],
+      "operating_environments": ["GMP-PROD-01", "GMP-VAL-01"],
+      "exclusions": ["instrument calibration"],
+      "functionality_types": {
+        "standard": ["result listing"],
+        "configured": ["release workflow"],
+        "custom": ["QC override rule"],
+        "external_service": ["SSO"],
+        "manual_procedural": ["second-person verification SOP"]
+      }
+    }
+  },
+  "SYSTEM_BASELINE": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "baseline": {
+      "baseline_id": "BASELINE-QUAL-0001",
+      "subject_id": "SYS-0007",
+      "application": {"release": "4.7.1", "source_commit": "abc123", "artifact_digest": "sha256:deadbeef", "build_manifest_ref": ".agile-v/BUILD_MANIFEST.md"},
+      "environment": {"environment_id": "GMP-VAL-01", "infrastructure_ref": "iac-record", "infrastructure_digest": "sha256:cafe"},
+      "platform": {"operating_system": "linux", "runtime": "node20", "database": "postgres16"},
+      "configuration": {"configuration_ref": "config-record", "configuration_digest": "sha256:1234", "secret_values_recorded": false},
+      "interfaces": ["LIMS REST v6"],
+      "dependencies": {"sbom_ref": "sbom-ref", "approved_versions": true},
+      "security": {"supported_platforms": true, "time_sync_ref": "ntp-record"},
+      "backup_restore": {"last_restore_test_ref": "restore-0003"},
+      "calibration": {"applicable": false, "evidence_refs": []},
+      "captured_at": "2026-02-10T10:00:00Z",
+      "captured_by": "identity-ref",
+      "review_status": "approved"
+    }
+  },
+  "QUALIFICATION_PROTOCOL": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "protocol": {
+      "protocol_id": "OQ-0007",
+      "revision": "1",
+      "stage": "OQ",
+      "subject_ref": "SYS-0007",
+      "plan_ref": "QPLAN-0001",
+      "baseline_ref": "BASELINE-QUAL-0001",
+      "requirements": [{"requirement_id": "REQ-0012", "revision": "rev-3", "baseline_id": "BASELINE-REQ-0004"}],
+      "risk_refs": ["RISK-0012"],
+      "preconditions": [{"id": "PRE-001", "statement": "IQ stage released", "evidence_ref": "IQ-RPT-0003"}],
+      "roles": {"author": "identity-ref", "executor": "identity-ref"},
+      "test_cases": [{
+        "test_id": "TC-0042",
+        "title": "Reject unauthorized result release",
+        "type": "negative",
+        "qualification_stage": "OQ",
+        "gxp_critical": true,
+        "requirement_refs": ["REQ-0012@rev-3"],
+        "risk_refs": ["RISK-0012"],
+        "prerequisites": [],
+        "input_data_refs": ["TESTDATA-0003"],
+        "steps": [
+          {"step": 1, "action": "Authenticate as a role without release authority", "expected": "Authentication succeeds with restricted role"},
+          {"step": 2, "action": "Attempt to release a result", "expected": "Release is denied and the attempt is audit-trailed"}
+        ],
+        "acceptance_criteria": ["No result status changes", "Audit event records actor, time, action, outcome"],
+        "evidence_required": ["execution log", "audit-trail extract"]
+      }],
+      "approval": {"status": "approved", "approval_ref": "GATE-OQ-0007"}
+    }
+  },
+  "QUALIFICATION_EXECUTION": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "execution": {
+      "execution_id": "EXEC-OQ-0007-01",
+      "protocol_id": "OQ-0007",
+      "protocol_revision": "1",
+      "baseline_ref": "BASELINE-QUAL-0001",
+      "started_at": "2026-02-11T09:00:00Z",
+      "ended_at": "2026-02-11T09:30:00Z",
+      "executor": {"identity_ref": "identity-ref", "role": "qualification-executor"},
+      "witness": {"required": false, "identity_ref": null},
+      "environment_ref": "GMP-VAL-01",
+      "test_case_results": [{
+        "test_id": "TC-0042",
+        "result": "PASS",
+        "step_results": [
+          {"step": 1, "actual": "Authenticated as QC_VIEWER", "result": "PASS", "evidence_refs": ["evidence/auth-log-0042.txt"]},
+          {"step": 2, "actual": "HTTP 403; result remained REVIEWED; audit event AT-8891 created", "result": "PASS", "evidence_refs": ["evidence/request-response-0042.txt", "evidence/audit-event-AT-8891.json"]}
+        ],
+        "deviation_refs": []
+      }],
+      "evidence_integrity": {"digest_algorithm": "sha256", "evidence_digests": []},
+      "review": {"status": "approved", "reviewer_ref": "reviewer-ref"}
+    }
+  },
+  "QUALIFICATION_DEVIATION": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "deviation": {
+      "deviation_id": "QDEV-0001",
+      "protocol_ref": "OQ-0007",
+      "execution_ref": "EXEC-OQ-0007-01",
+      "stage": "OQ",
+      "subject_ref": "SYS-0007",
+      "baseline_ref": "BASELINE-QUAL-0001",
+      "what_differed": "Audit event timestamp used server-local time instead of UTC.",
+      "detected_at": "2026-02-11T09:20:00Z",
+      "immediate_containment": "Flagged execution as deviation_open.",
+      "impact_assessment": {"product_quality": "none", "patient_safety": "none", "data_integrity": "medium - timestamp consistency", "intended_use": "low"},
+      "root_cause": "Missing timezone configuration in baseline.",
+      "corrective_action": "Set container TZ=UTC and re-execute TC-0042.",
+      "retest_required": true,
+      "affected_evidence_scope": ["EXEC-OQ-0007-01"],
+      "disposition": {"decision": "capa_raised", "approver_ref": "quality-owner", "closure_evidence_ref": "CAPA-0009"}
+    }
+  },
+  "QUALIFICATION_SUMMARY": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "summary": {
+      "summary_id": "QSUM-0001",
+      "subject_ref": "SYS-0007",
+      "plan_ref": "QPLAN-0001",
+      "baseline_ref": "BASELINE-QUAL-0001",
+      "intended_use_ref": ".agile-v/REQUIREMENTS.md#REQ-0001",
+      "unexpected_changes": [],
+      "failures_and_inconclusive": [],
+      "open_deviations": ["QDEV-0001"],
+      "evidence_gaps": [],
+      "residual_risks": ["Timezone consistency pending CAPA-0009"],
+      "recovery_limitations": [],
+      "stages": {
+        "DQ": {"required": true, "status": "PASS", "report_ref": "DQ_REPORT.md", "approval_ref": "GATE-DQ-0001"},
+        "IQ": {"required": true, "status": "PASS", "report_ref": "IQ_REPORT.md", "approval_ref": "GATE-IQ-0001"},
+        "OQ": {"required": true, "status": "CONDITIONALLY_ACCEPTED", "report_ref": "OQ_REPORT.md", "approval_ref": "GATE-OQ-0001", "impact_assessment": "Timezone deviation, low risk, CAPA raised.", "conditions": [{"description": "Close CAPA-0009 and re-run TC-0042", "owner": "quality-owner", "due_date": "2026-03-01"}]},
+        "PQ": {"required": true, "status": "NOT_STARTED", "report_ref": "PQ_REPORT.md", "approval_ref": null}
+      },
+      "traceability_completeness": "complete for DQ/IQ/OQ scope",
+      "supplier_evidence": ["LIMS vendor IQ record reviewed"],
+      "conclusion": {"decision": "CONDITIONALLY ACCEPTED WITH RESTRICTIONS", "distinguishes": {"passing_tests": true, "stage_acceptance": "OQ conditional", "intended_use_acceptance": "pending PQ", "release_authority": "quality unit"}, "release_authority_ref": "quality-owner"}
+    }
+  },
+  "REQUALIFICATION_ASSESSMENT": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "agile-v.org",
+    "assessment": {
+      "assessment_id": "REQUAL-0001",
+      "trigger": "security_patch",
+      "change_description": "OS security patch applied to GMP-PROD-01.",
+      "old_baseline": "BASELINE-QUAL-0001",
+      "new_baseline": "BASELINE-QUAL-0002",
+      "affected_intended_use": "none",
+      "requirements_affected": [],
+      "risks_affected": ["RISK-0012"],
+      "configuration_environment_impact": "Kernel patch only; no application change.",
+      "supplier_impact": "none",
+      "data_integrity_impact": "none",
+      "outcome": "TARGETED REGRESSION",
+      "required_stage_evidence": ["IQ delta check", "OQ security regression subset"],
+      "approver_ref": "quality-owner",
+      "rationale": "Low-risk platform patch; targeted regression sufficient per risk assessment."
+    }
+  }
+}
