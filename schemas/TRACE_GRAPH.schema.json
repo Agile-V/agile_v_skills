@@ -18,7 +18,7 @@
       "required": ["id", "type", "revision", "state"],
       "properties": {
         "id": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]*$"},
-        "type": {"enum": ["source", "goal", "observation", "threat", "law", "requirement", "finding", "approval", "risk", "control", "claim", "assumption", "artifact", "test_case", "verification", "validation", "evidence", "baseline", "release", "incident", "signal", "change_request"]},
+        "type": {"enum": ["source", "goal", "observation", "threat", "law", "requirement", "finding", "approval", "risk", "control", "claim", "assumption", "artifact", "test_case", "verification", "validation", "evidence", "baseline", "release", "incident", "signal", "change_request", "qualification_plan", "system_description", "system_baseline", "qualification_protocol", "qualification_execution", "qualification_deviation", "qualification_report", "qualification_summary", "requalification_assessment", "qualification_subject", "qualification_stage"]},
         "revision": {"type": "string", "minLength": 1},
         "state": {"enum": ["draft_persisted", "independent_findings", "architect_revisions", "gate_1", "approved", "baselined", "changed", "retired", "draft", "validated"]},
         "baseline_id": {"type": "string", "pattern": "^BASELINE-[A-Z0-9-]+$"},
@@ -33,7 +33,7 @@
       "properties": {
         "source": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]*$"},
         "target": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]*$"},
-        "relation": {"enum": ["derived_from", "satisfies", "mitigates", "verified_by", "executed_as", "evidenced_by", "validated_by", "included_in", "triggers", "challenges", "resolved_by", "approves", "includes", "supported_by", "bounded_by", "implements", "verifies", "evaluates"]},
+        "relation": {"enum": ["derived_from", "satisfies", "mitigates", "verified_by", "executed_as", "evidenced_by", "validated_by", "included_in", "triggers", "challenges", "resolved_by", "approves", "includes", "supported_by", "bounded_by", "implements", "verifies", "evaluates", "governs", "identifies", "executes_against", "qualifies", "executes", "produces", "deviates_from", "reports_on", "releases", "evaluates_change_to"]},
         "requirement_revision": {"type": "string", "minLength": 1},
         "baseline_id": {"type": "string", "pattern": "^BASELINE-[A-Z0-9-]+$"},
         "evidence_locator": {"type": "string", "minLength": 1}

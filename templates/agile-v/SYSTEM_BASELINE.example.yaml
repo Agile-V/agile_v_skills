@@ -1,0 +1,46 @@
+# System baseline (example). See schemas/SYSTEM_BASELINE.schema.json
+# NEVER record secret values in evidence. Record hashes, identifiers, controlled references.
+# The same baseline reference must be used across protocol execution and reports.
+schema_version: "1.0"
+compatibility: additive
+migration: none
+fixture_owner: agile-v.org
+baseline:
+  baseline_id: "BASELINE-QUAL-0001"
+  subject_id: "SYS-0007"
+  application:
+    release: "4.7.1"
+    source_commit: "commit-sha"
+    artifact_digest: "sha256:..."
+    build_manifest_ref: ".agile-v/BUILD_MANIFEST.md"
+  environment:
+    environment_id: "GMP-VAL-01"
+    infrastructure_ref: "iac-or-controlled-record"
+    infrastructure_digest: "sha256:..."
+  platform:
+    operating_system: "value"
+    runtime: "value"
+    database: "value"
+    container_images: []
+  configuration:
+    configuration_ref: "controlled-config-ref"
+    configuration_digest: "sha256:..."
+    secret_values_recorded: false   # MUST remain false
+  interfaces: []
+  dependencies:
+    sbom_ref: "sbom-ref"
+    approved_versions: true
+  security:
+    supported_platforms: true
+    patch_status_ref: "patch-evidence-ref"
+    identity_configuration_ref: "iam-evidence-ref"
+    time_sync_ref: "time-source-ref"
+  backup_restore:
+    configuration_ref: "backup-config-ref"
+    last_restore_test_ref: "restore-test-ref"
+  calibration:
+    applicable: false
+    evidence_refs: []
+  captured_at: "2026-02-10T10:00:00Z"
+  captured_by: "identity-ref"
+  review_status: "pending"           # pending | reviewed | approved | rejected

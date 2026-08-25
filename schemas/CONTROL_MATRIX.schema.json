@@ -11,7 +11,8 @@
     "default_fail_mode": {"enum": ["closed", "open"]},
     "default_log_storage": {"type": "string"},
     "default_retention_days": {"type": "integer", "minimum": 1},
-    "controls": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/control"}}
+    "controls": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/control"}},
+    "qualification": {"type": "object", "properties": {"enabled": {"type": "boolean"}, "profile": {"type": "string"}, "subject_types": {"type": "array", "items": {"type": "string"}}, "stages_required": {"type": "object"}, "combined_ioq_allowed": {"type": "boolean"}, "supplier_evidence_reuse": {"type": "string"}, "approved_protocol_required": {"type": "boolean"}, "protocol_integrity_required": {"type": "boolean"}, "baseline_drift_action": {"type": "string"}, "independent_review_required_from": {"type": "string"}, "quality_approval_required_from": {"type": "string"}, "representative_data_required_for_pq": {"type": "boolean"}, "recovery_demonstration_required_from": {"type": "string"}, "external_signature_control_required": {"type": "boolean"}, "conditional_release": {"type": "object"}, "requalification": {"type": "object"}}}
   },
   "$defs": {
     "stringArray": {"type": "array", "items": {"type": "string"}},

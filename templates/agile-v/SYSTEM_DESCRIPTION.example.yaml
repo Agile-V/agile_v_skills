@@ -1,0 +1,33 @@
+# System description (example). See schemas/SYSTEM_DESCRIPTION.schema.json
+# Distinguish standard vs configured vs custom vs external-service vs manual functionality.
+schema_version: "1.0"
+compatibility: additive
+migration: none
+fixture_owner: agile-v.org
+description:
+  system_id: "SYS-0007"
+  version_scope: "4.7.x"
+  intended_use: "Review and release laboratory results under GMP QC control."
+  process_supported: "QC result review and release"
+  boundary: "Application, database, identity provider integration; excludes instrument firmware."
+  components: ["web app", "postgres", "message bus"]
+  user_types: ["QC_VIEWER", "QC_APPROVER"]
+  records_and_data: ["result records", "audit trail"]
+  data_classifications: ["GMP", "personal"]
+  data_flows: ["LIMS -> review app -> archive"]
+  interfaces: ["LIMS REST v6"]
+  decision_functions: ["result release control"]
+  audit_trail_scope: "all record CRUD and release actions"
+  electronic_signature_scope: "result release requires e-signature"
+  backup_restore_archive_retention: "nightly backup, 10-year archive"
+  recovery_expectations: "RTO 4h, RPO 1h"
+  security_boundaries: "closed system behind SSO"
+  supplier_dependencies: ["LIMS vendor"]
+  operating_environments: ["GMP-PROD-01", "GMP-VAL-01"]
+  exclusions: ["instrument calibration"]
+  functionality_types:
+    standard: ["result listing"]
+    configured: ["release workflow"]
+    custom: ["QC override rule"]
+    external_service: ["SSO"]
+    manual_procedural: ["second-person verification SOP"]

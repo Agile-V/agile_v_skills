@@ -1,0 +1,22 @@
+# Requalification assessment (example). See schemas/REQUALIFICATION_ASSESSMENT.schema.json
+# Create on any change-assessment trigger; select exactly one outcome.
+schema_version: "1.0"
+compatibility: additive
+migration: none
+fixture_owner: agile-v.org
+assessment:
+  assessment_id: "REQUAL-0001"
+  trigger: "security_patch"          # see schema enum for full trigger list
+  change_description: "OS security patch applied to GMP-PROD-01."
+  old_baseline: "BASELINE-QUAL-0001"
+  new_baseline: "BASELINE-QUAL-0002"
+  affected_intended_use: "none"
+  requirements_affected: []
+  risks_affected: ["RISK-0012"]
+  configuration_environment_impact: "Kernel patch only; no application change."
+  supplier_impact: "none"
+  data_integrity_impact: "none"
+  outcome: "TARGETED REGRESSION"     # NO ADDITIONAL QUALIFICATION | DOCUMENT REVIEW ONLY | TARGETED REGRESSION | IQ ONLY | OQ ONLY | PQ ONLY | IQ + OQ | OQ + PQ | FULL DQ/IQ/OQ/PQ | RETIRE OR REPLACE SYSTEM
+  required_stage_evidence: ["IQ delta check", "OQ security regression subset"]
+  approver_ref: "quality-owner"
+  rationale: "Low-risk platform patch; targeted regression sufficient per risk assessment."
