@@ -14,6 +14,10 @@
 
 This document consolidates all compliance gaps from the per-standard matrices (COMP-002 through COMP-006) into a single prioritized roadmap. Each gap includes what it is, why it matters, which standards require it, and concrete steps to close it.
 
+> **Non-certification statement:** This Agile V profile supports structured qualification and validation evidence. It does not determine legal applicability, replace controlled procedures, provide technical Part 11 controls, or establish regulatory compliance.
+
+> **Scope note:** Qualification splits into two independent scopes — **target-system qualification** (the regulated product built with Agile V) and **assurance-toolchain qualification** (the Agile V skills + runtime + model configuration). DQ/IQ/OQ/PQ apply to each scope separately. A skill or JSON schema is at most a **NORMATIVE CONTRACT** or **SCHEMA-BACKED** artifact — not proof of operational compliance or certification.
+
 ## 2. Gap Priority Levels
 
 | Priority | Definition | Action Timeline |
@@ -34,7 +38,7 @@ This document consolidates all compliance gaps from the per-standard matrices (C
 |-----------|--------|
 | **Standards** | 21 CFR Part 11, Annex 11, ISO 13485 4.2.5 |
 | **Current State** | APPROVALS.md captures name, role, timestamp, and signature method. No actual e-signature mechanism. |
-| **Risk** | Gate approvals are non-repudiable only if signature infrastructure exists. Without it, any GxP submission is indefensible. |
+| **Risk** | **External-control gap (preserved):** skills cannot provide authenticated identity, non-repudiable e-signatures, or secure audit-trail infrastructure by themselves. Gate approvals are non-repudiable only if signature infrastructure exists. Without it, any GxP submission is indefensible. |
 | **Action Required** | 1. Implement PKI or digital signature infrastructure (GPG, organizational PKI, or qualified e-signature service). 2. Mandate `git commit -S` for all Gate approval commits. 3. Create a Signature Meaning Table (e.g., "Approved for release," "Reviewed," "Authored"). 4. Bind each GATE-XXXX record to a signed commit hash. 5. Verify signatures in the Compliance Auditor cycle boundary audit. |
 | **Owner** | IT / Quality / DevOps |
 | **Verification** | Attempt to forge a Gate approval; verify it is detected by signature verification. |
@@ -43,17 +47,18 @@ This document consolidates all compliance gaps from the per-standard matrices (C
 | Attribute | Detail |
 |-----------|--------|
 | **Standards** | ISO 13485 4.1.6, GxP / GAMP 5 |
-| **Current State** | No self-validation procedure for the AI agent platform. |
-| **Risk** | Regulators can challenge whether the AI tooling itself is a validated system. |
-| **Action Required** | 1. Create a Validation Plan for the Agile V AQMS (scope, approach, acceptance criteria). 2. IQ: Verify skill files are correctly installed and version-matched. 3. OQ: Run a reference project through the full pipeline; verify all agents produce expected outputs. 4. PQ: Run a production-representative project; verify traceability, Decision Log, and VER records are correct. 5. Document results in a Validation Report. 6. Trigger revalidation per the Periodic Review schedule. |
+| **Current State** | **Partially addressed (SCHEMA-BACKED, draft).** `agile-v-gxp-qualification` establishes DQ/IQ/OQ/PQ as **evidence stages** (not agent names) with schema-backed contracts: `QUALIFICATION_PLAN`, `SYSTEM_DESCRIPTION`, `SYSTEM_BASELINE`, `QUALIFICATION_PROTOCOL`, `QUALIFICATION_EXECUTION`, `QUALIFICATION_DEVIATION`, `QUALIFICATION_SUMMARY`, `REQUALIFICATION_ASSESSMENT`. IQ/configuration execution evidence is the remaining gap. |
+| **Scope note** | Distinguish **target-system** qualification from **assurance-toolchain** qualification (Agile V skills + runtime + model config). Qualify each scope separately. |
+| **Risk** | Regulators can challenge whether the AI tooling itself is a validated system if IQ/configuration evidence is not captured and baselined. |
+| **Action Required** | 1. Instantiate `QUALIFICATION_PLAN` (scope, approach, acceptance criteria) for the chosen scope. 2. **IQ (proposed solution):** capture installation/configuration evidence via `SYSTEM_BASELINE` (installed skill/schema versions, model config, runtime identity) plus an IQ `QUALIFICATION_PROTOCOL` → `QUALIFICATION_EXECUTION` confirming components are installed, version-matched, and configured as specified. 3. OQ: design tests (test-designer) and execute/challenge (red-team-verifier). 4. PQ: intended-use validation via `validation-agent`. 5. Record `QUALIFICATION_SUMMARY` (compliance-auditor). 6. Trigger `REQUALIFICATION_ASSESSMENT` per the Periodic Review schedule. Draft contracts require local baselining. |
 | **Owner** | Quality / Engineering |
-| **Verification** | Present Validation Report to auditor; demonstrate revalidation trigger when model changes. |
+| **Verification** | Present QUALIFICATION_SUMMARY to auditor; demonstrate REQUALIFICATION_ASSESSMENT trigger when model changes. |
 
 #### GAP-003: LLM Provider Supplier Qualification
 | Attribute | Detail |
 |-----------|--------|
 | **Standards** | AS9100D 8.4, ISO 13485 7.4 (if applicable) |
-| **Current State** | `config.json` documents provider attributes. No evaluation, selection, or monitoring procedure. |
+| **Current State** | `config.json` documents provider attributes. Supplier-suitability expectations are now expressed as a **NORMATIVE CONTRACT** (draft) in `agile-v-gxp-qualification`; evaluation/selection/monitoring remain external activities. |
 | **Risk** | LLM providers process requirements and code. An unqualified provider is a supply chain risk. |
 | **Action Required** | 1. Define supplier evaluation criteria (data handling, SOC 2/ISO 27001 certification, data residency, SLA). 2. Evaluate each LLM provider against criteria; document in supplier register. 3. Define monitoring procedure (annual re-evaluation, incident tracking). 4. Flow down data handling requirements contractually (DPA). 5. Define fallback plan if provider becomes unavailable. |
 | **Owner** | Procurement / IT / Quality |
@@ -75,16 +80,16 @@ This document consolidates all compliance gaps from the per-standard matrices (C
 | Attribute | Detail |
 |-----------|--------|
 | **Standards** | GxP / GAMP 5, ISO 13485 7.1 |
-| **Current State** | No VP or System Description template. |
-| **Action Required** | 1. Create a Validation Plan template that references Agile V pipeline stages. 2. Create a System Description template (system boundaries, data flows, user roles, interfaces). 3. Include these as mandatory inputs before Stage 1 in regulated projects. |
+| **Current State** | **Addressed (SCHEMA-BACKED, draft).** `validation-agent` provides validation planning, protocol, report, and deviation behavior (VALIDATION_PLAN/PROTOCOL/REPORT). `agile-v-gxp-qualification` adds `QUALIFICATION_PLAN` and `SYSTEM_DESCRIPTION` schemas with matching `templates/agile-v/*.example.yaml`. |
+| **Action Required** | 1. Instantiate `QUALIFICATION_PLAN` referencing Agile V pipeline stages. 2. Instantiate `SYSTEM_DESCRIPTION` (system boundaries, data flows, user roles, interfaces). 3. Make these mandatory inputs before Stage 1 in regulated projects. Draft contracts require local baselining. |
 | **Owner** | Quality |
 
 #### GAP-006: Design Validation (Distinct from Verification)
 | Attribute | Detail |
 |-----------|--------|
 | **Standards** | ISO 13485 7.3.6, GxP |
-| **Current State** | Verification and validation are conflated in the Red Team Verifier. |
-| **Action Required** | 1. Add a "validation" checkpoint type after Gate 2 for regulated projects. 2. Define validation as testing in the intended-use environment (simulated or real). 3. Add `validation` as a test type in the Test Designer taxonomy. 4. Require validation protocol in REQUIREMENTS.md for medical/pharma projects. |
+| **Current State** | **Addressed.** Verification and validation are **no longer conflated**: `red-team-verifier` independently verifies specified outputs (VERIFICATION_SUMMARY); `validation-agent` separately assesses intended use in representative conditions (VALIDATION_REPORT) with its own plan, protocol, and deviation behavior. |
+| **Action Required** | 1. Require intended-use validation via `validation-agent` for regulated projects (PQ stage). 2. Ensure validation is performed in the intended-use environment (simulated or real), separate from verification. 3. Retain VALIDATION_REPORT alongside VERIFICATION_SUMMARY. |
 | **Owner** | Quality / Engineering |
 
 #### GAP-007: Customer-Related Processes
@@ -137,6 +142,22 @@ This document consolidates all compliance gaps from the per-standard matrices (C
 | **Standards** | ISO 13485 4.2.4, ISO 9001 7.5 |
 | **Action Required** | Create master document register for `.agile-v/` controlled documents. Define distribution lists. Implement obsolescence marking for superseded documents. |
 
+#### GAP-019: Training / Role Qualification
+| Attribute | Detail |
+|-----------|--------|
+| **Standards** | ISO 9001 7.1.2, ISO 13485 6.2, GxP / GAMP 5 |
+| **Current State** | **NORMATIVE CONTRACT (draft).** Role-qualification expectations are expressed in `agile-v-gxp-qualification`; competency/training records remain an organizational (external) responsibility. |
+| **Action Required** | Define role-to-competency mapping for accountable humans operating gates and validation; retain training/qualification records in the organizational QMS. |
+| **Owner** | Quality / People |
+
+#### GAP-020: Requalification on Trigger Events
+| Attribute | Detail |
+|-----------|--------|
+| **Standards** | GxP / GAMP 5, ISO 13485 4.1.6 |
+| **Current State** | **SCHEMA-BACKED (draft).** `REQUALIFICATION_ASSESSMENT` schema + example template link revalidation triggers (model/runtime/skill change, accumulated CRs, interval) to a documented reassessment. |
+| **Action Required** | On each trigger, instantiate `REQUALIFICATION_ASSESSMENT`, determine which qualification stages must be re-executed, and record the disposition. Draft contract requires local baselining. |
+| **Owner** | Quality / Engineering |
+
 #### GAP-014: Formal Risk Methodology (FMEA/FTA)
 | Attribute | Detail |
 |-----------|--------|
@@ -182,7 +203,7 @@ gantt
     axisFormat %b %Y
     section P1 Blocking
         GAP-001 E-Signatures           :crit, g1, 2026-03-01, 60d
-        GAP-002 IQ/OQ/PQ               :crit, g2, 2026-03-01, 45d
+        GAP-002 IQ/OQ/PQ Evidence     :crit, g2, 2026-03-01, 45d
         GAP-003 Supplier Qualification  :crit, g3, 2026-03-15, 30d
     section P2 Significant
         GAP-004 Audit Trail Integrity   :g4, 2026-04-01, 30d

@@ -2,6 +2,12 @@
 
 Agile V can organize lifecycle evidence inside an existing quality, safety, security, or regulatory system. It does not certify a product or organization, replace governing procedures, or determine legal applicability.
 
+> **Non-certification statement:** This Agile V profile supports structured qualification and validation evidence. It does not determine legal applicability, replace controlled procedures, provide technical Part 11 controls, or establish regulatory compliance.
+
+**Qualification vs. validation.** DQ/IQ/OQ/PQ are **evidence stages**, not agent names — agents **contribute evidence** to stages coordinated by the `agile-v-gxp-qualification` profile (draft; requires local baselining). Intended-use **validation** is separate from verification: `red-team-verifier` verifies specified outputs, while `validation-agent` provides validation planning, protocol, report, and deviation behavior. Separate **target-system** qualification (the regulated product) from **assurance-toolchain** qualification (Agile V skills + runtime + model configuration).
+
+**Regulatory horizon.** Treat the revised Annex 11 consultation draft as a **future-readiness input**, not final law or final GMP guidance; do not baseline procedures against it as if settled.
+
 ## Adopt in a Controlled Pilot
 
 1. **Define authority.** Name the applicable quality system, governing profile, document-control rules, approval roles, retention, electronic-record/signature controls, and residual-risk acceptance authority.
@@ -18,6 +24,8 @@ Agile V can organize lifecycle evidence inside an existing quality, safety, secu
 |---|---|
 | Was the specified output built correctly? | `.agile-v/VERIFICATION_SUMMARY.md` from `red-team-verifier` |
 | Was it acceptable for approved intended use in representative conditions? | `VALIDATION_REPORT.md` from `validation-agent` or an authorized equivalent |
+| Were the qualification stages (DQ/IQ/OQ/PQ) evidenced? | `QUALIFICATION_PLAN`, `SYSTEM_DESCRIPTION`, `SYSTEM_BASELINE`, `QUALIFICATION_PROTOCOL`/`EXECUTION`/`DEVIATION`, `QUALIFICATION_SUMMARY` (draft, `agile-v-gxp-qualification`) |
+| Was the system reassessed after a change/trigger? | `REQUALIFICATION_ASSESSMENT` (draft) |
 | Who accepted residual risk or release? | Durable approval identifying authority, scope, date, and rationale |
 | What AI context influenced the work? | `AI_RUN_MANIFEST.yaml` and linked evidence fragment |
 
