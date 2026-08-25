@@ -36,6 +36,10 @@ Independent verification asks whether specified outputs were built correctly and
 
 Intended-use validation asks whether the right system was built for representative users and operational conditions. It is performed by `validation-agent` when required and produces `VALIDATION_PLAN.md`, `VALIDATION_PROTOCOL.md`, and `VALIDATION_REPORT.md`. Verification does not prove intended-use acceptance; validation does not close failed verification.
 
+## Qualification Evidence (GxP)
+
+DQ/IQ/OQ/PQ are **evidence stages**, not agent names — agents **contribute evidence** to stages coordinated by the `agile-v-gxp-qualification` profile (draft; requires local baselining). Schema-backed contracts: `QUALIFICATION_PLAN`, `SYSTEM_DESCRIPTION`, `SYSTEM_BASELINE`, `QUALIFICATION_PROTOCOL`, `QUALIFICATION_EXECUTION`, `QUALIFICATION_DEVIATION`, `QUALIFICATION_SUMMARY`, `REQUALIFICATION_ASSESSMENT`. Separate **target-system** qualification from **assurance-toolchain** qualification (skills + runtime + model config). The revised Annex 11 consultation draft is a **future-readiness input**, not final law or final GMP guidance.
+
 ## Standards and Compliance
 
 | Collection | Scope |
@@ -45,3 +49,5 @@ Intended-use validation asks whether the right system was built for representati
 | [AI influence traceability](ai-influence-traceability.md) | AI run provenance and evidence boundaries |
 
 These materials support engineering and governance processes; they do not establish certification, regulatory approval, or organizational conformity. Proposed profiles and all draft skills require accountable local review and baselining before operational use.
+
+> **Non-certification statement:** This Agile V profile supports structured qualification and validation evidence. It does not determine legal applicability, replace controlled procedures, provide technical Part 11 controls, or establish regulatory compliance.

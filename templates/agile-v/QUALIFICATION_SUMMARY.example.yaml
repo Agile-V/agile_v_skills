@@ -1,0 +1,44 @@
+# Qualification summary (example). See schemas/QUALIFICATION_SUMMARY.schema.json
+# LEAD with unexpected changes, failures/inconclusive, open deviations, evidence gaps,
+# residual risks, and recovery limitations BEFORE passing coverage.
+# Distinguish: PASSING TESTS != STAGE ACCEPTANCE != INTENDED-USE ACCEPTANCE != RELEASE AUTHORITY.
+schema_version: "1.0"
+compatibility: additive
+migration: none
+fixture_owner: agile-v.org
+summary:
+  summary_id: "QSUM-0001"
+  subject_ref: "SYS-0007"
+  plan_ref: "QPLAN-0001"
+  baseline_ref: "BASELINE-QUAL-0001"
+  intended_use_ref: ".agile-v/REQUIREMENTS.md#REQ-0001"
+  unexpected_changes: []
+  failures_and_inconclusive: []
+  open_deviations: ["QDEV-0001"]
+  evidence_gaps: []
+  residual_risks: ["Timezone consistency pending CAPA-0009"]
+  recovery_limitations: []
+  stages:
+    DQ: {required: true, status: "PASS", report_ref: "DQ_REPORT.md", approval_ref: "GATE-DQ-0001"}
+    IQ: {required: true, status: "PASS", report_ref: "IQ_REPORT.md", approval_ref: "GATE-IQ-0001"}
+    OQ:
+      required: true
+      status: "CONDITIONALLY_ACCEPTED"
+      report_ref: "OQ_REPORT.md"
+      approval_ref: "GATE-OQ-0001"
+      impact_assessment: "Timezone deviation, low risk, CAPA raised."
+      conditions:
+        - description: "Close CAPA-0009 and re-run TC-0042"
+          owner: "quality-owner"
+          due_date: "2026-03-01"
+    PQ: {required: true, status: "NOT_STARTED", report_ref: "PQ_REPORT.md", approval_ref: null}
+  traceability_completeness: "complete for DQ/IQ/OQ scope"
+  supplier_evidence: ["LIMS vendor IQ record reviewed"]
+  conclusion:
+    decision: "CONDITIONALLY ACCEPTED WITH RESTRICTIONS"
+    distinguishes:
+      passing_tests: true
+      stage_acceptance: "OQ conditional"
+      intended_use_acceptance: "pending PQ"
+      release_authority: "quality unit"
+    release_authority_ref: "quality-owner"

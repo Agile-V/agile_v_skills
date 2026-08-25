@@ -1,7 +1,7 @@
 # Public Standards Source Register
 
 > **Status:** Informational; public-scope source register
-> **Checked:** 2026-07-30
+> **Checked:** 2026-08-25
 > **Use:** Verify the current edition, amendments, adoption status, and applicable text before use.
 
 ## Boundaries
@@ -34,6 +34,13 @@ This register links public publisher, regulator, and framework pages. It does no
 | SRC-SAF-07 | FDA QMSR; FDA Computer Software Assurance guidance | https://www.fda.gov/medical-devices/quality-system-qs-regulationmedical-device-good-manufacturing-practices/quality-management-system-regulation-qmsr ; https://www.fda.gov/medical-devices/digital-health-center-excellence/computer-software-assurance-manufacturing-operations-and-quality-system-software | US regulatory/guidance context; legal and QMS review required |
 | SRC-EU-01 | Regulation (EU) 2024/1689 (AI Act) | https://eur-lex.europa.eu/eli/reg/2024/1689/oj | Binding text; legal review required |
 | SRC-EU-02 | European Commission AI Act page | https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai | Public implementation information; verify current dates and guidance |
+| SRC-GXP-01 | EudraLex Volume 4, Annex 15 — Qualification and validation (into operation since 1 October 2015) | https://health.ec.europa.eu/medicinal-products/eudralex/eudralex-volume-4_en | GMP qualification/validation lifecycle (URS, DQ, IQ, OQ, PQ, requalification); confirm current edition and adoption |
+| SRC-GXP-02 | EudraLex Volume 4, Annex 11 — Computerised Systems (revision January 2011) | https://health.ec.europa.eu/medicinal-products/eudralex/eudralex-volume-4_en | Computerised-system controls; a revised Annex 11 consultation draft is a future-readiness input only, not final law |
+| SRC-GXP-03 | 21 CFR Part 11 — Electronic Records; Electronic Signatures | https://www.ecfr.gov/current/title-21/chapter-I/subchapter-A/part-11 | US electronic-record/signature controls; legal review required; skills cannot provide these technical controls |
+| SRC-GXP-04 | FDA — Computer Software Assurance for Production and Quality System Software | https://www.fda.gov/medical-devices/digital-health-center-excellence/computer-software-assurance-manufacturing-operations-and-quality-system-software | Risk-based assurance/testing rigor within stated scope; verify final-guidance status and date |
+| SRC-GXP-05 | ISPE GAMP 5 (Second Edition) — A Risk-Based Approach to Compliant GxP Computerized Systems | https://ispe.org/publications/guidance-documents/gamp-5-guide-2nd-edition | Licensed lifecycle/risk-based guidance; do not reproduce licensed text; interpret under local license |
+| SRC-GXP-06 | ICH Q9(R1) Quality Risk Management; ICH Q10 Pharmaceutical Quality System | https://www.ich.org/page/quality-guidelines | Quality risk management and PQS context for tailoring and CAPA; confirm current step/version |
+| SRC-GXP-07 | ISPE GAMP — Records & Data Integrity (ALCOA+) guidance | https://ispe.org/publications/guidance-documents | Data-integrity attribute framework (ALCOA+); licensed guidance; review licensed text and applicable regulator expectations |
 
 ## Maintenance Rule
 

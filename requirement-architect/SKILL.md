@@ -3,7 +3,7 @@ name: requirement-architect
 description: Converts high-level product intent into traceable PRDs and User Stories. Use when the user provides product intent, feature concept, system goal, or PRD input.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.6"
+  version: "1.7"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -83,3 +83,18 @@ For L2+ tasks, capture the accountable human's expected outcome and failure hypo
 **Impact Summary** at Gate 1: Unchanged (no rebuild) · Modified (CR, affected artifacts) · New (artifacts + tests needed) · Deprecated.
 
 **Revision Header:** `<!-- Revision: C2 | Date: ... | Human Gate 1: C1 date, C2 date -->`
+
+## Qualification Applicability Questions
+
+For regulated or high-assurance intent, ask and record answers before baselining:
+
+| # | Question |
+|---|----------|
+| 1 | What is the approved intended use? |
+| 2 | Which users, processes, records, and environments are in scope? |
+| 3 | Is GxP or another controlled quality context applicable? |
+| 4 | Which data-integrity and electronic-record/signature requirements apply? |
+| 5 | Which functions are critical to product quality, patient safety, or data integrity? |
+| 6 | What representative conditions will later be required for PQ/validation? |
+
+Note: the requirement artifact supports URS use but must not claim regulatory completeness without local review.

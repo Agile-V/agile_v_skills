@@ -1,0 +1,51 @@
+# Qualification plan (example). See schemas/QUALIFICATION_PLAN.schema.json
+# Approve this plan before executing any controlled qualification protocol.
+schema_version: "1.0"
+compatibility: additive
+migration: none
+fixture_owner: agile-v.org
+plan:
+  plan_id: "QPLAN-0001"
+  subject:
+    subject_type: "target_system"   # target_system | assurance_toolchain | deployment_environment | infrastructure_component | interface | data_migration | supplier_service | operational_process | other
+    name: "Laboratory Result Review System"
+    system_id: "SYS-0007"
+    version_scope: "4.7.x"
+  regulatory_context:
+    gxp_applicable: true
+    part_11_applicable: "to-be-determined"
+    annex_11_applicable: true
+    local_procedure_refs: []
+  intended_use_ref: ".agile-v/REQUIREMENTS.md#REQ-0001"
+  system_description_ref: ".agile-v/qualification/SYSTEM_DESCRIPTION.yaml"
+  risk_refs: ["RISK-0012"]
+  strategy:
+    approach: "gxp-standard"        # gxp-lean-csa | gxp-standard | gxp-high-assurance | other
+    stages_required: ["DQ", "IQ", "OQ", "PQ"]
+    combined_stages: []
+    supplier_evidence_reuse: "controlled"
+    qualification_of_toolchain_required: true
+  roles:
+    system_owner: "role-ref"
+    quality_owner: "role-ref"
+    protocol_author: "role-ref"
+    executor: "role-ref"
+    reviewer: "role-ref"
+    approver: "role-ref"
+  independence:
+    builder_may_approve: false
+    protocol_author_may_execute: true
+    independent_review_required_from: "L3"
+  evidence_controls:
+    authoritative_repository: "controlled-system-ref"
+    retention_ref: "policy-ref"
+    signature_ref: "signature-policy-ref"
+    hash_required: true
+  stage_release:
+    conditional_release_allowed: true
+    conditional_release_authority: "quality-owner"
+  requalification:
+    periodic_review_interval_months: 12
+    trigger_policy_ref: ".agile-v/qualification/REQUALIFICATION_POLICY.yaml"
+  status: "draft"                    # draft | reviewed | approved | superseded | retired
+  approval_ref: null

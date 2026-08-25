@@ -6,7 +6,7 @@
 
 The current repository line is **v3.9.x on `main`** (`package.json` is the repository-version source). Do not infer release status from old branch names or release-note filenames.
 
-A skill is **preview/draft** only when its current YAML frontmatter contains `metadata.status: draft`. At v3.9.x this applies to `agile-v-aibom`, `agile-v-human-oversight`, the four functional Business Track skills, `c-suite-foundation`, five `chief-*` orchestrators, and `c-suite-update`. These files are present on `main`, but their contracts remain preview and require local review before operational use. All other existing skills are current unless their own frontmatter says otherwise.
+A skill is **preview/draft** only when its current YAML frontmatter contains `metadata.status: draft`. At v3.9.x this applies to `agile-v-aibom`, `agile-v-gxp-qualification`, `agile-v-human-oversight`, the four functional Business Track skills, `c-suite-foundation`, five `chief-*` orchestrators, and `c-suite-update`. These files are present on `main`, but their contracts remain preview and require local review before operational use. All other existing skills are current unless their own frontmatter says otherwise.
 
 ## Project Overview
 
@@ -23,6 +23,7 @@ build agents under `domains/`.
 ```
 ├── agile-v-core/           # Foundation skill (load first in any session)
 ├── agile-v-aibom/          # AI Influence Traceability: AI/ML-BOM and agent run provenance
+├── agile-v-gxp-qualification/ # [Draft] Risk-based DQ/IQ/OQ/PQ, intended-use validation, requalification
 ├── agile-v-pipeline/       # Orchestration, waves, handoffs
 ├── agile-v-lifecycle/      # Multi-cycle management, change requests
 ├── agile-v-compliance/     # Risk, CAPA, gates, security, revalidation

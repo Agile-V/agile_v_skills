@@ -1,0 +1,30 @@
+# Qualification deviation (example). See schemas/QUALIFICATION_DEVIATION.schema.json
+# A protocol deviation is NOT a method for post-hoc acceptance-criteria changes.
+# A failed result stays in the record. Critical/recurring deviations trigger CAPA (agile-v-compliance).
+schema_version: "1.0"
+compatibility: additive
+migration: none
+fixture_owner: agile-v.org
+deviation:
+  deviation_id: "QDEV-0001"
+  protocol_ref: "OQ-0007"
+  execution_ref: "EXEC-OQ-0007-01"
+  stage: "OQ"
+  subject_ref: "SYS-0007"
+  baseline_ref: "BASELINE-QUAL-0001"
+  what_differed: "Audit event timestamp used server-local time instead of UTC."
+  detected_at: "2026-02-11T09:20:00Z"
+  immediate_containment: "Flagged execution as deviation_open."
+  impact_assessment:
+    product_quality: "none"
+    patient_safety: "none"
+    data_integrity: "medium - timestamp consistency"
+    intended_use: "low"
+  root_cause: "Missing timezone configuration in baseline."
+  corrective_action: "Set container TZ=UTC and re-execute TC-0042."
+  retest_required: true
+  affected_evidence_scope: ["EXEC-OQ-0007-01"]
+  disposition:
+    decision: "capa_raised"          # open | accepted | rejected | closed | capa_raised
+    approver_ref: "quality-owner"
+    closure_evidence_ref: "CAPA-0009"

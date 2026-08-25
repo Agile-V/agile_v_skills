@@ -3,7 +3,7 @@ name: agile-v-control-matrix
 description: Defines and checks the Agile-V control matrix for agentic tasks, skills, model use, tools, logs, rights, Human Gates, tests, costs, rollback, and owners. Load when creating, reviewing, or enforcing `.agile-v/CONTROL_MATRIX.yaml` or runtime governance for agentic execution.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
+  version: "1.4"
   standard: "Agile V"
   author: agile-v.org
   compliance: "Supports ISO 9001/ISO 27001-aligned design controls; not a conformity or certification claim"
@@ -18,6 +18,7 @@ metadata:
     - Runtime Contract
     - Compatibility
     - Human Oversight Control Family
+    - Qualification Control Family
     - Agent Tool and Delegation Controls
 ---
 
@@ -158,6 +159,37 @@ The following controls select oversight obligations from `agile-v-human-oversigh
 | HOC-CTRL-003 | Independence Profile Minimum | `independence_profile[]` per critical claim | Non-empty, claim-specific for L3+ | Independence asserted only as "different agent" |
 | HOC-CTRL-004 | Recovery Evidence Level | `recovery_readiness.achieved_level` | Meets or exceeds `recovery_readiness.required_level` | Recovery evidence below required level |
 | HOC-CTRL-005 | Human-Reserved Decision Authority | `human_reserved_decisions[]` | `decision_owner` set, no agent self-approval | Agent approved own residual risk/waiver |
+
+## Qualification Control Family
+
+The control matrix MAY carry an optional top-level `qualification` policy block that selects qualification obligations (see `agile-v-gxp-qualification`). DQ/IQ/OQ/PQ are **evidence stages**, not agent names. Include this block only when qualification applies to the work.
+
+### Optional `qualification` block fields
+
+| Field | Meaning |
+|---|---|
+| `enabled` | Whether the qualification family is active for this matrix |
+| `profile` | Named local quality profile that decides applicability and stage rigor |
+| `subject_types` | Which subject types (e.g. software, equipment, process, model) are in qualification scope |
+| `stages_required` | Per-level (`L0`..`L4`) map of which evidence stages (DQ/IQ/OQ/PQ) are required |
+| `combined_ioq_allowed` | Whether combined IQ/OQ execution is permitted for lower-risk subjects |
+| `supplier_evidence_reuse` | Whether/when supplier or vendor qualification evidence may be reused |
+| `approved_protocol_required` | Whether an approved protocol must exist before execution |
+| `protocol_integrity_required` | Whether executed protocol must be shown to match the approved protocol |
+| `baseline_drift_action` | Action when the qualified baseline drifts (e.g. `halt`, `requalify`, `flag`) |
+| `independent_review_required_from` | Minimum level at which independent review of qualification evidence is required |
+| `quality_approval_required_from` | Minimum level at which quality-authority approval is required |
+| `representative_data_required_for_pq` | Whether PQ must use representative data/conditions |
+| `recovery_demonstration_required_from` | Minimum level at which backup/recovery demonstration is required |
+| `external_signature_control_required` | Whether externally controlled electronic signatures are required for acceptance |
+| `conditional_release` | Policy for conditional acceptance: allowed, required condition fields, owner, satisfaction criteria |
+| `requalification` | Requalification triggers and cadence (e.g. baseline change, periodic, environment change) |
+
+### Applicability and scope statement
+
+- Sector/regulatory applicability is **not** inferred solely from the L0-L4 risk level. The **local quality profile** decides whether qualification applies at all.
+- Once applicability is established by the profile, L0-L4 scale the **rigor** of the qualification stages and reviews — they do not, by themselves, turn qualification on or off.
+- A control matrix **cannot itself provide electronic signatures** or perform runtime blocking. `external_signature_control_required` selects an obligation to be satisfied by an externally controlled signature system; enforcement and signature capture belong to the consuming runtime (hooks, policy-as-code, CI, or a compliant e-signature service).
 
 ## Agent Tool and Delegation Controls
 

@@ -1,0 +1,56 @@
+# Qualification protocol (example, OQ). See schemas/QUALIFICATION_PROTOCOL.schema.json
+# Approve steps, prerequisites, expected results, and acceptance criteria BEFORE execution.
+# A change to acceptance criteria or a material test method requires a NEW revision + approval.
+# Stage-conditional required fields:
+#   DQ -> design_refs + urs_refs; IQ/IOQ -> baseline_ref; OQ -> requirements; PQ -> representative_conditions
+schema_version: "1.0"
+compatibility: additive
+migration: none
+fixture_owner: agile-v.org
+protocol:
+  protocol_id: "OQ-0007"
+  revision: "1"
+  stage: "OQ"                        # DQ | IQ | IOQ | OQ | PQ
+  subject_ref: "SYS-0007"
+  plan_ref: "QPLAN-0001"
+  baseline_ref: "BASELINE-QUAL-0001"
+  requirements:
+    - requirement_id: "REQ-0012"
+      revision: "rev-3"
+      baseline_id: "BASELINE-REQ-0004"
+  risk_refs: ["RISK-0012"]
+  preconditions:
+    - id: "PRE-001"
+      statement: "IQ stage released"
+      evidence_ref: "IQ-RPT-0003"
+  roles:
+    author: "identity-ref"
+    executor: "identity-ref"
+    reviewer: "identity-ref"
+    approver: "identity-ref"
+  test_cases:
+    - test_id: "TC-0042"
+      title: "Reject unauthorized result release"
+      type: "negative"
+      qualification_stage: "OQ"
+      gxp_critical: true
+      requirement_refs: ["REQ-0012@rev-3"]
+      risk_refs: ["RISK-0012"]
+      prerequisites: []
+      input_data_refs: ["TESTDATA-0003"]
+      steps:
+        - step: 1
+          action: "Authenticate as a role without release authority"
+          expected: "Authentication succeeds with restricted role"
+        - step: 2
+          action: "Attempt to release a result"
+          expected: "Release is denied and the attempt is audit-trailed"
+      acceptance_criteria:
+        - "No result status changes"
+        - "Audit event records actor, time, action, and outcome"
+      evidence_required:
+        - "execution log"
+        - "audit-trail extract"
+  approval:
+    status: "pending"                # pending | reviewed | approved | rejected | superseded
+    approval_ref: null

@@ -73,7 +73,7 @@ Choose the smallest profile appropriate to the risk.
 
 | Proof point | Inspect it |
 |---|---|
-| **48 skills** | Machine-readable [`catalog/skills.json`](catalog/skills.json) and the [Skill Routing Guide](SKILL_ROUTING_GUIDE.md) |
+| **49 skills** | Machine-readable [`catalog/skills.json`](catalog/skills.json) and the [Skill Routing Guide](SKILL_ROUTING_GUIDE.md) |
 | **347 contract tests** | Deterministic schema and repository tests under [`tests/`](tests/) |
 | **18 evidence schemas** | Requirements, risk, builds, tests, verification, validation, approvals, traceability, controls, delegation, and AI provenance in [`schemas/`](schemas/) |
 | **Five build domains** | [Python](domains/build-agent-python/SKILL.md), [JavaScript/TypeScript](domains/build-agent-js/SKILL.md), [NestJS](domains/build-agent-nestjs/SKILL.md), [Dart/Flutter](domains/build-agent-dart/SKILL.md), and [embedded C/C++](domains/build-agent-embedded/SKILL.md) |
@@ -165,7 +165,7 @@ Load `agile-v-core` first, then only the roles needed for the stage and risk.
 | Existing repositories | System understanding, impact, regression, graph, and diff evidence | [`skills/`](skills/) |
 | Business and C-Suite | Functional business execution and executive orchestration | [Preview catalog](SKILL_ROUTING_GUIDE.md#business-preview) |
 
-Use the [complete routing guide](SKILL_ROUTING_GUIDE.md) for all 48 skills, prerequisites, status, and intent-to-skill mappings. The machine-readable source is [`catalog/skills.json`](catalog/skills.json).
+Use the [complete routing guide](SKILL_ROUTING_GUIDE.md) for all 49 skills, prerequisites, status, and intent-to-skill mappings. The machine-readable source is [`catalog/skills.json`](catalog/skills.json).
 
 ## Preview Boundary
 
@@ -174,6 +174,7 @@ A skill is preview/draft only when its current frontmatter contains `metadata.st
 Current preview contracts are:
 
 - AI influence workflow: `agile-v-aibom`.
+- GxP qualification (DQ/IQ/OQ/PQ evidence, intended-use validation, requalification): `agile-v-gxp-qualification` **[Draft]**.
 - Human oversight assurance: `agile-v-human-oversight`.
 - Functional Business Track: `venture-strategist`, `rd-innovator`, `gtm-executor`, `business-operations`.
 - C-Suite: `c-suite-foundation`, `chief-exec`, `chief-tech`, `chief-finance`, `chief-people`, `chief-ops`, `c-suite-update`.

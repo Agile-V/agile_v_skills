@@ -139,3 +139,32 @@ controls:
       last_reviewed: "TBD"
       review_cycle_days: 90
       reviewer_role: "security_owner"
+
+# Optional qualification policy (see agile-v-gxp-qualification). Applicability is decided by the
+# local quality profile, not inferred from L0-L4; L0-L4 only scale rigor after applicability.
+qualification:
+  enabled: true
+  profile: "gxp-standard"        # gxp-lean-csa | gxp-standard | gxp-high-assurance
+  subject_types: ["target_system", "assurance_toolchain"]
+  stages_required:
+    L0: []
+    L1: []
+    L2: ["IQ", "OQ"]
+    L3: ["DQ", "IQ", "OQ", "PQ"]
+    L4: ["DQ", "IQ", "OQ", "PQ"]
+  combined_ioq_allowed: true
+  supplier_evidence_reuse: "review-required"
+  approved_protocol_required: true
+  protocol_integrity_required: true
+  baseline_drift_action: "stop"
+  independent_review_required_from: "L3"
+  quality_approval_required_from: "L3"
+  representative_data_required_for_pq: true
+  recovery_demonstration_required_from: "L4"
+  external_signature_control_required: false
+  conditional_release:
+    allowed: true
+    minimum_approver_role: "quality_owner"
+  requalification:
+    periodic_review_months: 12
+    change_assessment_required: true

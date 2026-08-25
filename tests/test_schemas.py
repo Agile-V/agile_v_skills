@@ -19,7 +19,13 @@ GATE_RECORD_CATALOG = {
     "BUILD_MANIFEST", "CONTROL_MATRIX", "EVAL_RESULTS", "POLICY",
     "VERIFICATION_SUMMARY",
 }
-CATALOG = LEGACY_CATALOG | GATE_RECORD_CATALOG
+QUALIFICATION_CATALOG = {
+    "QUALIFICATION_PLAN", "SYSTEM_DESCRIPTION", "SYSTEM_BASELINE",
+    "QUALIFICATION_PROTOCOL", "QUALIFICATION_EXECUTION",
+    "QUALIFICATION_DEVIATION", "QUALIFICATION_SUMMARY",
+    "REQUALIFICATION_ASSESSMENT",
+}
+CATALOG = LEGACY_CATALOG | GATE_RECORD_CATALOG | QUALIFICATION_CATALOG
 
 
 def _load(path: Path) -> dict[str, object]:
@@ -55,9 +61,9 @@ def test_schema_fixtures(fixture_name: str, valid: bool) -> None:
 
 
 @pytest.mark.parametrize("fixture_name, valid", [("positive", True), ("negative", False)])
-def test_gate_record_schema_fixtures(fixture_name: str, valid: bool) -> None:
-    fixtures = _load(FIXTURES / f"gate_records.{fixture_name}.json")
-    assert set(fixtures) == GATE_RECORD_CATALOG
+def test_qualification_schema_fixtures(fixture_name: str, valid: bool) -> None:
+    fixtures = _load(FIXTURES / f"qualification.{fixture_name}.json")
+    assert set(fixtures) == QUALIFICATION_CATALOG
     for name, instance in fixtures.items():
         errors = list(_validator(name).iter_errors(instance))
         assert bool(errors) is not valid, f"{fixture_name} fixture for {name}: {[e.message for e in errors]}"

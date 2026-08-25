@@ -3,7 +3,7 @@ name: documentation-agent
 description: Generates standards-based repository documentation for GitHub or any project. Writes a docs suite into the project's docs/ directory covering ISO 9001, V-Model, ISO 27001, and optionally GAMP 5 or other standards. Use when the user asks for repo documentation, compliance docs, quality docs, or to create/refresh the docs/ suite.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
+  version: "1.4"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -11,6 +11,7 @@ metadata:
     - Procedures
     - Per-Document Structure
     - Compliance Documentation
+    - Qualification Documentation Duties
 ---
 
 # Instructions
@@ -79,6 +80,14 @@ When generating project documentation:
 - Keep public docs high-level; keep evidence manifests in controlled release evidence directories (`.agile-v/aibom/`).
 - Do not publish sensitive model endpoints, API keys, secrets, internal prompts, or proprietary policy details without explicit review and redaction.
 - Reference `docs/ai-influence-traceability.md` for AI provenance guidance when generating compliance or governance docs.
+
+## Qualification Documentation Duties
+
+When the project's local quality profile establishes that qualification applies (see `agile-v-gxp-qualification`; DQ/IQ/OQ/PQ are **evidence stages**, not agent names):
+
+- **Maintain qualification documentation.** Keep qualification plans, protocols, stage records (DQ/IQ/OQ/PQ), summary/qualification reports, and their cross-references current under `docs/` (e.g. `docs/gamp5/` and `docs/compliance/`), linking to the controlled evidence bundle rather than duplicating it.
+- **Keep source status current.** Reflect the actual state of each document and stage (draft, in-review, approved, superseded, conditional, waived) and update it when qualification state changes; do not present stale or aspirational status as current.
+- **Use non-certification language.** Describe qualification status, coverage, and gaps. Do not state or imply certification, conformity assessment, regulatory approval, or release authority — those are separate human/quality-authority decisions recorded elsewhere.
 
 ## Alignment
 Single source of truth under `docs/`. Human curation via document control. Link to REQUIREMENTS.md, Decision Log, ATM, VSR, CONTROL_MATRIX.yaml, and AI_RUN_MANIFEST (via evidence fragment) for traceability.

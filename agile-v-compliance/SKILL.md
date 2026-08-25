@@ -3,11 +3,11 @@ name: agile-v-compliance
 description: Risk management, CAPA protocol, human gate approval records, AI agent security controls, and periodic revalidation. Load when running gates, handling CAPAs, or auditing compliance and security posture.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.5"
+  version: "1.6"
   standard: "Agile V"
   compliance: "ISO 9001 6.1, ISO 13485 8.5, ISO 27001 A.5.23/A.8.3, 21 CFR Part 11, GxP/GAMP 5"
   author: agile-v.org
-  sections_index: ["Risk Management", "CAPA Protocol", "Human Gate Approval Records", "AI Agent Security Controls", "Periodic Review & Revalidation"]
+  sections_index: ["Risk Management", "CAPA Protocol", "Human Gate Approval Records", "AI Agent Security Controls", "Periodic Review & Revalidation", "Qualification Deviations and Requalification"]
 ---
 
 # Instructions
@@ -58,3 +58,16 @@ Append-only in `.agile-v/APPROVALS.md`: `GATE-XXXX` with Gate type, Cycle, Scope
 Record in `.agile-v/REVALIDATION_LOG.md`: `REVAL-XXXX` with Date, Trigger, Scope, Results, Decision, Reviewer. Regression failure = new cycle trigger.
 
 **Model Tracking** in config.json: model_versions with tier IDs + last_validated + validated_by. Any change triggers revalidation.
+
+## Qualification Deviations and Requalification (GxP / GAMP 5)
+
+For GxP computerized-system qualification, DQ/IQ/OQ/PQ are evidence stages, not agent names; see `agile-v-gxp-qualification`. `red-team-verifier` owns OQ execution; `validation-agent` owns any PQ/intended-use mapping.
+
+| Concern | Record / Action |
+|---|---|
+| Qualification deviations | Record `QDEV-XXXX` in `.agile-v/QUALIFICATION_DEVIATIONS.md`: Stage (IQ/OQ/PQ), Description, Impact, Disposition, Approver, linked `RISK-XXXX`/`CAPA-XXXX`. Open critical deviation blocks stage release. |
+| Stage release | Release an IQ/OQ/PQ stage only when its evidence is complete, deviations are dispositioned, and required Human Gate approval is recorded in `APPROVALS.md`. |
+| Requalification assessment | On qualification-relevant change, assess scope of requalification (which stages must be re-executed) and record the decision and rationale in `REVALIDATION_LOG.md`. |
+| Periodic-review triggers | Trigger requalification review on the Periodic Review triggers above plus: qualified-baseline change, infrastructure/environment change, or a critical qualification deviation. |
+
+Qualification deviation handling reuses the CAPA and Periodic Review workflows above: a rejected pipeline halts, and stage/gate records remain consistent with matching agile v checkpoints md.

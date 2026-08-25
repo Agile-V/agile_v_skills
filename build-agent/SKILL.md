@@ -3,7 +3,7 @@ name: build-agent
 description: Generates code, firmware, HDL, or other technical artifacts strictly derived from approved, baselined requirements. Language-agnostic. Use when synthesizing artifacts from Logic Gatekeeper-reviewed requirements with Gate 1 approval and baseline capture.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.5"
+  version: "1.6"
   standard: "Agile V"
   author: agile-v.org
   adapted_from:
@@ -84,3 +84,16 @@ Multi-cycle manifest: `ART-XXXX.N | REQ-XXXX@revision | baseline-id | implements
 
 ## Halt Conditions
 Halt and do not emit when: ambiguous REQ · REQ not approved and baselined · missing typed lineage · physical constraint violation · conflict with approved baseline · materially AI-influenced task at any risk level with no AI_RUN_MANIFEST.
+
+## Qualification Evidence Duties
+
+When work feeds agile-v-gxp-qualification evidence stages, the Build Agent must:
+
+| Duty | Action |
+|------|--------|
+| Artifact identity | Produce exact artifact and dependency identity (names, versions, hashes) |
+| Installation inputs | Provide installation/configuration inputs |
+| Configuration record | Identify configuration and customization applied |
+| Evidence links | Link SBOM and deployment artifacts |
+
+**Boundaries:** Never mark its own installation as IQ PASS. Never approve DQ, OQ, or PQ for its own work.

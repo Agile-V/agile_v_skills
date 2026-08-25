@@ -1,7 +1,7 @@
 # Agile V Skills: Routing Guide
 
 > **Repository version:** 3.9.x
-> **Catalog:** 48 skills currently present. **[Preview]** means the skill's current YAML frontmatter contains `metadata.status: draft`; presence on `main` does not make that contract stable.
+> **Catalog:** 49 skills currently present. **[Preview]** means the skill's current YAML frontmatter contains `metadata.status: draft`; presence on `main` does not make that contract stable.
 
 Load `agile-v-core` first, then only the stage and risk-relevant skills. See [Installation Profiles](docs/INSTALL_PROFILES.md) and the [Golden Journey](docs/GOLDEN_JOURNEY.md).
 
@@ -14,6 +14,7 @@ Load `agile-v-core` first, then only the stage and risk-relevant skills. See [In
 | Cycle 2+, change requests, archival | `agile-v-lifecycle` | `agile-v-lifecycle/` | Current |
 | Risk, CAPA, approvals, security, revalidation | `agile-v-compliance` | `agile-v-compliance/` | Current |
 | Runtime control matrix | `agile-v-control-matrix` | `agile-v-control-matrix/` | Current |
+| Risk-based DQ/IQ/OQ/PQ qualification, intended-use validation, stage release, requalification | `agile-v-gxp-qualification` | `agile-v-gxp-qualification/` | **[Draft]** |
 | Bainbridge-aware Human Oversight Case for L2+ Human Gates | `agile-v-human-oversight` | `agile-v-human-oversight/` | **[Draft]** |
 | Bind controlled SOPs to Agile-V controls/gates (SOP conformance) | `agile-v-sop-adapter` | `agile-v-sop-adapter/` | **[Draft]** |
 | Interface, test, data-type, and time-allocation checks | `agile-v-quality-gates` | `agile-v-quality-gates/` | Current |
