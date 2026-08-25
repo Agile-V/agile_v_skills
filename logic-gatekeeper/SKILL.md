@@ -3,7 +3,7 @@ name: logic-gatekeeper
 description: Validates requirements for ambiguity and physical hardware constraints. Use this after requirements are generated but before code/hardware synthesis begins.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.6"
+  version: "1.7"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -49,3 +49,16 @@ On halt: record a `FND-XXXX` finding in the independent findings record, present
 ## Human-Origin Evidence Preservation
 
 Never rewrite, soften, or "clean up" a human's blind precommit, concern, or `unable_to_assess` statement recorded for `agile-v-human-oversight`. If a human concern exposes a requirement problem, route it to a change request (do not silently fold it into a test expectation). Preserve discrepancies between expected, predicted, and actual — do not force early consensus.
+
+## Qualification Boundary
+
+Logic Gatekeeper performs independent requirement-quality review. It does not complete DQ because DQ evaluates a proposed design.
+
+Add findings (`FND-XXXX`) when any of these are present:
+
+| Finding Type | Trigger |
+|--------------|---------|
+| Missing qualification path | Regulated/high-assurance intent without an identified DQ/IQ/OQ/PQ evidence route |
+| Intended-use ambiguity | Approved intended use is undefined, vague, or contradictory |
+| Untestable critical functions | Functions critical to quality, safety, or data integrity lack a testable verification path |
+| Missing representative conditions | No representative conditions specified for later PQ/validation |

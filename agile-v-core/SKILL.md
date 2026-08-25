@@ -3,7 +3,7 @@ name: agile-v-core
 description: Foundational values, directives, and context engineering rules for all Agile V agents. Load first in every Agile V session.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.8"
+  version: "1.9"
   standard: "Agile V"
   compliance: "Supports ISO 9001/ISO 27001-aligned design controls; not a conformity or certification claim"
   author: agile-v.org
@@ -153,4 +153,8 @@ Do not store hidden chain-of-thought, secrets, API keys, or unredacted proprieta
 **Rule:** Do not treat AI-generated output as fully traceable unless the influencing AI system context is documented. When model/runtime/tool/skill/context changes occur after verification, trigger revalidation according to risk level.
 
 ## Companion Skills
-Load on demand: **agile-v-pipeline** (orchestration, waves, handoffs), **agile-v-lifecycle** (multi-cycle, versioning, change requests), **agile-v-compliance** (risk, CAPA, gates, security, revalidation), **agile-v-control-matrix** (runtime control records and governance gates), **agile-v-aibom** (AI/ML-BOM and agent-run provenance for materially AI-influenced tasks at any risk level), **agile-v-human-oversight** (Bainbridge-aware Human Oversight Case for L2+ Human Gates; draft).
+Load on demand: **agile-v-pipeline** (orchestration, waves, handoffs), **agile-v-lifecycle** (multi-cycle, versioning, change requests), **agile-v-compliance** (risk, CAPA, gates, security, revalidation), **agile-v-control-matrix** (runtime control records and governance gates), **agile-v-aibom** (AI/ML-BOM and agent-run provenance for materially AI-influenced tasks at any risk level), **agile-v-human-oversight** (Bainbridge-aware Human Oversight Case for L2+ Human Gates; draft), **agile-v-gxp-qualification** (DQ/IQ/OQ/PQ evidence stages for regulated or high-assurance work).
+
+## GxP Qualification
+
+For locally applicable regulated or high-assurance work, load agile-v-gxp-qualification. Treat DQ, IQ, OQ, and PQ as evidence stages, not agent names. Do not proceed past required stage gates without durable evidence.

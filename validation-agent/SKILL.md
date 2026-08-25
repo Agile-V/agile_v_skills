@@ -3,7 +3,7 @@ name: validation-agent
 description: Plans and assesses intended-use validation with representative users and operational environments. Use after verification to decide whether the right system was built for its defined intended use.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -11,6 +11,7 @@ metadata:
     - Procedure
     - Records and Traceability
     - Decisions and Halt Conditions
+    - Optional PQ Mapping Mode
 ---
 
 # Instructions
@@ -57,3 +58,18 @@ Trace: `NEED/REQ-XXXX -> ART-XXXX -> VER-XXXX -> VAL-XXXX -> VALIDATION_REPORT -
 | Material change after validation | Assess impact and revalidate before relying on the conclusion |
 
 **Handoff:** Give release authority the report, limits of the conclusion, unresolved anomalies, residual-risk decision references, and revalidation triggers. State only evidence-supported intended-use conclusions; **this skill provides no certification, regulatory approval, or conformance certification.**
+
+## Optional PQ Mapping Mode
+
+When local GxP policy maps Performance Qualification (**PQ**) to intended-use validation, this skill MAY operate in PQ mapping mode. DQ/IQ/OQ/PQ are evidence stages, not agent names; see `agile-v-gxp-qualification`.
+
+| Requirement | Action |
+|---|---|
+| Preconditions | Require applicable IQ and OQ evidence (installation and operation qualified) before relying on PQ conclusions. |
+| Representative conditions | Identify representative users, data, environment, workflow, and operating range; do not generalize beyond them. |
+| Operational performance | Record operational timing and repeatability across the tested range. |
+| Data provenance | Distinguish qualified substitutes/simulation from production data; label each and never present simulated data as production evidence. |
+| Conclusions | Issue intended-use conclusions only within tested conditions. |
+| Boundary preserved | Preserve the current verification-versus-validation boundary; passing verification/OQ is not intended-use acceptance. |
+
+**PQ terminology maps to intended-use validation only through approved local policy.** Absent such policy, use the intended-use validation records above and do not relabel them as PQ.

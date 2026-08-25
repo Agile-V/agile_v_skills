@@ -3,12 +3,13 @@ name: release-manager
 description: Manages post-Gate-2 release activities with Agile V rigor. Rollout plans, rollback procedures, sign-off checklists. Use after Human Gate 2 for production deployment.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.3"
+  version: "1.4"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
     - Release Planning
     - Rollout & Rollback
+    - Qualification Pre-Release Checks
     - Post-Release Validation
     - Incident Feedback
 ---
@@ -255,6 +256,33 @@ For each releasable artifact, record and independently verify the following wher
 **Reproducibility:** reproduced | not-reproduced | not-assessed — [comparison evidence or reason]
 **Dependencies / Exceptions:** [remote AI/MCP/plugin inventory; anomalies; residual risks; approval refs]
 ```
+
+## Qualification Pre-Release Checks
+
+When the local quality profile establishes that qualification applies (see `agile-v-gxp-qualification`; DQ/IQ/OQ/PQ are **evidence stages**, not agent names), run these checks in addition to the standard Pre-Release Checklist. **Block release** when any required qualification stage is incomplete, or when a stage was conditionally accepted and its conditions are not yet satisfied.
+
+| Check | Confirm before release | Block release when |
+|---|---|---|
+| Qualified baseline identity | The artifact being released is the exact baseline that was qualified (version/commit/config digest matches the qualification record) | Deployed digest cannot be tied to the qualified baseline, or baseline drifted since acceptance |
+| PQ / intended-use acceptance | Required PQ evidence stage and intended-use acceptance (validation-agent `VALIDATION_REPORT.md`) are complete and accepted | PQ/intended-use required by profile is missing, incomplete, or only conditionally accepted with unmet conditions |
+| Open critical deviations | No open critical/major qualification deviations against the release baseline | Any critical deviation is open or unresolved |
+| Residual-risk authority | Every accepted residual risk carries a human decision by the designated authority | Residual risk accepted without a named human authority, or self-approved by an agent |
+| Backup / recovery evidence | Backup and recovery/restore has been demonstrated for the qualified subject where the profile requires it | Recovery demonstration required but absent or below required level |
+| Requalification status | No requalification trigger has fired without closure for the release baseline | A requalification trigger fired and is not closed |
+
+```markdown
+## Qualification Pre-Release Record
+**Applies:** yes/no (per local quality profile — not inferred from L0-L4 alone)
+**Qualified baseline:** [version/commit/config digest] — matches deployed artifact: yes/no
+**Stages required/accepted:** DQ [..] · IQ [..] · OQ [..] · PQ [..] (accepted | conditional | incomplete | waived+rationale)
+**Intended-use acceptance:** [VALIDATION_REPORT ref | not-required]
+**Open critical deviations:** [none | list]
+**Residual-risk authority:** [approver + APPROVALS.md ref | none]
+**Backup/recovery demonstrated:** yes/no/not-required — [evidence ref]
+**Requalification triggers:** [none fired | fired+closed | fired+OPEN → BLOCK]
+```
+
+Do not use certification language. Report qualification status and gaps; release authority under the quality system is a separate human/quality-authority decision.
 
 ## Halt Conditions
 
