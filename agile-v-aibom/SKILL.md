@@ -3,7 +3,7 @@ name: agile-v-aibom
 description: Captures, validates, compares, and summarizes the AI system context that influenced an Agile-V task. Produces AI_RUN_MANIFEST, AI_BOM_EVIDENCE_FRAGMENT, AI_INFLUENCE_SUMMARY, and optional CycloneDX ML-BOM export. Load for any materially AI-influenced task, including L0.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.2"
+  version: "1.3"
   standard: "Agile V"
   author: agile-v.org
   status: draft
@@ -132,3 +132,4 @@ Add to the evidence bundle for all AI-assisted L1+ tasks:
 | `red-team-verifier` | Independent BOM completeness review for L2+ |
 | `compliance-auditor` | AI influence inventory summary, audit output |
 | `release-manager` | Release evidence packaging with AI_BOM_EVIDENCE_FRAGMENT |
+| `agile-v-human-oversight` | Model/runtime/context provenance feeds `independence_profile.model_independent` and `.provider_independent` analysis for L2+ claims |

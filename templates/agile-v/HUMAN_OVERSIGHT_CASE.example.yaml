@@ -1,0 +1,124 @@
+# Human Oversight Case. Copy to `.agile-v/HUMAN_OVERSIGHT_CASE_<task_id>.yaml`.
+# See agile-v-human-oversight/SKILL.md for field meaning and halt conditions.
+# A claim with an unresolved material defeater cannot be marked "supported".
+
+schema_version: "1.0"
+task_id: "TASK-XXXX"
+risk_level: "L3" # L0-L4
+requirements_baseline_ref: ".agile-v/REQUIREMENTS.md#REQ-XXXX"
+ai_run_manifest_ref: ".agile-v/aibom/TASK-XXXX/AI_RUN_MANIFEST.yaml"
+
+oversight_demand:
+  automation_allocation: ["analysis", "decision"] # acquisition|analysis|decision|action
+  independent_verifiability: "medium" # high|medium|low|unknown
+  reversibility: "bounded" # easy|bounded|difficult|irreversible
+  novelty: "changed-pattern" # routine|changed-pattern|novel|unknown
+  takeover_difficulty: "medium" # low|medium|high|unknown
+  time_pressure: "low" # low|medium|high
+
+blind_precommit:
+  contamination_status: "none-known" # none-known|prior-ai-exposure|unknown
+  captured_before_recommendation_exposure: true
+  expected_observable_behavior: "TBD - specific, testable statement"
+  falsifiable_failure_hypotheses: []
+  unable_to_assess: false
+  reviewer_ref: "TBD"
+  timestamp: "TBD"
+
+claims:
+  - claim_id: "HOC-001"
+    statement: "The accountable human formed an independent expected outcome before builder recommendations were exposed."
+    status: "unresolved" # unresolved|supported|not-applicable
+    evidence_refs: []
+    assumptions: []
+    defeaters: []
+  - claim_id: "HOC-002"
+    statement: "Critical acceptance evidence has adequate independence for its claim."
+    status: "unresolved"
+    evidence_refs: []
+    assumptions: []
+    defeaters: []
+  - claim_id: "HOC-003"
+    statement: "Differences between expected, predicted, and actual change were surfaced and resolved."
+    status: "unresolved"
+    evidence_refs: []
+    assumptions: []
+    defeaters: []
+  - claim_id: "HOC-004"
+    statement: "A falsifiable active challenge was performed against the frozen candidate artifact."
+    status: "unresolved"
+    evidence_refs: []
+    assumptions: []
+    defeaters: []
+  - claim_id: "HOC-005"
+    statement: "Required intervention or recovery capability is supported at the required evidence level."
+    status: "unresolved"
+    evidence_refs: []
+    assumptions: []
+    defeaters: []
+  - claim_id: "HOC-006"
+    statement: "Residual uncertainty and decision authority are explicit."
+    status: "unresolved"
+    evidence_refs: []
+    assumptions: []
+    defeaters: []
+
+independence_profile:
+  - claim_ref: "HOC-002"
+    evidence_ref: "TC-0000"
+    role_independent: false
+    context_independent: false
+    model_independent: false
+    method_independent: false
+    source_independent: false
+    organization_independent: false
+    rationale: "TBD"
+
+surprises:
+  - surprise_id: "SUR-0001"
+    classification: "explainable" # critical|material|explainable|administrative
+    description: "TBD"
+    why_not_predicted: "TBD"
+    affected_ref: "REQ-XXXX"
+    evidence_ref: "TBD"
+    human_acknowledgement_required: false
+    change_request_ref: null
+
+challenge_checks:
+  - challenge_id: "CHAL-0001"
+    origin: "human-precommit" # human-precommit|test-designer|logic-gatekeeper|threat-modeler|catalog|mutation|independent-reviewer
+    hypothesis: "TBD - falsifiable statement"
+    linked_ref: "REQ-XXXX"
+    executed_against_frozen_artifact: false
+    could_have_failed: false
+    result: "pending" # pending|pass|fail
+    evidence_ref: "TBD"
+
+recovery_readiness:
+  required_level: "R1" # R0|R1|R2|R3|R4
+  achieved_level: "R0"
+  responsible_role: "TBD"
+  prerequisites: []
+  expected_recovery_time: "TBD"
+  actual_recovery_time: null
+  recency: "TBD"
+  limitations: []
+
+capability_maintenance:
+  drills_scheduled: false
+  recovery_exercise_ref: null
+  reviewer_rotation: false
+  recency_expiry_date: null
+
+human_reserved_decisions:
+  - decision: "release_authorization" # residual_risk_acceptance|concession|release_authorization|scope_acceptance|irreversible_action_approval|concern_resolution|recovery_acceptance
+    decision_owner: "TBD"
+    status: "pending" # pending|approved|rejected
+    approval_ref: null
+
+final_decision:
+  status: "pending" # pending|accepted|rejected|escalated
+  decision_owner: "TBD"
+  rationale: "TBD"
+  approval_ref: null
+  timestamp: null

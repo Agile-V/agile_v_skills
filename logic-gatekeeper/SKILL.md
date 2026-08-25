@@ -3,13 +3,14 @@ name: logic-gatekeeper
 description: Validates requirements for ambiguity and physical hardware constraints. Use this after requirements are generated but before code/hardware synthesis begins.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.5"
+  version: "1.6"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
     - Requirements Source & Procedures
     - Multi-Cycle Re-Validation
     - Halt Conditions
+    - Human-Origin Evidence Preservation
 ---
 
 # Instructions
@@ -44,3 +45,7 @@ Halt immediately (do not proceed to Gate 1) when:
 - No testable verification path for a requirement
 
 On halt: record a `FND-XXXX` finding in the independent findings record, present it to the Requirement Architect and Human, and wait for an architect revision before re-validating. Do not edit a baseline.
+
+## Human-Origin Evidence Preservation
+
+Never rewrite, soften, or "clean up" a human's blind precommit, concern, or `unable_to_assess` statement recorded for `agile-v-human-oversight`. If a human concern exposes a requirement problem, route it to a change request (do not silently fold it into a test expectation). Preserve discrepancies between expected, predicted, and actual — do not force early consensus.

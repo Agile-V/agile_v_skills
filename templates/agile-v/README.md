@@ -10,6 +10,7 @@ Copy these files into your **project** `.agile-v/` directory and adjust `policy_
 | `EVAL_RESULTS.example.md`         | `EVAL_RESULTS.md`         | Eval runs and Gate 2 input |
 | `CHECKPOINTS.example.md`          | `CHECKPOINTS.md`          | Durable HITL checkpoints |
 | `CONTROL_MATRIX.example.yaml`     | `CONTROL_MATRIX.yaml`     | Operating control map for agentic execution |
+| `HUMAN_OVERSIGHT_CASE.example.yaml` | `HUMAN_OVERSIGHT_CASE_<task_id>.yaml` | Bainbridge-aware Human Oversight Case (claims, independence, surprises, recovery) |
 
 
 Full schema definitions: [docs/agile-v-runtime/01_SCHEMAS.md](../../docs/agile-v-runtime/01_SCHEMAS.md). These are source templates in the skills repository; use the path to your checked-out skills repository when copying them into a consuming project.

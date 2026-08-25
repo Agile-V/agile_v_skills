@@ -3,7 +3,7 @@ name: requirement-architect
 description: Converts high-level product intent into traceable PRDs and User Stories. Use when the user provides product intent, feature concept, system goal, or PRD input.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.5"
+  version: "1.6"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -11,6 +11,7 @@ metadata:
     - Human Gate 1 Handoff
     - Requirements File Convention
     - Multi-Cycle Management
+    - Blind Human Precommit (L2+)
 ---
 
 # Instructions
@@ -68,6 +69,10 @@ allowed_ai_components:
   tools: []
   rag_sources: []
 ```
+
+## Blind Human Precommit (L2+)
+
+For L2+ tasks, capture the accountable human's expected outcome and failure hypothesis **before** presenting any agent-generated recommendation, draft REQ set, or impact assessment. Record in `.agile-v/HUMAN_OVERSIGHT_CASE_<task_id>.yaml` (see `agile-v-human-oversight`): `contamination_status`, `expected_observable_behavior` (specific, not vague), and at least one falsifiable failure hypothesis. `unable_to_assess: true` is a valid answer — escalate rather than proceed. Do not draft the human's answer for them.
 
 ## Multi-Cycle Management (C2+)
 
