@@ -15,6 +15,7 @@ contracts:
   risk_assessment_v2: "1.0"
   governance_conversion_contract: "1.0"
   skill_graduation_policy: "1.0"
+  conformance_catalog: "1.0"
 
   # Schemas (schemas/) -- value must equal that schema's schema_version const
   requirements: "1.0"
