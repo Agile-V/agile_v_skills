@@ -191,6 +191,10 @@ The Draft 2020-12 contracts in [`schemas/`](../../schemas/) validate structured 
 
 [`EVIDENCE_BUNDLE.v2.schema.json`](../../schemas/EVIDENCE_BUNDLE.v2.schema.json) upgrades the v1 container contract into typed claims and evidence: each claim declares its `required_evidence_properties`; each evidence item declares which claim(s) it `supports`, its `producer`, `state_binding`, `integrity` digest, and — for `L2`+ bundles — a `policy_binding`. `admission.status` records the gate outcome. v1 (`schema_version: "1.0"`) remains unchanged and valid for existing consumers; new bundles SHOULD use v2 (`schema_version: "2.0"`). Structural validity does not by itself prove `state_binding.source_commit` matches `baseline.artifact_state.repository_commit` — that is a semantic admissibility check per `07_EVIDENCE_ADMISSION_CONTRACT.md`, not a JSON Schema constraint.
 
+### 7.2 Gate Receipt and Approval v2
+
+[`GATE_RECEIPT.schema.json`](../../schemas/GATE_RECEIPT.schema.json) records why a lifecycle transition was permitted or denied: required/admitted/rejected/stale claims, consulted approvals, verifier `independence_class` (`I0`–`I4`, see `08_INDEPENDENCE_CLASSES.md`), residual risk, and a `PASS`/`FAIL`/`NEEDS_HUMAN`/`STALE`/`CONFLICT` decision. [`APPROVAL.v2.schema.json`](../../schemas/APPROVAL.v2.schema.json) upgrades v1 with explicit `scope`, `expires_at`, exact artifact/policy `binding`, and `usage.reusable`. A Gate Receipt's `approvals` array only references `APPROVAL` records by ID; it does not embed or replace them. **A Human Gate approval and a Gate Receipt are different objects: approval records authority, Gate Receipt records decision basis. Neither substitutes for the other.** v1 `APPROVAL.schema.json` (`schema_version: "1.0"`) remains unchanged and valid.
+
 ---
 
 ## Cross-references

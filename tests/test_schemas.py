@@ -26,7 +26,8 @@ QUALIFICATION_CATALOG = {
     "REQUALIFICATION_ASSESSMENT",
 }
 EVIDENCE_V2_CATALOG = {"EVIDENCE_BUNDLE.v2"}
-CATALOG = LEGACY_CATALOG | GATE_RECORD_CATALOG | QUALIFICATION_CATALOG | EVIDENCE_V2_CATALOG
+GATE_RECEIPT_CATALOG = {"GATE_RECEIPT", "APPROVAL.v2"}
+CATALOG = LEGACY_CATALOG | GATE_RECORD_CATALOG | QUALIFICATION_CATALOG | EVIDENCE_V2_CATALOG | GATE_RECEIPT_CATALOG
 
 
 def _load(path: Path) -> dict[str, object]:
@@ -150,7 +151,9 @@ def test_yaml_templates_are_schema_valid(template: str, schema_name: str) -> Non
 @pytest.mark.parametrize(
     "template, schema_name",
     [("agile-v/POLICY.example.yaml", "POLICY"),
-     ("agile-v/CONTROL_MATRIX.example.yaml", "CONTROL_MATRIX")],
+     ("agile-v/CONTROL_MATRIX.example.yaml", "CONTROL_MATRIX"),
+     ("agile-v/GATE_RECEIPT.example.yaml", "GATE_RECEIPT"),
+     ("agile-v/APPROVAL.v2.example.yaml", "APPROVAL.v2")],
 )
 def test_runtime_yaml_templates_are_schema_valid(template: str, schema_name: str) -> None:
     yaml = pytest.importorskip("yaml")

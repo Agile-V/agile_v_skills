@@ -1,0 +1,43 @@
+{
+  "schema_version": "2.0",
+  "compatibility": "additive",
+  "migration": "none",
+  "fixture_owner": "tests",
+  "approval": {
+    "id": "APR-1",
+    "task_id": "AAV-0042",
+    "correlation_id": "COR-1",
+    "gate_id": "gate_2",
+    "control_refs": [
+      "AV-CONTROL-019"
+    ],
+    "issued_at": "2026-09-01T00:00:00Z",
+    "decided_at": "2026-09-01T00:05:00Z",
+    "expires_at": "2027-01-01T00:00:00Z",
+    "decision": "approved",
+    "approver": {
+      "identity": "reviewer-1",
+      "role": "release_owner",
+      "authority_source": "quality-unit"
+    },
+    "scope": {
+      "action": "release",
+      "resources": [
+        "ART-1"
+      ],
+      "data_classes": [
+        "internal"
+      ]
+    },
+    "binding": {
+      "artifact_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "requirement_baseline_id": "BL-1",
+      "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "resume_token_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+    },
+    "usage": {
+      "reusable": false,
+      "consumed_at": null
+    }
+  }
+}

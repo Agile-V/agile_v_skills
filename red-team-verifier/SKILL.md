@@ -70,6 +70,8 @@ EvalGate: status=[PASS|FAIL|WAIVED] | eval_run_id=[ER-...] | policy_version_ref=
 
 Include: Scope (ART list, REQ list, TC count), Results (PASS/FAIL/FLAG counts), FLAG items (`VER-ID | REQ-ID | FT-CODE | Issue | Recommendation`), Coverage (`REQ-ID | tests | status`), Audit trail (`TIMESTAMP | agent | VER: assertion | LINKED_REQ`), **EvalGate block** (above). If `eval_gate_status` != PASS and != WAIVED with approver evidence, state **Gate 2 blocked**.
 
+**Gate Receipt:** when a runtime emits `schemas/GATE_RECEIPT.schema.json` records, this Verification Summary is the evidence source for its `claims` (required/admitted/rejected/stale) and `verifier.independence_class` fields. The Gate Receipt records decision basis; it does not replace this summary, and it is not itself a Human Gate approval (`APPROVAL`/`APPROVAL.v2`) — those remain separate authority records.
+
 ## Control Matrix Conformance Checks
 
 When a control matrix is present (`.agile-v/CONTROL_MATRIX.yaml` or `config/control_matrix.yaml`), verify:
