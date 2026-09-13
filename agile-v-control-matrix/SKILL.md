@@ -3,7 +3,7 @@ name: agile-v-control-matrix
 description: Defines and checks the Agile-V control matrix for agentic tasks, skills, model use, tools, logs, rights, Human Gates, tests, costs, rollback, and owners. Load when creating, reviewing, or enforcing `.agile-v/CONTROL_MATRIX.yaml` or runtime governance for agentic execution.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.5"
   standard: "Agile V"
   author: agile-v.org
   compliance: "Supports ISO 9001/ISO 27001-aligned design controls; not a conformity or certification claim"

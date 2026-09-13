@@ -3,7 +3,7 @@ name: rd-innovator
 description: Manages R&D pipeline, technology scouting, prototyping, and IP tracking with traceable innovation-to-product handoff. Use when evaluating technologies, managing prototypes, or transferring validated innovations to the engineering pipeline.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   status: draft
   preview:
     owner: agile-v.org

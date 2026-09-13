@@ -3,7 +3,7 @@ name: c-suite-foundation
 description: Core abstractions, protocols, and patterns shared across all C-Suite orchestrator skills. Load this before any C-Suite skill to provide governance primitives, executive gate protocols, and multi-cycle patterns.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   status: draft
   preview:
     owner: agile-v.org

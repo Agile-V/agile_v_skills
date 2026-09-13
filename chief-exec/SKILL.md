@@ -3,7 +3,7 @@ name: chief-exec
 description: Chief Executive Officer (CEO) orchestrator for strategic alignment, cross-C-suite coordination, board relations, crisis management, and executive decision governance. Orchestrates all C-suite agents and venture-strategist.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.1"
+  version: "2.2"
   status: draft
   preview:
     owner: agile-v.org

@@ -1,6 +1,6 @@
 {
   "unknown_coverage_without_conservative_fallback": {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -38,7 +38,7 @@
     }
   },
   "empty_changed_refs": {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -71,7 +71,7 @@
     }
   },
   "invalid_result_enum": {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -109,7 +109,7 @@
     }
   },
   "unknown_result_at_l3_semantic": {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",

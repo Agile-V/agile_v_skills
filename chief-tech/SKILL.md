@@ -3,7 +3,7 @@ name: chief-tech
 description: Chief Technology Officer (CTO) orchestrator for architecture governance, build-vs-buy decisions, tech debt management, engineering standards, platform strategy, and security posture. Orchestrates rd-innovator, build-agent, observability-planner, threat-modeler.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.1"
+  version: "2.2"
   status: draft
   preview:
     owner: agile-v.org

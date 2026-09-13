@@ -18,7 +18,7 @@ skills_contract:
   evidence_bundle: "2.0"
   approval: "2.0"
   trace_graph: "1.0"
-  gate_receipt: "1.0"
+  gate_receipt: "1.1"
   exception_decision: "1.0"
   revalidation_assessment: "1.0"
 

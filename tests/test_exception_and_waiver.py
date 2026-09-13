@@ -3,6 +3,9 @@
 Distinguishes waiver, concession, dispensation, residual-risk acceptance,
 and defer; enforces expiry, non-waivable meta-controls, and the rule that
 WAIVED must never mean "missing evidence, continue anyway."
+
+Semantic (non-schema) checks are implemented once in contracts/semantics.py
+and imported here rather than redefined locally.
 """
 from __future__ import annotations
 
@@ -13,13 +16,12 @@ from pathlib import Path
 
 import pytest
 
+from contracts import semantics
+
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "schemas"
 FIXTURES = ROOT / "tests" / "fixtures" / "schemas"
 CONTRACT = ROOT / "docs" / "agile-v-runtime" / "09_EXCEPTION_AND_WAIVER_CONTRACT.md"
-
-# Meta-controls that no exception may waive, per 09_EXCEPTION_AND_WAIVER_CONTRACT.md rule 1.
-NON_WAIVABLE_CONTROLS = {"GATE_INTEGRITY", "SUBJECT_BINDING", "UNKNOWN_IDENTITY", "RECEIPT_INTEGRITY"}
 
 
 def _load(path: Path) -> dict:
@@ -35,14 +37,6 @@ def _validator():
     schema = _load(SCHEMAS / "EXCEPTION_DECISION.schema.json")
     jsonschema.Draft202012Validator.check_schema(schema)
     return jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker())
-
-
-def _exception_currently_valid(instance: dict, now: datetime) -> bool:
-    exc = instance["exception"]
-    if exc["control_or_claim_ref"] in NON_WAIVABLE_CONTROLS:
-        return False
-    expires_at = datetime.fromisoformat(exc["expires_at"].replace("Z", "+00:00"))
-    return now < expires_at
 
 
 def test_contract_doc_exists_and_defines_five_types() -> None:
@@ -80,7 +74,7 @@ def test_nonwaivable_control_cannot_be_waived_even_if_structurally_valid() -> No
     instance = cases["non_waivable_control_semantic"]
     errors = list(_validator().iter_errors(instance))
     assert not errors, "fixture must be structurally valid to exercise the semantic check"
-    assert not _exception_currently_valid(instance, now=datetime(2026, 9, 13, tzinfo=timezone.utc))
+    assert not semantics.exception_currently_valid(instance, now=datetime(2026, 9, 13, tzinfo=timezone.utc))
 
 
 def test_expired_exception_is_invalid_despite_being_structurally_valid() -> None:
@@ -88,12 +82,12 @@ def test_expired_exception_is_invalid_despite_being_structurally_valid() -> None
     instance = cases["expired_semantic"]
     errors = list(_validator().iter_errors(instance))
     assert not errors
-    assert not _exception_currently_valid(instance, now=datetime(2026, 9, 13, tzinfo=timezone.utc))
+    assert not semantics.exception_currently_valid(instance, now=datetime(2026, 9, 13, tzinfo=timezone.utc))
 
 
 def test_positive_fixture_is_currently_valid() -> None:
     instance = _load(FIXTURES / "exception_decision.positive.json")
-    assert _exception_currently_valid(instance, now=datetime(2026, 9, 13, tzinfo=timezone.utc))
+    assert semantics.exception_currently_valid(instance, now=datetime(2026, 9, 13, tzinfo=timezone.utc))
 
 
 def test_red_team_disposition_model_cross_references_exception_contract() -> None:

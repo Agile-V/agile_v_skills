@@ -3,7 +3,7 @@ name: c-suite-update
 description: Generates periodic executive briefings (weekly/monthly/quarterly) by aggregating health status, critical alerts, key decisions, and upcoming milestones from all C-Suite domain dashboards into a single narrative update.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   status: draft
   preview:
     owner: agile-v.org

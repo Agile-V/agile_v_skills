@@ -3,7 +3,7 @@ name: chief-finance
 description: Chief Financial Officer (CFO) orchestrator for financial modeling, fundraising strategy, cash management, financial controls, board reporting, and unit economics governance. Orchestrates business-operations (finance) and venture-strategist (investor relations).
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.1"
+  version: "2.2"
   status: draft
   preview:
     owner: agile-v.org

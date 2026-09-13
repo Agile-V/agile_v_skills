@@ -3,7 +3,7 @@ name: agile-v-adr
 description: Authoring, approval, immutability, and supersession of Architecture Decision Records (ADRs) in the Agile V lifecycle. Load when recording a significant, long-lived architectural, platform, tooling, or security decision.
 license: CC-BY-SA-4.0
 metadata:
-  version: "0.1"
+  version: "0.2"
   standard: "Agile V"
   status: draft
   preview:

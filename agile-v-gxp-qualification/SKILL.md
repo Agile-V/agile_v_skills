@@ -3,7 +3,7 @@ name: agile-v-gxp-qualification
 description: Plans, coordinates, and audits risk-based DQ, IQ, OQ, PQ, intended-use validation, stage release, and requalification for regulated or high-assurance computerized systems. Use with Agile V lifecycle skills; it does not provide certification or runtime enforcement.
 license: CC-BY-SA-4.0
 metadata:
-  version: "0.1"
+  version: "0.2"
   status: draft
   preview:
     owner: agile-v.org

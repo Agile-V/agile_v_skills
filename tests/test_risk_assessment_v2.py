@@ -1,4 +1,8 @@
-"""Contract tests for Risk Assessment v2 (PR-S08)."""
+"""Contract tests for Risk Assessment v2 (PR-S08).
+
+Semantic (non-schema) checks are implemented once in contracts/semantics.py
+and imported here rather than redefined locally.
+"""
 from __future__ import annotations
 
 import json
@@ -6,12 +10,12 @@ from pathlib import Path
 
 import pytest
 
+from contracts import semantics
+
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "schemas"
 FIXTURES = ROOT / "tests" / "fixtures" / "schemas"
 CONTRACT = ROOT / "docs" / "agile-v-runtime" / "11_RISK_ASSESSMENT_V2.md"
-
-LEVEL_ORDER = ["L0", "L1", "L2", "L3", "L4"]
 
 
 def _load(path: Path) -> dict:
@@ -25,16 +29,16 @@ def _validator():
     return jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker())
 
 
-def _floor_respected(instance: dict) -> bool:
-    ra = instance["risk_assessment"]
-    if not ra["floors"]:
-        return True
-    highest_floor = max(LEVEL_ORDER.index(f["minimum_level"]) for f in ra["floors"])
-    selected = LEVEL_ORDER.index(ra["selected_level"])
-    if selected >= highest_floor:
-        return True
-    # Below floor is only permitted with an authorized exception reference.
-    return bool(ra.get("exception_ref"))
+def _resolve_real_exception(exception_ref: str) -> bool:
+    """Resolves exception_ref against the actual EXCEPTION_DECISION fixture
+    corpus, rather than treating any non-empty string as authorized. Only
+    EXC-0001 (tests/fixtures/schemas/exception_decision.positive.json)
+    exists and is currently valid in this fixture corpus."""
+    known = {"EXC-0001": _load(FIXTURES / "exception_decision.positive.json")}
+    if exception_ref not in known:
+        return False
+    from datetime import datetime, timezone
+    return semantics.exception_currently_valid(known[exception_ref], now=datetime(2026, 9, 13, tzinfo=timezone.utc))
 
 
 def test_contract_doc_exists() -> None:
@@ -49,7 +53,7 @@ def test_positive_fixture_is_valid_and_respects_floor() -> None:
     instance = _load(FIXTURES / "risk_assessment.positive.json")
     errors = list(_validator().iter_errors(instance))
     assert not errors, [e.message for e in errors]
-    assert _floor_respected(instance)
+    assert semantics.risk_floor_respected(instance)
 
 
 @pytest.mark.parametrize("case_id", ["empty_dimensions", "invalid_level_enum", "missing_rationale"])
@@ -64,15 +68,27 @@ def test_level_cannot_be_silently_lowered_below_floor() -> None:
     instance = cases["below_floor_without_exception_semantic"]
     errors = list(_validator().iter_errors(instance))
     assert not errors, "fixture must be structurally valid to exercise the semantic check"
-    assert not _floor_respected(instance)
+    assert not semantics.risk_floor_respected(instance, resolve_exception=_resolve_real_exception)
 
 
-def test_level_may_be_lowered_below_floor_with_authorized_exception() -> None:
+def test_level_may_be_lowered_below_floor_with_authorized_and_resolved_exception() -> None:
     cases = _load(FIXTURES / "risk_assessment.negative.json")
     instance = cases["below_floor_with_exception_semantic"]
     errors = list(_validator().iter_errors(instance))
     assert not errors
-    assert _floor_respected(instance), "an authorized exception_ref must permit the floor override"
+    assert semantics.risk_floor_respected(instance, resolve_exception=_resolve_real_exception), (
+        "an authorized, resolvable, currently-valid exception_ref must permit the floor override"
+    )
+
+
+def test_level_below_floor_with_unresolvable_exception_ref_is_not_permitted() -> None:
+    """A bare, non-empty exception_ref string is not sufficient: it must
+    resolve to a real, currently-valid EXCEPTION_DECISION record."""
+    cases = _load(FIXTURES / "risk_assessment.negative.json")
+    instance = cases["below_floor_with_unresolvable_exception_semantic"]
+    errors = list(_validator().iter_errors(instance))
+    assert not errors, "fixture must be structurally valid to exercise the semantic check"
+    assert not semantics.risk_floor_respected(instance, resolve_exception=_resolve_real_exception)
 
 
 def test_dimensions_may_raise_but_not_replace_floor_reasoning() -> None:

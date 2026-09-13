@@ -3,7 +3,7 @@ name: agile-v-sop-adapter
 description: Bind an organization's controlled SOPs (Standard Operating Procedures) to Agile-V controls, artifacts, and Human Gates so Agile-V execution conforms to the SOPs. Load when creating or checking `.agile-v/SOP_BINDING.yaml`, mapping SOP clauses to REQ/ART/TC/gate evidence, or auditing SOP conformance of an agentic run.
 license: CC-BY-SA-4.0
 metadata:
-  version: "0.2"
+  version: "0.3"
   standard: "Agile V"
   status: draft
   preview:

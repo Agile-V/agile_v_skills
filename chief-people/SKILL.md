@@ -3,7 +3,7 @@ name: chief-people
 description: Chief People Officer (CHRO) orchestrator for organizational design, hiring, compensation, culture, performance management, DE&I, and talent development. Use when defining org structure, hiring plans, compensation bands, culture principles, or people operations.
 license: CC-BY-SA-4.0
 metadata:
-  version: "2.1"
+  version: "2.2"
   status: draft
   preview:
     owner: agile-v.org

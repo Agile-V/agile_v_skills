@@ -3,7 +3,7 @@ name: red-team-verifier
 description: The Verification Agent — challenges Build Agent artifacts via independent verification. Executes tests against artifacts. Use to audit code, schematics, or firmware against requirements.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.8"
+  version: "1.9"
   standard: "Agile V"
   author: agile-v.org
   adapted_from:

@@ -66,7 +66,7 @@ def test_compatibility_declares_evidence_bundle_v2_and_gate_receipt() -> None:
     compat = _yaml(COMPAT)
     contract = compat["skills_contract"]
     assert contract["evidence_bundle"] == "2.0"
-    assert contract["gate_receipt"] == "1.0"
+    assert contract["gate_receipt"] == "1.1"
 
 
 def test_unverified_runtime_capability_is_not_reported_as_confirmed() -> None:

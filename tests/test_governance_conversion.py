@@ -1,10 +1,16 @@
-"""Contract tests for Governance Conversion (PR-S07)."""
+"""Contract tests for Governance Conversion (PR-S07).
+
+Semantic (non-schema) checks are implemented once in contracts/semantics.py
+and imported here rather than redefined locally.
+"""
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
 import pytest
+
+from contracts import semantics
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "schemas"
@@ -21,17 +27,6 @@ def _validator():
     schema = _load(SCHEMAS / "GOVERNANCE_CONVERSION.schema.json")
     jsonschema.Draft202012Validator.check_schema(schema)
     return jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker())
-
-
-def _proposer_is_not_approver(instance: dict) -> bool:
-    decision = instance["conversion"]["decision"]
-    if decision["status"] not in {"approved", "deployed", "validated"}:
-        return True
-    proposer = decision.get("proposer_ref")
-    authority = decision.get("authority_ref")
-    if proposer is None or authority is None:
-        return True
-    return proposer != authority
 
 
 def test_contract_doc_exists() -> None:
@@ -51,11 +46,17 @@ def test_positive_fixture_is_valid_and_proposer_differs_from_approver() -> None:
     instance = _load(FIXTURES / "governance_conversion.positive.json")
     errors = list(_validator().iter_errors(instance))
     assert not errors, [e.message for e in errors]
-    assert _proposer_is_not_approver(instance)
+    assert semantics.governance_conversion_proposer_is_not_approver(instance)
+    assert semantics.governance_conversion_activation_is_justified(instance)
 
 
 @pytest.mark.parametrize(
-    "case_id", ["approved_without_authority_ref", "invalid_status_enum", "empty_source_findings"],
+    "case_id",
+    [
+        "approved_without_authority_ref", "invalid_status_enum", "empty_source_findings",
+        "approved_without_proposer_ref", "deployed_without_held_out_validation",
+        "deployed_without_effective_from",
+    ],
 )
 def test_structural_negative_cases(case_id: str) -> None:
     cases = _load(FIXTURES / "governance_conversion.negative.json")
@@ -68,7 +69,7 @@ def test_proposer_cannot_approve_own_conversion() -> None:
     instance = cases["proposer_is_approver_semantic"]
     errors = list(_validator().iter_errors(instance))
     assert not errors, "fixture must be structurally valid to exercise the semantic check"
-    assert not _proposer_is_not_approver(instance)
+    assert not semantics.governance_conversion_proposer_is_not_approver(instance)
 
 
 def test_control_matrix_skill_cross_references_governance_conversion() -> None:

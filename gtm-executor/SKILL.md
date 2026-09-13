@@ -3,7 +3,7 @@ name: gtm-executor
 description: Converts product portfolio and business model into traceable go-to-market strategies, marketing plans, launch campaigns, and growth experiments. Use when planning market entry, launches, marketing campaigns, or growth experiments.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   status: draft
   preview:
     owner: agile-v.org

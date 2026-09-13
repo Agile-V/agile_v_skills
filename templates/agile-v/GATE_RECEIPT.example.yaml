@@ -1,10 +1,13 @@
 # Gate receipt (example). See schemas/GATE_RECEIPT.schema.json
 # A Gate Receipt records DECISION BASIS: which claims were required, which were
 # admitted/rejected/stale, which approvals and verifier evidence were consulted,
-# and the resulting PASS/FAIL/NEEDS_HUMAN/STALE/CONFLICT decision. It is not an
-# approval record itself — approvals[] only references authority evidence
-# recorded separately (see APPROVAL.v2.schema.json).
-schema_version: "1.0"
+# and the resulting PASS/WAIVED/FAIL/NEEDS_HUMAN/STALE/CONFLICT decision. It is
+# not an approval record itself — approvals[] only references authority
+# evidence recorded separately (see APPROVAL.v2.schema.json). subject_state is
+# gate-specific: gate_1 (pre-baseline) requires requirement_revision_ref;
+# eval_gate/gate_2/qualification_stage (post-baseline) require
+# requirement_baseline_id.
+schema_version: "1.1"
 compatibility: additive
 migration: none
 fixture_owner: agile-v.org
@@ -17,7 +20,7 @@ gate_receipt:
   lifecycle:
     from_state: review_pending
     to_state: accepted
-  artifact_state:
+  subject_state:
     requirement_baseline_id: "BASELINE-0001"
     source_commit: "0123456789abcdef0123456789abcdef01234567"
     build_digest: "sha256:1111111111111111111111111111111111111111111111111111111111111111"

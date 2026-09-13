@@ -1,6 +1,6 @@
 {
   "pass_with_rejected_claim": {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -13,11 +13,6 @@
       "lifecycle": {
         "from_state": "review_pending",
         "to_state": "accepted"
-      },
-      "artifact_state": {
-        "requirement_baseline_id": "BL-1",
-        "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
-        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       },
       "policy": {
         "policy_id": "POL-1",
@@ -59,11 +54,16 @@
       "decision": {
         "status": "PASS",
         "rationale_ref": "GATE-1-RATIONALE"
+      },
+      "subject_state": {
+        "requirement_baseline_id": "BL-1",
+        "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       }
     }
   },
   "invalid_decision_status": {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -76,11 +76,6 @@
       "lifecycle": {
         "from_state": "review_pending",
         "to_state": "accepted"
-      },
-      "artifact_state": {
-        "requirement_baseline_id": "BL-1",
-        "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
-        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       },
       "policy": {
         "policy_id": "POL-1",
@@ -120,11 +115,16 @@
       "decision": {
         "status": "INVALID_STATUS",
         "rationale_ref": "GATE-1-RATIONALE"
+      },
+      "subject_state": {
+        "requirement_baseline_id": "BL-1",
+        "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       }
     }
   },
   "invalid_independence_class": {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -137,11 +137,6 @@
       "lifecycle": {
         "from_state": "review_pending",
         "to_state": "accepted"
-      },
-      "artifact_state": {
-        "requirement_baseline_id": "BL-1",
-        "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
-        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       },
       "policy": {
         "policy_id": "POL-1",
@@ -181,11 +176,16 @@
       "decision": {
         "status": "PASS",
         "rationale_ref": "GATE-1-RATIONALE"
+      },
+      "subject_state": {
+        "requirement_baseline_id": "BL-1",
+        "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       }
     }
   },
   "missing_claims_block": {
-    "schema_version": "1.0",
+    "schema_version": "1.1",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -198,11 +198,6 @@
       "lifecycle": {
         "from_state": "review_pending",
         "to_state": "accepted"
-      },
-      "artifact_state": {
-        "requirement_baseline_id": "BL-1",
-        "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
-        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       },
       "policy": {
         "policy_id": "POL-1",
@@ -232,6 +227,133 @@
       "decision": {
         "status": "PASS",
         "rationale_ref": "GATE-1-RATIONALE"
+      },
+      "subject_state": {
+        "requirement_baseline_id": "BL-1",
+        "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+  },
+  "gate_1_missing_requirement_revision_ref": {
+    "schema_version": "1.1",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "gate_receipt": {
+      "id": "GATE-1",
+      "task_id": "AAV-0042",
+      "correlation_id": "COR-1",
+      "gate": "gate_1",
+      "evaluated_at": "2026-09-13T12:00:00Z",
+      "lifecycle": {
+        "from_state": "gate_1",
+        "to_state": "approved"
+      },
+      "policy": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "claims": {
+        "required": [
+          "CLM-1"
+        ],
+        "admitted": [
+          "CLM-1"
+        ],
+        "rejected": [],
+        "stale": []
+      },
+      "obligations": {
+        "open": [],
+        "discharged": [
+          "OBL-1"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_ref": "APR-1"
+        }
+      ],
+      "verifier": {
+        "verification_ref": "VER-0001",
+        "independence_class": "I2"
+      },
+      "residual_risk": {
+        "refs": [],
+        "accepted_by": "owner"
+      },
+      "decision": {
+        "status": "PASS",
+        "rationale_ref": "GATE-1-RATIONALE"
+      },
+      "subject_state": {
+        "requirement_baseline_id": "BL-1",
+        "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+  },
+  "waived_without_exception_refs": {
+    "schema_version": "1.1",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "gate_receipt": {
+      "id": "GATE-1",
+      "task_id": "AAV-0042",
+      "correlation_id": "COR-1",
+      "gate": "gate_2",
+      "evaluated_at": "2026-09-13T12:00:00Z",
+      "lifecycle": {
+        "from_state": "review_pending",
+        "to_state": "accepted"
+      },
+      "policy": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "claims": {
+        "required": [
+          "CLM-1"
+        ],
+        "admitted": [
+          "CLM-1"
+        ],
+        "rejected": [],
+        "stale": []
+      },
+      "obligations": {
+        "open": [],
+        "discharged": [
+          "OBL-1"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_ref": "APR-1"
+        }
+      ],
+      "verifier": {
+        "verification_ref": "VER-0001",
+        "independence_class": "I2"
+      },
+      "residual_risk": {
+        "refs": [],
+        "accepted_by": "owner"
+      },
+      "decision": {
+        "status": "WAIVED",
+        "rationale_ref": "GATE-1-RATIONALE"
+      },
+      "subject_state": {
+        "requirement_baseline_id": "BL-1",
+        "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       }
     }
   }

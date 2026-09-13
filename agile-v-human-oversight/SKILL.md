@@ -3,7 +3,7 @@ name: agile-v-human-oversight
 description: Bainbridge-aware human oversight for agentic tasks. Defines the Human Oversight Case (blind precommit, claim-specific independence, surprise review, active challenge, recovery readiness) so a human approval is effective-oversight evidence, not just authority evidence. Load for L2+ tasks, any Human Gate, or when reviewing whether an agent's evidence is independent.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
   status: draft

@@ -3,7 +3,7 @@ name: test-designer
 description: Designs the verification suite from approved, baselined requirements only — never from code. Prevents success bias. Use when building test cases in parallel with the Build Agent after Gate 1 approval and baseline capture.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.7"
+  version: "1.8"
   standard: "Agile V"
   author: agile-v.org
   sections_index:

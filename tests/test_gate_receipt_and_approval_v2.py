@@ -5,14 +5,20 @@ Approval v2 record is scoped, expiring, bound to an exact artifact/policy,
 and distinguishes reusable from single-use authority. Neither substitutes
 for the other: approval records authority, Gate Receipt records decision
 basis (docs/agile-v-runtime/07_EVIDENCE_ADMISSION_CONTRACT.md, section 2).
+
+Semantic (non-schema) checks are implemented once in contracts/semantics.py
+and imported here rather than redefined locally.
 """
 from __future__ import annotations
 
+import copy
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
+
+from contracts import semantics
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "schemas"
@@ -46,7 +52,10 @@ def test_gate_receipt_positive_fixture_is_valid() -> None:
 
 @pytest.mark.parametrize(
     "case_id",
-    ["invalid_decision_status", "invalid_independence_class", "missing_claims_block"],
+    [
+        "invalid_decision_status", "invalid_independence_class", "missing_claims_block",
+        "gate_1_missing_requirement_revision_ref", "waived_without_exception_refs",
+    ],
 )
 def test_gate_receipt_structural_negative_cases(case_id: str) -> None:
     cases = _load(FIXTURES / "gate_receipt.negative.json")
@@ -72,21 +81,56 @@ def test_gate_receipt_pass_with_rejected_claim_is_semantically_inconsistent() ->
     instance = cases["pass_with_rejected_claim"]
     errors = list(_validator("GATE_RECEIPT").iter_errors(instance))
     assert not errors, "fixture must be structurally valid to exercise the semantic check"
-    assert not _gate_receipt_decision_consistent(instance), (
-        "PASS must not coexist with any rejected required claim"
-    )
+    assert not semantics.gate_receipt_decision_consistent(instance)
 
 
 def test_gate_receipt_positive_fixture_decision_is_consistent() -> None:
     instance = _load(FIXTURES / "gate_receipt.positive.json")
-    assert _gate_receipt_decision_consistent(instance)
+    assert semantics.gate_receipt_decision_consistent(instance)
 
 
-def _gate_receipt_decision_consistent(instance: dict) -> bool:
+def test_gate_receipt_subject_binding_matches_gate_2() -> None:
+    instance = _load(FIXTURES / "gate_receipt.positive.json")
+    assert instance["gate_receipt"]["gate"] == "gate_2"
+    assert semantics.gate_receipt_subject_binding_matches_gate(instance)
+
+
+def test_gate_receipt_gate_1_cannot_bind_to_a_baseline_that_does_not_exist_yet() -> None:
+    """Gate 1 occurs before requirement baselining; a Gate 1 receipt must
+    bind to the requirement revision under review, not a baseline id."""
+    cases = _load(FIXTURES / "gate_receipt.negative.json")
+    instance = cases["gate_1_missing_requirement_revision_ref"]
+    errors = list(_validator("GATE_RECEIPT").iter_errors(instance))
+    assert errors, "a gate_1 receipt missing requirement_revision_ref must be schema-rejected"
+
+
+def test_gate_receipt_valid_gate_1_binds_to_requirement_revision_not_baseline() -> None:
+    base = _load(FIXTURES / "gate_receipt.positive.json")
+    instance = copy.deepcopy(base)
     receipt = instance["gate_receipt"]
-    if receipt["decision"]["status"] == "PASS" and receipt["claims"]["rejected"]:
-        return False
-    return True
+    receipt["gate"] = "gate_1"
+    receipt["lifecycle"] = {"from_state": "architect_revisions", "to_state": "gate_1"}
+    receipt["subject_state"] = {"requirement_revision_ref": "REQ-0001@2"}
+    errors = list(_validator("GATE_RECEIPT").iter_errors(instance))
+    assert not errors, [e.message for e in errors]
+    assert semantics.gate_receipt_subject_binding_matches_gate(instance)
+
+
+def test_gate_receipt_waived_without_exception_refs_is_schema_rejected() -> None:
+    cases = _load(FIXTURES / "gate_receipt.negative.json")
+    instance = cases["waived_without_exception_refs"]
+    errors = list(_validator("GATE_RECEIPT").iter_errors(instance))
+    assert errors, "a WAIVED decision without exception_refs must be schema-rejected"
+
+
+def test_gate_receipt_valid_waived_decision_lists_exception_refs() -> None:
+    base = _load(FIXTURES / "gate_receipt.positive.json")
+    instance = copy.deepcopy(base)
+    instance["gate_receipt"]["decision"]["status"] = "WAIVED"
+    instance["gate_receipt"]["exception_refs"] = ["EXC-0001"]
+    errors = list(_validator("GATE_RECEIPT").iter_errors(instance))
+    assert not errors, [e.message for e in errors]
+    assert semantics.gate_receipt_decision_consistent(instance)
 
 
 # ---------------------------------------------------------------------------
@@ -122,12 +166,12 @@ def test_approval_v2_expired_approval_cannot_authorize_now() -> None:
     instance = cases["expired_semantic"]
     errors = list(_validator("APPROVAL.v2").iter_errors(instance))
     assert not errors, "fixture must be structurally valid to exercise the semantic check"
-    assert not _approval_currently_valid(instance, now=datetime(2026, 9, 13, tzinfo=timezone.utc))
+    assert not semantics.approval_currently_valid(instance, now=datetime(2026, 9, 13, tzinfo=timezone.utc))
 
 
 def test_approval_v2_positive_fixture_is_currently_valid() -> None:
     instance = _load(FIXTURES / "approval_v2.positive.json")
-    assert _approval_currently_valid(instance, now=datetime(2026, 9, 13, tzinfo=timezone.utc))
+    assert semantics.approval_currently_valid(instance, now=datetime(2026, 9, 13, tzinfo=timezone.utc))
 
 
 def test_approval_v2_bound_artifact_cannot_authorize_a_different_artifact() -> None:
@@ -138,21 +182,7 @@ def test_approval_v2_bound_artifact_cannot_authorize_a_different_artifact() -> N
     instance = cases["wrong_artifact_semantic"]
     bound_digest = instance["approval"]["binding"]["artifact_digest"]
     candidate_digest = "sha256:" + "9" * 64
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
     assert bound_digest != candidate_digest
-    assert not _approval_authorizes_artifact(instance, candidate_digest)
-    assert _approval_authorizes_artifact(instance, bound_digest)
-
-
-def _approval_currently_valid(instance: dict, now: datetime) -> bool:
-    approval = instance["approval"]
-    if approval["decision"] != "approved":
-        return False
-    expires_at = datetime.fromisoformat(approval["expires_at"].replace("Z", "+00:00"))
-    return now < expires_at
-
-
-def _approval_authorizes_artifact(instance: dict, artifact_digest: str) -> bool:
-    approval = instance["approval"]
-    if approval["decision"] != "approved":
-        return False
-    return approval["binding"]["artifact_digest"] == artifact_digest
+    assert not semantics.approval_authorizes_artifact(instance, candidate_digest, now=now)
+    assert semantics.approval_authorizes_artifact(instance, bound_digest, now=now)

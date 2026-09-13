@@ -1,5 +1,5 @@
 {
-  "schema_version": "2.0",
+  "schema_version": "2.2",
   "compatibility": "additive",
   "migration": "none",
   "fixture_owner": "tests",
@@ -10,10 +10,15 @@
     "baseline": {
       "requirement_baseline_id": "BL-1",
       "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "artifact_state": {
-        "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
-        "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      "subject_state": {
+        "subject_type": "source_control_commit",
+        "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+        "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "profile_specific": {
+          "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+          "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        }
       }
     },
     "policy_binding": {
@@ -57,17 +62,23 @@
           "status": "pass"
         },
         "state_binding": {
-          "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
-          "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+          "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+          "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "profile_specific": {
+            "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+            "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+          }
         },
         "policy_binding": {
           "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
         },
         "invalidation_dependencies": [
           {
+            "kind": "source",
             "ref": "source_commit"
           },
           {
+            "kind": "policy",
             "ref": "policy_digest"
           }
         ],

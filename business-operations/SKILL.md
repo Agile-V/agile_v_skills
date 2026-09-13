@@ -3,7 +3,7 @@ name: business-operations
 description: Manages financial planning, OKRs, team resources, vendor relationships, and operational compliance with full traceability. Use for budgeting, OKR tracking, resource planning, vendor management, or operational risk assessment.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   status: draft
   preview:
     owner: agile-v.org

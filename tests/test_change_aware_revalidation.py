@@ -1,17 +1,22 @@
-"""Contract tests for Change-Aware Revalidation (PR-S06)."""
+"""Contract tests for Change-Aware Revalidation (PR-S06).
+
+Semantic (non-schema) checks are implemented once in contracts/semantics.py
+and imported here rather than redefined locally.
+"""
 from __future__ import annotations
 
+import copy
 import json
 from pathlib import Path
 
 import pytest
 
+from contracts import semantics
+
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "schemas"
 FIXTURES = ROOT / "tests" / "fixtures" / "schemas"
 CONTRACT = ROOT / "docs" / "agile-v-runtime" / "10_CHANGE_AWARE_REVALIDATION.md"
-
-REUSE_ELIGIBLE_RESULTS = {"UNCHANGED"}
 
 
 def _load(path: Path) -> dict:
@@ -25,11 +30,11 @@ def _validator():
     return jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker())
 
 
-def _reuse_eligible(evaluation: dict) -> bool:
-    """UNKNOWN, STALE, and REVALIDATION_REQUIRED are never reuse-eligible;
-    only UNCHANGED is. This must hold regardless of risk level (UNKNOWN is
-    conservative everywhere; L3/L4 additionally forces full revalidation)."""
-    return evaluation["result"] in REUSE_ELIGIBLE_RESULTS
+def _evidence_bundle_validator():
+    jsonschema = pytest.importorskip("jsonschema")
+    schema = _load(SCHEMAS / "EVIDENCE_BUNDLE.v2.schema.json")
+    jsonschema.Draft202012Validator.check_schema(schema)
+    return jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker())
 
 
 def test_contract_doc_exists() -> None:
@@ -68,7 +73,7 @@ def test_unknown_result_is_never_reuse_eligible_even_at_l3() -> None:
     errors = list(_validator().iter_errors(instance))
     assert not errors, "fixture must be structurally valid to exercise the semantic check"
     unknown_eval = next(e for e in instance["assessment"]["evaluations"] if e["result"] == "UNKNOWN")
-    assert not _reuse_eligible(unknown_eval)
+    assert not semantics.revalidation_reuse_eligible(unknown_eval)
 
 
 def test_positive_fixture_revalidation_required_evidence_is_not_reuse_eligible() -> None:
@@ -76,11 +81,36 @@ def test_positive_fixture_revalidation_required_evidence_is_not_reuse_eligible()
     evaluations = instance["assessment"]["evaluations"]
     unchanged = next(e for e in evaluations if e["evidence_ref"] == "EVI-1")
     required = next(e for e in evaluations if e["evidence_ref"] == "EVI-2")
-    assert _reuse_eligible(unchanged)
-    assert not _reuse_eligible(required)
+    assert semantics.revalidation_reuse_eligible(unchanged)
+    assert not semantics.revalidation_reuse_eligible(required)
 
 
-def test_evidence_bundle_v2_invalidation_dependencies_align_with_dependency_kinds() -> None:
+def test_partial_coverage_also_requires_conservative_fallback() -> None:
+    """Not just 'unknown' -- 'partial' coverage must also require an explicit
+    conservative_fallback_applied: true; it must not silently leave evidence
+    reuse-eligible."""
+    instance = copy.deepcopy(_load(FIXTURES / "revalidation_assessment.positive.json"))
+    instance["assessment"]["coverage"] = "partial"
+    instance["assessment"]["conservative_fallback_applied"] = False
+    errors = list(_validator().iter_errors(instance))
+    assert errors, "partial coverage without conservative_fallback_applied must be schema-rejected"
+
+    instance["assessment"]["conservative_fallback_applied"] = True
+    errors = list(_validator().iter_errors(instance))
+    assert not errors
+    assert semantics.revalidation_coverage_is_conservative(instance)
+
+
+def test_evidence_bundle_v2_invalidation_dependencies_declare_typed_kind() -> None:
     positive = _load(FIXTURES / "evidence_bundle_v2.positive.json")
     deps = positive["bundle"]["evidence"][0]["invalidation_dependencies"]
     assert deps, "Evidence Bundle v2 fixture should declare invalidation_dependencies"
+    for dep in deps:
+        assert dep["kind"] in {"source", "requirement", "policy", "environment", "tool", "model", "hardware"}
+
+
+def test_evidence_bundle_v2_invalidation_dependency_missing_kind_is_rejected() -> None:
+    cases = _load(FIXTURES / "evidence_bundle_v2.negative.json")
+    instance = cases["invalidation_dependency_missing_kind"]
+    errors = list(_evidence_bundle_validator().iter_errors(instance))
+    assert errors, "invalidation_dependencies without a typed 'kind' must be schema-rejected"

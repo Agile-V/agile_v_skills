@@ -3,7 +3,7 @@ name: venture-strategist
 description: Converts vision and market opportunity into traceable business models, product portfolios, and strategic plans. Use when defining business strategy, product direction, competitive positioning, or fundraising materials.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   status: draft
   preview:
     owner: agile-v.org

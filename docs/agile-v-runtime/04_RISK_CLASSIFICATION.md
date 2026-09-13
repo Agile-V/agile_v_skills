@@ -17,7 +17,7 @@
 1. Classify before synthesis; record level, rationale, controls, residual decision, owner, and affected configuration in `RISK_REGISTER`.
 2. Auth, authorization, identity, secrets, payment, privacy-sensitive data, security boundary, irreversible migration, or production release is at least `L2`; raise level when impact or uncertainty warrants it.
 3. A Critical residual risk, unresolved control, or unknown acceptance authority blocks the applicable gate/release.
-4. `L3`/`L4` require independent findings and a human decision; AI output is never independent assurance. A fresh context or a second AI agent is at most `I1` and never satisfies an `I3`/`I4` requirement on its own (see `08_INDEPENDENCE_CLASSES.md`).
+4. `L3`/`L4` require independent findings and a human decision; AI output is never independent assurance. A fresh context alone is at most `I1`; a separately instantiated, role-separated verifier agent with protected, independent inputs (Red Team Protocol) may reach `I2`; AI separation alone — same or different agent, with or without role separation — never satisfies an `I3`/`I4` requirement on its own (see `08_INDEPENDENCE_CLASSES.md`).
 
 ## Legacy mapping
 
