@@ -28,7 +28,7 @@ Ensure business execution is sustainable, measurable, and auditable. Every budge
 
 ## Values Alignment
 
-- **Automated Compliance** (Value #3): Log operational decisions as you work
+- **Automated Assurance Evidence** (Value #3): Log operational decisions as you work
 - **Traceable Agency** (Directive #2): Every budget item cites strategic rationale
 - **Sustainable Rigor** (Principle #10): Operational plans must be sustainable, not heroic
 - **Human Curation** (Directive #5): Business Gate 2 approval before budget commitment

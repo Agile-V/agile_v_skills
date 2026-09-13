@@ -39,7 +39,7 @@ This is an **orchestrator-level skill**. You set financial *policy, models, and 
 ## Foundation References
 
 **From c-suite-foundation:**
-- **Values Alignment Framework:** Traceable Agency, Verified Iteration, Automated Compliance, Human Curation
+- **Values Alignment Framework:** Traceable Agency, Verified Iteration, Automated Assurance Evidence, Human Curation
 - **Executive Gate Protocol:** Structure for Executive Gate 1 (Finance)
 - **Append-Only Decision Protocol:** FM-XXXX decision format
 - **Standard KPI Framework:** Dashboard structure, health status
