@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "compatibility": "additive",
+  "migration": "none",
+  "fixture_owner": "tests",
+  "exception": {
+    "id": "EXC-0001",
+    "type": "concession",
+    "task_id": "AAV-0042",
+    "control_or_claim_ref": "CLM-0007",
+    "rationale": "Cosmetic lint finding on generated file; functional behavior unaffected.",
+    "scope": "ART-0011 only, this cycle",
+    "approver": "release-owner",
+    "authority_source": "role:release_owner",
+    "issued_at": "2026-09-01T00:00:00Z",
+    "expires_at": "2027-01-01T00:00:00Z",
+    "monitoring": null,
+    "remediation_owner": "build-team",
+    "target_resolution": "Fix in next lint-config update",
+    "evidence_refs": [
+      "VER-0007"
+    ]
+  }
+}

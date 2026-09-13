@@ -20,6 +20,8 @@ Append-only, cycle-tagged register in `.agile-v/RISK_REGISTER.md`: `RISK-ID | Cy
 
 **Categories:** Technical, Process, Compliance, Security. **Severity matrix:** High x High = Critical, High x Med = High, High x Low / Med x Med = Medium, rest = Low. Critical risks require Human resolution or documented acceptance before Gate 2.
 
+**Residual-risk acceptance is an exception decision:** a documented risk acceptance is a `residual_risk_acceptance` under `docs/agile-v-runtime/09_EXCEPTION_AND_WAIVER_CONTRACT.md` — it requires scope, owner, expiry, and monitoring, not a bare "accepted" note. It does not override a separate mandatory technical failure unless a valid, permitted exception independently resolves that failure too.
+
 **When:** draft persisted = Req Architect identifies; independent findings = Logic Gatekeeper flags constraints; Stage 4 = Red Team finds residual; cycle boundary = Compliance Auditor reviews. Baselining requires Gate 1 approval and no unresolved mandatory finding.
 
 ## CAPA Protocol (ISO 13485 8.5 / ISO 9001 10.1-10.2)

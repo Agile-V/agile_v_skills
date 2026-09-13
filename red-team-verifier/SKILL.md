@@ -115,6 +115,8 @@ Report as: `VER-XXXX | — | REQ | FLAG:STUB/ANTI/CRITICAL | FT-TOOL | descripti
 
 **Dispositions:** Rework (fix + re-verify) · Accept-as-is/Concession (MINOR only, rationale in Decision Log) · Reject (default CRITICAL) · Defer (MINOR, tracked in RISK_REGISTER.md).
 
+**Exception discipline:** Concession and Defer dispositions, and any `WAIVED` eval-gate status, are exception decisions per `docs/agile-v-runtime/09_EXCEPTION_AND_WAIVER_CONTRACT.md` — WAIVED never means "missing evidence, continue anyway." A non-waivable meta-control (unknown identity, broken evidence/receipt integrity, absent subject binding) cannot be waived regardless of approver.
+
 **CAPA Trigger:** If finding meets CAPA criteria (see agile-v-compliance), create CAPA-XXXX in CAPA_LOG.md.
 
 ## Feedback Protocol
