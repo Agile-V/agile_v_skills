@@ -61,7 +61,7 @@ Format: `TC-XXXX | REQ-XXXX | Description | Expected | Type | Category | Origin 
 
 ## AI Influence and Test Re-execution
 
-Use `AI_RUN_MANIFEST.yaml` to decide whether test re-execution is needed when the AI context changed since the last verified baseline.
+Use `AI_RUN_MANIFEST.yaml` to decide whether test re-execution is needed when the AI context changed since the last verified baseline. This is the `model`/`tool` case of the general change-aware revalidation rule in `docs/agile-v-runtime/10_CHANGE_AWARE_REVALIDATION.md`: an unresolved/incomplete dependency check is `UNKNOWN`, never `UNCHANGED`, and `UNKNOWN` forces revalidation at `L3`/`L4`.
 
 **Re-execution required when:**
 - Model ID, version, or provider changed (`model_id_changed`, `model_version_changed`)

@@ -1,0 +1,149 @@
+{
+  "unknown_coverage_without_conservative_fallback": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "assessment": {
+      "id": "REVAL-0001",
+      "task_id": "AAV-0042",
+      "risk_level": "L3",
+      "evaluated_at": "2026-09-13T12:00:00Z",
+      "changed_refs": [
+        {
+          "kind": "source",
+          "ref": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "evaluations": [
+        {
+          "evidence_ref": "EVI-1",
+          "claim_refs": [
+            "CLM-1"
+          ],
+          "result": "UNCHANGED",
+          "rationale": "No dependency overlap."
+        },
+        {
+          "evidence_ref": "EVI-2",
+          "claim_refs": [
+            "CLM-2"
+          ],
+          "result": "REVALIDATION_REQUIRED",
+          "rationale": "Depends on changed source digest."
+        }
+      ],
+      "coverage": "unknown",
+      "conservative_fallback_applied": false
+    }
+  },
+  "empty_changed_refs": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "assessment": {
+      "id": "REVAL-0001",
+      "task_id": "AAV-0042",
+      "risk_level": "L3",
+      "evaluated_at": "2026-09-13T12:00:00Z",
+      "changed_refs": [],
+      "evaluations": [
+        {
+          "evidence_ref": "EVI-1",
+          "claim_refs": [
+            "CLM-1"
+          ],
+          "result": "UNCHANGED",
+          "rationale": "No dependency overlap."
+        },
+        {
+          "evidence_ref": "EVI-2",
+          "claim_refs": [
+            "CLM-2"
+          ],
+          "result": "REVALIDATION_REQUIRED",
+          "rationale": "Depends on changed source digest."
+        }
+      ],
+      "coverage": "complete",
+      "conservative_fallback_applied": false
+    }
+  },
+  "invalid_result_enum": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "assessment": {
+      "id": "REVAL-0001",
+      "task_id": "AAV-0042",
+      "risk_level": "L3",
+      "evaluated_at": "2026-09-13T12:00:00Z",
+      "changed_refs": [
+        {
+          "kind": "source",
+          "ref": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "evaluations": [
+        {
+          "evidence_ref": "EVI-1",
+          "claim_refs": [
+            "CLM-1"
+          ],
+          "result": "PROBABLY_FINE",
+          "rationale": "No dependency overlap."
+        },
+        {
+          "evidence_ref": "EVI-2",
+          "claim_refs": [
+            "CLM-2"
+          ],
+          "result": "REVALIDATION_REQUIRED",
+          "rationale": "Depends on changed source digest."
+        }
+      ],
+      "coverage": "complete",
+      "conservative_fallback_applied": false
+    }
+  },
+  "unknown_result_at_l3_semantic": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "assessment": {
+      "id": "REVAL-0001",
+      "task_id": "AAV-0042",
+      "risk_level": "L3",
+      "evaluated_at": "2026-09-13T12:00:00Z",
+      "changed_refs": [
+        {
+          "kind": "source",
+          "ref": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "evaluations": [
+        {
+          "evidence_ref": "EVI-1",
+          "claim_refs": [
+            "CLM-1"
+          ],
+          "result": "UNKNOWN",
+          "rationale": "No dependency overlap."
+        },
+        {
+          "evidence_ref": "EVI-2",
+          "claim_refs": [
+            "CLM-2"
+          ],
+          "result": "REVALIDATION_REQUIRED",
+          "rationale": "Depends on changed source digest."
+        }
+      ],
+      "coverage": "unknown",
+      "conservative_fallback_applied": true
+    }
+  }
+}

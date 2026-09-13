@@ -199,6 +199,10 @@ The Draft 2020-12 contracts in [`schemas/`](../../schemas/) validate structured 
 
 [`EXCEPTION_DECISION.schema.json`](../../schemas/EXCEPTION_DECISION.schema.json) is the structured form of waiver, concession, dispensation, residual-risk acceptance, and defer — see `09_EXCEPTION_AND_WAIVER_CONTRACT.md` for the normative rules (non-waivable meta-controls, expiry, no propagation to later cycles). A Gate Receipt with a `WAIVED`-equivalent decision references the relevant `EXC-XXXX` id(s); it must not present a waived decision as an unqualified `PASS`.
 
+### 7.4 Change-aware revalidation
+
+[`REVALIDATION_ASSESSMENT.schema.json`](../../schemas/REVALIDATION_ASSESSMENT.schema.json) records, per changed dependency (source, requirement, policy, environment, tool, model, hardware), whether each admitted evidence item is `UNCHANGED`, `REVALIDATION_REQUIRED`, `STALE`, or `UNKNOWN` — see `10_CHANGE_AWARE_REVALIDATION.md`. Only `UNCHANGED` is reuse-eligible; `UNKNOWN` coverage requires `conservative_fallback_applied: true` and is never treated as `UNCHANGED`, especially at `L3`/`L4`. This generalizes the AI-BOM-specific triggers in `../ai-bom-revalidation-triggers.md`.
+
 ---
 
 ## Cross-references
