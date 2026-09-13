@@ -210,3 +210,4 @@ The Draft 2020-12 contracts in [`schemas/`](../../schemas/) validate structured 
 - Templates: [templates/agile-v/](../../templates/agile-v/)
 - Control Matrix spec: [02_CONTROL_MATRIX.md](02_CONTROL_MATRIX.md)
 - Agent tool and delegation contract: [05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md](05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md)
+- Skills <-> runtime compatibility declaration: [contracts/AGILE_V_RUNTIME_COMPATIBILITY.yaml](../../contracts/AGILE_V_RUNTIME_COMPATIBILITY.yaml); canonical contract version registry: [contracts/versions.yaml](../../contracts/versions.yaml)
