@@ -29,3 +29,7 @@ A verification pass does not establish intended-use validation. Validation is re
 | 11 | **Obtain Gate 2 and release.** Present verification, applicable validation, Eval Gate, control conformance, trace coverage, open anomalies, rollback, and residual-risk evidence to the authorized human. | Gate 2 approval is durable; `release-manager` then executes the approved rollout/rollback plan. No autonomous production release. |
 
 The normative state transitions and typed edges are defined in [Canonical Lifecycle Contract](agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md); minimum rigor by level is defined in [Risk Classification](agile-v-runtime/04_RISK_CLASSIFICATION.md).
+
+## Executable fixture map
+
+Each step above has a concrete, schema-validated example fixture in [`examples/golden-journey/`](../examples/golden-journey/README.md) (`tests/test_golden_journey.py` re-validates all of them). [`examples/negative/`](../examples/negative/README.md) demonstrates the corresponding rejection paths (stale evidence, self-approval, expired approval, policy drift, verifier contamination, an Evolve goalpost change, and others), each stating plainly whether it is backed by an executable test or is a specified-but-not-yet-tested rule.
