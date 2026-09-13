@@ -34,7 +34,7 @@ Use canonical states `draft_persisted -> independent_findings -> architect_revis
 
 ## Change Requests
 
-Append-only in `.agile-v/CHANGE_LOG.md`. Format: `CR-XXXX` with Cycle, affected `REQ-XXXX` revision/baseline, change, rationale, ART/TC impact, requester, and approval status. Flow: Requirement Architect creates a new draft revision -> Logic Gatekeeper records findings without editing -> Requirement Architect resolves findings -> Human decides at Gate 1 -> approved revision is captured in a new immutable baseline.
+Append-only in `.agile-v/CHANGE_LOG.md`. Format: `CR-XXXX` with Cycle, affected `REQ-XXXX` revision/baseline, change, rationale, ART/TC impact, requester, and approval status. Flow: Requirement Architect creates a new draft revision -> Logic Gatekeeper records findings without editing -> Requirement Architect resolves findings -> Human decides at Gate 1 -> approved revision is captured in a new immutable baseline. A CR is the only mechanism that may change the frozen verification baseline of an active cycle (`docs/agile-v-runtime/07_EVIDENCE_ADMISSION_CONTRACT.md`); Evolve findings from the current cycle propose CRs, they do not apply directly.
 
 ## Cycle Triggers
 

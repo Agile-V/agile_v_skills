@@ -23,6 +23,7 @@ metadata:
     - Context Engineering
     - State Persistence
     - Model Tier Guidance
+    - AI Influence Traceability
     - Companion Skills
 ---
 
@@ -86,8 +87,8 @@ Six-phase task execution model for Agile V agents. All agents participate in rel
 | **Constrain** | Apply domain-specific constraints and validation rules | Logic Gatekeeper, Domain Build Agents (NestJS, Python, JS, etc.) |
 | **Orchestrate** | Synthesize artifacts from approved, baselined requirements only; record typed lineage | Build Agents (all types), Test Designer, Schematic Generator |
 | **Prove** | Provide evidence according to risk level (L0-L4; see runtime risk contract) | Build Agents (manifest, logs), Test Designer (test cases), Compliance Auditor |
-| **Evolve** | Learn from validation failures, update knowledge | All agents (decision logging), Agile-V-Lifecycle (change requests) |
-| **Verify** | Independent verification against requirements | Red Team Verifier, Compliance Auditor |
+| **Evolve** | Capture validated learning and improvement candidates; propose only — never alter the active task's frozen verification baseline | All agents (decision logging), Agile-V-Lifecycle (change requests) |
+| **Verify** | Independent verification against the frozen requirements/criteria/policy baseline | Red Team Verifier, Compliance Auditor |
 
 **Execution Rules:**
 1. **Single Source of Truth:** Requirements in `.agile-v/REQUIREMENTS.md` drive all phases
@@ -96,6 +97,7 @@ Six-phase task execution model for Agile V agents. All agents participate in rel
 4. **No Self-Verification:** Orchestrate agents do not execute Verify (Red Team Protocol)
 5. **Decision Logging:** Evolve phase appends to `.agile-v/DECISION_LOG.md` (never overwrites)
 6. **No Scope Creep:** If you notice a problem outside the current phase's scope, log it as `OBS-XXXX` in DECISION_LOG.md and continue. Do not fix it unless a CR is approved.
+7. **Frozen Baseline:** Once Prove begins, the requirements, acceptance criteria, risk classification, and policy that Verify checks are frozen for that decision (see `docs/agile-v-runtime/07_EVIDENCE_ADMISSION_CONTRACT.md`). Evolve may propose control/criteria changes; a proposal becomes effective only through an approved change request and a new baseline revision — never by editing the current cycle's criteria before Verify runs.
 
 **Domain Skills:** Technology-specific skills (e.g., build-agent-nestjs) declare which phases they participate in and how. See individual skill files for phase-specific behaviors.
 
@@ -121,7 +123,7 @@ Six-phase task execution model for Agile V agents. All agents participate in rel
 
 Living state uses canonical paths under `.agile-v/`: `STATE.md`, `REQUIREMENTS.md`, `BUILD_MANIFEST.md`, `TEST_SPEC.md`, `VERIFICATION_SUMMARY.md`, `DECISION_LOG.md`, `ATM.md`, `CHANGE_LOG.md`, `RISK_REGISTER.md`, `CAPA_LOG.md`, `APPROVALS.md`, `REVALIDATION_LOG.md`, and `config.json`. Phase dirs: `.agile-v/phases/XX-name/`; archives: `.agile-v/cycles/C1/`, `.agile-v/cycles/C2/` (frozen, read-only).
 
-**Runtime contracts:** lifecycle states/transitions and typed trace links are normative in `docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md`; risk levels are normative in `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`. `POLICY.yaml`, `TRACE_LOG.md`, `EVAL_RESULTS.md`, `CHECKPOINTS.md`, and `CONTROL_MATRIX.yaml` remain supporting runtime records; schemas are in `schemas/`.
+**Runtime contracts:** lifecycle states/transitions and typed trace links are normative in `docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md`; risk levels are normative in `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`; claim/evidence/admissibility vocabulary and the frozen-baseline rule are normative in `docs/agile-v-runtime/07_EVIDENCE_ADMISSION_CONTRACT.md`. `POLICY.yaml`, `TRACE_LOG.md`, `EVAL_RESULTS.md`, `CHECKPOINTS.md`, and `CONTROL_MATRIX.yaml` remain supporting runtime records; schemas are in `schemas/`.
 
 **Rules:** (1) Write-through, not batched. (2) Decision Log is append-only. (3) Resume: read STATE.md + CHECKPOINTS.md (if any PENDING) first, load only current-stage files. (4) On gate pause, write checkpoint before ending turn.
 

@@ -1,6 +1,6 @@
 # Canonical Lifecycle Contract
 
-> **Normative.** This contract governs requirements, findings, baselines, claims, and their trace links. It is implemented by [REQUIREMENTS.schema.json](../../schemas/REQUIREMENTS.schema.json), [TRACE_GRAPH.schema.json](../../schemas/TRACE_GRAPH.schema.json), [APPROVAL.schema.json](../../schemas/APPROVAL.schema.json), and [EVIDENCE_BUNDLE.schema.json](../../schemas/EVIDENCE_BUNDLE.schema.json).
+> **Normative.** This contract governs requirements, findings, baselines, claims, and their trace links. It is implemented by [REQUIREMENTS.schema.json](../../schemas/REQUIREMENTS.schema.json), [TRACE_GRAPH.schema.json](../../schemas/TRACE_GRAPH.schema.json), [APPROVAL.schema.json](../../schemas/APPROVAL.schema.json), and [EVIDENCE_BUNDLE.schema.json](../../schemas/EVIDENCE_BUNDLE.schema.json). Claim, evidence, and admissibility vocabulary — including the frozen verification baseline and historical-validity-vs-current-eligibility distinction referenced below — is normative in [07_EVIDENCE_ADMISSION_CONTRACT.md](07_EVIDENCE_ADMISSION_CONTRACT.md).
 
 ## Canonical requirement flow
 
