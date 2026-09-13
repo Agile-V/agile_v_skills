@@ -211,6 +211,10 @@ The Draft 2020-12 contracts in [`schemas/`](../../schemas/) validate structured 
 
 [`GOVERNANCE_CONVERSION.schema.json`](../../schemas/GOVERNANCE_CONVERSION.schema.json) records how a recurrent/severe finding becomes a new or changed control — see `12_GOVERNANCE_CONVERSION.md`. `proposed -> approved -> deployed -> validated`; the proposer is never the approving authority, and activation does not retroactively change an already-frozen task baseline.
 
+### 7.7 Skill preview/draft graduation
+
+[`SKILL_STATUS.schema.json`](../../schemas/SKILL_STATUS.schema.json) validates the `metadata.status`/`metadata.preview` block every draft/experimental/candidate skill must declare (owner, graduation target, graduation criteria reference, compatibility declaration, known limitations) — see `13_SKILL_GRADUATION_POLICY.md`. A skill does not graduate by self-declaration; graduation requires the evidence listed there and an external recorded decision.
+
 ---
 
 ## Cross-references

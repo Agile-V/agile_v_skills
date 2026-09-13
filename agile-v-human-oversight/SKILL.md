@@ -7,6 +7,16 @@ metadata:
   standard: "Agile V"
   author: agile-v.org
   status: draft
+  preview:
+    owner: agile-v.org
+    graduation_target: candidate
+    graduation_criteria_ref: "docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md#2-minimum-requirements-per-state"
+    compatibility_declaration: "Requires agile-v-core; consumed by red-team-verifier (Human Oversight Case Verification) and referenced by agile-v-gxp-qualification and agile-v-control-matrix. No schemas/GATE_RECEIPT.schema.json integration test yet."
+    known_limitations:
+      - "No negative test suite executed yet for forged authorship, self-approval, scope expansion, or evidence relabeling (Red Team checks are specified in red-team-verifier but not independently benchmarked)."
+      - "No external reviewer or independent user feedback recorded."
+      - "Independence Profile dimensions are self-reported by the producing agent unless bound to durable approval evidence; no automated cross-check against schemas/APPROVAL.v2.schema.json exists yet."
+      - "See 'Must not claim' list in this file for the boundaries of what this contract establishes."
   sections_index:
     - Purpose and Boundaries
     - Trigger Conditions

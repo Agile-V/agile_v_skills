@@ -5,6 +5,14 @@ license: CC-BY-SA-4.0
 metadata:
   version: "1.1"
   status: draft
+  preview:
+    owner: agile-v.org
+    graduation_target: candidate
+    graduation_criteria_ref: "docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md#2-minimum-requirements-per-state"
+    compatibility_declaration: "Required by all draft C-Suite orchestrator skills (chief-exec, chief-tech, chief-finance, chief-people, chief-ops, c-suite-update); no additional dependency beyond agile-v-core."
+    known_limitations:
+      - "Not yet evaluated against docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md graduation criteria: no recorded negative test suite, no external reviewer feedback, and no documented end-to-end scenario evidence beyond this file's own instructions."
+      - "Contract may change incompatibly between minor versions while in draft status."
   standard: "Agile V"
   author: agile-v.org
   sections_index:
