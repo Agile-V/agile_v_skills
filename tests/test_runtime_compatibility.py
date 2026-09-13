@@ -62,11 +62,22 @@ def test_compatibility_file_exists_and_parses() -> None:
     assert "compatible_runtimes" in compat
 
 
-def test_compatibility_declares_evidence_bundle_v2_and_gate_receipt() -> None:
+def test_compatibility_file_references_versions_yaml_instead_of_duplicating_literals() -> None:
+    """Item 10 fix: a prior revision duplicated contract version literals in
+    both contracts/versions.yaml and this file, and they drifted out of
+    sync with each other within the same PR that introduced them. The fix
+    is structural: this file must point at versions.yaml as the single
+    source of truth and must NOT re-declare any of the per-contract
+    version keys that live there."""
     compat = _yaml(COMPAT)
     contract = compat["skills_contract"]
-    assert contract["evidence_bundle"] == "2.0"
-    assert contract["gate_receipt"] == "1.1"
+    assert contract.get("contract_versions_ref") == "contracts/versions.yaml"
+    duplicated_keys = set(SCHEMA_KEY_MAP) & set(contract)
+    assert not duplicated_keys, f"skills_contract must not duplicate versions.yaml keys: {duplicated_keys}"
+    # The referenced file must actually exist and parse.
+    referenced = ROOT / contract["contract_versions_ref"]
+    assert referenced.exists()
+    _yaml(referenced)
 
 
 def test_unverified_runtime_capability_is_not_reported_as_confirmed() -> None:

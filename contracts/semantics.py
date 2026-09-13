@@ -38,35 +38,85 @@ def _parse_datetime(value: str) -> datetime:
 # ---------------------------------------------------------------------------
 
 def evidence_state_binding_matches_baseline(instance: dict) -> bool:
-    """Every evidence item's state_binding.subject_ref must equal the
-    bundle's own baseline.subject_state.subject_ref. Structural schema
-    validity never implies this; it must be checked explicitly
+    """Every evidence item's state_binding must match the bundle's own
+    baseline.subject_state on ALL THREE of subject_type, subject_ref, and
+    subject_digest -- not subject_ref alone. Matching only the ref would
+    allow evidence bound to the same logical revision but a different
+    actual digest (e.g. an amended commit with the same message/branch
+    position) to pass undetected. Structural schema validity never implies
+    this; it must be checked explicitly
     (docs/agile-v-runtime/07_EVIDENCE_ADMISSION_CONTRACT.md). subject_ref is
     domain-agnostic (a source-control commit, a document revision, a
     hardware revision, a dataset version, ...); this check does not assume
     a Git-specific identifier."""
     bundle = instance["bundle"]
-    expected_ref = bundle["baseline"]["subject_state"]["subject_ref"]
+    baseline_subject = bundle["baseline"]["subject_state"]
+    expected = (
+        baseline_subject["subject_type"],
+        baseline_subject["subject_ref"],
+        baseline_subject["subject_digest"],
+    )
     for item in bundle["evidence"]:
-        if item["state_binding"]["subject_ref"] != expected_ref:
+        sb = item["state_binding"]
+        actual = (sb.get("subject_type"), sb.get("subject_ref"), sb.get("subject_digest"))
+        if actual != expected:
+            return False
+    return True
+
+
+def evidence_policy_binding_matches_frozen_policy(instance: dict) -> bool:
+    """Every evidence item that declares a policy_binding must match the
+    bundle's own frozen policy_binding.policy_digest exactly. Presence of a
+    policy_binding key is not sufficient (item 3): the digest itself must
+    agree with the policy the bundle claims to be frozen under."""
+    bundle = instance["bundle"]
+    frozen_digest = bundle["policy_binding"]["policy_digest"]
+    for item in bundle["evidence"]:
+        policy_binding = item.get("policy_binding")
+        if policy_binding is None:
+            continue  # presence is enforced structurally for L2+ by the schema
+        if policy_binding.get("policy_digest") != frozen_digest:
             return False
     return True
 
 
 def evidence_bundle_admission_is_consistent(instance: dict) -> bool:
-    """If admission.status is 'admitted', every mandatory claim must have at
-    least one passing supporting evidence item."""
+    """If admission.status is 'admitted', every mandatory claim must be
+    satisfied WITHOUT the any-pass anti-pattern:
+
+    1. Any contradictory mandatory evidence (result.status in
+       {fail, error}) supporting a claim blocks that claim outright --
+       an unrelated passing item never masks it.
+    2. The claim's required_evidence_properties must be a subset of the
+       UNION of establishes_properties declared by that claim's PASSING
+       supporting evidence -- not merely "some evidence for this claim
+       passed." A passing test_result item does not, by itself, establish
+       'independence' or 'provenance' unless it actually declares those
+       properties.
+    3. A claim with no supporting evidence at all is never satisfied.
+    """
     bundle = instance["bundle"]
     if bundle["admission"]["status"] != "admitted":
         return True
-    supported = {
-        claim_id
-        for item in bundle["evidence"]
-        if item["result"]["status"] == "pass"
-        for claim_id in item["supports"]
-    }
-    required = {claim["claim_id"] for claim in bundle["claims"]}
-    return required <= supported
+
+    evidence_by_claim: dict[str, list[dict]] = {}
+    for item in bundle["evidence"]:
+        for claim_id in item["supports"]:
+            evidence_by_claim.setdefault(claim_id, []).append(item)
+
+    for claim in bundle["claims"]:
+        items = evidence_by_claim.get(claim["claim_id"], [])
+        if not items:
+            return False
+        if any(item["result"]["status"] in {"fail", "error"} for item in items):
+            return False
+        established: set[str] = set()
+        for item in items:
+            if item["result"]["status"] == "pass":
+                established |= set(item.get("establishes_properties", []))
+        if not set(claim["required_evidence_properties"]) <= established:
+            return False
+    return True
 
 
 # ---------------------------------------------------------------------------
@@ -74,16 +124,87 @@ def evidence_bundle_admission_is_consistent(instance: dict) -> bool:
 # ---------------------------------------------------------------------------
 
 def gate_receipt_decision_consistent(instance: dict) -> bool:
-    """A PASS decision must not coexist with any rejected required claim.
-    A WAIVED decision must be accompanied by exception_refs (also enforced
-    structurally by the schema; this restates it as a semantic invariant
-    reusable independent of schema validation)."""
+    """A PASS decision requires: every required claim admitted, no rejected
+    or stale claims, and no open mandatory obligations. A WAIVED decision
+    must be accompanied by exception_refs. This is a structural consistency
+    check independent of any external resolver; see
+    ``gate_receipt_waiver_is_justified`` and
+    ``gate_receipt_has_valid_human_approval`` for checks that require
+    resolving referenced exception/approval records."""
     receipt = instance["gate_receipt"]
-    if receipt["decision"]["status"] == "PASS" and receipt["claims"]["rejected"]:
-        return False
-    if receipt["decision"]["status"] == "WAIVED" and not receipt.get("exception_refs"):
+    claims = receipt["claims"]
+    status = receipt["decision"]["status"]
+    if status == "PASS":
+        if claims["rejected"] or claims["stale"]:
+            return False
+        if not set(claims["required"]) <= set(claims["admitted"]):
+            return False
+        if receipt.get("obligations", {}).get("open"):
+            return False
+    if status == "WAIVED" and not receipt.get("exception_refs"):
         return False
     return True
+
+
+def gate_receipt_waiver_is_justified(instance: dict, resolve_exception, now: datetime) -> bool:
+    """A WAIVED decision must reference exception(s) that actually resolve:
+    each exception_ref must resolve to a real EXCEPTION_DECISION record
+    that is currently valid (not expired, not a non-waivable meta-control),
+    bound to the same task, and targeting one of this receipt's applicable
+    claims -- a bare non-empty exception_refs list is not sufficient.
+
+    ``resolve_exception``: Callable[[str], dict | None] returning the
+    loaded EXCEPTION_DECISION instance for a given ref, or None if unknown.
+    """
+    receipt = instance["gate_receipt"]
+    if receipt["decision"]["status"] != "WAIVED":
+        return True
+    refs = receipt.get("exception_refs") or []
+    if not refs:
+        return False
+    applicable_claims = set(receipt["claims"]["rejected"]) | set(receipt["claims"]["stale"]) | set(receipt["claims"]["required"])
+    for ref in refs:
+        exc_instance = resolve_exception(ref)
+        if exc_instance is None:
+            return False
+        if not exception_currently_valid(exc_instance, now):
+            return False
+        exc = exc_instance["exception"]
+        if exc.get("task_id") != receipt.get("task_id"):
+            return False
+        if exc["control_or_claim_ref"] not in applicable_claims:
+            return False
+    return True
+
+
+def gate_receipt_has_valid_human_approval(instance: dict, resolve_approval, now: datetime) -> bool:
+    """For gate_1/gate_2, a PASS or WAIVED decision requires at least one
+    resolvable, currently-valid, approved approval bound to this receipt's
+    task and gate. A receipt with an empty/unresolvable approvals list is
+    not entitled to PASS/WAIVED at these gates -- NEEDS_HUMAN is the correct
+    state before that authority exists.
+
+    ``resolve_approval``: Callable[[str], dict | None] returning the loaded
+    APPROVAL/APPROVAL.v2 instance for a given approval_ref, or None.
+    """
+    receipt = instance["gate_receipt"]
+    if receipt["gate"] not in {"gate_1", "gate_2"}:
+        return True
+    if receipt["decision"]["status"] not in {"PASS", "WAIVED"}:
+        return True
+    for entry in receipt.get("approvals") or []:
+        approval_instance = resolve_approval(entry["approval_ref"])
+        if approval_instance is None:
+            continue
+        if not approval_currently_valid(approval_instance, now):
+            continue
+        approval = approval_instance["approval"]
+        if approval.get("task_id") not in (None, receipt.get("task_id")):
+            continue
+        if approval.get("gate_id") not in (None, receipt.get("gate")):
+            continue
+        return True
+    return False
 
 
 def gate_receipt_subject_binding_matches_gate(instance: dict) -> bool:
@@ -103,24 +224,71 @@ def gate_receipt_subject_binding_matches_gate(instance: dict) -> bool:
 # ---------------------------------------------------------------------------
 
 def approval_currently_valid(instance: dict, now: datetime) -> bool:
-    """An approval is currently valid only if decision == approved and
-    'now' is before expires_at. Structural validity of the ISO date-time
-    string never implies current validity."""
+    """An approval is currently valid only if decision == approved, 'now'
+    is before expires_at, AND -- if usage.reusable is false -- it has not
+    already been consumed (usage.consumed_at is set). A non-reusable,
+    already-consumed approval is not valid merely because it has not yet
+    expired."""
     approval = instance["approval"]
     if approval["decision"] != "approved":
         return False
-    return now < _parse_datetime(approval["expires_at"])
+    if now >= _parse_datetime(approval["expires_at"]):
+        return False
+    usage = approval.get("usage", {})
+    if usage.get("reusable") is False and usage.get("consumed_at"):
+        return False
+    return True
+
+
+def approval_authorizes(
+    instance: dict,
+    now: datetime,
+    *,
+    task_id: str | None = None,
+    gate_id: str | None = None,
+    artifact_digest: str | None = None,
+    policy_digest: str | None = None,
+    requirement_baseline_id: str | None = None,
+    resource: str | None = None,
+) -> bool:
+    """An approval authorizes a specific action only when it is currently
+    valid AND every supplied binding/scope parameter matches exactly.
+    Checking artifact_digest alone is not sufficient (item 8): task, gate,
+    policy, baseline, and resource scope must also agree with what the
+    approval actually authorizes."""
+    if not approval_currently_valid(instance, now):
+        return False
+    approval = instance["approval"]
+    if task_id is not None and approval.get("task_id") != task_id:
+        return False
+    if gate_id is not None and approval.get("gate_id") != gate_id:
+        return False
+    binding = approval.get("binding", {})
+    if artifact_digest is not None and binding.get("artifact_digest") != artifact_digest:
+        return False
+    if policy_digest is not None and binding.get("policy_digest") != policy_digest:
+        return False
+    if requirement_baseline_id is not None and binding.get("requirement_baseline_id") != requirement_baseline_id:
+        return False
+    if resource is not None and resource not in (approval.get("scope", {}).get("resources") or []):
+        return False
+    return True
 
 
 def approval_authorizes_artifact(instance: dict, artifact_digest: str, now: datetime | None = None) -> bool:
-    """An approval bound to artifact digest A cannot authorize a release of
-    artifact digest B."""
-    approval = instance["approval"]
-    if now is not None and not approval_currently_valid(instance, now):
-        return False
-    elif now is None and approval["decision"] != "approved":
-        return False
-    return approval["binding"]["artifact_digest"] == artifact_digest
+    """Backward-compatible narrow check: an approval bound to artifact
+    digest A cannot authorize a release of artifact digest B. Prefer
+    ``approval_authorizes`` for new checks that need to validate additional
+    scope (task/gate/policy/baseline/resource)."""
+    if now is None:
+        # Legacy call sites that only checked decision == approved without
+        # an explicit 'now': still require decision == approved, but this
+        # path is deprecated -- always pass now going forward.
+        approval = instance["approval"]
+        if approval["decision"] != "approved":
+            return False
+        return approval["binding"]["artifact_digest"] == artifact_digest
+    return approval_authorizes(instance, now, artifact_digest=artifact_digest)
 
 
 # ---------------------------------------------------------------------------
@@ -142,17 +310,27 @@ def exception_currently_valid(
 # Risk Assessment v2 (schemas/RISK_ASSESSMENT.schema.json)
 # ---------------------------------------------------------------------------
 
-def risk_floor_respected(instance: dict, resolve_exception=None) -> bool:
+def risk_floor_respected(instance: dict, resolve_exception=None, now: datetime | None = None) -> bool:
     """A dimension-based score may raise the selected level above the
     highest applicable floor; it must not select a level below the highest
-    floor without an authorized, currently-valid exception.
+    floor without an authorized, currently-valid, correctly-scoped
+    exception.
 
-    ``resolve_exception``, if provided, is a callable
-    ``exception_ref -> bool`` that resolves whether the referenced
-    EXCEPTION_DECISION is currently authorized and valid (see
-    ``exception_currently_valid``). Without it, presence of a non-empty
-    ``exception_ref`` string is treated as sufficient (weaker check, kept
-    for fixtures that do not carry a resolvable exception record)."""
+    Fail-closed by default: without both ``resolve_exception`` and ``now``,
+    a below-floor selection is NEVER considered respected, regardless of
+    whether ``exception_ref`` is populated -- a bare non-empty string is
+    not authorization. When both are supplied, the referenced exception
+    must resolve to a real record that is currently valid, bound to the
+    same task, and whose ``control_or_claim_ref`` actually targets one of
+    this assessment's floor ``reason`` values (or the assessment's own id)
+    with a type appropriate for overriding a risk floor
+    (``residual_risk_acceptance`` or ``waiver``) -- an unrelated exception
+    (e.g. a cosmetic concession for a different claim) must not satisfy
+    this check merely because its ``exception_ref`` string was copied in.
+
+    ``resolve_exception``: Callable[[str], dict | None] returning the
+    loaded EXCEPTION_DECISION instance for a given ref, or None.
+    """
     ra = instance["risk_assessment"]
     if not ra["floors"]:
         return True
@@ -161,10 +339,21 @@ def risk_floor_respected(instance: dict, resolve_exception=None) -> bool:
     if selected >= highest_floor:
         return True
     exception_ref = ra.get("exception_ref")
-    if not exception_ref:
+    if not exception_ref or resolve_exception is None or now is None:
         return False
-    if resolve_exception is not None:
-        return resolve_exception(exception_ref)
+    exc_instance = resolve_exception(exception_ref)
+    if exc_instance is None:
+        return False
+    if not exception_currently_valid(exc_instance, now):
+        return False
+    exc = exc_instance["exception"]
+    if exc.get("task_id") != ra.get("task_id"):
+        return False
+    floor_reasons = {f["reason"] for f in ra["floors"]}
+    if exc["control_or_claim_ref"] not in floor_reasons and exc["control_or_claim_ref"] != ra.get("id"):
+        return False
+    if exc.get("type") not in {"residual_risk_acceptance", "waiver"}:
+        return False
     return True
 
 

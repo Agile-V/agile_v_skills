@@ -133,6 +133,89 @@ def test_gate_receipt_valid_waived_decision_lists_exception_refs() -> None:
     assert semantics.gate_receipt_decision_consistent(instance)
 
 
+def test_gate_receipt_pass_requires_admitted_covers_required_no_stale_no_open_obligations() -> None:
+    """A PASS decision must fail if a required claim is not admitted, if any
+    claim is stale, or if a mandatory obligation is still open -- not just
+    when claims.rejected is non-empty."""
+    base = _load(FIXTURES / "gate_receipt.positive.json")
+
+    unadmitted = copy.deepcopy(base)
+    unadmitted["gate_receipt"]["claims"]["required"].append("CLM-9999")
+    assert not semantics.gate_receipt_decision_consistent(unadmitted)
+
+    stale = copy.deepcopy(base)
+    stale["gate_receipt"]["claims"]["stale"] = ["CLM-1"]
+    assert not semantics.gate_receipt_decision_consistent(stale)
+
+    open_obligation = copy.deepcopy(base)
+    open_obligation["gate_receipt"]["obligations"]["open"] = ["OBL-9999"]
+    assert not semantics.gate_receipt_decision_consistent(open_obligation)
+
+    assert semantics.gate_receipt_decision_consistent(base)
+
+
+def test_gate_receipt_waived_resolves_to_a_real_scoped_valid_exception() -> None:
+    """WAIVED must not be justified by a bare non-empty exception_refs list
+    (item 5): each ref must resolve to a real, currently-valid exception
+    bound to the same task and targeting one of the receipt's applicable
+    claims."""
+    base = _load(FIXTURES / "gate_receipt.positive.json")
+    instance = copy.deepcopy(base)
+    receipt = instance["gate_receipt"]
+    receipt["decision"]["status"] = "WAIVED"
+    receipt["claims"]["rejected"] = ["CLM-0007"]
+    receipt["exception_refs"] = ["EXC-0001"]
+    errors = list(_validator("GATE_RECEIPT").iter_errors(instance))
+    assert not errors, [e.message for e in errors]
+
+    exception_corpus = {"EXC-0001": _load(FIXTURES / "exception_decision.positive.json")}
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    assert semantics.gate_receipt_waiver_is_justified(instance, resolve_exception=exception_corpus.get, now=now)
+
+
+def test_gate_receipt_waived_with_unresolvable_exception_ref_is_not_justified() -> None:
+    base = _load(FIXTURES / "gate_receipt.positive.json")
+    instance = copy.deepcopy(base)
+    receipt = instance["gate_receipt"]
+    receipt["decision"]["status"] = "WAIVED"
+    receipt["claims"]["rejected"] = ["CLM-0007"]
+    receipt["exception_refs"] = ["EXC-9999-DOES-NOT-EXIST"]
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    assert not semantics.gate_receipt_waiver_is_justified(instance, resolve_exception=lambda ref: None, now=now)
+
+
+def test_gate_receipt_waived_exception_targeting_unrelated_claim_is_not_justified() -> None:
+    """EXC-0001 targets CLM-0007. A receipt that rejects a different claim
+    and cites EXC-0001 must not be justified merely because EXC-0001 itself
+    is real and valid."""
+    base = _load(FIXTURES / "gate_receipt.positive.json")
+    instance = copy.deepcopy(base)
+    receipt = instance["gate_receipt"]
+    receipt["decision"]["status"] = "WAIVED"
+    receipt["claims"]["rejected"] = ["CLM-DIFFERENT"]
+    receipt["exception_refs"] = ["EXC-0001"]
+    exception_corpus = {"EXC-0001": _load(FIXTURES / "exception_decision.positive.json")}
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    assert not semantics.gate_receipt_waiver_is_justified(instance, resolve_exception=exception_corpus.get, now=now)
+
+
+def test_gate_receipt_pass_at_gate_2_requires_a_resolvable_valid_human_approval() -> None:
+    """gate_1/gate_2 PASS requires a resolvable, currently-valid approval
+    bound to the same task/gate -- an empty or unresolvable approvals list
+    must not be treated as sufficient (item 7)."""
+    instance = _load(FIXTURES / "gate_receipt.positive.json")
+    approval_corpus = {"APR-1": _load(FIXTURES / "approval_v2.positive.json")}
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    assert semantics.gate_receipt_has_valid_human_approval(instance, resolve_approval=approval_corpus.get, now=now)
+
+
+def test_gate_receipt_pass_at_gate_2_with_unresolvable_approval_is_not_justified() -> None:
+    instance = copy.deepcopy(_load(FIXTURES / "gate_receipt.positive.json"))
+    instance["gate_receipt"]["approvals"] = [{"approval_ref": "APR-9999-DOES-NOT-EXIST"}]
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    assert not semantics.gate_receipt_has_valid_human_approval(instance, resolve_approval=lambda ref: None, now=now)
+
+
 # ---------------------------------------------------------------------------
 # Approval v2
 # ---------------------------------------------------------------------------
@@ -186,3 +269,45 @@ def test_approval_v2_bound_artifact_cannot_authorize_a_different_artifact() -> N
     assert bound_digest != candidate_digest
     assert not semantics.approval_authorizes_artifact(instance, candidate_digest, now=now)
     assert semantics.approval_authorizes_artifact(instance, bound_digest, now=now)
+
+
+def test_approval_v2_consumed_single_use_approval_is_no_longer_valid() -> None:
+    """usage.reusable: false + usage.consumed_at set means the approval has
+    already been used; it must not remain 'valid' merely because it has
+    not yet expired (item 8)."""
+    base = _load(FIXTURES / "approval_v2.positive.json")
+    instance = copy.deepcopy(base)
+    instance["approval"]["usage"] = {"reusable": False, "consumed_at": "2026-09-05T00:00:00Z"}
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    assert not semantics.approval_currently_valid(instance, now=now)
+
+
+def test_approval_v2_unconsumed_single_use_approval_remains_valid() -> None:
+    instance = copy.deepcopy(_load(FIXTURES / "approval_v2.positive.json"))
+    instance["approval"]["usage"] = {"reusable": False, "consumed_at": None}
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    assert semantics.approval_currently_valid(instance, now=now)
+
+
+def test_approval_authorizes_checks_full_scope_not_artifact_digest_alone() -> None:
+    """A valid, currently-usable approval for the right artifact must still
+    fail authorization if the task, gate, policy, baseline, or resource
+    scope does not match (item 8)."""
+    instance = _load(FIXTURES / "approval_v2.positive.json")
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    approval = instance["approval"]
+
+    assert semantics.approval_authorizes(
+        instance, now,
+        task_id=approval["task_id"], gate_id=approval["gate_id"],
+        artifact_digest=approval["binding"]["artifact_digest"],
+        policy_digest=approval["binding"]["policy_digest"],
+        requirement_baseline_id=approval["binding"]["requirement_baseline_id"],
+        resource=approval["scope"]["resources"][0],
+    )
+
+    assert not semantics.approval_authorizes(instance, now, task_id="WRONG-TASK")
+    assert not semantics.approval_authorizes(instance, now, gate_id="wrong_gate")
+    assert not semantics.approval_authorizes(instance, now, policy_digest="sha256:" + "0" * 64)
+    assert not semantics.approval_authorizes(instance, now, requirement_baseline_id="WRONG-BASELINE")
+    assert not semantics.approval_authorizes(instance, now, resource="ART-WRONG")

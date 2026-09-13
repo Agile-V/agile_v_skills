@@ -1,5 +1,5 @@
 {
-  "schema_version": "2.2",
+  "schema_version": "2.3",
   "compatibility": "additive",
   "migration": "none",
   "fixture_owner": "tests",
@@ -67,7 +67,8 @@
           "profile_specific": {
             "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
             "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-          }
+          },
+          "subject_type": "source_control_commit"
         },
         "policy_binding": {
           "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
@@ -84,7 +85,12 @@
         ],
         "integrity": {
           "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
-        }
+        },
+        "establishes_properties": [
+          "provenance",
+          "state_binding",
+          "test_result"
+        ]
       }
     ],
     "obligations": [

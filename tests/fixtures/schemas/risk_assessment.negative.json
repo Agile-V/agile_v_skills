@@ -143,7 +143,7 @@
       ],
       "selected_level": "L0",
       "rationale": "Meets production_release floor; dimension scores do not raise above L2.",
-      "exception_ref": "EXC-0001"
+      "exception_ref": "EXC-0010"
     }
   },
   "below_floor_with_unresolvable_exception_semantic": {

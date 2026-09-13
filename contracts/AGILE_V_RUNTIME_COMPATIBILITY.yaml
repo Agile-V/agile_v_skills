@@ -11,16 +11,16 @@
 skills_contract:
   # Informational: the repository release line this file was authored against.
   # Not machine-enforced against package.json (patch releases do not require
-  # a contract-compatibility bump); bump this when a contract version above
+  # a contract-compatibility bump); bump this when a contract version below
   # changes, not on every release.
   repository_version_line: "3.9.x"
-  lifecycle_contract: "1.0"
-  evidence_bundle: "2.0"
-  approval: "2.0"
-  trace_graph: "1.0"
-  gate_receipt: "1.1"
-  exception_decision: "1.0"
-  revalidation_assessment: "1.0"
+  # The authoritative contract/schema versions this repository publishes are
+  # defined ONLY in contracts/versions.yaml -- do not duplicate version
+  # literals here. A prior revision of this file did duplicate them and
+  # drifted out of sync with the real schemas within the same PR that
+  # introduced it (caught in review); the fix is to have exactly one source
+  # of truth rather than promise to keep two files manually synchronized.
+  contract_versions_ref: "contracts/versions.yaml"
 
 # Known runtimes and what is actually verified about their support for the
 # contracts above. Do not mark a capability supported without a source

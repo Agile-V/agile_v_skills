@@ -100,3 +100,39 @@ def test_v2_evidence_every_item_declares_supported_claims() -> None:
 def test_v2_every_mandatory_claim_has_admitting_evidence_when_admitted() -> None:
     instance = _load(FIXTURES / "evidence_bundle_v2.positive.json")
     assert semantics.evidence_bundle_admission_is_consistent(instance)
+
+
+def test_v2_any_pass_does_not_mask_a_contradictory_failure() -> None:
+    """A passing evidence item for a claim must not mask a failing item for
+    the same claim (the any-pass anti-pattern)."""
+    cases = _load(FIXTURES / "evidence_bundle_v2.negative.json")
+    instance = cases["any_pass_masks_contradictory_failure_semantic"]
+    errors = list(_validator().iter_errors(instance))
+    assert not errors, "fixture must be structurally valid to exercise the semantic check"
+    assert not semantics.evidence_bundle_admission_is_consistent(instance)
+
+
+def test_v2_passing_evidence_must_establish_all_required_properties() -> None:
+    """Evidence that passes but does not declare establishing every property
+    the claim requires must not satisfy the claim."""
+    cases = _load(FIXTURES / "evidence_bundle_v2.negative.json")
+    instance = cases["passing_evidence_missing_required_property_semantic"]
+    errors = list(_validator().iter_errors(instance))
+    assert not errors, "fixture must be structurally valid to exercise the semantic check"
+    assert not semantics.evidence_bundle_admission_is_consistent(instance)
+
+
+def test_v2_policy_binding_digest_must_match_frozen_bundle_policy() -> None:
+    """An evidence item's policy_binding.policy_digest must equal the
+    bundle's own frozen policy_binding.policy_digest -- presence of the key
+    alone (schema-required for L2+) is not sufficient."""
+    cases = _load(FIXTURES / "evidence_bundle_v2.negative.json")
+    instance = cases["policy_binding_digest_mismatch_semantic"]
+    errors = list(_validator().iter_errors(instance))
+    assert not errors, "fixture must be structurally valid to exercise the semantic check"
+    assert not semantics.evidence_policy_binding_matches_frozen_policy(instance)
+
+
+def test_v2_positive_fixture_policy_binding_matches_frozen_policy() -> None:
+    instance = _load(FIXTURES / "evidence_bundle_v2.positive.json")
+    assert semantics.evidence_policy_binding_matches_frozen_policy(instance)

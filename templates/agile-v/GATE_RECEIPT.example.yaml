@@ -7,7 +7,7 @@
 # gate-specific: gate_1 (pre-baseline) requires requirement_revision_ref;
 # eval_gate/gate_2/qualification_stage (post-baseline) require
 # requirement_baseline_id.
-schema_version: "1.1"
+schema_version: "1.2"
 compatibility: additive
 migration: none
 fixture_owner: agile-v.org
@@ -24,6 +24,7 @@ gate_receipt:
     requirement_baseline_id: "BASELINE-0001"
     source_commit: "0123456789abcdef0123456789abcdef01234567"
     build_digest: "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    subject_digest: "sha256:1111111111111111111111111111111111111111111111111111111111111111"
   policy:
     policy_id: "POL-0001"
     policy_version: "2.3"

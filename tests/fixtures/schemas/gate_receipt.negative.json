@@ -1,6 +1,6 @@
 {
   "pass_with_rejected_claim": {
-    "schema_version": "1.1",
+    "schema_version": "1.2",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -58,12 +58,13 @@
       "subject_state": {
         "requirement_baseline_id": "BL-1",
         "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
-        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       }
     }
   },
   "invalid_decision_status": {
-    "schema_version": "1.1",
+    "schema_version": "1.2",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -119,12 +120,13 @@
       "subject_state": {
         "requirement_baseline_id": "BL-1",
         "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
-        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       }
     }
   },
   "invalid_independence_class": {
-    "schema_version": "1.1",
+    "schema_version": "1.2",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -180,12 +182,13 @@
       "subject_state": {
         "requirement_baseline_id": "BL-1",
         "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
-        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       }
     }
   },
   "missing_claims_block": {
-    "schema_version": "1.1",
+    "schema_version": "1.2",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -231,12 +234,13 @@
       "subject_state": {
         "requirement_baseline_id": "BL-1",
         "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
-        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       }
     }
   },
   "gate_1_missing_requirement_revision_ref": {
-    "schema_version": "1.1",
+    "schema_version": "1.2",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -297,7 +301,7 @@
     }
   },
   "waived_without_exception_refs": {
-    "schema_version": "1.1",
+    "schema_version": "1.2",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -353,7 +357,8 @@
       "subject_state": {
         "requirement_baseline_id": "BL-1",
         "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
-        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       }
     }
   }

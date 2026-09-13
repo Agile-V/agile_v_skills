@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "compatibility": "additive",
   "migration": "none",
   "fixture_owner": "tests",
@@ -55,7 +55,8 @@
     "subject_state": {
       "requirement_baseline_id": "BL-1",
       "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
-      "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
     }
   }
 }
