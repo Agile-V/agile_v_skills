@@ -1,0 +1,150 @@
+{
+  "approved_without_authority_ref": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "conversion": {
+      "id": "GOVCONV-0001",
+      "source_findings": [
+        "VER-0042",
+        "CAPA-0009"
+      ],
+      "failure_class": "self_approval_of_l3_change",
+      "recurrence_count": 1,
+      "classification": {
+        "local": false,
+        "structural": true
+      },
+      "proposed_change": {
+        "type": "control",
+        "target_ref": "AV-CONTROL-019"
+      },
+      "evidence": {
+        "recurrence_refs": [
+          "VER-0042"
+        ],
+        "root_cause_ref": "CAPA-0009",
+        "held_out_validation_ref": "BENCH-0007"
+      },
+      "decision": {
+        "status": "approved",
+        "proposer_ref": "red-team-verifier-session-88"
+      },
+      "effective_from": {
+        "lifecycle_baseline": "BASELINE-0002"
+      }
+    }
+  },
+  "invalid_status_enum": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "conversion": {
+      "id": "GOVCONV-0001",
+      "source_findings": [
+        "VER-0042",
+        "CAPA-0009"
+      ],
+      "failure_class": "self_approval_of_l3_change",
+      "recurrence_count": 1,
+      "classification": {
+        "local": false,
+        "structural": true
+      },
+      "proposed_change": {
+        "type": "control",
+        "target_ref": "AV-CONTROL-019"
+      },
+      "evidence": {
+        "recurrence_refs": [
+          "VER-0042"
+        ],
+        "root_cause_ref": "CAPA-0009",
+        "held_out_validation_ref": "BENCH-0007"
+      },
+      "decision": {
+        "status": "not_a_real_status",
+        "authority_ref": "quality-owner",
+        "proposer_ref": "red-team-verifier-session-88"
+      },
+      "effective_from": {
+        "lifecycle_baseline": "BASELINE-0002"
+      }
+    }
+  },
+  "empty_source_findings": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "conversion": {
+      "id": "GOVCONV-0001",
+      "source_findings": [],
+      "failure_class": "self_approval_of_l3_change",
+      "recurrence_count": 1,
+      "classification": {
+        "local": false,
+        "structural": true
+      },
+      "proposed_change": {
+        "type": "control",
+        "target_ref": "AV-CONTROL-019"
+      },
+      "evidence": {
+        "recurrence_refs": [
+          "VER-0042"
+        ],
+        "root_cause_ref": "CAPA-0009",
+        "held_out_validation_ref": "BENCH-0007"
+      },
+      "decision": {
+        "status": "approved",
+        "authority_ref": "quality-owner",
+        "proposer_ref": "red-team-verifier-session-88"
+      },
+      "effective_from": {
+        "lifecycle_baseline": "BASELINE-0002"
+      }
+    }
+  },
+  "proposer_is_approver_semantic": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "conversion": {
+      "id": "GOVCONV-0001",
+      "source_findings": [
+        "VER-0042",
+        "CAPA-0009"
+      ],
+      "failure_class": "self_approval_of_l3_change",
+      "recurrence_count": 1,
+      "classification": {
+        "local": false,
+        "structural": true
+      },
+      "proposed_change": {
+        "type": "control",
+        "target_ref": "AV-CONTROL-019"
+      },
+      "evidence": {
+        "recurrence_refs": [
+          "VER-0042"
+        ],
+        "root_cause_ref": "CAPA-0009",
+        "held_out_validation_ref": "BENCH-0007"
+      },
+      "decision": {
+        "status": "approved",
+        "authority_ref": "red-team-verifier-session-88",
+        "proposer_ref": "red-team-verifier-session-88"
+      },
+      "effective_from": {
+        "lifecycle_baseline": "BASELINE-0002"
+      }
+    }
+  }
+}

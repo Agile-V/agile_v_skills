@@ -207,6 +207,10 @@ The Draft 2020-12 contracts in [`schemas/`](../../schemas/) validate structured 
 
 [`RISK_ASSESSMENT.schema.json`](../../schemas/RISK_ASSESSMENT.schema.json) adds dimension-based scoring and deterministic risk floors to the `L0`–`L4` model — see `11_RISK_ASSESSMENT_V2.md`. A floor cannot be silently lowered; doing so requires an authorized `EXCEPTION_DECISION` referenced by `exception_ref`.
 
+### 7.6 Governance conversion
+
+[`GOVERNANCE_CONVERSION.schema.json`](../../schemas/GOVERNANCE_CONVERSION.schema.json) records how a recurrent/severe finding becomes a new or changed control — see `12_GOVERNANCE_CONVERSION.md`. `proposed -> approved -> deployed -> validated`; the proposer is never the approving authority, and activation does not retroactively change an already-frozen task baseline.
+
 ---
 
 ## Cross-references

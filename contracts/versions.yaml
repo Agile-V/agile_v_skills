@@ -13,6 +13,7 @@ contracts:
   exception_and_waiver_contract: "1.0"
   change_aware_revalidation: "1.0"
   risk_assessment_v2: "1.0"
+  governance_conversion_contract: "1.0"
 
   # Schemas (schemas/) -- value must equal that schema's schema_version const
   requirements: "1.0"
@@ -25,3 +26,4 @@ contracts:
   exception_decision: "1.0"
   revalidation_assessment: "1.0"
   risk_assessment: "1.0"
+  governance_conversion: "1.0"

@@ -28,6 +28,7 @@ SCHEMA_KEY_MAP = {
     "exception_decision": "EXCEPTION_DECISION",
     "revalidation_assessment": "REVALIDATION_ASSESSMENT",
     "risk_assessment": "RISK_ASSESSMENT",
+    "governance_conversion": "GOVERNANCE_CONVERSION",
 }
 
 

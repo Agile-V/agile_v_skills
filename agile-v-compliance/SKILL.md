@@ -32,6 +32,8 @@ Record in `.agile-v/CAPA_LOG.md`: `CAPA-XXXX` with Cycle, Trigger, Nonconformity
 
 **Workflow:** Detect -> Record -> Analyze -> Correct -> Prevent -> Verify effectiveness. Compliance Auditor tracks open CAPAs at Gate 2, flags overdue (>2 cycles).
 
+**Governance conversion:** when the preventive action is a new or changed control (not a one-off fix), record it as a `GOVERNANCE_CONVERSION` (`docs/agile-v-runtime/12_GOVERNANCE_CONVERSION.md`) linked to the originating CAPA. It follows `proposed -> approved -> deployed -> validated`; the CAPA owner proposing it is not the approving authority, and activation does not retroactively change the frozen baseline of the task that motivated it.
+
 ## Human Gate Approval Records (21 CFR Part 11 / Annex 11)
 
 Append-only in `.agile-v/APPROVALS.md`: `GATE-XXXX` with Gate type, Cycle, Scope, Decision (Approved/Conditional/Rejected), Conditions, Approver (full name), Role/Authority, Timestamp (ISO 8601), Signature Method, Evidence Reference (commit hash). **Durable HITL (Phase 2):** when closing a pending interrupt, include `resume_token=[value]` and `INTERRUPT-ID=[INT-XXXX]` matching `.agile-v/CHECKPOINTS.md`; Compliance Auditor verifies token pairing on Gate 2.

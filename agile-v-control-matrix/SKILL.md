@@ -36,6 +36,8 @@ It answers: Which data may this agent process? Which tools may it call? Which mo
 
 `POLICY.yaml` is still used for low-level tool-class rules. `CONTROL_MATRIX.yaml` is the higher-level control map that binds task scope, skill use, data class, model, logs, rights, gates, tests, costs, rollback, and ownership.
 
+**Governance conversion:** when a recurrent or severe finding motivates a new/changed control, propose it as a `GOVERNANCE_CONVERSION` record (`docs/agile-v-runtime/12_GOVERNANCE_CONVERSION.md`, `schemas/GOVERNANCE_CONVERSION.schema.json`). An agent may propose a conversion; it may not make a safety, security, or compliance control effective for its own current task without an authorized, versioned change — the proposer must not be the approver.
+
 ## Load Conditions
 
 Load this skill when the user asks to:
