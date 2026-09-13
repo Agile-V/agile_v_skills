@@ -22,3 +22,7 @@
 ## Legacy mapping
 
 `R0 -> L0`; `R1 -> L1`; `R2 -> L2`; `R3 -> L3`. There is no legacy equivalent for `L4`; reassess prior `R3` work against `L4` criteria. Use the mapping only for migration; new records must use `L0`–`L4`.
+
+## Dimension-based rationale and floors (v2)
+
+`11_RISK_ASSESSMENT_V2.md` / `schemas/RISK_ASSESSMENT.schema.json` add explicit dimension scoring and deterministic risk floors on top of the levels above. A dimension score may raise the selected level; it may not lower it below the highest applicable floor without an authorized `EXCEPTION_DECISION` (`09_EXCEPTION_AND_WAIVER_CONTRACT.md`). This is optional structured rationale — the `L0`–`L4` evidence-obligation table above remains normative regardless of whether a `RISK_ASSESSMENT` record is produced.

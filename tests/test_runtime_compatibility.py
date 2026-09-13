@@ -27,6 +27,7 @@ SCHEMA_KEY_MAP = {
     "gate_receipt": "GATE_RECEIPT",
     "exception_decision": "EXCEPTION_DECISION",
     "revalidation_assessment": "REVALIDATION_ASSESSMENT",
+    "risk_assessment": "RISK_ASSESSMENT",
 }
 
 

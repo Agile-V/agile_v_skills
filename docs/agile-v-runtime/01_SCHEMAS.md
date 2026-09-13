@@ -203,6 +203,10 @@ The Draft 2020-12 contracts in [`schemas/`](../../schemas/) validate structured 
 
 [`REVALIDATION_ASSESSMENT.schema.json`](../../schemas/REVALIDATION_ASSESSMENT.schema.json) records, per changed dependency (source, requirement, policy, environment, tool, model, hardware), whether each admitted evidence item is `UNCHANGED`, `REVALIDATION_REQUIRED`, `STALE`, or `UNKNOWN` — see `10_CHANGE_AWARE_REVALIDATION.md`. Only `UNCHANGED` is reuse-eligible; `UNKNOWN` coverage requires `conservative_fallback_applied: true` and is never treated as `UNCHANGED`, especially at `L3`/`L4`. This generalizes the AI-BOM-specific triggers in `../ai-bom-revalidation-triggers.md`.
 
+### 7.5 Risk Assessment v2
+
+[`RISK_ASSESSMENT.schema.json`](../../schemas/RISK_ASSESSMENT.schema.json) adds dimension-based scoring and deterministic risk floors to the `L0`–`L4` model — see `11_RISK_ASSESSMENT_V2.md`. A floor cannot be silently lowered; doing so requires an authorized `EXCEPTION_DECISION` referenced by `exception_ref`.
+
 ---
 
 ## Cross-references
