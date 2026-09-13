@@ -187,6 +187,10 @@ The Draft 2020-12 contracts in [`schemas/`](../../schemas/) validate structured 
 
 `VERIFICATION_SUMMARY` aggregates requirement-conformance evidence. Intended-use validation is separate and remains governed by [`VALIDATION_REPORT.schema.json`](../../schemas/VALIDATION_REPORT.schema.json); a verification summary may reference validation reports but must not represent them as verification results.
 
+### 7.1 Evidence Bundle v2
+
+[`EVIDENCE_BUNDLE.v2.schema.json`](../../schemas/EVIDENCE_BUNDLE.v2.schema.json) upgrades the v1 container contract into typed claims and evidence: each claim declares its `required_evidence_properties`; each evidence item declares which claim(s) it `supports`, its `producer`, `state_binding`, `integrity` digest, and — for `L2`+ bundles — a `policy_binding`. `admission.status` records the gate outcome. v1 (`schema_version: "1.0"`) remains unchanged and valid for existing consumers; new bundles SHOULD use v2 (`schema_version: "2.0"`). Structural validity does not by itself prove `state_binding.source_commit` matches `baseline.artifact_state.repository_commit` — that is a semantic admissibility check per `07_EVIDENCE_ADMISSION_CONTRACT.md`, not a JSON Schema constraint.
+
 ---
 
 ## Cross-references

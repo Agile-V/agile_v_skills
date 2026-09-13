@@ -78,7 +78,7 @@ If `Verify` needs criteria to change, that is a new change request and a new bas
 
 ## 5. Evidence sufficiency by risk level
 
-Required evidence properties scale with the resolved risk level (`docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`). Do not accept "there is a test log" as proof of "requirement satisfied" without checking which properties that log actually establishes for the applicable level. See the Evidence Bundle v2 claim/evidence records (`schemas/EVIDENCE_BUNDLE.schema.json`) for the structured form of `required_evidence_properties` and `invalidation_dependencies`.
+Required evidence properties scale with the resolved risk level (`docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`). Do not accept "there is a test log" as proof of "requirement satisfied" without checking which properties that log actually establishes for the applicable level. `schemas/EVIDENCE_BUNDLE.v2.schema.json` is the structured form of this rule: each claim declares `required_evidence_properties`; each evidence item declares which claim(s) it `supports`, its `producer`, `state_binding`, `integrity` digest, and — for `L2`+ — a `policy_binding`. Schema validity is necessary but not sufficient: matching `state_binding` against the actual current baseline is a semantic admissibility check, not a structural one.
 
 ## 6. Non-normative summary for agents
 
