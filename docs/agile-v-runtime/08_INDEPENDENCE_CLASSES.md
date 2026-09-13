@@ -33,6 +33,10 @@ Classes are cumulative in practice (I3 implies role separation; I4 implies autho
 
 This mirrors `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`; that document remains the normative source for risk-level requirements. This table restates them using the I-class vocabulary.
 
+### 3.1 Machine enforcement
+
+Documenting a minimum is not the same as checking it. `schemas/GATE_RECEIPT.schema.json`'s `verifier.independence_class` is optional at the schema level (a receipt may legitimately omit verification entirely, e.g. `NEEDS_HUMAN`), so the ordinal comparison is a semantic check: `contracts/semantics.py::gate_receipt_independence_is_sufficient(instance, risk_level=...)` resolves the required minimum from (a) `docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`'s table via the receipt's own `risk_level` field or an explicit `risk_level` argument, and/or (b) an explicit `verifier.required_independence_class` override for profiles that require more than the generic table (e.g. GxP requiring `I4` at a level the generic table would only require `I2` for) — the stricter of the two applies. `evaluate_gate_receipt` (the canonical aggregate evaluator, `07_EVIDENCE_ADMISSION_CONTRACT.md` section 7) always runs this check and reports `INDEPENDENCE_BELOW_MINIMUM` when it fails; do not rely on the lower-level predicates or an optional field alone.
+
 ## 4. Non-normative examples
 
 - Red Team Verifier re-checking its own verification output in the same session: `I0`. Not valid independent verification.

@@ -29,6 +29,8 @@ SCHEMA_KEY_MAP = {
     "revalidation_assessment": "REVALIDATION_ASSESSMENT",
     "risk_assessment": "RISK_ASSESSMENT",
     "governance_conversion": "GOVERNANCE_CONVERSION",
+    "evidence_source_profile": "EVIDENCE_SOURCE_PROFILE",
+    "evidence_property_profile": "EVIDENCE_PROPERTY_PROFILE",
 }
 
 

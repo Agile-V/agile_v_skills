@@ -23,3 +23,7 @@
 ## ID consistency
 
 The legacy fixture set (`REQUIREMENTS`, `TRACE_GRAPH`, `APPROVAL`, `VERIFICATION_RESULT`) shares consistent IDs (`REQ-1`, `ART-1`, `TC-1`, `VER-1`, `BASELINE-1`) because they were authored together as one coherent scenario in `tests/fixtures/schemas/positive.json`. The v2/newer fixtures (`EVIDENCE_BUNDLE` v2, `GATE_RECEIPT`, `APPROVAL` v2, `RISK_ASSESSMENT`, `REVALIDATION_ASSESSMENT`, `GOVERNANCE_CONVERSION`, `EXCEPTION_DECISION`) were authored per-schema in PR-S03–S08 with their own illustrative IDs (`AAV-0042`, `EVD-AAV-0042`, `GATE-1`/`GATE-0001`, `RA-0001`, etc.) and are **not** currently cross-referenced to `REQ-1`/`ART-1`. Unifying every fixture under one literal task ID end-to-end is future work (tracked as a limitation here, not silently implied as already done).
+
+## Aggregate authorization proof
+
+`tests/test_golden_journey.py::test_golden_journey_gate_receipt_and_evidence_bundle_are_jointly_authorized` runs the canonical aggregate evaluator (`contracts/semantics.py::authorize_gate_transition`) against the Gate Receipt and Evidence Bundle v2 stage fixtures together, with real resolvers for the referenced exception, approval, and evidence-adapter records. This is stronger evidence than "each schema/helper behaves individually": it proves the complete decision path admits this journey's known-good state end to end.

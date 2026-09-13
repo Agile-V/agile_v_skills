@@ -78,12 +78,34 @@ If `Verify` needs criteria to change, that is a new change request and a new bas
 
 ## 5. Evidence sufficiency by risk level
 
-Required evidence properties scale with the resolved risk level (`docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`). Do not accept "there is a test log" as proof of "requirement satisfied" without checking which properties that log actually establishes for the applicable level. `schemas/EVIDENCE_BUNDLE.v2.schema.json` is the structured form of this rule: each claim declares `required_evidence_properties`; each evidence item declares which claim(s) it `supports`, the properties it actually `establishes_properties`, its `producer`, `state_binding`, `integrity` digest, and — for `L2`+ — a `policy_binding` whose digest matches the bundle's own frozen policy. Schema validity is necessary but not sufficient: (1) matching `state_binding` (subject type, ref, *and* digest) against the actual current baseline, (2) requiring `required_evidence_properties` to be a subset of the union of `establishes_properties` from *passing* supporting evidence, and (3) blocking a claim outright when any contradictory (`fail`/`error`) evidence supports it — regardless of other passing evidence — are all semantic admissibility checks (see `contracts/semantics.py`), not structural ones. The last point matters most: a single passing item must never mask a failing item for the same claim (the any-pass anti-pattern).
+Required evidence properties scale with the resolved risk level (`docs/agile-v-runtime/04_RISK_CLASSIFICATION.md`). Do not accept "there is a test log" as proof of "requirement satisfied" without checking which properties that log actually establishes for the applicable level. `schemas/EVIDENCE_BUNDLE.v2.schema.json` is the structured form of this rule: each claim declares `required_evidence_properties`; each evidence item declares which claim(s) it `supports`, the properties it actually `establishes_properties`, its `producer`, `evidence_source` (for `L2`+), `state_binding`, `integrity` digest, and — for `L2`+ — a `policy_binding` whose digest matches the bundle's own frozen policy. Schema validity is necessary but not sufficient: (1) matching `state_binding` (subject type, ref, *and* digest) against the actual current baseline, (2) requiring `required_evidence_properties` to be a subset of the union of *trusted* `establishes_properties` from *passing* supporting evidence, and (3) blocking a claim outright when any contradictory (`fail`/`error`) evidence supports it — regardless of other passing evidence — are all semantic admissibility checks (see `contracts/semantics.py`), not structural ones. The last point matters most: a single passing item must never mask a failing item for the same claim (the any-pass anti-pattern).
+
+### 5.1 An evidence source cannot self-authorize what it establishes
+
+`establishes_properties` is a producer *assertion*, not a fact. A unit-test adapter declaring `establishes_properties: [human_authority]` is structurally valid but must never be trusted: nothing about a unit test run can establish human authority. Two additional profiles constrain this:
+
+- **`schemas/EVIDENCE_PROPERTY_PROFILE.schema.json`** answers "for this claim type / risk level, what properties are mandatory?" — removing arbitrary producer choice from `required_evidence_properties`.
+- **`schemas/EVIDENCE_SOURCE_PROFILE.schema.json`** answers "what may this evidence source (adapter) actually establish?" via `may_establish`/`may_not_establish`. Each `L2`+ evidence item references one via `evidence_source.adapter_ref`.
+
+Admission caps a claimed `establishes_properties` set by the resolved adapter's `may_establish` capability (`contracts/semantics.py::evidence_bundle_admission_is_consistent(instance, resolve_adapter=...)`): only the intersection is trusted. Without a resolver, the bare self-declared set is trusted (legacy/advisory mode) — the trusted path is always the aggregate evaluator in section 7, which requires a resolver.
 
 ## 6. Non-normative summary for agents
 
 - A claim is not a fact because an agent wrote it down.
 - Presence is not completeness; completeness is not sufficiency; sufficiency is not admissibility.
 - `unknown` never authorizes a gate.
+- An evidence source cannot self-authorize what it establishes; only a trusted adapter capability profile can.
 - Once Prove starts, the criteria Verify will check are frozen; Evolve may only propose changes for a future cycle.
 - Reusing old evidence for a new decision is a separate, explicit judgment from whether that evidence was originally valid.
+
+## 7. Canonical aggregate evaluators
+
+Every semantic predicate in `contracts/semantics.py` is a reusable building block, not individually sufficient to answer "may this evidence/gate actually advance?". Calling only one or two predicates and treating the result as "admissible" reintroduces exactly the gaps those predicates exist to close. Use the aggregate entrypoints instead:
+
+| Function | Answers |
+|---|---|
+| `evaluate_evidence_bundle(instance, resolve_adapter=...)` | May this Evidence Bundle v2's admission be trusted? |
+| `evaluate_gate_receipt(instance, resolve_exception=..., resolve_approval=..., now=..., risk_level=...)` | Is this Gate Receipt's decision actually justified? |
+| `authorize_gate_transition(gate_receipt, evidence_bundle=None, ...)` | May this transition actually proceed? |
+
+Each returns `{"status": "admitted"|"rejected", "findings": [{"code": ...}, ...]}` — structured, explainable reason codes, not a bare boolean. A runtime implementing this contract should reproduce these aggregate functions as its admission decision surface.

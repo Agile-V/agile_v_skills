@@ -110,7 +110,7 @@ def test_gate_receipt_valid_gate_1_binds_to_requirement_revision_not_baseline() 
     receipt = instance["gate_receipt"]
     receipt["gate"] = "gate_1"
     receipt["lifecycle"] = {"from_state": "architect_revisions", "to_state": "gate_1"}
-    receipt["subject_state"] = {"requirement_revision_ref": "REQ-0001@2"}
+    receipt["subject_state"] = {"requirement_revision_ref": "REQ-0001@2", "subject_digest": "sha256:" + "d" * 64}
     errors = list(_validator("GATE_RECEIPT").iter_errors(instance))
     assert not errors, [e.message for e in errors]
     assert semantics.gate_receipt_subject_binding_matches_gate(instance)
@@ -214,6 +214,187 @@ def test_gate_receipt_pass_at_gate_2_with_unresolvable_approval_is_not_justified
     instance["gate_receipt"]["approvals"] = [{"approval_ref": "APR-9999-DOES-NOT-EXIST"}]
     now = datetime(2026, 9, 13, tzinfo=timezone.utc)
     assert not semantics.gate_receipt_has_valid_human_approval(instance, resolve_approval=lambda ref: None, now=now)
+
+
+def test_gate_receipt_stale_approval_bound_to_old_artifact_does_not_authorize_current_receipt() -> None:
+    """An approval that is resolvable, currently valid, and for the same
+    task/gate must still be rejected if it was bound to a DIFFERENT
+    artifact/policy digest than the receipt's current subject_state/policy
+    -- the classic stale-approval path (item 2): approve A under P1, then
+    the artifact/policy changes to A2/P2, and the old approval must not
+    silently authorize the new state."""
+    receipt_instance = _load(FIXTURES / "gate_receipt.positive.json")
+    stale_approval = copy.deepcopy(_load(FIXTURES / "approval_v2.positive.json"))
+    stale_approval["approval"]["binding"]["artifact_digest"] = "sha256:" + "5" * 64  # different from receipt's subject_digest
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    resolver = {"APR-1": stale_approval}.get
+    assert not semantics.gate_receipt_has_valid_human_approval(receipt_instance, resolve_approval=resolver, now=now)
+
+
+def test_gate_receipt_approval_matching_exact_current_state_authorizes() -> None:
+    """Sanity check: the same approval, bound correctly to the receipt's
+    actual subject_digest/policy_digest/baseline, does authorize."""
+    receipt_instance = _load(FIXTURES / "gate_receipt.positive.json")
+    approval_instance = _load(FIXTURES / "approval_v2.positive.json")
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    resolver = {"APR-1": approval_instance}.get
+    assert semantics.gate_receipt_has_valid_human_approval(receipt_instance, resolve_approval=resolver, now=now)
+
+
+def test_gate_receipt_waived_coverage_must_include_every_unresolved_claim() -> None:
+    """WAIVED must not be justified merely because every CITED exception is
+    valid -- every unresolved mandatory item (required-not-admitted,
+    rejected, stale, open obligations) must be covered by some cited
+    exception. A receipt rejecting CLM-A and CLM-B but citing only an
+    exception for CLM-A leaves CLM-B unresolved and must not be WAIVED."""
+    base = _load(FIXTURES / "gate_receipt.positive.json")
+    instance = copy.deepcopy(base)
+    receipt = instance["gate_receipt"]
+    receipt["decision"]["status"] = "WAIVED"
+    receipt["claims"]["rejected"] = ["CLM-0007", "CLM-UNCOVERED"]
+    receipt["exception_refs"] = ["EXC-0001"]  # only covers CLM-0007
+    exception_corpus = {"EXC-0001": _load(FIXTURES / "exception_decision.positive.json")}
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    assert not semantics.gate_receipt_waiver_is_justified(instance, resolve_exception=exception_corpus.get, now=now)
+
+
+def test_gate_receipt_waived_defer_exception_never_authorizes_advancement() -> None:
+    """'defer' means 'nothing is currently satisfied, waived, or accepted'
+    per 09_EXCEPTION_AND_WAIVER_CONTRACT.md; it must never satisfy the
+    waiver resolver even if it is otherwise valid, current, and correctly
+    scoped."""
+    base = _load(FIXTURES / "gate_receipt.positive.json")
+    instance = copy.deepcopy(base)
+    receipt = instance["gate_receipt"]
+    receipt["decision"]["status"] = "WAIVED"
+    receipt["claims"]["rejected"] = ["CLM-0007"]
+    receipt["exception_refs"] = ["EXC-DEFER"]
+
+    defer_exception = copy.deepcopy(_load(FIXTURES / "exception_decision.positive.json"))
+    defer_exception["exception"]["id"] = "EXC-DEFER"
+    defer_exception["exception"]["type"] = "defer"
+    defer_exception["exception"]["control_or_claim_ref"] = "CLM-0007"
+    resolver = {"EXC-DEFER": defer_exception}.get
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    assert not semantics.gate_receipt_waiver_is_justified(instance, resolve_exception=resolver, now=now)
+
+
+def test_gate_receipt_waiver_uses_policy_specific_non_waivable_controls() -> None:
+    """A policy/control-matrix-specific non-waivable control must be
+    enforceable by passing a broader non_waivable_controls set into the
+    resolver, not only the hard-coded default."""
+    base = _load(FIXTURES / "gate_receipt.positive.json")
+    instance = copy.deepcopy(base)
+    receipt = instance["gate_receipt"]
+    receipt["decision"]["status"] = "WAIVED"
+    receipt["claims"]["rejected"] = ["SAFETY-CRITICAL-CHECK"]
+    receipt["exception_refs"] = ["EXC-SAFETY"]
+
+    safety_exception = copy.deepcopy(_load(FIXTURES / "exception_decision.positive.json"))
+    safety_exception["exception"]["id"] = "EXC-SAFETY"
+    safety_exception["exception"]["control_or_claim_ref"] = "SAFETY-CRITICAL-CHECK"
+    resolver = {"EXC-SAFETY": safety_exception}.get
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+
+    # Not non-waivable under the hardcoded default set:
+    assert semantics.gate_receipt_waiver_is_justified(instance, resolve_exception=resolver, now=now)
+    # But IS non-waivable once the domain/policy-specific control is supplied:
+    assert not semantics.gate_receipt_waiver_is_justified(
+        instance, resolve_exception=resolver, now=now,
+        non_waivable_controls=semantics.NON_WAIVABLE_CONTROLS | {"SAFETY-CRITICAL-CHECK"},
+    )
+
+
+def test_gate_receipt_independence_below_minimum_for_risk_level_is_insufficient() -> None:
+    """An L2 decision requires at least I2 verification independence
+    (docs/agile-v-runtime/04_RISK_CLASSIFICATION.md). A receipt recording
+    I1 for an L2 risk level must fail even though every other predicate
+    passes."""
+    instance = copy.deepcopy(_load(FIXTURES / "gate_receipt.positive.json"))
+    instance["gate_receipt"]["risk_level"] = "L2"
+    instance["gate_receipt"]["verifier"]["independence_class"] = "I1"
+    assert not semantics.gate_receipt_independence_is_sufficient(instance)
+
+
+def test_gate_receipt_independence_meeting_minimum_for_risk_level_is_sufficient() -> None:
+    instance = copy.deepcopy(_load(FIXTURES / "gate_receipt.positive.json"))
+    instance["gate_receipt"]["risk_level"] = "L2"
+    instance["gate_receipt"]["verifier"]["independence_class"] = "I2"
+    assert semantics.gate_receipt_independence_is_sufficient(instance)
+
+
+def test_gate_receipt_explicit_required_independence_override_takes_the_stricter_value() -> None:
+    """A regulated profile may require more than the generic risk-level
+    table (e.g. I4 for a GxP claim at L2); the explicit override must be
+    honored, and the stricter of the two requirements applies."""
+    instance = copy.deepcopy(_load(FIXTURES / "gate_receipt.positive.json"))
+    instance["gate_receipt"]["risk_level"] = "L2"  # generic minimum: I2
+    instance["gate_receipt"]["verifier"]["required_independence_class"] = "I4"  # profile override: stricter
+    instance["gate_receipt"]["verifier"]["independence_class"] = "I2"
+    assert not semantics.gate_receipt_independence_is_sufficient(instance)
+    instance["gate_receipt"]["verifier"]["independence_class"] = "I4"
+    assert semantics.gate_receipt_independence_is_sufficient(instance)
+
+
+def test_gate_receipt_independence_without_any_required_source_does_not_block() -> None:
+    instance = _load(FIXTURES / "gate_receipt.positive.json")
+    assert "risk_level" not in instance["gate_receipt"]
+    assert "required_independence_class" not in instance["gate_receipt"].get("verifier", {})
+    assert semantics.gate_receipt_independence_is_sufficient(instance)
+
+
+# ---------------------------------------------------------------------------
+# Canonical aggregate evaluators (item 6)
+# ---------------------------------------------------------------------------
+
+def _real_resolvers():
+    exception_corpus = {"EXC-0001": _load(FIXTURES / "exception_decision.positive.json")}
+    approval_corpus = {"APR-1": _load(FIXTURES / "approval_v2.positive.json")}
+    return exception_corpus.get, approval_corpus.get
+
+
+def test_evaluate_gate_receipt_admits_the_positive_fixture() -> None:
+    instance = _load(FIXTURES / "gate_receipt.positive.json")
+    resolve_exception, resolve_approval = _real_resolvers()
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    result = semantics.evaluate_gate_receipt(
+        instance, resolve_exception=resolve_exception, resolve_approval=resolve_approval, now=now,
+    )
+    assert result["status"] == "admitted"
+    assert result["findings"] == []
+
+
+def test_evaluate_gate_receipt_rejects_independence_below_minimum_with_reason_code() -> None:
+    instance = copy.deepcopy(_load(FIXTURES / "gate_receipt.positive.json"))
+    instance["gate_receipt"]["verifier"]["independence_class"] = "I1"
+    resolve_exception, resolve_approval = _real_resolvers()
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    result = semantics.evaluate_gate_receipt(
+        instance, resolve_exception=resolve_exception, resolve_approval=resolve_approval, now=now, risk_level="L2",
+    )
+    assert result["status"] == "rejected"
+    assert {"code": "INDEPENDENCE_BELOW_MINIMUM"} in result["findings"]
+
+
+def test_authorize_gate_transition_combines_gate_and_evidence_bundle_results() -> None:
+    gate_instance = _load(FIXTURES / "gate_receipt.positive.json")
+    bundle_instance = _load(FIXTURES / "evidence_bundle_v2.positive.json")
+    resolve_exception, resolve_approval = _real_resolvers()
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+    result = semantics.authorize_gate_transition(
+        gate_instance, bundle_instance,
+        resolve_exception=resolve_exception, resolve_approval=resolve_approval, now=now,
+    )
+    assert result["status"] == "admitted"
+
+    broken_bundle = copy.deepcopy(bundle_instance)
+    broken_bundle["bundle"]["evidence"][0]["state_binding"]["subject_ref"] = "9" * 40
+    rejected = semantics.authorize_gate_transition(
+        gate_instance, broken_bundle,
+        resolve_exception=resolve_exception, resolve_approval=resolve_approval, now=now,
+    )
+    assert rejected["status"] == "rejected"
+    assert {"code": "EVIDENCE_STATE_MISMATCH"} in rejected["findings"]
 
 
 # ---------------------------------------------------------------------------

@@ -37,6 +37,10 @@ invalidation_dependencies:
 
 **Rule:** `UNKNOWN` is conservative — for `L3`/`L4` claims, `UNKNOWN` widens to full revalidation of the affected claim; it must never be treated as `UNCHANGED`.
 
+### 3.1 Coverage is per-evidence-item, not only assessment-wide
+
+An assessment-level `coverage` (`complete`/`partial`/`unknown`) is a default, not a blanket permission. Each evaluation MAY declare its own `dependency_coverage`, which overrides the assessment-level default for that item specifically. **`UNCHANGED` is reuse-eligible only when the coverage relevant to that specific item is `complete`** — a global `conservative_fallback_applied: true` flag does not, by itself, make an individual `UNCHANGED` item safe; it only satisfies the requirement that *overall* assessment-level coverage be acknowledged as non-complete. Missing dependency knowledge for one item is never proof that specific item is unchanged, even inside an assessment where other items are fully covered. `contracts/semantics.py::revalidation_reuse_eligible(evaluation, assessment_coverage)` and `revalidation_coverage_is_conservative(instance)` implement this rule.
+
 ## 4. Assessment procedure
 
 1. Identify actual changed inputs (source, policy, environment, model/runtime, hardware) by trusted identity/digest comparison — not by an agent's self-reported change summary.

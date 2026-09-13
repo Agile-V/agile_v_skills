@@ -1,6 +1,6 @@
 {
   "pass_with_rejected_claim": {
-    "schema_version": "1.2",
+    "schema_version": "1.3",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -64,7 +64,7 @@
     }
   },
   "invalid_decision_status": {
-    "schema_version": "1.2",
+    "schema_version": "1.3",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -126,7 +126,7 @@
     }
   },
   "invalid_independence_class": {
-    "schema_version": "1.2",
+    "schema_version": "1.3",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -188,7 +188,7 @@
     }
   },
   "missing_claims_block": {
-    "schema_version": "1.2",
+    "schema_version": "1.3",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -240,7 +240,7 @@
     }
   },
   "gate_1_missing_requirement_revision_ref": {
-    "schema_version": "1.2",
+    "schema_version": "1.3",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",
@@ -301,7 +301,7 @@
     }
   },
   "waived_without_exception_refs": {
-    "schema_version": "1.2",
+    "schema_version": "1.3",
     "compatibility": "additive",
     "migration": "none",
     "fixture_owner": "tests",

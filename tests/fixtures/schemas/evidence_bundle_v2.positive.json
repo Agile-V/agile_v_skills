@@ -1,5 +1,5 @@
 {
-  "schema_version": "2.3",
+  "schema_version": "2.4",
   "compatibility": "additive",
   "migration": "none",
   "fixture_owner": "tests",
@@ -90,7 +90,11 @@
           "provenance",
           "state_binding",
           "test_result"
-        ]
+        ],
+        "evidence_source": {
+          "adapter_ref": "EAD-pytest-junit-v1",
+          "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+        }
       }
     ],
     "obligations": [

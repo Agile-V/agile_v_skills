@@ -136,3 +136,81 @@ def test_v2_policy_binding_digest_must_match_frozen_bundle_policy() -> None:
 def test_v2_positive_fixture_policy_binding_matches_frozen_policy() -> None:
     instance = _load(FIXTURES / "evidence_bundle_v2.positive.json")
     assert semantics.evidence_policy_binding_matches_frozen_policy(instance)
+
+
+def _resolve_adapter(adapter_ref: str) -> dict | None:
+    known = {"EAD-pytest-junit-v1": _load(FIXTURES / "evidence_source_profile.positive.json")}
+    return known.get(adapter_ref)
+
+
+def test_v2_adapter_capability_is_trusted_without_resolver_for_backward_compatibility() -> None:
+    """Without a resolver, the bare self-declared establishes_properties is
+    trusted (legacy/advisory mode) -- this is what all earlier fixtures/
+    tests exercise."""
+    instance = _load(FIXTURES / "evidence_bundle_v2.positive.json")
+    assert semantics.evidence_bundle_admission_is_consistent(instance)
+
+
+def test_v2_adapter_cannot_establish_a_property_outside_its_capability() -> None:
+    """An evidence item cannot self-authorize a property (e.g.
+    human_authority) that its resolved adapter is not trusted to
+    establish -- overclaiming must be rejected once a real adapter
+    capability profile is checked, even though the same instance is
+    structurally valid and 'admissible' under the legacy no-resolver mode."""
+    cases = _load(FIXTURES / "evidence_bundle_v2.negative.json")
+    instance = cases["overclaimed_property_not_in_adapter_capability_semantic"]
+    errors = list(_validator().iter_errors(instance))
+    assert not errors, "fixture must be structurally valid to exercise the semantic check"
+    # Without a resolver: the bare (overclaimed) properties are trusted, so
+    # this looks admissible -- exactly the gap the reviewer identified.
+    assert semantics.evidence_bundle_admission_is_consistent(instance)
+    # With the real adapter resolved: human_authority is capped out of the
+    # adapter's capability, so the claim's required_evidence_properties is
+    # no longer covered.
+    assert not semantics.evidence_bundle_admission_is_consistent(instance, resolve_adapter=_resolve_adapter)
+
+
+def test_v2_positive_fixture_is_still_consistent_with_a_real_resolved_adapter() -> None:
+    instance = _load(FIXTURES / "evidence_bundle_v2.positive.json")
+    assert semantics.evidence_bundle_admission_is_consistent(instance, resolve_adapter=_resolve_adapter)
+
+
+def test_evidence_source_profile_and_property_profile_schemas_are_valid() -> None:
+    jsonschema = pytest.importorskip("jsonschema")
+    for schema_name, fixture_name in [
+        ("EVIDENCE_SOURCE_PROFILE", "evidence_source_profile.positive.json"),
+        ("EVIDENCE_PROPERTY_PROFILE", "evidence_property_profile.positive.json"),
+    ]:
+        schema = json.loads((ROOT / "schemas" / f"{schema_name}.schema.json").read_text(encoding="utf-8"))
+        jsonschema.Draft202012Validator.check_schema(schema)
+        validator = jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker())
+        instance = _load(FIXTURES / fixture_name)
+        errors = list(validator.iter_errors(instance))
+        assert not errors, [e.message for e in errors]
+
+
+# ---------------------------------------------------------------------------
+# Canonical aggregate evaluator (item 6)
+# ---------------------------------------------------------------------------
+
+def test_evaluate_evidence_bundle_admits_the_positive_fixture() -> None:
+    instance = _load(FIXTURES / "evidence_bundle_v2.positive.json")
+    result = semantics.evaluate_evidence_bundle(instance, resolve_adapter=_resolve_adapter)
+    assert result["status"] == "admitted"
+    assert result["findings"] == []
+
+
+def test_evaluate_evidence_bundle_rejects_state_mismatch_with_a_reason_code() -> None:
+    cases = _load(FIXTURES / "evidence_bundle_v2.negative.json")
+    instance = cases["wrong_commit_semantic"]
+    result = semantics.evaluate_evidence_bundle(instance)
+    assert result["status"] == "rejected"
+    assert {"code": "EVIDENCE_STATE_MISMATCH"} in result["findings"]
+
+
+def test_evaluate_evidence_bundle_rejects_overclaimed_property_with_a_reason_code() -> None:
+    cases = _load(FIXTURES / "evidence_bundle_v2.negative.json")
+    instance = cases["overclaimed_property_not_in_adapter_capability_semantic"]
+    result = semantics.evaluate_evidence_bundle(instance, resolve_adapter=_resolve_adapter)
+    assert result["status"] == "rejected"
+    assert {"code": "EVIDENCE_ADMISSION_INCONSISTENT"} in result["findings"]

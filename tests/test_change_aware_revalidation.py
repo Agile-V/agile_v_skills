@@ -85,20 +85,52 @@ def test_positive_fixture_revalidation_required_evidence_is_not_reuse_eligible()
     assert not semantics.revalidation_reuse_eligible(required)
 
 
-def test_partial_coverage_also_requires_conservative_fallback() -> None:
-    """Not just 'unknown' -- 'partial' coverage must also require an explicit
-    conservative_fallback_applied: true; it must not silently leave evidence
-    reuse-eligible."""
+def test_partial_coverage_requires_conservative_fallback_structurally() -> None:
+    """'partial' coverage (like 'unknown') structurally requires
+    conservative_fallback_applied: true."""
     instance = copy.deepcopy(_load(FIXTURES / "revalidation_assessment.positive.json"))
     instance["assessment"]["coverage"] = "partial"
     instance["assessment"]["conservative_fallback_applied"] = False
     errors = list(_validator().iter_errors(instance))
     assert errors, "partial coverage without conservative_fallback_applied must be schema-rejected"
 
+
+def test_global_conservative_fallback_flag_does_not_make_an_unchanged_item_safe() -> None:
+    """A global conservative_fallback_applied: true does NOT, by itself,
+    justify treating a specific UNCHANGED item as covered: item-level
+    coverage governs that item unless the item explicitly overrides it.
+    Missing dependency knowledge for one item is never proof that item is
+    unchanged, even when the assessment as a whole applied some fallback
+    elsewhere."""
+    instance = copy.deepcopy(_load(FIXTURES / "revalidation_assessment.positive.json"))
+    instance["assessment"]["coverage"] = "partial"
     instance["assessment"]["conservative_fallback_applied"] = True
     errors = list(_validator().iter_errors(instance))
     assert not errors
+
+    # EVI-1 is UNCHANGED but inherits the assessment-level 'partial' coverage
+    # (no item-level override) -- this must NOT be considered conservative.
+    assert not semantics.revalidation_coverage_is_conservative(instance)
+    unchanged_eval = next(e for e in instance["assessment"]["evaluations"] if e["evidence_ref"] == "EVI-1")
+    assert not semantics.revalidation_reuse_eligible(unchanged_eval, assessment_coverage="partial")
+
+
+def test_item_level_complete_coverage_override_makes_that_item_reuse_eligible() -> None:
+    """An item MAY override the assessment-level coverage with its own
+    dependency_coverage: complete, proving that item specifically was fully
+    resolved even while the overall assessment remains 'partial' for other
+    items (Option B from the review: per-evidence coverage model)."""
+    instance = copy.deepcopy(_load(FIXTURES / "revalidation_assessment.positive.json"))
+    instance["assessment"]["coverage"] = "partial"
+    instance["assessment"]["conservative_fallback_applied"] = True
+    for evaluation in instance["assessment"]["evaluations"]:
+        if evaluation["evidence_ref"] == "EVI-1":
+            evaluation["dependency_coverage"] = "complete"
+    errors = list(_validator().iter_errors(instance))
+    assert not errors, [e.message for e in errors]
     assert semantics.revalidation_coverage_is_conservative(instance)
+    unchanged_eval = next(e for e in instance["assessment"]["evaluations"] if e["evidence_ref"] == "EVI-1")
+    assert semantics.revalidation_reuse_eligible(unchanged_eval, assessment_coverage="partial")
 
 
 def test_evidence_bundle_v2_invalidation_dependencies_declare_typed_kind() -> None:

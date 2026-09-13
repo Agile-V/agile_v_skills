@@ -9,12 +9,16 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
 
+from contracts import semantics
+
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "schemas"
+FIXTURES = ROOT / "tests" / "fixtures" / "schemas"
 GOLDEN_MANIFEST = ROOT / "examples" / "golden-journey" / "manifest.yaml"
 NEGATIVE_MANIFEST = ROOT / "examples" / "negative" / "manifest.yaml"
 
@@ -53,6 +57,31 @@ def test_golden_journey_stage_fixture_validates(index: int) -> None:
     instance = record[stage["key"]] if stage["key"] else record
     errors = list(_validator(stage["schema"]).iter_errors(instance))
     assert not errors, f"{stage['stage']}: {[e.message for e in errors]}"
+
+
+def test_golden_journey_gate_receipt_and_evidence_bundle_are_jointly_authorized() -> None:
+    """Beyond each stage validating individually against its own schema, the
+    Gate Receipt and Evidence Bundle v2 stages must jointly pass the
+    canonical aggregate evaluator (authorize_gate_transition) -- proving
+    the complete decision path admits this journey's known-good state, not
+    merely that each schema/helper behaves in isolation."""
+    gate_receipt_instance = _load_fixture("tests/fixtures/schemas/gate_receipt.positive.json")
+    evidence_bundle_instance = _load_fixture("tests/fixtures/schemas/evidence_bundle_v2.positive.json")
+    exception_corpus = {"EXC-0001": _load_fixture("tests/fixtures/schemas/exception_decision.positive.json")}
+    approval_corpus = {"APR-1": _load_fixture("tests/fixtures/schemas/approval_v2.positive.json")}
+    adapter_corpus = {"EAD-pytest-junit-v1": _load_fixture("tests/fixtures/schemas/evidence_source_profile.positive.json")}
+    now = datetime(2026, 9, 13, tzinfo=timezone.utc)
+
+    result = semantics.authorize_gate_transition(
+        gate_receipt_instance,
+        evidence_bundle_instance,
+        resolve_exception=exception_corpus.get,
+        resolve_approval=approval_corpus.get,
+        resolve_adapter=adapter_corpus.get,
+        now=now,
+    )
+    assert result["status"] == "admitted"
+    assert result["findings"] == []
 
 
 @pytest.mark.parametrize(

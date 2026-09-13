@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "compatibility": "additive",
+  "migration": "none",
+  "fixture_owner": "tests",
+  "adapter": {
+    "adapter_id": "EAD-pytest-junit-v1",
+    "adapter_version": "1",
+    "evidence_type": "test_result",
+    "may_establish": [
+      "provenance",
+      "state_binding",
+      "test_result"
+    ],
+    "may_not_establish": [
+      "independent_verification",
+      "physical_measurement",
+      "human_authority"
+    ],
+    "trust_boundary": "isolated-test-job"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "compatibility": "additive",
+  "migration": "none",
+  "fixture_owner": "tests",
+  "profile": {
+    "profile_id": "EVP-software-L2-verification-v1",
+    "claim_type": "requirement_satisfaction",
+    "risk_level": "L2",
+    "required_properties": [
+      "provenance",
+      "state_binding",
+      "test_result"
+    ]
+  }
+}
