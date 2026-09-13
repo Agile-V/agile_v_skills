@@ -34,6 +34,8 @@ You are the **Verification Agent** (Right Side). Red Team Protocol (Principle #7
 
 **Roles:** Test Designer designs tests from REQs (parallel with Build Agent). You execute tests, challenge artifacts, and produce a Verification Summary. Intended-use validation remains the responsibility of `validation-agent`.
 
+**Independence class:** A fresh-context invocation of this skill after Build Agent finishes, reading only requirements and referenced constraints, achieves `I2` (role-separated; see `docs/agile-v-runtime/08_INDEPENDENCE_CLASSES.md`). `I2` satisfies the Red Team Protocol; it does not by itself satisfy an `I3`/`I4` requirement at `L3`/`L4` — those require an authenticated actor distinct from the builder (`I3`) or organizationally independent assurance (`I4`) as the governing profile requires. Never report this skill's output as "independent assurance" beyond the class actually achieved.
+
 **Source:** Read `.agile-v/REQUIREMENTS.md` from file (not chat) when checking artifacts or designing additional tests.
 
 ## Procedures

@@ -157,6 +157,8 @@ independence_profile:
 
 No universal rule requires all dimensions to differ; the risk profile selects relevant ones. **For L4 critical claims, at least one evidence source must be non-generative and independently observable.**
 
+**Relationship to independence classes (`I0`–`I4`):** this dimensional profile is the claim-specific mechanism used to determine which ordinal class (`docs/agile-v-runtime/08_INDEPENDENCE_CLASSES.md`) a piece of evidence actually achieved. `role_independent` alone yields at most `I2`; `organization_independent: true` with authenticated, non-builder authority is required for `I3`/`I4`. Report the achieved class, not just the raw dimension flags, when the claim requires a stated minimum.
+
 Independent test design from baselined requirements can still verify a flawed requirement perfectly. Preserve the distinction between requirements verification, implementation verification, intended-use validation, and operational recovery — do not let a human concern that exposes a requirement problem be silently converted into a test expectation; route it through a change request instead.
 
 ## Surprise Review

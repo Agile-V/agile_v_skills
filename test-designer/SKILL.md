@@ -31,6 +31,8 @@ If you are tempted to look at the implementation to understand what to test, sto
 3. **Traceability:** Every TC records typed lineage `test_case -> verifies -> baselined requirement` with `REQ-XXXX`, revision, and baseline reference. Format remains compatible with Red Team Verifier.
 4. **Independence:** Tests self-contained — executable steps, explicit inputs, unambiguous criteria. Red Team Verifier runs without Test Designer context.
 
+**Independence class:** Designing tests from baselined requirements alone, without reading implementation, achieves `I2` role separation (`docs/agile-v-runtime/08_INDEPENDENCE_CLASSES.md`). This is the minimum required at `L2`+; it is not `I3`/`I4` authority/organizational independence by itself.
+
 ## Output Format
 ```
 TC-XXXX | REQ-XXXX@revision | baseline-id | verifies | Description | Expected | Type

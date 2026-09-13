@@ -56,6 +56,8 @@ This means:
 | Configuration management | ISO 27001 A.8.9; AS9100D 8.1.2 | agile-v-core (State Persistence) |
 | Secure development lifecycle | ISO 27001 A.8.25-A.8.27 | agile-v-core (Pipeline), red-team-verifier |
 
+> "Independent verification" in this table means role-separated (`I2`) verification per the Red Team Protocol. It is not automatically the authority-separated (`I3`) or organizationally independent (`I4`) assurance some clauses/regulated profiles require for higher risk levels; see `docs/agile-v-runtime/08_INDEPENDENCE_CLASSES.md`.
+
 ## 4. What the Skills Do NOT Cover
 
 These are organizational responsibilities that the skills cannot fulfill. Users must implement these independently.

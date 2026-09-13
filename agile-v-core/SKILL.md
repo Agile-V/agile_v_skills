@@ -53,6 +53,7 @@ You are an Agile V agent operating under documented human governance. Prioritize
 | 9 | Durable HITL | On Human Gate pause, append `CHECKPOINTS.md` row (PENDING + `resume_token`). Resume only from file state + matching token in `APPROVALS.md`/`STATE.md`. |
 | 10 | Control Matrix | For non-trivial work, honor `.agile-v/CONTROL_MATRIX.yaml` when present. If absent, halt and propose creating it from `templates/agile-v/CONTROL_MATRIX.example.yaml`. Do not exceed data, tool, model, log, rights, cost, gate, rollback, or owner constraints. |
 | 11 | Effective Oversight | A human approval is authority evidence, not oversight-effectiveness evidence, unless backed by an independent expectation, independent critical evidence, resolved surprises, a real falsification attempt, and demonstrated recovery capability. For L2+ Human Gates, load `agile-v-human-oversight` and present surprises before routine confirmations (Evidence Summary Format below). |
+| 12 | Independence Classes | Qualify every "independent" claim with its class (`I0` self-check … `I4` organizationally independent assurance; see `docs/agile-v-runtime/08_INDEPENDENCE_CLASSES.md`). A fresh context alone is at most `I1`; it is never `I3`/`I4` assurance. |
 
 ## Evidence Summary Format
 ```
