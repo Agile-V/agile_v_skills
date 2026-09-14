@@ -15,6 +15,7 @@ from pathlib import Path
 import pytest
 
 from contracts import semantics
+from admission_support import trusted
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "schemas"
@@ -47,6 +48,9 @@ def test_golden_journey_manifest_exists() -> None:
 def test_negative_manifest_exists() -> None:
     manifest = _yaml(NEGATIVE_MANIFEST)
     assert len(manifest["scenarios"]) == 10
+    for scenario in manifest["scenarios"]:
+        assert scenario["status"] == "tested"
+        assert scenario["test_ref"].startswith("tests/test_issue42_trust_closure.py::")
 
 
 @pytest.mark.parametrize("index", range(11))
@@ -77,7 +81,7 @@ def test_golden_journey_gate_receipt_and_evidence_bundle_are_jointly_authorized(
         evidence_bundle_instance,
         resolve_exception=exception_corpus.get,
         resolve_approval=approval_corpus.get,
-        resolve_adapter=adapter_corpus.get,
+        **trusted(),
         now=now,
     )
     assert result["status"] == "admitted"

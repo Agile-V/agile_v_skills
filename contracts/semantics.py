@@ -19,13 +19,21 @@ independence sufficiency, ...) are reusable building blocks; calling only
 one or two of them and treating the result as "admissible" reintroduces
 exactly the gaps the aggregate evaluators exist to close.
 
-Every function is pure and takes already-loaded JSON/YAML instances (dicts)
-plus, where relevant, an explicit ``now`` timestamp — no filesystem or
-network access, no hidden global state.
+Aggregate functions validate against repository-owned schemas before using
+the lower-level predicates. Resolver callbacks are the trusted-provider
+boundary; schema validation and a typed identity do not authenticate a person.
+Evaluation never performs an external action or consumes an approval. The
+runtime must atomically recheck and enforce the decision at the action boundary.
 """
 from __future__ import annotations
 
 from datetime import datetime
+from copy import deepcopy
+import hashlib
+import json
+from pathlib import Path
+
+from jsonschema import Draft202012Validator, FormatChecker
 
 # Meta-controls that no exception may waive, per
 # docs/agile-v-runtime/09_EXCEPTION_AND_WAIVER_CONTRACT.md rule 1.
@@ -193,7 +201,7 @@ def gate_receipt_decision_consistent(instance: dict) -> bool:
 # 'defer' is explicitly "nothing is currently satisfied, waived, or
 # accepted" per 09_EXCEPTION_AND_WAIVER_CONTRACT.md -- neither may
 # authorize advancement on its own.
-WAIVER_PERMITTED_EXCEPTION_TYPES = {"waiver", "concession", "residual_risk_acceptance"}
+WAIVER_PERMITTED_EXCEPTION_TYPES = {"waiver", "concession"}
 
 
 def gate_receipt_waiver_is_justified(
@@ -351,7 +359,7 @@ def approval_currently_valid(instance: dict, now: datetime) -> bool:
     approval = instance["approval"]
     if approval["decision"] != "approved":
         return False
-    if now >= _parse_datetime(approval["expires_at"]):
+    if not _parse_datetime(approval["issued_at"]) <= now < _parse_datetime(approval["expires_at"]):
         return False
     usage = approval.get("usage", {})
     if usage.get("reusable") is False and usage.get("consumed_at"):
@@ -420,9 +428,9 @@ def exception_currently_valid(
     """A non-waivable meta-control can never be waived regardless of
     approver; an expired exception is invalid for any new decision."""
     exc = instance["exception"]
-    if exc["control_or_claim_ref"] in non_waivable_controls:
+    if exc["control_or_claim_ref"] in (NON_WAIVABLE_CONTROLS | non_waivable_controls):
         return False
-    return now < _parse_datetime(exc["expires_at"])
+    return _parse_datetime(exc["issued_at"]) <= now < _parse_datetime(exc["expires_at"])
 
 
 # ---------------------------------------------------------------------------
@@ -515,7 +523,7 @@ def governance_conversion_activation_is_justified(instance: dict) -> bool:
 # Change-aware revalidation (schemas/REVALIDATION_ASSESSMENT.schema.json)
 # ---------------------------------------------------------------------------
 
-def revalidation_reuse_eligible(evaluation: dict, assessment_coverage: str = "complete") -> bool:
+def revalidation_reuse_eligible(evaluation: dict, assessment_coverage: str = "unknown") -> bool:
     """UNKNOWN, STALE, and REVALIDATION_REQUIRED are never reuse-eligible;
     only UNCHANGED is -- AND only when the coverage relevant to THIS item
     is complete. An evaluation's own ``dependency_coverage`` (if present)
@@ -563,19 +571,142 @@ def revalidation_coverage_is_conservative(instance: dict) -> bool:
 # this contract should reproduce these aggregate functions as its admission
 # decision surface, not reimplement a subset of the underlying predicates.
 
-def evaluate_evidence_bundle(instance: dict, *, resolve_adapter=None) -> dict:
-    """Canonical aggregate entrypoint for an Evidence Bundle v2 instance.
-    Returns ``{"status": "admitted"|"rejected", "findings": [...]}``."""
-    findings: list[dict] = []
-    if not evidence_state_binding_matches_baseline(instance):
+def profile_digest(instance: dict) -> str:
+    """SHA-256 of UTF-8 JSON: sorted keys, compact separators, ASCII escapes.
+
+    This is the Python reference serialization, not an RFC 8785 claim.
+    Hash the entire resolved profile envelope; never include a self-hash.
+    """
+    encoded = json.dumps(instance, sort_keys=True, separators=(",", ":"),
+                         ensure_ascii=True, allow_nan=False).encode("utf-8")
+    return "sha256:" + hashlib.sha256(encoded).hexdigest()
+
+
+def _schema_findings(instance, schema_name: str) -> list[dict]:
+    """Validate before predicates run; missing resources never mean success."""
+    try:
+        schema = json.loads((Path(__file__).resolve().parents[1] / "schemas" /
+                             f"{schema_name}.schema.json").read_text(encoding="utf-8"))
+        # JSON permits no non-finite numbers. Python callers must not bypass
+        # that input boundary by directly supplying float('nan').
+        json.dumps(instance, allow_nan=False)
+        validator = Draft202012Validator(schema, format_checker=FormatChecker())
+        errors = sorted(validator.iter_errors(instance), key=lambda e: str(list(e.path)))
+        return [{"code": "SCHEMA_INVALID", "schema": schema_name,
+                 "path": list(e.path)} for e in errors]
+    except (TypeError, ValueError):
+        return [{"code": "SCHEMA_INVALID", "schema": schema_name}]
+    except OSError:
+        return [{"code": "SCHEMA_UNAVAILABLE", "schema": schema_name}]
+
+
+def _resolve(resolver, args, code: str, findings: list[dict], **locator):
+    """Resolvers return authoritative snapshots, not candidate-provided profiles.
+
+    Authentication, access control and historical retrieval belong to the
+    caller's trusted resolver. Unknown records and provider errors deny.
+    """
+    if resolver is None:
+        findings.append({"code": code, **locator})
+        return None
+    try:
+        result = resolver(*args)
+        if not isinstance(result, dict):
+            findings.append({"code": code, **locator})
+            return None
+        return deepcopy(result)
+    except Exception:
+        # Do not leak provider errors, credentials or payloads into findings.
+        findings.append({"code": "RESOLVER_ERROR", **locator})
+        return None
+
+
+def evaluate_evidence_bundle(instance: dict, *, resolve_adapter=None,
+                             resolve_property_profile=None) -> dict:
+    """Trusted aggregate; all risk levels require source/property resolution.
+
+    resolve_property_profile(claim_type, risk_level) selects the authoritative
+    profile independently of claim-local property lists. Local additions may
+    strengthen it. No resolver-less fallback exists at this entrypoint.
+    """
+    findings = _schema_findings(instance, "EVIDENCE_BUNDLE.v2")
+    if findings:
+        return {"status": "rejected", "findings": findings}
+    normalized = deepcopy(instance)
+    bundle = normalized["bundle"]
+    if resolve_adapter is None:
+        findings.append({"code": "EVIDENCE_SOURCE_RESOLVER_REQUIRED"})
+    if resolve_property_profile is None:
+        findings.append({"code": "EVIDENCE_PROPERTY_RESOLVER_REQUIRED"})
+    adapters = {}
+    evidence_ids = set()
+    claim_ids = {claim["claim_id"] for claim in bundle["claims"]}
+    if len(claim_ids) != len(bundle["claims"]):
+        findings.append({"code": "DUPLICATE_CLAIM_ID"})
+    for item in bundle["evidence"]:
+        locator = {"evidence_ref": item["evidence_id"]}
+        if item["evidence_id"] in evidence_ids:
+            findings.append({"code": "DUPLICATE_EVIDENCE_ID", **locator})
+        evidence_ids.add(item["evidence_id"])
+        if not set(item["supports"]) <= claim_ids:
+            findings.append({"code": "UNKNOWN_SUPPORTED_CLAIM", **locator})
+        frozen_control = bundle["policy_binding"].get("control_matrix_digest")
+        # A separately supplied control binding must not contradict policy.
+        bound_control = item.get("policy_binding", {}).get("control_matrix_digest")
+        if bound_control is not None and bound_control != frozen_control:
+            findings.append({"code": "EVIDENCE_POLICY_MISMATCH", **locator})
+        source = item.get("evidence_source", {})
+        ref = source.get("adapter_ref")
+        adapter_record = _resolve(resolve_adapter, (ref,), "EVIDENCE_SOURCE_UNRESOLVED",
+                                  findings, adapter_ref=ref, **locator)
+        if adapter_record is None:
+            continue
+        errors = _schema_findings(adapter_record, "EVIDENCE_SOURCE_PROFILE")
+        if errors:
+            findings.extend(errors)
+            continue
+        adapter = adapter_record["adapter"]
+        if adapter["adapter_id"] != ref or adapter["evidence_type"] != item["evidence_type"]:
+            findings.append({"code": "EVIDENCE_SOURCE_IDENTITY_MISMATCH", **locator})
+            continue
+        if source.get("adapter_digest") != profile_digest(adapter_record):
+            findings.append({"code": "EVIDENCE_SOURCE_DIGEST_MISMATCH", **locator})
+            continue
+        capabilities = set(adapter["may_establish"]) - set(adapter["may_not_establish"])
+        if not set(item["establishes_properties"]) <= capabilities:
+            findings.append({"code": "EVIDENCE_PROPERTY_OVERCLAIM", **locator})
+        adapters[ref] = adapter_record
+    profiles = {}
+    for claim in bundle["claims"]:
+        key = (claim["claim_type"], bundle["risk_level"])
+        if key not in profiles:
+            profiles[key] = _resolve(resolve_property_profile, key,
+                                     "EVIDENCE_PROPERTY_PROFILE_UNRESOLVED", findings,
+                                     claim_ref=claim["claim_id"])
+        record = profiles[key]
+        if record is None:
+            continue
+        errors = _schema_findings(record, "EVIDENCE_PROPERTY_PROFILE")
+        if errors:
+            findings.extend(errors)
+            continue
+        profile = record["profile"]
+        if (profile["claim_type"], profile["risk_level"]) != key:
+            findings.append({"code": "EVIDENCE_PROPERTY_PROFILE_MISMATCH", "claim_ref": claim["claim_id"]})
+            continue
+        claim["required_evidence_properties"] = sorted(
+            set(claim["required_evidence_properties"]) | set(profile["required_properties"]))
+    if not evidence_state_binding_matches_baseline(normalized):
         findings.append({"code": "EVIDENCE_STATE_MISMATCH"})
-    if not evidence_policy_binding_matches_frozen_policy(instance):
+    if not evidence_policy_binding_matches_frozen_policy(normalized):
         findings.append({"code": "EVIDENCE_POLICY_MISMATCH"})
-    if not evidence_bundle_admission_is_consistent(instance, resolve_adapter=resolve_adapter):
+    if not evidence_bundle_admission_is_consistent(normalized, resolve_adapter=adapters.get):
         findings.append({"code": "EVIDENCE_ADMISSION_INCONSISTENT"})
-    declared_status = instance["bundle"]["admission"]["status"]
-    eligible = declared_status == "admitted" and not findings
-    return {"status": "admitted" if eligible else "rejected", "findings": findings}
+    if any(o["state"] != "discharged" for o in bundle.get("obligations", [])):
+        findings.append({"code": "EVIDENCE_OBLIGATION_UNRESOLVED"})
+    if bundle["admission"]["status"] != "admitted":
+        findings.append({"code": "EVIDENCE_NOT_ADMITTED"})
+    return {"status": "rejected" if findings else "admitted", "findings": findings}
 
 
 def evaluate_gate_receipt(
@@ -586,12 +717,100 @@ def evaluate_gate_receipt(
     now: datetime,
     non_waivable_controls: set[str] = NON_WAIVABLE_CONTROLS,
     risk_level: str | None = None,
+    verify_authority=None,
+    decision_context: dict | None = None,
 ) -> dict:
     """Canonical aggregate entrypoint for a Gate Receipt instance. Runs
     subject-binding, decision-consistency, independence, waiver, and
     approval checks together and returns structured findings."""
+    findings = _schema_findings(instance, "GATE_RECEIPT")
+    if findings:
+        return {"status": "rejected", "findings": findings, "decision_status": None}
     receipt = instance["gate_receipt"]
-    findings: list[dict] = []
+    # Context is supplied by the transition authority, never by candidate
+    # evidence. It identifies the actual proposed action and accepted state.
+    context_fields = {"task_id", "gate", "subject_state", "policy_digest",
+                      "risk_level", "action", "resources", "critical_risks"}
+    if not isinstance(decision_context, dict) or not context_fields <= decision_context.keys():
+        findings.append({"code": "DECISION_CONTEXT_REQUIRED"})
+        decision_context = {}
+    context = decision_context
+    if context and (not isinstance(context["subject_state"], dict)
+                    or not isinstance(context["critical_risks"], list)
+                    or not isinstance(context["resources"], list)
+                    or not all(isinstance(r, str) and r for r in context["resources"])
+                    or not isinstance(context.get("non_waivable_controls", []), (list, set))):
+        return {"status": "rejected", "findings": [{"code": "DECISION_CONTEXT_INVALID"}],
+                "decision_status": receipt["decision"]["status"]}
+    if not isinstance(now, datetime) or now.tzinfo is None or now.utcoffset() is None:
+        return {"status": "rejected", "findings": [{"code": "EVALUATION_TIME_INVALID"}],
+                "decision_status": receipt["decision"]["status"]}
+    if context:
+        if (receipt["task_id"] != context["task_id"] or receipt["gate"] != context["gate"]
+                or receipt["subject_state"] != context["subject_state"]
+                or receipt["policy"]["policy_digest"] != context["policy_digest"]):
+            findings.append({"code": "DECISION_CONTEXT_MISMATCH"})
+        if context["risk_level"] not in RISK_LEVEL_ORDER:
+            findings.append({"code": "RISK_LEVEL_INVALID"})
+        else:
+            # A caller may raise but cannot lower the trusted risk floor.
+            levels = [context["risk_level"]]
+            if risk_level in RISK_LEVEL_ORDER:
+                levels.append(risk_level)
+            risk_level = max(levels, key=RISK_LEVEL_ORDER.index)
+        if context["critical_risks"]:
+            # Closed/dispositioned records must be supplied in a new accepted
+            # context; a generic gate approval cannot close critical risks.
+            findings.append({"code": "UNRESOLVED_CRITICAL_RISK"})
+        if not context["action"] or not isinstance(context["resources"], list) or not context["resources"]:
+            findings.append({"code": "AUTHORIZATION_SCOPE_REQUIRED"})
+    if risk_level not in RISK_LEVEL_ORDER:
+        findings.append({"code": "RISK_LEVEL_REQUIRED"})
+        risk_level = "L4"  # conservative diagnostic fallback, never success
+    authority_failures = []
+
+    def authenticated(resolver, ref, kind, schema):
+        record = _resolve(resolver, (ref,), f"{kind.upper()}_UNRESOLVED", authority_failures)
+        if record is None:
+            return None
+        errors = _schema_findings(record, schema)
+        if errors:
+            authority_failures.extend(errors)
+            return None
+        if record[kind]["id"] != ref:
+            authority_failures.append({"code": "AUTHORITY_RECORD_MISMATCH"})
+            return None
+        try:
+            valid = verify_authority is not None and verify_authority(kind, record, context) is True
+        except Exception:
+            valid = False
+        if not valid:
+            authority_failures.append({"code": "HUMAN_AUTHORITY_UNVERIFIED"})
+            return None
+        if kind == "approval":
+            approval = record["approval"]
+            scope = approval["scope"]
+            if (scope["action"] != context.get("action") or
+                    not set(context.get("resources", [])) <= set(scope["resources"])):
+                authority_failures.append({"code": "APPROVAL_SCOPE_MISMATCH"})
+                return None
+        else:
+            # Free-text scope is not interpreted as authorization. The
+            # authority provider must verify exact subject/policy/action
+            # scope and exception-granting rights using the passed context.
+            if record["exception"]["type"] not in {"waiver", "concession"}:
+                authority_failures.append({"code": "EXCEPTION_TYPE_NOT_PERMITTED"})
+                return None
+            target = record["exception"]["control_or_claim_ref"]
+            if target in receipt.get("obligations", {}).get("open", []):
+                # A technical claim waiver cannot silently discharge a due
+                # obligation. Require an updated, authority-resolved context.
+                authority_failures.append({"code": "OBLIGATION_UNRESOLVED"})
+                return None
+        return record
+
+    approval_resolver = lambda ref: authenticated(resolve_approval, ref, "approval", "APPROVAL.v2")
+    exception_resolver = lambda ref: authenticated(resolve_exception, ref, "exception", "EXCEPTION_DECISION")
     if not gate_receipt_subject_binding_matches_gate(instance):
         findings.append({"code": "SUBJECT_BINDING_INVALID"})
     if not gate_receipt_decision_consistent(instance):
@@ -600,13 +819,16 @@ def evaluate_gate_receipt(
         findings.append({"code": "INDEPENDENCE_BELOW_MINIMUM"})
     status = receipt["decision"]["status"]
     if status == "WAIVED" and not gate_receipt_waiver_is_justified(
-        instance, resolve_exception=resolve_exception, now=now, non_waivable_controls=non_waivable_controls,
+        instance, resolve_exception=exception_resolver, now=now,
+        non_waivable_controls=NON_WAIVABLE_CONTROLS | non_waivable_controls | set(context.get("non_waivable_controls", [])),
     ):
         findings.append({"code": "WAIVER_NOT_JUSTIFIED"})
+        findings.extend(authority_failures)
     if status in {"PASS", "WAIVED"} and not gate_receipt_has_valid_human_approval(
-        instance, resolve_approval=resolve_approval, now=now,
+        instance, resolve_approval=approval_resolver, now=now,
     ):
         findings.append({"code": "APPROVAL_NOT_JUSTIFIED"})
+        findings.extend(authority_failures)
     eligible = status in {"PASS", "WAIVED"} and not findings
     return {"status": "admitted" if eligible else "rejected", "findings": findings, "decision_status": status}
 
@@ -621,6 +843,9 @@ def authorize_gate_transition(
     resolve_adapter=None,
     non_waivable_controls: set[str] = NON_WAIVABLE_CONTROLS,
     risk_level: str | None = None,
+    resolve_property_profile=None,
+    verify_authority=None,
+    decision_context: dict | None = None,
 ) -> dict:
     """Top-level authorization combining a Gate Receipt evaluation with an
     optional associated Evidence Bundle evaluation. This is the function a
@@ -634,11 +859,28 @@ def authorize_gate_transition(
         now=now,
         non_waivable_controls=non_waivable_controls,
         risk_level=risk_level,
+        verify_authority=verify_authority,
+        decision_context=decision_context,
     )
     findings = list(gate_result["findings"])
     eligible = gate_result["status"] == "admitted"
     if evidence_bundle_instance is not None:
-        bundle_result = evaluate_evidence_bundle(evidence_bundle_instance, resolve_adapter=resolve_adapter)
+        bundle_result = evaluate_evidence_bundle(evidence_bundle_instance, resolve_adapter=resolve_adapter,
+                                                resolve_property_profile=resolve_property_profile)
         findings.extend(bundle_result["findings"])
         eligible = eligible and bundle_result["status"] == "admitted"
+        if not _schema_findings(gate_receipt_instance, "GATE_RECEIPT") and not _schema_findings(evidence_bundle_instance, "EVIDENCE_BUNDLE.v2"):
+            receipt = gate_receipt_instance["gate_receipt"]
+            bundle = evidence_bundle_instance["bundle"]
+            if (receipt["task_id"] != bundle["task_id"] or
+                    receipt["subject_state"].get("subject_digest") != bundle["baseline"]["subject_state"]["subject_digest"] or
+                    receipt["subject_state"].get("requirement_baseline_id") != bundle["baseline"]["requirement_baseline_id"] or
+                    receipt["policy"] != bundle["policy_binding"] or
+                    set(receipt["claims"]["required"]) != {c["claim_id"] for c in bundle["claims"]}):
+                findings.append({"code": "GATE_EVIDENCE_BINDING_MISMATCH"})
+            if decision_context and bundle["risk_level"] != decision_context.get("risk_level"):
+                findings.append({"code": "RISK_LEVEL_MISMATCH"})
+    elif gate_receipt_instance.get("gate_receipt", {}).get("gate") != "gate_1":
+        findings.append({"code": "EVIDENCE_BUNDLE_REQUIRED"})
+    eligible = eligible and not findings
     return {"status": "admitted" if eligible else "rejected", "findings": findings}

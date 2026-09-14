@@ -1,0 +1,74 @@
+aibom_schema_version: "0.2"
+manifest_type: agile-v-agent-run-bom
+identity:
+  task_id: ISSUE-42
+  run_id: RUN-20260914-OPENCODE
+  created_at: "2026-09-14T00:00:00Z"
+  created_by: OpenCode
+  repository: Agile-V/agile_v_skills
+risk:
+  agile_v_risk_level: L2
+  ai_influence_level: substantial
+  regulated_context: false
+  human_approval_required: true
+models:
+  - name: GPT-6 Astra
+    provider: GitHub Copilot
+    model_id: github-copilot/gpt-6-astra
+    confidence: declared
+agent_runtime:
+  agent_name: OpenCode
+  agent_framework: OpenCode
+  execution_environment: local
+  confidence: declared
+agile_v_skills:
+  - skill: agile-v-core
+    version: "1.10"
+    source: repository
+    confidence: declared
+    evidence_locator: agile-v-core/SKILL.md
+tools:
+  - name: OpenCode filesystem, shell and GitHub CLI
+    type: other
+    version: unresolved
+    allowed: true
+    used: true
+    confidence: declared
+agent_interoperability:
+  untrusted_context_enforced: null
+  tool_records: []
+  delegation_records: []
+context:
+  declared:
+    instruction_bundles: []
+    policies: []
+    sources:
+      - name: Issue 42 and merged main
+        version_or_hash: 71a9c67d6c7b00f5b4446ec749b4d49bcc51e9dc
+        purpose: Accepted user-requested improvement scope
+        evidence_locator: https://github.com/Agile-V/agile_v_skills/issues/42
+    datasets: []
+  observed:
+    sources: []
+    tool_calls_evidence: OpenCode session tool outputs
+    policy_decisions_evidence: docs/agile-v-runtime/14_TRUSTED_ADMISSION_CONTEXT.md
+    confidence: declared
+hashes: []
+artifact_influence:
+  - artifact_id: ART-ISSUE-42
+    artifact_type: documentation
+    contribution: modified
+    contribution_description: Reference aggregate semantics, synthetic conformance tests and normative documentation.
+    confidence: declared
+    evidence_locator: docs/agile-v-runtime/ISSUE_42_EVIDENCE.md
+security_and_privacy:
+  secrets_redacted: true
+  hidden_chain_of_thought_excluded: true
+  pii_redacted: true
+  prompt_capture_policy: metadata_only
+summary:
+  unresolved_items:
+    - Local runtime conformance subset passes; no published runtime compatibility manifest yet.
+    - Tool version and independent review remain unresolved.
+  verifier_notes: Tests are local author-run checks, not independent verification or intended-use validation.
+  human_approval: pending

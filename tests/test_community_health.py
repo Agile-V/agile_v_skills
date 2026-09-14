@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
+import re
 
 import yaml
 
@@ -48,3 +50,12 @@ def test_root_documentation_stays_focused() -> None:
         "CONTRIBUTIONS.md",
     }
     assert len((ROOT / "README.md").read_text(encoding="utf-8").splitlines()) <= 350
+
+
+def test_readme_proof_counts_match_catalog_and_schemas():
+    text = (ROOT / "README.md").read_text(encoding="utf-8")
+    catalog = json.loads((ROOT / "catalog/skills.json").read_text())
+    assert int(re.search(r"\*\*(\d+) skills\*\*", text)[1]) == len(catalog["skills"])
+    assert int(re.search(r"\*\*(\d+) evidence schemas\*\*", text)[1]) == len(list((ROOT / "schemas").glob("*.schema.json")))
+    assert "python -m pytest tests -q" in text
+    assert not re.search(r"\*\*\d+ contract tests\*\*|\*\*v\d+\.\d+\.x\*\*", text)

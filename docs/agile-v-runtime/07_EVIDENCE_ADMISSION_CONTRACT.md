@@ -1,5 +1,7 @@
 # Evidence Admission Contract
 
+**Contract version: 1.1.**
+
 > **Normative.** This contract defines claim, evidence, and admissibility vocabulary used by every Agile V gate decision, and the frozen-baseline rule that governs `Evolve` relative to `Verify`. It applies wherever `docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md`, `04_RISK_CLASSIFICATION.md`, or a gate skill (Red Team Verifier, Compliance Auditor, GxP Qualification) requires evidence to authorize a transition.
 
 ## 1. Why this contract exists
@@ -100,12 +102,19 @@ Admission caps a claimed `establishes_properties` set by the resolved adapter's 
 
 ## 7. Canonical aggregate evaluators
 
+**Issue #42 refinement:** [Trusted Admission Context](14_TRUSTED_ADMISSION_CONTEXT.md)
+defines the mandatory source/property resolvers, immutable profile digest,
+trusted decision context, and authenticated authority-provider boundary.
+Aggregate calls cannot select legacy/advisory mode. Storage schema validity
+alone is insufficient. Eligibility results do not execute or atomically
+authorize an external effect.
+
 Every semantic predicate in `contracts/semantics.py` is a reusable building block, not individually sufficient to answer "may this evidence/gate actually advance?". Calling only one or two predicates and treating the result as "admissible" reintroduces exactly the gaps those predicates exist to close. Use the aggregate entrypoints instead:
 
 | Function | Answers |
 |---|---|
-| `evaluate_evidence_bundle(instance, resolve_adapter=...)` | May this Evidence Bundle v2's admission be trusted? |
-| `evaluate_gate_receipt(instance, resolve_exception=..., resolve_approval=..., now=..., risk_level=...)` | Is this Gate Receipt's decision actually justified? |
+| `evaluate_evidence_bundle(instance, resolve_adapter=..., resolve_property_profile=...)` | Are the bundle's schema, source identity/digest, profile requirements, state and policy consistent? |
+| `evaluate_gate_receipt(instance, resolve_exception=..., resolve_approval=..., verify_authority=..., decision_context=..., now=...)` | Is this Gate Receipt's decision justified under the independently supplied context? |
 | `authorize_gate_transition(gate_receipt, evidence_bundle=None, ...)` | May this transition actually proceed? |
 
 Each returns `{"status": "admitted"|"rejected", "findings": [{"code": ...}, ...]}` — structured, explainable reason codes, not a bare boolean. A runtime implementing this contract should reproduce these aggregate functions as its admission decision surface.

@@ -8,14 +8,16 @@ contracts:
   # Normative documents (docs/agile-v-runtime/)
   canonical_lifecycle_contract: "1.0"
   risk_classification: "1.0"
-  evidence_admission_contract: "1.0"
+  evidence_admission_contract: "1.1"
   independence_classes: "1.0"
-  exception_and_waiver_contract: "1.0"
+  exception_and_waiver_contract: "1.1"
   change_aware_revalidation: "1.0"
   risk_assessment_v2: "1.0"
   governance_conversion_contract: "1.0"
   skill_graduation_policy: "1.0"
   conformance_catalog: "1.0"
+  trusted_admission_context: "1.0"
+  aggregate_semantics: "2.0"
 
   # Schemas (schemas/) -- value must equal that schema's schema_version const
   requirements: "1.0"
