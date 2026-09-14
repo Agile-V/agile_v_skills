@@ -19,6 +19,7 @@ from pathlib import Path
 import pytest
 
 from contracts import semantics
+from admission_support import trusted, context, authority
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = ROOT / "schemas"
@@ -359,6 +360,7 @@ def test_evaluate_gate_receipt_admits_the_positive_fixture() -> None:
     now = datetime(2026, 9, 13, tzinfo=timezone.utc)
     result = semantics.evaluate_gate_receipt(
         instance, resolve_exception=resolve_exception, resolve_approval=resolve_approval, now=now,
+        decision_context=context(), verify_authority=authority,
     )
     assert result["status"] == "admitted"
     assert result["findings"] == []
@@ -384,6 +386,7 @@ def test_authorize_gate_transition_combines_gate_and_evidence_bundle_results() -
     result = semantics.authorize_gate_transition(
         gate_instance, bundle_instance,
         resolve_exception=resolve_exception, resolve_approval=resolve_approval, now=now,
+        **trusted(),
     )
     assert result["status"] == "admitted"
 
@@ -392,6 +395,7 @@ def test_authorize_gate_transition_combines_gate_and_evidence_bundle_results() -
     rejected = semantics.authorize_gate_transition(
         gate_instance, broken_bundle,
         resolve_exception=resolve_exception, resolve_approval=resolve_approval, now=now,
+        **trusted(),
     )
     assert rejected["status"] == "rejected"
     assert {"code": "EVIDENCE_STATE_MISMATCH"} in rejected["findings"]

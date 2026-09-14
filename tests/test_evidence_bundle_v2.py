@@ -15,6 +15,7 @@ from pathlib import Path
 import pytest
 
 from contracts import semantics
+from admission_support import property_profile
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_PATH = ROOT / "schemas" / "EVIDENCE_BUNDLE.v2.schema.json"
@@ -195,7 +196,8 @@ def test_evidence_source_profile_and_property_profile_schemas_are_valid() -> Non
 
 def test_evaluate_evidence_bundle_admits_the_positive_fixture() -> None:
     instance = _load(FIXTURES / "evidence_bundle_v2.positive.json")
-    result = semantics.evaluate_evidence_bundle(instance, resolve_adapter=_resolve_adapter)
+    result = semantics.evaluate_evidence_bundle(instance, resolve_adapter=_resolve_adapter,
+                                                 resolve_property_profile=property_profile)
     assert result["status"] == "admitted"
     assert result["findings"] == []
 

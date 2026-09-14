@@ -81,7 +81,7 @@ def test_positive_fixture_revalidation_required_evidence_is_not_reuse_eligible()
     evaluations = instance["assessment"]["evaluations"]
     unchanged = next(e for e in evaluations if e["evidence_ref"] == "EVI-1")
     required = next(e for e in evaluations if e["evidence_ref"] == "EVI-2")
-    assert semantics.revalidation_reuse_eligible(unchanged)
+    assert semantics.revalidation_reuse_eligible(unchanged, assessment_coverage=instance["assessment"]["coverage"])
     assert not semantics.revalidation_reuse_eligible(required)
 
 

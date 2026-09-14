@@ -13,7 +13,7 @@ skills_contract:
   # Not machine-enforced against package.json (patch releases do not require
   # a contract-compatibility bump); bump this when a contract version below
   # changes, not on every release.
-  repository_version_line: "3.9.x"
+  repository_version_ref: "package.json#/version"
   # The authoritative contract/schema versions this repository publishes are
   # defined ONLY in contracts/versions.yaml -- do not duplicate version
   # literals here. A prior revision of this file did duplicate them and
