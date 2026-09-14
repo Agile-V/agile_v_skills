@@ -1,0 +1,1266 @@
+{
+  "evidence_with_no_claim": {
+    "schema_version": "2.4",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "bundle": {
+      "id": "EVD-AAV-0042",
+      "task_id": "AAV-0042",
+      "risk_level": "L2",
+      "baseline": {
+        "requirement_baseline_id": "BL-1",
+        "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "subject_state": {
+          "subject_type": "source_control_commit",
+          "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+          "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "profile_specific": {
+            "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+            "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "policy_binding": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "environment_binding": {
+        "environment_id": "ENV-1",
+        "environment_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "hardware_revision": null
+      },
+      "claims": [
+        {
+          "claim_id": "CLM-1",
+          "claim_type": "requirement_satisfaction",
+          "subject_ref": "ART-1",
+          "predicate": "satisfies",
+          "object_ref": "REQ-1",
+          "required_evidence_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EVI-1",
+          "evidence_type": "test_result",
+          "supports": [],
+          "producer": {
+            "identity": "ci-runner-primary",
+            "role": "ci",
+            "runtime_ref": "gha-1"
+          },
+          "result": {
+            "status": "pass"
+          },
+          "state_binding": {
+            "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "profile_specific": {
+              "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            },
+            "subject_type": "source_control_commit"
+          },
+          "policy_binding": {
+            "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          },
+          "invalidation_dependencies": [
+            {
+              "kind": "source",
+              "ref": "source_commit"
+            },
+            {
+              "kind": "policy",
+              "ref": "policy_digest"
+            }
+          ],
+          "integrity": {
+            "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "establishes_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ],
+          "evidence_source": {
+            "adapter_ref": "EAD-pytest-junit-v1",
+            "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          }
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-1",
+          "state": "discharged",
+          "evidence_ref": "EVI-1"
+        }
+      ],
+      "residual_risks": [],
+      "admission": {
+        "status": "admitted",
+        "rationale_ref": "GATE-1"
+      }
+    }
+  },
+  "wrong_commit_semantic": {
+    "schema_version": "2.4",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "bundle": {
+      "id": "EVD-AAV-0042",
+      "task_id": "AAV-0042",
+      "risk_level": "L2",
+      "baseline": {
+        "requirement_baseline_id": "BL-1",
+        "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "subject_state": {
+          "subject_type": "source_control_commit",
+          "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+          "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "profile_specific": {
+            "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+            "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "policy_binding": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "environment_binding": {
+        "environment_id": "ENV-1",
+        "environment_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "hardware_revision": null
+      },
+      "claims": [
+        {
+          "claim_id": "CLM-1",
+          "claim_type": "requirement_satisfaction",
+          "subject_ref": "ART-1",
+          "predicate": "satisfies",
+          "object_ref": "REQ-1",
+          "required_evidence_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EVI-1",
+          "evidence_type": "test_result",
+          "supports": [
+            "CLM-1"
+          ],
+          "producer": {
+            "identity": "ci-runner-primary",
+            "role": "ci",
+            "runtime_ref": "gha-1"
+          },
+          "result": {
+            "status": "pass"
+          },
+          "state_binding": {
+            "subject_ref": "9999999999999999999999999999999999999999",
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "profile_specific": {
+              "source_commit": "9999999999999999999999999999999999999999",
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            },
+            "subject_type": "source_control_commit"
+          },
+          "policy_binding": {
+            "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          },
+          "invalidation_dependencies": [
+            {
+              "kind": "source",
+              "ref": "source_commit"
+            },
+            {
+              "kind": "policy",
+              "ref": "policy_digest"
+            }
+          ],
+          "integrity": {
+            "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "establishes_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ],
+          "evidence_source": {
+            "adapter_ref": "EAD-pytest-junit-v1",
+            "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          }
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-1",
+          "state": "discharged",
+          "evidence_ref": "EVI-1"
+        }
+      ],
+      "residual_risks": [],
+      "admission": {
+        "status": "admitted",
+        "rationale_ref": "GATE-1"
+      }
+    }
+  },
+  "missing_policy_binding_for_l2": {
+    "schema_version": "2.4",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "bundle": {
+      "id": "EVD-AAV-0042",
+      "task_id": "AAV-0042",
+      "risk_level": "L2",
+      "baseline": {
+        "requirement_baseline_id": "BL-1",
+        "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "subject_state": {
+          "subject_type": "source_control_commit",
+          "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+          "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "profile_specific": {
+            "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+            "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "policy_binding": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "environment_binding": {
+        "environment_id": "ENV-1",
+        "environment_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "hardware_revision": null
+      },
+      "claims": [
+        {
+          "claim_id": "CLM-1",
+          "claim_type": "requirement_satisfaction",
+          "subject_ref": "ART-1",
+          "predicate": "satisfies",
+          "object_ref": "REQ-1",
+          "required_evidence_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EVI-1",
+          "evidence_type": "test_result",
+          "supports": [
+            "CLM-1"
+          ],
+          "producer": {
+            "identity": "ci-runner-primary",
+            "role": "ci",
+            "runtime_ref": "gha-1"
+          },
+          "result": {
+            "status": "pass"
+          },
+          "state_binding": {
+            "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "profile_specific": {
+              "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            },
+            "subject_type": "source_control_commit"
+          },
+          "invalidation_dependencies": [
+            {
+              "kind": "source",
+              "ref": "source_commit"
+            },
+            {
+              "kind": "policy",
+              "ref": "policy_digest"
+            }
+          ],
+          "integrity": {
+            "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "establishes_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ],
+          "evidence_source": {
+            "adapter_ref": "EAD-pytest-junit-v1",
+            "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          }
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-1",
+          "state": "discharged",
+          "evidence_ref": "EVI-1"
+        }
+      ],
+      "residual_risks": [],
+      "admission": {
+        "status": "admitted",
+        "rationale_ref": "GATE-1"
+      }
+    }
+  },
+  "missing_producer": {
+    "schema_version": "2.4",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "bundle": {
+      "id": "EVD-AAV-0042",
+      "task_id": "AAV-0042",
+      "risk_level": "L2",
+      "baseline": {
+        "requirement_baseline_id": "BL-1",
+        "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "subject_state": {
+          "subject_type": "source_control_commit",
+          "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+          "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "profile_specific": {
+            "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+            "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "policy_binding": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "environment_binding": {
+        "environment_id": "ENV-1",
+        "environment_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "hardware_revision": null
+      },
+      "claims": [
+        {
+          "claim_id": "CLM-1",
+          "claim_type": "requirement_satisfaction",
+          "subject_ref": "ART-1",
+          "predicate": "satisfies",
+          "object_ref": "REQ-1",
+          "required_evidence_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EVI-1",
+          "evidence_type": "test_result",
+          "supports": [
+            "CLM-1"
+          ],
+          "result": {
+            "status": "pass"
+          },
+          "state_binding": {
+            "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "profile_specific": {
+              "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            },
+            "subject_type": "source_control_commit"
+          },
+          "policy_binding": {
+            "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          },
+          "invalidation_dependencies": [
+            {
+              "kind": "source",
+              "ref": "source_commit"
+            },
+            {
+              "kind": "policy",
+              "ref": "policy_digest"
+            }
+          ],
+          "integrity": {
+            "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          }
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-1",
+          "state": "discharged",
+          "evidence_ref": "EVI-1"
+        }
+      ],
+      "residual_risks": [],
+      "admission": {
+        "status": "admitted",
+        "rationale_ref": "GATE-1"
+      }
+    }
+  },
+  "unknown_admission_status": {
+    "schema_version": "2.4",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "bundle": {
+      "id": "EVD-AAV-0042",
+      "task_id": "AAV-0042",
+      "risk_level": "L2",
+      "baseline": {
+        "requirement_baseline_id": "BL-1",
+        "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "subject_state": {
+          "subject_type": "source_control_commit",
+          "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+          "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "profile_specific": {
+            "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+            "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "policy_binding": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "environment_binding": {
+        "environment_id": "ENV-1",
+        "environment_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "hardware_revision": null
+      },
+      "claims": [
+        {
+          "claim_id": "CLM-1",
+          "claim_type": "requirement_satisfaction",
+          "subject_ref": "ART-1",
+          "predicate": "satisfies",
+          "object_ref": "REQ-1",
+          "required_evidence_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EVI-1",
+          "evidence_type": "test_result",
+          "supports": [
+            "CLM-1"
+          ],
+          "producer": {
+            "identity": "ci-runner-primary",
+            "role": "ci",
+            "runtime_ref": "gha-1"
+          },
+          "result": {
+            "status": "pass"
+          },
+          "state_binding": {
+            "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "profile_specific": {
+              "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            },
+            "subject_type": "source_control_commit"
+          },
+          "policy_binding": {
+            "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          },
+          "invalidation_dependencies": [
+            {
+              "kind": "source",
+              "ref": "source_commit"
+            },
+            {
+              "kind": "policy",
+              "ref": "policy_digest"
+            }
+          ],
+          "integrity": {
+            "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "establishes_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ],
+          "evidence_source": {
+            "adapter_ref": "EAD-pytest-junit-v1",
+            "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          }
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-1",
+          "state": "discharged",
+          "evidence_ref": "EVI-1"
+        }
+      ],
+      "residual_risks": [],
+      "admission": {
+        "status": "unknown",
+        "rationale_ref": "GATE-1"
+      }
+    }
+  },
+  "invalidation_dependency_missing_kind": {
+    "schema_version": "2.4",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "bundle": {
+      "id": "EVD-AAV-0042",
+      "task_id": "AAV-0042",
+      "risk_level": "L2",
+      "baseline": {
+        "requirement_baseline_id": "BL-1",
+        "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "subject_state": {
+          "subject_type": "source_control_commit",
+          "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+          "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "profile_specific": {
+            "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+            "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "policy_binding": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "environment_binding": {
+        "environment_id": "ENV-1",
+        "environment_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "hardware_revision": null
+      },
+      "claims": [
+        {
+          "claim_id": "CLM-1",
+          "claim_type": "requirement_satisfaction",
+          "subject_ref": "ART-1",
+          "predicate": "satisfies",
+          "object_ref": "REQ-1",
+          "required_evidence_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EVI-1",
+          "evidence_type": "test_result",
+          "supports": [
+            "CLM-1"
+          ],
+          "producer": {
+            "identity": "ci-runner-primary",
+            "role": "ci",
+            "runtime_ref": "gha-1"
+          },
+          "result": {
+            "status": "pass"
+          },
+          "state_binding": {
+            "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "profile_specific": {
+              "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            },
+            "subject_type": "source_control_commit"
+          },
+          "policy_binding": {
+            "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          },
+          "invalidation_dependencies": [
+            {
+              "ref": "source_commit"
+            }
+          ],
+          "integrity": {
+            "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "establishes_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ],
+          "evidence_source": {
+            "adapter_ref": "EAD-pytest-junit-v1",
+            "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          }
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-1",
+          "state": "discharged",
+          "evidence_ref": "EVI-1"
+        }
+      ],
+      "residual_risks": [],
+      "admission": {
+        "status": "admitted",
+        "rationale_ref": "GATE-1"
+      }
+    }
+  },
+  "subject_state_missing_subject_type": {
+    "schema_version": "2.4",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "bundle": {
+      "id": "EVD-AAV-0042",
+      "task_id": "AAV-0042",
+      "risk_level": "L2",
+      "baseline": {
+        "requirement_baseline_id": "BL-1",
+        "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "subject_state": {
+          "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+          "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "profile_specific": {
+            "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+            "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "policy_binding": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "environment_binding": {
+        "environment_id": "ENV-1",
+        "environment_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "hardware_revision": null
+      },
+      "claims": [
+        {
+          "claim_id": "CLM-1",
+          "claim_type": "requirement_satisfaction",
+          "subject_ref": "ART-1",
+          "predicate": "satisfies",
+          "object_ref": "REQ-1",
+          "required_evidence_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EVI-1",
+          "evidence_type": "test_result",
+          "supports": [
+            "CLM-1"
+          ],
+          "producer": {
+            "identity": "ci-runner-primary",
+            "role": "ci",
+            "runtime_ref": "gha-1"
+          },
+          "result": {
+            "status": "pass"
+          },
+          "state_binding": {
+            "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "profile_specific": {
+              "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            },
+            "subject_type": "source_control_commit"
+          },
+          "policy_binding": {
+            "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          },
+          "invalidation_dependencies": [
+            {
+              "kind": "source",
+              "ref": "source_commit"
+            },
+            {
+              "kind": "policy",
+              "ref": "policy_digest"
+            }
+          ],
+          "integrity": {
+            "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "establishes_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ],
+          "evidence_source": {
+            "adapter_ref": "EAD-pytest-junit-v1",
+            "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          }
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-1",
+          "state": "discharged",
+          "evidence_ref": "EVI-1"
+        }
+      ],
+      "residual_risks": [],
+      "admission": {
+        "status": "admitted",
+        "rationale_ref": "GATE-1"
+      }
+    }
+  },
+  "any_pass_masks_contradictory_failure_semantic": {
+    "schema_version": "2.4",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "bundle": {
+      "id": "EVD-AAV-0042",
+      "task_id": "AAV-0042",
+      "risk_level": "L2",
+      "baseline": {
+        "requirement_baseline_id": "BL-1",
+        "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "subject_state": {
+          "subject_type": "source_control_commit",
+          "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+          "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "profile_specific": {
+            "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+            "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "policy_binding": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "environment_binding": {
+        "environment_id": "ENV-1",
+        "environment_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "hardware_revision": null
+      },
+      "claims": [
+        {
+          "claim_id": "CLM-1",
+          "claim_type": "requirement_satisfaction",
+          "subject_ref": "ART-1",
+          "predicate": "satisfies",
+          "object_ref": "REQ-1",
+          "required_evidence_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EVI-1",
+          "evidence_type": "test_result",
+          "supports": [
+            "CLM-1"
+          ],
+          "producer": {
+            "identity": "ci-runner-primary",
+            "role": "ci",
+            "runtime_ref": "gha-1"
+          },
+          "result": {
+            "status": "pass"
+          },
+          "state_binding": {
+            "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "profile_specific": {
+              "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            },
+            "subject_type": "source_control_commit"
+          },
+          "policy_binding": {
+            "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          },
+          "invalidation_dependencies": [
+            {
+              "kind": "source",
+              "ref": "source_commit"
+            },
+            {
+              "kind": "policy",
+              "ref": "policy_digest"
+            }
+          ],
+          "integrity": {
+            "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "establishes_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ],
+          "evidence_source": {
+            "adapter_ref": "EAD-pytest-junit-v1",
+            "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          }
+        },
+        {
+          "evidence_id": "EVI-2",
+          "evidence_type": "test_result",
+          "supports": [
+            "CLM-1"
+          ],
+          "producer": {
+            "identity": "ci-runner-primary",
+            "role": "ci",
+            "runtime_ref": "gha-1"
+          },
+          "result": {
+            "status": "fail"
+          },
+          "state_binding": {
+            "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "profile_specific": {
+              "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            },
+            "subject_type": "source_control_commit"
+          },
+          "policy_binding": {
+            "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          },
+          "invalidation_dependencies": [
+            {
+              "kind": "source",
+              "ref": "source_commit"
+            },
+            {
+              "kind": "policy",
+              "ref": "policy_digest"
+            }
+          ],
+          "integrity": {
+            "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "establishes_properties": [
+            "provenance"
+          ],
+          "evidence_source": {
+            "adapter_ref": "EAD-pytest-junit-v1",
+            "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          }
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-1",
+          "state": "discharged",
+          "evidence_ref": "EVI-1"
+        }
+      ],
+      "residual_risks": [],
+      "admission": {
+        "status": "admitted",
+        "rationale_ref": "GATE-1"
+      }
+    }
+  },
+  "passing_evidence_missing_required_property_semantic": {
+    "schema_version": "2.4",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "bundle": {
+      "id": "EVD-AAV-0042",
+      "task_id": "AAV-0042",
+      "risk_level": "L2",
+      "baseline": {
+        "requirement_baseline_id": "BL-1",
+        "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "subject_state": {
+          "subject_type": "source_control_commit",
+          "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+          "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "profile_specific": {
+            "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+            "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "policy_binding": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "environment_binding": {
+        "environment_id": "ENV-1",
+        "environment_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "hardware_revision": null
+      },
+      "claims": [
+        {
+          "claim_id": "CLM-1",
+          "claim_type": "requirement_satisfaction",
+          "subject_ref": "ART-1",
+          "predicate": "satisfies",
+          "object_ref": "REQ-1",
+          "required_evidence_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EVI-1",
+          "evidence_type": "test_result",
+          "supports": [
+            "CLM-1"
+          ],
+          "producer": {
+            "identity": "ci-runner-primary",
+            "role": "ci",
+            "runtime_ref": "gha-1"
+          },
+          "result": {
+            "status": "pass"
+          },
+          "state_binding": {
+            "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "profile_specific": {
+              "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            },
+            "subject_type": "source_control_commit"
+          },
+          "policy_binding": {
+            "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          },
+          "invalidation_dependencies": [
+            {
+              "kind": "source",
+              "ref": "source_commit"
+            },
+            {
+              "kind": "policy",
+              "ref": "policy_digest"
+            }
+          ],
+          "integrity": {
+            "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "establishes_properties": [
+            "state_binding",
+            "test_result"
+          ],
+          "evidence_source": {
+            "adapter_ref": "EAD-pytest-junit-v1",
+            "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          }
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-1",
+          "state": "discharged",
+          "evidence_ref": "EVI-1"
+        }
+      ],
+      "residual_risks": [],
+      "admission": {
+        "status": "admitted",
+        "rationale_ref": "GATE-1"
+      }
+    }
+  },
+  "policy_binding_digest_mismatch_semantic": {
+    "schema_version": "2.4",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "bundle": {
+      "id": "EVD-AAV-0042",
+      "task_id": "AAV-0042",
+      "risk_level": "L2",
+      "baseline": {
+        "requirement_baseline_id": "BL-1",
+        "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "subject_state": {
+          "subject_type": "source_control_commit",
+          "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+          "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "profile_specific": {
+            "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+            "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "policy_binding": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "environment_binding": {
+        "environment_id": "ENV-1",
+        "environment_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "hardware_revision": null
+      },
+      "claims": [
+        {
+          "claim_id": "CLM-1",
+          "claim_type": "requirement_satisfaction",
+          "subject_ref": "ART-1",
+          "predicate": "satisfies",
+          "object_ref": "REQ-1",
+          "required_evidence_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EVI-1",
+          "evidence_type": "test_result",
+          "supports": [
+            "CLM-1"
+          ],
+          "producer": {
+            "identity": "ci-runner-primary",
+            "role": "ci",
+            "runtime_ref": "gha-1"
+          },
+          "result": {
+            "status": "pass"
+          },
+          "state_binding": {
+            "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "profile_specific": {
+              "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            },
+            "subject_type": "source_control_commit"
+          },
+          "policy_binding": {
+            "policy_digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+          },
+          "invalidation_dependencies": [
+            {
+              "kind": "source",
+              "ref": "source_commit"
+            },
+            {
+              "kind": "policy",
+              "ref": "policy_digest"
+            }
+          ],
+          "integrity": {
+            "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "establishes_properties": [
+            "provenance",
+            "state_binding",
+            "test_result"
+          ],
+          "evidence_source": {
+            "adapter_ref": "EAD-pytest-junit-v1",
+            "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          }
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-1",
+          "state": "discharged",
+          "evidence_ref": "EVI-1"
+        }
+      ],
+      "residual_risks": [],
+      "admission": {
+        "status": "admitted",
+        "rationale_ref": "GATE-1"
+      }
+    }
+  },
+  "overclaimed_property_not_in_adapter_capability_semantic": {
+    "schema_version": "2.4",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "bundle": {
+      "id": "EVD-AAV-0042",
+      "task_id": "AAV-0042",
+      "risk_level": "L2",
+      "baseline": {
+        "requirement_baseline_id": "BL-1",
+        "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "subject_state": {
+          "subject_type": "source_control_commit",
+          "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+          "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "profile_specific": {
+            "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+            "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "policy_binding": {
+        "policy_id": "POL-1",
+        "policy_version": "2.3",
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "environment_binding": {
+        "environment_id": "ENV-1",
+        "environment_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "hardware_revision": null
+      },
+      "claims": [
+        {
+          "claim_id": "CLM-1",
+          "claim_type": "requirement_satisfaction",
+          "subject_ref": "ART-1",
+          "predicate": "satisfies",
+          "object_ref": "REQ-1",
+          "required_evidence_properties": [
+            "provenance",
+            "human_authority"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EVI-1",
+          "evidence_type": "test_result",
+          "supports": [
+            "CLM-1"
+          ],
+          "producer": {
+            "identity": "ci-runner-primary",
+            "role": "ci",
+            "runtime_ref": "gha-1"
+          },
+          "result": {
+            "status": "pass"
+          },
+          "state_binding": {
+            "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "profile_specific": {
+              "source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            },
+            "subject_type": "source_control_commit"
+          },
+          "policy_binding": {
+            "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          },
+          "invalidation_dependencies": [
+            {
+              "kind": "source",
+              "ref": "source_commit"
+            },
+            {
+              "kind": "policy",
+              "ref": "policy_digest"
+            }
+          ],
+          "integrity": {
+            "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "establishes_properties": [
+            "provenance",
+            "state_binding",
+            "test_result",
+            "human_authority"
+          ],
+          "evidence_source": {
+            "adapter_ref": "EAD-pytest-junit-v1",
+            "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          }
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-1",
+          "state": "discharged",
+          "evidence_ref": "EVI-1"
+        }
+      ],
+      "residual_risks": [],
+      "admission": {
+        "status": "admitted",
+        "rationale_ref": "GATE-1"
+      }
+    }
+  }
+}

@@ -3,8 +3,16 @@ name: c-suite-foundation
 description: Core abstractions, protocols, and patterns shared across all C-Suite orchestrator skills. Load this before any C-Suite skill to provide governance primitives, executive gate protocols, and multi-cycle patterns.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   status: draft
+  preview:
+    owner: agile-v.org
+    graduation_target: candidate
+    graduation_criteria_ref: "docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md#2-minimum-requirements-per-state"
+    compatibility_declaration: "Required by all draft C-Suite orchestrator skills (chief-exec, chief-tech, chief-finance, chief-people, chief-ops, c-suite-update); no additional dependency beyond agile-v-core."
+    known_limitations:
+      - "Not yet evaluated against docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md graduation criteria: no recorded negative test suite, no external reviewer feedback, and no documented end-to-end scenario evidence beyond this file's own instructions."
+      - "Contract may change incompatibly between minor versions while in draft status."
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -34,7 +42,7 @@ All C-Suite agents align to these Agile V core values:
 | **Human Curation over Manual Execution** | You are the founder's strategic assistant, not a replacement. All major decisions stop at Executive Gates. |
 | **Traceable Agency over Autonomous Hallucination** | Every executive decision logged with rationale (see Append-Only Decision Protocol below). |
 | **Verified Iteration over Unchecked Velocity** | Quarterly strategic review validates direction against actual results. |
-| **Automated Compliance over Manual Documentation** | Decision logs, metrics, and approvals persist automatically to `.agile-v/business/` artifacts. |
+| **Automated Assurance Evidence over Manual Documentation** | Decision logs, metrics, and approvals persist automatically to `.agile-v/business/` artifacts. Supports compliance activities; does not itself establish certification, regulatory approval, or legal compliance. |
 
 **Principle #12 (Simplicity):** Minimize organizational complexity. Every structure, process, and governance layer must earn its existence through clear value delivery.
 

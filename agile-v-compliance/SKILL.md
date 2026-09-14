@@ -3,7 +3,7 @@ name: agile-v-compliance
 description: Risk management, CAPA protocol, human gate approval records, AI agent security controls, and periodic revalidation. Load when running gates, handling CAPAs, or auditing compliance and security posture.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.6"
+  version: "1.7"
   standard: "Agile V"
   compliance: "ISO 9001 6.1, ISO 13485 8.5, ISO 27001 A.5.23/A.8.3, 21 CFR Part 11, GxP/GAMP 5"
   author: agile-v.org
@@ -20,6 +20,8 @@ Append-only, cycle-tagged register in `.agile-v/RISK_REGISTER.md`: `RISK-ID | Cy
 
 **Categories:** Technical, Process, Compliance, Security. **Severity matrix:** High x High = Critical, High x Med = High, High x Low / Med x Med = Medium, rest = Low. Critical risks require Human resolution or documented acceptance before Gate 2.
 
+**Residual-risk acceptance is an exception decision:** a documented risk acceptance is a `residual_risk_acceptance` under `docs/agile-v-runtime/09_EXCEPTION_AND_WAIVER_CONTRACT.md` — it requires scope, owner, expiry, and monitoring, not a bare "accepted" note. It does not override a separate mandatory technical failure unless a valid, permitted exception independently resolves that failure too.
+
 **When:** draft persisted = Req Architect identifies; independent findings = Logic Gatekeeper flags constraints; Stage 4 = Red Team finds residual; cycle boundary = Compliance Auditor reviews. Baselining requires Gate 1 approval and no unresolved mandatory finding.
 
 ## CAPA Protocol (ISO 13485 8.5 / ISO 9001 10.1-10.2)
@@ -29,6 +31,8 @@ Append-only, cycle-tagged register in `.agile-v/RISK_REGISTER.md`: `RISK-ID | Cy
 Record in `.agile-v/CAPA_LOG.md`: `CAPA-XXXX` with Cycle, Trigger, Nonconformity, Root Cause (5-Whys), Corrective Action, Preventive Action, Effectiveness Verification, Status (open -> corrective-complete -> preventive-complete -> verified-effective -> closed), Owner.
 
 **Workflow:** Detect -> Record -> Analyze -> Correct -> Prevent -> Verify effectiveness. Compliance Auditor tracks open CAPAs at Gate 2, flags overdue (>2 cycles).
+
+**Governance conversion:** when the preventive action is a new or changed control (not a one-off fix), record it as a `GOVERNANCE_CONVERSION` (`docs/agile-v-runtime/12_GOVERNANCE_CONVERSION.md`) linked to the originating CAPA. It follows `proposed -> approved -> deployed -> validated`; the CAPA owner proposing it is not the approving authority, and activation does not retroactively change the frozen baseline of the task that motivated it.
 
 ## Human Gate Approval Records (21 CFR Part 11 / Annex 11)
 

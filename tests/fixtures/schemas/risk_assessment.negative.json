@@ -1,0 +1,182 @@
+{
+  "empty_dimensions": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "risk_assessment": {
+      "id": "RA-0001",
+      "task_id": "AAV-0042",
+      "dimensions": {},
+      "floors": [
+        {
+          "reason": "production_release",
+          "minimum_level": "L2"
+        }
+      ],
+      "selected_level": "L2",
+      "rationale": "Meets production_release floor; dimension scores do not raise above L2."
+    }
+  },
+  "invalid_level_enum": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "risk_assessment": {
+      "id": "RA-0001",
+      "task_id": "AAV-0042",
+      "dimensions": {
+        "impact": {
+          "score": 3,
+          "rationale": "Production-impacting change"
+        },
+        "reversibility": {
+          "score": 2,
+          "rationale": "Rollback available via prior release tag"
+        },
+        "data_sensitivity": {
+          "score": 1,
+          "rationale": "No sensitive data touched"
+        }
+      },
+      "floors": [
+        {
+          "reason": "production_release",
+          "minimum_level": "L2"
+        }
+      ],
+      "selected_level": "L5",
+      "rationale": "Meets production_release floor; dimension scores do not raise above L2."
+    }
+  },
+  "missing_rationale": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "risk_assessment": {
+      "id": "RA-0001",
+      "task_id": "AAV-0042",
+      "dimensions": {
+        "impact": {
+          "score": 3,
+          "rationale": "Production-impacting change"
+        },
+        "reversibility": {
+          "score": 2,
+          "rationale": "Rollback available via prior release tag"
+        },
+        "data_sensitivity": {
+          "score": 1,
+          "rationale": "No sensitive data touched"
+        }
+      },
+      "floors": [
+        {
+          "reason": "production_release",
+          "minimum_level": "L2"
+        }
+      ],
+      "selected_level": "L2"
+    }
+  },
+  "below_floor_without_exception_semantic": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "risk_assessment": {
+      "id": "RA-0001",
+      "task_id": "AAV-0042",
+      "dimensions": {
+        "impact": {
+          "score": 3,
+          "rationale": "Production-impacting change"
+        },
+        "reversibility": {
+          "score": 2,
+          "rationale": "Rollback available via prior release tag"
+        },
+        "data_sensitivity": {
+          "score": 1,
+          "rationale": "No sensitive data touched"
+        }
+      },
+      "floors": [
+        {
+          "reason": "production_release",
+          "minimum_level": "L2"
+        }
+      ],
+      "selected_level": "L0",
+      "rationale": "Meets production_release floor; dimension scores do not raise above L2."
+    }
+  },
+  "below_floor_with_exception_semantic": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "risk_assessment": {
+      "id": "RA-0001",
+      "task_id": "AAV-0042",
+      "dimensions": {
+        "impact": {
+          "score": 3,
+          "rationale": "Production-impacting change"
+        },
+        "reversibility": {
+          "score": 2,
+          "rationale": "Rollback available via prior release tag"
+        },
+        "data_sensitivity": {
+          "score": 1,
+          "rationale": "No sensitive data touched"
+        }
+      },
+      "floors": [
+        {
+          "reason": "production_release",
+          "minimum_level": "L2"
+        }
+      ],
+      "selected_level": "L0",
+      "rationale": "Meets production_release floor; dimension scores do not raise above L2.",
+      "exception_ref": "EXC-0010"
+    }
+  },
+  "below_floor_with_unresolvable_exception_semantic": {
+    "schema_version": "1.0",
+    "compatibility": "additive",
+    "migration": "none",
+    "fixture_owner": "tests",
+    "risk_assessment": {
+      "id": "RA-0001",
+      "task_id": "AAV-0042",
+      "dimensions": {
+        "impact": {
+          "score": 3,
+          "rationale": "Production-impacting change"
+        },
+        "reversibility": {
+          "score": 2,
+          "rationale": "Rollback available via prior release tag"
+        },
+        "data_sensitivity": {
+          "score": 1,
+          "rationale": "No sensitive data touched"
+        }
+      },
+      "floors": [
+        {
+          "reason": "production_release",
+          "minimum_level": "L2"
+        }
+      ],
+      "selected_level": "L0",
+      "rationale": "Meets production_release floor; dimension scores do not raise above L2.",
+      "exception_ref": "EXC-9999-DOES-NOT-EXIST"
+    }
+  }
+}

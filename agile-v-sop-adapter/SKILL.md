@@ -3,9 +3,17 @@ name: agile-v-sop-adapter
 description: Bind an organization's controlled SOPs (Standard Operating Procedures) to Agile-V controls, artifacts, and Human Gates so Agile-V execution conforms to the SOPs. Load when creating or checking `.agile-v/SOP_BINDING.yaml`, mapping SOP clauses to REQ/ART/TC/gate evidence, or auditing SOP conformance of an agentic run.
 license: CC-BY-SA-4.0
 metadata:
-  version: "0.2"
+  version: "0.3"
   standard: "Agile V"
   status: draft
+  preview:
+    owner: agile-v.org
+    graduation_target: candidate
+    graduation_criteria_ref: "docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md#2-minimum-requirements-per-state"
+    compatibility_declaration: "No additional runtime dependency declared beyond standard Agile V skill loading (agile-v-core); see metadata.requires if present."
+    known_limitations:
+      - "Not yet evaluated against docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md graduation criteria: no recorded negative test suite, no external reviewer feedback, and no documented end-to-end scenario evidence beyond this file's own instructions."
+      - "Contract may change incompatibly between minor versions while in draft status."
   compliance: "Supports ISO 9001/ISO 27001-aligned design controls and GxP/GAMP 5 lifecycle mapping; not a conformity or certification claim"
   author: agile-v.org
   sections_index:

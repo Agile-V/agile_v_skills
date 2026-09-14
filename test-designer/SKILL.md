@@ -3,7 +3,7 @@ name: test-designer
 description: Designs the verification suite from approved, baselined requirements only — never from code. Prevents success bias. Use when building test cases in parallel with the Build Agent after Gate 1 approval and baseline capture.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.7"
+  version: "1.8"
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -30,6 +30,8 @@ If you are tempted to look at the implementation to understand what to test, sto
 2. **Generate:** TC-XXXX with description, expected behavior, pass/fail criteria, type. Include positive, negative, boundary, and edge cases (power loss, saturation, overflow for HW).
 3. **Traceability:** Every TC records typed lineage `test_case -> verifies -> baselined requirement` with `REQ-XXXX`, revision, and baseline reference. Format remains compatible with Red Team Verifier.
 4. **Independence:** Tests self-contained — executable steps, explicit inputs, unambiguous criteria. Red Team Verifier runs without Test Designer context.
+
+**Independence class:** Designing tests from baselined requirements alone, without reading implementation, achieves `I2` role separation (`docs/agile-v-runtime/08_INDEPENDENCE_CLASSES.md`). This is the minimum required at `L2`+; it is not `I3`/`I4` authority/organizational independence by itself.
 
 ## Output Format
 ```
@@ -59,7 +61,7 @@ Format: `TC-XXXX | REQ-XXXX | Description | Expected | Type | Category | Origin 
 
 ## AI Influence and Test Re-execution
 
-Use `AI_RUN_MANIFEST.yaml` to decide whether test re-execution is needed when the AI context changed since the last verified baseline.
+Use `AI_RUN_MANIFEST.yaml` to decide whether test re-execution is needed when the AI context changed since the last verified baseline. This is the `model`/`tool` case of the general change-aware revalidation rule in `docs/agile-v-runtime/10_CHANGE_AWARE_REVALIDATION.md`: an unresolved/incomplete dependency check is `UNKNOWN`, never `UNCHANGED`, and `UNKNOWN` forces revalidation at `L3`/`L4`.
 
 **Re-execution required when:**
 - Model ID, version, or provider changed (`model_id_changed`, `model_version_changed`)

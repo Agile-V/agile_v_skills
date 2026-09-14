@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "compatibility": "additive",
+  "migration": "none",
+  "fixture_owner": "tests",
+  "exception": {
+    "id": "EXC-0010",
+    "type": "residual_risk_acceptance",
+    "task_id": "AAV-0042",
+    "control_or_claim_ref": "production_release",
+    "rationale": "Owner accepts residual risk of releasing below the production_release L2 floor for this specific low-blast-radius internal tool with no external users; compensating control: feature-flagged rollout with kill switch.",
+    "scope": "AAV-0042 only, this cycle",
+    "approver": "risk-owner",
+    "authority_source": "role:risk_owner",
+    "issued_at": "2026-09-01T00:00:00Z",
+    "expires_at": "2027-01-01T00:00:00Z",
+    "monitoring": "Weekly review of kill-switch telemetry until L2 evidence is produced.",
+    "remediation_owner": "build-team",
+    "target_resolution": "Produce full L2 evidence within one quarter",
+    "evidence_refs": [
+      "RISK-0007"
+    ]
+  }
+}

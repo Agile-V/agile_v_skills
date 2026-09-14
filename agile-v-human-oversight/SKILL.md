@@ -3,10 +3,20 @@ name: agile-v-human-oversight
 description: Bainbridge-aware human oversight for agentic tasks. Defines the Human Oversight Case (blind precommit, claim-specific independence, surprise review, active challenge, recovery readiness) so a human approval is effective-oversight evidence, not just authority evidence. Load for L2+ tasks, any Human Gate, or when reviewing whether an agent's evidence is independent.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.0"
+  version: "1.1"
   standard: "Agile V"
   author: agile-v.org
   status: draft
+  preview:
+    owner: agile-v.org
+    graduation_target: candidate
+    graduation_criteria_ref: "docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md#2-minimum-requirements-per-state"
+    compatibility_declaration: "Requires agile-v-core; consumed by red-team-verifier (Human Oversight Case Verification) and referenced by agile-v-gxp-qualification and agile-v-control-matrix. No schemas/GATE_RECEIPT.schema.json integration test yet."
+    known_limitations:
+      - "No negative test suite executed yet for forged authorship, self-approval, scope expansion, or evidence relabeling (Red Team checks are specified in red-team-verifier but not independently benchmarked)."
+      - "No external reviewer or independent user feedback recorded."
+      - "Independence Profile dimensions are self-reported by the producing agent unless bound to durable approval evidence; no automated cross-check against schemas/APPROVAL.v2.schema.json exists yet."
+      - "See 'Must not claim' list in this file for the boundaries of what this contract establishes."
   sections_index:
     - Purpose and Boundaries
     - Trigger Conditions
@@ -156,6 +166,8 @@ independence_profile:
 | Time | Verification performed after a frozen artifact is available |
 
 No universal rule requires all dimensions to differ; the risk profile selects relevant ones. **For L4 critical claims, at least one evidence source must be non-generative and independently observable.**
+
+**Relationship to independence classes (`I0`–`I4`):** this dimensional profile is the claim-specific mechanism used to determine which ordinal class (`docs/agile-v-runtime/08_INDEPENDENCE_CLASSES.md`) a piece of evidence actually achieved. `role_independent` alone yields at most `I2`; `organization_independent: true` with authenticated, non-builder authority is required for `I3`/`I4`. Report the achieved class, not just the raw dimension flags, when the claim requires a stated minimum.
 
 Independent test design from baselined requirements can still verify a flawed requirement perfectly. Preserve the distinction between requirements verification, implementation verification, intended-use validation, and operational recovery — do not let a human concern that exposes a requirement problem be silently converted into a test expectation; route it through a change request instead.
 

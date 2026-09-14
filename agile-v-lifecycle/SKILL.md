@@ -3,7 +3,7 @@ name: agile-v-lifecycle
 description: Multi-cycle iteration management, document versioning, change requests, re-entry points, archival, and impact analysis. Load when starting a new cycle (C2+), processing change requests, or managing cross-cycle traceability.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.5"
   standard: "Agile V"
   author: agile-v.org
   sections_index: ["Cycle ID", "Document Versioning", "REQ Status Tags", "Change Requests", "Cycle Triggers", "Re-Entry Points", "Archival", "Impact Analysis"]
@@ -34,7 +34,7 @@ Use canonical states `draft_persisted -> independent_findings -> architect_revis
 
 ## Change Requests
 
-Append-only in `.agile-v/CHANGE_LOG.md`. Format: `CR-XXXX` with Cycle, affected `REQ-XXXX` revision/baseline, change, rationale, ART/TC impact, requester, and approval status. Flow: Requirement Architect creates a new draft revision -> Logic Gatekeeper records findings without editing -> Requirement Architect resolves findings -> Human decides at Gate 1 -> approved revision is captured in a new immutable baseline.
+Append-only in `.agile-v/CHANGE_LOG.md`. Format: `CR-XXXX` with Cycle, affected `REQ-XXXX` revision/baseline, change, rationale, ART/TC impact, requester, and approval status. Flow: Requirement Architect creates a new draft revision -> Logic Gatekeeper records findings without editing -> Requirement Architect resolves findings -> Human decides at Gate 1 -> approved revision is captured in a new immutable baseline. A CR is the only mechanism that may change the frozen verification baseline of an active cycle (`docs/agile-v-runtime/07_EVIDENCE_ADMISSION_CONTRACT.md`); Evolve findings from the current cycle propose CRs, they do not apply directly.
 
 ## Cycle Triggers
 

@@ -1,0 +1,51 @@
+# Gate receipt (example). See schemas/GATE_RECEIPT.schema.json
+# A Gate Receipt records DECISION BASIS: which claims were required, which were
+# admitted/rejected/stale, which approvals and verifier evidence were consulted,
+# and the resulting PASS/WAIVED/FAIL/NEEDS_HUMAN/STALE/CONFLICT decision. It is
+# not an approval record itself — approvals[] only references authority
+# evidence recorded separately (see APPROVAL.v2.schema.json). subject_state is
+# gate-specific: gate_1 (pre-baseline) requires requirement_revision_ref;
+# eval_gate/gate_2/qualification_stage (post-baseline) require
+# requirement_baseline_id.
+schema_version: "1.3"
+compatibility: additive
+migration: none
+fixture_owner: agile-v.org
+gate_receipt:
+  id: "GATE-0001"
+  task_id: "AAV-0042"
+  correlation_id: "COR-0001"
+  gate: gate_2
+  evaluated_at: "2026-09-13T12:00:00Z"
+  lifecycle:
+    from_state: review_pending
+    to_state: accepted
+  subject_state:
+    requirement_baseline_id: "BASELINE-0001"
+    source_commit: "0123456789abcdef0123456789abcdef01234567"
+    build_digest: "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    subject_digest: "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  policy:
+    policy_id: "POL-0001"
+    policy_version: "2.3"
+    policy_digest: "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+    control_matrix_digest: "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+  claims:
+    required: ["CLM-0001", "CLM-0002"]
+    admitted: ["CLM-0001", "CLM-0002"]
+    rejected: []
+    stale: []
+  obligations:
+    open: []
+    discharged: ["OBL-0001"]
+  approvals:
+    - approval_ref: "APR-0001"
+  verifier:
+    verification_ref: "VER-0001"
+    independence_class: "I2"
+  residual_risk:
+    refs: []
+    accepted_by: null
+  decision:
+    status: "PASS"
+    rationale_ref: "GATE-0001-RATIONALE.md"

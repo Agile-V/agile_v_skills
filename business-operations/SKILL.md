@@ -3,8 +3,16 @@ name: business-operations
 description: Manages financial planning, OKRs, team resources, vendor relationships, and operational compliance with full traceability. Use for budgeting, OKR tracking, resource planning, vendor management, or operational risk assessment.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.1"
+  version: "1.2"
   status: draft
+  preview:
+    owner: agile-v.org
+    graduation_target: candidate
+    graduation_criteria_ref: "docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md#2-minimum-requirements-per-state"
+    compatibility_declaration: "No additional runtime dependency declared beyond standard Agile V skill loading (agile-v-core); see metadata.requires if present."
+    known_limitations:
+      - "Not yet evaluated against docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md graduation criteria: no recorded negative test suite, no external reviewer feedback, and no documented end-to-end scenario evidence beyond this file's own instructions."
+      - "Contract may change incompatibly between minor versions while in draft status."
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -28,7 +36,7 @@ Ensure business execution is sustainable, measurable, and auditable. Every budge
 
 ## Values Alignment
 
-- **Automated Compliance** (Value #3): Log operational decisions as you work
+- **Automated Assurance Evidence** (Value #3): Log operational decisions as you work
 - **Traceable Agency** (Directive #2): Every budget item cites strategic rationale
 - **Sustainable Rigor** (Principle #10): Operational plans must be sustainable, not heroic
 - **Human Curation** (Directive #5): Business Gate 2 approval before budget commitment

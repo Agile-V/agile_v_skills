@@ -1,0 +1,49 @@
+# Machine-readable manifest for examples/golden-journey/README.md.
+# Each entry: fixture file (relative to repo root), the key to extract from
+# it (for shared fixture files that bundle multiple named records), and the
+# schema name to validate against.
+stages:
+  - stage: "Requirement baselined"
+    fixture: "tests/fixtures/schemas/positive.json"
+    key: "REQUIREMENTS"
+    schema: "REQUIREMENTS"
+  - stage: "Typed trace graph"
+    fixture: "tests/fixtures/schemas/positive.json"
+    key: "TRACE_GRAPH"
+    schema: "TRACE_GRAPH"
+  - stage: "Gate 1 approval"
+    fixture: "tests/fixtures/schemas/positive.json"
+    key: "APPROVAL"
+    schema: "APPROVAL"
+  - stage: "Risk assessment with floors"
+    fixture: "tests/fixtures/schemas/risk_assessment.positive.json"
+    key: null
+    schema: "RISK_ASSESSMENT"
+  - stage: "Evidence bundle v2 (typed claims/evidence)"
+    fixture: "tests/fixtures/schemas/evidence_bundle_v2.positive.json"
+    key: null
+    schema: "EVIDENCE_BUNDLE.v2"
+  - stage: "Independent verification record"
+    fixture: "tests/fixtures/schemas/positive.json"
+    key: "VERIFICATION_RESULT"
+    schema: "VERIFICATION_RESULT"
+  - stage: "Gate 2 approval v2 (scoped, expiring, bound)"
+    fixture: "tests/fixtures/schemas/approval_v2.positive.json"
+    key: null
+    schema: "APPROVAL.v2"
+  - stage: "Gate receipt (decision basis)"
+    fixture: "tests/fixtures/schemas/gate_receipt.positive.json"
+    key: null
+    schema: "GATE_RECEIPT"
+  - stage: "Governance conversion (illustrative control-level change)"
+    fixture: "tests/fixtures/schemas/governance_conversion.positive.json"
+    key: null
+    schema: "GOVERNANCE_CONVERSION"
+  - stage: "Targeted revalidation after change"
+    fixture: "tests/fixtures/schemas/revalidation_assessment.positive.json"
+    key: null
+    schema: "REVALIDATION_ASSESSMENT"
+  - stage: "Exception used along the way (illustrative)"
+    fixture: "tests/fixtures/schemas/exception_decision.positive.json"
+    key: null
+    schema: "EXCEPTION_DECISION"

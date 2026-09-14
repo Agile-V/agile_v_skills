@@ -1,0 +1,33 @@
+# Canonical contract version registry (source of truth for schema/contract versions).
+# Every entry here MUST match the corresponding schema's `schema_version` const
+# or normative document's stated version. tests/test_runtime_compatibility.py
+# enforces this so the registry cannot silently drift from the schemas.
+schema_version: "1.0"
+
+contracts:
+  # Normative documents (docs/agile-v-runtime/)
+  canonical_lifecycle_contract: "1.0"
+  risk_classification: "1.0"
+  evidence_admission_contract: "1.0"
+  independence_classes: "1.0"
+  exception_and_waiver_contract: "1.0"
+  change_aware_revalidation: "1.0"
+  risk_assessment_v2: "1.0"
+  governance_conversion_contract: "1.0"
+  skill_graduation_policy: "1.0"
+  conformance_catalog: "1.0"
+
+  # Schemas (schemas/) -- value must equal that schema's schema_version const
+  requirements: "1.0"
+  trace_graph: "1.0"
+  approval: "1.0"
+  approval_v2: "2.0"
+  evidence_bundle: "1.0"
+  evidence_bundle_v2: "2.4"
+  gate_receipt: "1.3"
+  exception_decision: "1.0"
+  revalidation_assessment: "1.2"
+  risk_assessment: "1.0"
+  governance_conversion: "1.1"
+  evidence_source_profile: "1.0"
+  evidence_property_profile: "1.0"

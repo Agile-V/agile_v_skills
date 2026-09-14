@@ -3,7 +3,7 @@ name: agile-v-control-matrix
 description: Defines and checks the Agile-V control matrix for agentic tasks, skills, model use, tools, logs, rights, Human Gates, tests, costs, rollback, and owners. Load when creating, reviewing, or enforcing `.agile-v/CONTROL_MATRIX.yaml` or runtime governance for agentic execution.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.4"
+  version: "1.5"
   standard: "Agile V"
   author: agile-v.org
   compliance: "Supports ISO 9001/ISO 27001-aligned design controls; not a conformity or certification claim"
@@ -35,6 +35,8 @@ It is supporting governance evidence, not an ISO conformity assessment, certific
 It answers: Which data may this agent process? Which tools may it call? Which model/vendor may it use? Where are logs stored? What are the maximum permissions? Which Human Gates are required? Which tests must pass? What is the cost limit? How can the change be rolled back? Who owns the risk?
 
 `POLICY.yaml` is still used for low-level tool-class rules. `CONTROL_MATRIX.yaml` is the higher-level control map that binds task scope, skill use, data class, model, logs, rights, gates, tests, costs, rollback, and ownership.
+
+**Governance conversion:** when a recurrent or severe finding motivates a new/changed control, propose it as a `GOVERNANCE_CONVERSION` record (`docs/agile-v-runtime/12_GOVERNANCE_CONVERSION.md`, `schemas/GOVERNANCE_CONVERSION.schema.json`). An agent may propose a conversion; it may not make a safety, security, or compliance control effective for its own current task without an authorized, versioned change — the proposer must not be the approver.
 
 ## Load Conditions
 

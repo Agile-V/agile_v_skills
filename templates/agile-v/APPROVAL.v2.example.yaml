@@ -1,0 +1,35 @@
+# Approval v2 (example). See schemas/APPROVAL.v2.schema.json
+# Upgrades APPROVAL v1 with explicit scope, expiry, exact artifact/policy
+# binding, and single-use tracking. Approval records AUTHORITY; it does not
+# by itself establish evidence sufficiency (see
+# docs/agile-v-runtime/07_EVIDENCE_ADMISSION_CONTRACT.md).
+schema_version: "2.0"
+compatibility: additive
+migration: none
+fixture_owner: agile-v.org
+approval:
+  id: "APR-0001"
+  task_id: "AAV-0042"
+  correlation_id: "COR-0001"
+  gate_id: gate_2
+  control_refs: ["AV-CONTROL-019"]
+  issued_at: "2026-09-01T00:00:00Z"
+  decided_at: "2026-09-01T00:05:00Z"
+  expires_at: "2027-01-01T00:00:00Z"
+  decision: approved
+  approver:
+    identity: "reviewer-1"
+    role: "release_owner"
+    authority_source: "quality-unit"
+  scope:
+    action: release
+    resources: ["ART-0001"]
+    data_classes: ["internal"]
+  binding:
+    artifact_digest: "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+    requirement_baseline_id: "BASELINE-0001"
+    policy_digest: "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+    resume_token_digest: "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+  usage:
+    reusable: false
+    consumed_at: null

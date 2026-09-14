@@ -3,8 +3,16 @@ name: agile-v-gxp-qualification
 description: Plans, coordinates, and audits risk-based DQ, IQ, OQ, PQ, intended-use validation, stage release, and requalification for regulated or high-assurance computerized systems. Use with Agile V lifecycle skills; it does not provide certification or runtime enforcement.
 license: CC-BY-SA-4.0
 metadata:
-  version: "0.1"
+  version: "0.2"
   status: draft
+  preview:
+    owner: agile-v.org
+    graduation_target: candidate
+    graduation_criteria_ref: "docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md#2-minimum-requirements-per-state"
+    compatibility_declaration: "No additional runtime dependency declared beyond standard Agile V skill loading (agile-v-core); see metadata.requires if present."
+    known_limitations:
+      - "Not yet evaluated against docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md graduation criteria: no recorded negative test suite, no external reviewer feedback, and no documented end-to-end scenario evidence beyond this file's own instructions."
+      - "Contract may change incompatibly between minor versions while in draft status."
   standard: "Agile V"
   author: agile-v.org
   sections_index:
@@ -90,7 +98,7 @@ Test outcomes: `NOT_RUN`, `PASS`, `FAIL`, `BLOCKED`, `INCONCLUSIVE`, `DEVIATION`
 
 ## DQ
 
-DQ is a **distinct independent review of the proposed design**, not requirement-quality review. The Build Agent MUST NOT approve DQ for its own proposed design. For L3/L4: DQ reviewer context != builder implementation context, and DQ approval authority != builder identity.
+DQ is a **distinct independent review of the proposed design**, not requirement-quality review. The Build Agent MUST NOT approve DQ for its own proposed design. For L3/L4: DQ reviewer context != builder implementation context, and DQ approval authority != builder identity (`I3` authority-separated minimum; `I4` where the quality unit requires organizationally independent assurance — see `docs/agile-v-runtime/08_INDEPENDENCE_CLASSES.md`).
 
 The review determines whether every critical requirement is represented in the design; boundaries and responsibilities are clear; configured vs. customized behavior is identified; data flows and interfaces preserve data integrity; access-control/segregation-of-duty is designed; audit trails and retention are designed where required; calculations, decisions, and release controls are specified; backup/restore/archive/DR are designed; failures, alarms, degraded modes, and recovery are defined; security boundaries and supplier dependencies are addressed; testability/observability are sufficient for IQ/OQ/PQ; the design introduces no undocumented GMP/operational risk; procedural controls compensating for technical gaps are justified; and the design remains consistent with approved intended use.
 

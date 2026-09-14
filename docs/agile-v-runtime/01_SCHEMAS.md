@@ -187,6 +187,46 @@ The Draft 2020-12 contracts in [`schemas/`](../../schemas/) validate structured 
 
 `VERIFICATION_SUMMARY` aggregates requirement-conformance evidence. Intended-use validation is separate and remains governed by [`VALIDATION_REPORT.schema.json`](../../schemas/VALIDATION_REPORT.schema.json); a verification summary may reference validation reports but must not represent them as verification results.
 
+### 7.1 Evidence Bundle v2
+
+[`EVIDENCE_BUNDLE.v2.schema.json`](../../schemas/EVIDENCE_BUNDLE.v2.schema.json) upgrades the v1 container contract into typed claims and evidence: each claim declares its `required_evidence_properties`; each evidence item declares which claim(s) it `supports`, its `producer`, `evidence_source` (required for `L2`+ — see 7.8), `state_binding`, `integrity` digest, and — for `L2`+ bundles — a `policy_binding`. `admission.status` records the gate outcome. Subject binding (`baseline.subject_state` / `evidence[].state_binding`) is domain-agnostic: `subject_type` may be `source_control_commit`, `document_revision`, `hardware_revision`, `dataset_version`, `configuration_baseline`, or `other`, with any domain-specific identifiers (e.g. a Git commit and build digest) carried under an optional `profile_specific` object rather than as normative top-level fields. v1 (`schema_version: "1.0"`) remains unchanged and valid for existing consumers; **new `L2`+ gate decisions MUST use v2** (current `schema_version` per `contracts/versions.yaml`); v1 remains valid only for historical records and migration reads (see "v1/v2 transition" below). Structural validity does not by itself prove `state_binding.subject_ref` matches `baseline.subject_state.subject_ref` — that is a semantic admissibility check per `07_EVIDENCE_ADMISSION_CONTRACT.md`, not a JSON Schema constraint.
+
+#### v1/v2 transition
+
+From this contract version forward: any **new** `L2`+ gate decision MUST be recorded as `EVIDENCE_BUNDLE.v2`. `EVIDENCE_BUNDLE` v1 instances remain valid for two purposes only — (a) historical records produced before this rule existed, and (b) migration reads that normalize a legacy record without inventing missing v2 fields. A runtime MUST NOT accept a newly produced v1 bundle as sufficient for a new `L2`+ decision; doing so bypasses the typed-claim/state-binding model this contract exists to enforce. The same rule applies to `APPROVAL` v1 vs. `APPROVAL.v2` (`schemas/APPROVAL.v2.schema.json`): new `L2`+ approvals MUST use v2's scope/expiry/binding fields.
+
+### 7.2 Gate Receipt and Approval v2
+
+[`GATE_RECEIPT.schema.json`](../../schemas/GATE_RECEIPT.schema.json) records why a lifecycle transition was permitted or denied: required/admitted/rejected/stale claims, consulted approvals, verifier `independence_class` (`I0`–`I4`, see `08_INDEPENDENCE_CLASSES.md`) checked against a required minimum (`risk_level` and/or `verifier.required_independence_class`), residual risk, and a `PASS`/`WAIVED`/`FAIL`/`NEEDS_HUMAN`/`STALE`/`CONFLICT` decision. `subject_state` is gate-specific (`requirement_revision_ref` + `subject_digest` pre-baseline at `gate_1`; `requirement_baseline_id` + exact `subject_digest` at `eval_gate`/`gate_2`/`qualification_stage`, so a receipt cannot bind to "the baseline" in the abstract while leaving which exact delivered artifact was verified unspecified). A `WAIVED` decision requires non-empty `exception_refs`; `gate_1`/`gate_2` `PASS`/`WAIVED` require a non-empty `approvals` array. Structural presence of these fields is necessary but not sufficient — resolving them against real, currently-valid, correctly-scoped `EXCEPTION_DECISION`/`APPROVAL` records, checking exception coverage completeness and type, and checking that an approval authorizes the EXACT receipt state (task, gate, artifact/policy/baseline digest — not merely the same task/gate) are semantic checks (`contracts/semantics.py`: `gate_receipt_waiver_is_justified`, `gate_receipt_has_valid_human_approval`, `gate_receipt_independence_is_sufficient`), not JSON Schema constraints. [`APPROVAL.v2.schema.json`](../../schemas/APPROVAL.v2.schema.json) upgrades v1 with explicit `scope`, `expires_at`, exact artifact/policy `binding`, and `usage.reusable`/`consumed_at` (a non-reusable, already-consumed approval is no longer valid even before it expires). A Gate Receipt's `approvals` array only references `APPROVAL` records by ID; it does not embed or replace them. **A Human Gate approval and a Gate Receipt are different objects: approval records authority, Gate Receipt records decision basis. Neither substitutes for the other.** v1 `APPROVAL.schema.json` (`schema_version: "1.0"`) remains unchanged and valid.
+
+### 7.3 Exception and Waiver contract
+
+[`EXCEPTION_DECISION.schema.json`](../../schemas/EXCEPTION_DECISION.schema.json) is the structured form of waiver, concession, dispensation, residual-risk acceptance, and defer — see `09_EXCEPTION_AND_WAIVER_CONTRACT.md` for the normative rules (non-waivable meta-controls, expiry, no propagation to later cycles). A Gate Receipt with a `WAIVED`-equivalent decision references the relevant `EXC-XXXX` id(s); it must not present a waived decision as an unqualified `PASS`.
+
+### 7.4 Change-aware revalidation
+
+[`REVALIDATION_ASSESSMENT.schema.json`](../../schemas/REVALIDATION_ASSESSMENT.schema.json) records, per changed dependency (source, requirement, policy, environment, tool, model, hardware), whether each admitted evidence item is `UNCHANGED`, `REVALIDATION_REQUIRED`, `STALE`, or `UNKNOWN` — see `10_CHANGE_AWARE_REVALIDATION.md`. Only `UNCHANGED` is reuse-eligible; `UNKNOWN` coverage requires `conservative_fallback_applied: true` and is never treated as `UNCHANGED`, especially at `L3`/`L4`. This generalizes the AI-BOM-specific triggers in `../ai-bom-revalidation-triggers.md`.
+
+### 7.5 Risk Assessment v2
+
+[`RISK_ASSESSMENT.schema.json`](../../schemas/RISK_ASSESSMENT.schema.json) adds dimension-based scoring and deterministic risk floors to the `L0`–`L4` model — see `11_RISK_ASSESSMENT_V2.md`. A floor cannot be silently lowered; doing so requires an authorized `EXCEPTION_DECISION` referenced by `exception_ref`.
+
+### 7.6 Governance conversion
+
+[`GOVERNANCE_CONVERSION.schema.json`](../../schemas/GOVERNANCE_CONVERSION.schema.json) records how a recurrent/severe finding becomes a new or changed control — see `12_GOVERNANCE_CONVERSION.md`. `proposed -> approved -> deployed -> validated`; the proposer is never the approving authority, and activation does not retroactively change an already-frozen task baseline.
+
+### 7.7 Skill preview/draft graduation
+
+[`SKILL_STATUS.schema.json`](../../schemas/SKILL_STATUS.schema.json) validates the `metadata.status`/`metadata.preview` block every draft/experimental/candidate skill must declare (owner, graduation target, graduation criteria reference, compatibility declaration, known limitations) — see `13_SKILL_GRADUATION_POLICY.md`. A skill does not graduate by self-declaration; graduation requires the evidence listed there and an external recorded decision.
+
+### 7.8 Evidence property and source (adapter) profiles
+
+[`EVIDENCE_PROPERTY_PROFILE.schema.json`](../../schemas/EVIDENCE_PROPERTY_PROFILE.schema.json) answers "for this claim type / risk level, what evidence properties are mandatory?" — removing arbitrary producer choice from a claim's `required_evidence_properties`. [`EVIDENCE_SOURCE_PROFILE.schema.json`](../../schemas/EVIDENCE_SOURCE_PROFILE.schema.json) answers "what may this evidence source (adapter) actually establish?" via `may_establish`/`may_not_establish`. `L2`+ Evidence Bundle v2 evidence items reference an adapter via `evidence_source.adapter_ref`; admission caps a claimed `establishes_properties` set by the resolved adapter's capability (`contracts/semantics.py::evidence_bundle_admission_is_consistent(instance, resolve_adapter=...)`) so a producer cannot self-authorize a property (e.g. `human_authority`, `physical_measurement`) its own evidence type cannot actually establish. See `07_EVIDENCE_ADMISSION_CONTRACT.md` section 5.1.
+
+### 7.9 Canonical aggregate evaluators
+
+`contracts/semantics.py` exposes three aggregate entrypoints — `evaluate_evidence_bundle`, `evaluate_gate_receipt`, `authorize_gate_transition` — that are the only functions that should be documented as answering "may this evidence/gate actually advance?". They run every applicable lower-level predicate and return `{"status": "admitted"|"rejected", "findings": [{"code": ...}, ...]}` rather than a bare boolean. See `07_EVIDENCE_ADMISSION_CONTRACT.md` section 7.
+
 ---
 
 ## Cross-references
@@ -194,3 +234,4 @@ The Draft 2020-12 contracts in [`schemas/`](../../schemas/) validate structured 
 - Templates: [templates/agile-v/](../../templates/agile-v/)
 - Control Matrix spec: [02_CONTROL_MATRIX.md](02_CONTROL_MATRIX.md)
 - Agent tool and delegation contract: [05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md](05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md)
+- Skills <-> runtime compatibility declaration: [contracts/AGILE_V_RUNTIME_COMPATIBILITY.yaml](../../contracts/AGILE_V_RUNTIME_COMPATIBILITY.yaml); canonical contract version registry: [contracts/versions.yaml](../../contracts/versions.yaml)

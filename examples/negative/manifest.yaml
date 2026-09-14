@@ -1,0 +1,32 @@
+# Machine-readable form of examples/negative/README.md.
+scenarios:
+  - id: stale-evidence
+    status: tested
+    test_ref: "tests/test_evidence_bundle_v2.py::test_v2_wrong_commit_passes_schema_but_fails_semantic_state_binding_check"
+  - id: self-approval
+    status: tested
+    test_ref: "tests/test_governance_conversion.py::test_proposer_cannot_approve_own_conversion"
+  - id: missing-baseline
+    status: tested
+    test_ref: "tests/test_schemas.py::test_schema_fixtures"
+  - id: forged-human-authorship
+    status: specified
+    test_ref: null
+  - id: out-of-scope-change
+    status: specified
+    test_ref: null
+  - id: policy-drift
+    status: tested
+    test_ref: "tests/test_change_aware_revalidation.py::test_unknown_result_is_never_reuse_eligible_even_at_l3"
+  - id: expired-approval
+    status: tested
+    test_ref: "tests/test_gate_receipt_and_approval_v2.py::test_approval_v2_expired_approval_cannot_authorize_now"
+  - id: unresolved-critical-risk
+    status: specified
+    test_ref: null
+  - id: verifier-contamination
+    status: tested
+    test_ref: "tests/test_independence_classes.py::test_fresh_context_is_not_organizational_assurance"
+  - id: evolve-goalpost-change
+    status: tested
+    test_ref: "tests/test_evidence_admission.py::test_no_skill_instructs_evolve_to_edit_active_criteria"
