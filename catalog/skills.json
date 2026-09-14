@@ -4,7 +4,7 @@
   "integrations": {
     "claude_plugin": {
       "manifest": ".claude-plugin/plugin.json",
-      "version": "3.9.0",
+      "version": "3.10.0",
       "skills": [
         "agile-v-core",
         "agile-v-behavioral",

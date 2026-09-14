@@ -6,7 +6,7 @@ abstract: "A CC BY-SA 4.0 library of agent skills for traceable requirements, in
 authors:
   - name: "Agile V"
     website: "https://agile-v.org"
-version: "3.9.0" # x-release-please-version
+version: "3.10.0" # x-release-please-version
 date-released: 2026-08-10
 license: CC-BY-SA-4.0
 repository-code: "https://github.com/Agile-V/agile_v_skills"
