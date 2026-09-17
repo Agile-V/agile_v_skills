@@ -98,3 +98,10 @@ def test_generated_copy_provenance_fields_declared() -> None:
     compat = _yaml(COMPAT)
     fields = compat["generated_copy_provenance_fields"]
     assert {"source_repository", "source_commit", "skill_contract_version"} <= set(fields)
+
+
+def test_repository_version_is_referenced_not_duplicated():
+    contract = _yaml(COMPAT)["skills_contract"]
+    assert contract["repository_version_ref"] == "package.json#/version"
+    assert "repository_version_line" not in contract
+    assert json.loads((ROOT / "package.json").read_text())["version"]

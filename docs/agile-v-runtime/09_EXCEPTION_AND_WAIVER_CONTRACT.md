@@ -1,5 +1,7 @@
 # Exception and Waiver Contract
 
+**Contract version: 1.1.**
+
 > **Normative.** This contract defines waiver, concession, dispensation, residual-risk acceptance, and defer as distinct exception types, and states the rules that apply to all of them. It is implemented by `schemas/EXCEPTION_DECISION.schema.json` and referenced by Gate Receipts (`schemas/GATE_RECEIPT.schema.json`), the Red Team Verifier disposition model, and `agile-v-compliance`.
 
 ## 1. Why these must not be conflated
@@ -48,7 +50,7 @@ See `schemas/EXCEPTION_DECISION.schema.json` for the structured form.
 6. **A waiver cannot grant authority to create further waivers.** Exception-granting authority is a property of the approver's role, not something an exception record can delegate onward.
 7. **Distinguish accepted non-applicability from a retrospective waiver.** If a control is genuinely not applicable (e.g. a documentation-only change has no executable tests), that is an **applicability determination** made before/at gate time under the accepted contract — not a waiver of a failed test. Do not record a legitimately-inapplicable check as a waived failure, and do not use "not applicable" to retroactively excuse an actual failure.
 8. **Coverage completeness, not merely cited-exception validity.** `WAIVED` does not mean "at least one real exception exists." Compute the unresolved mandatory set (required-but-not-admitted claims, rejected claims, stale claims, plus open mandatory obligations); every item in that set must be covered by a cited exception whose `control_or_claim_ref` targets it. A receipt that rejects `CLM-A` and `CLM-B` but only cites a valid exception for `CLM-A` is not `WAIVED` — `CLM-B` remains unresolved.
-9. **Exception type restricts what it may justify.** Only `waiver`, `concession`, and `residual_risk_acceptance` may justify a `WAIVED` gate decision. `dispensation` affects an obligation's deadline, not claim satisfaction. `defer` means *nothing is currently satisfied, waived, or accepted* — it must never, by itself, authorize gate advancement, even when otherwise valid, current, and correctly scoped.
+9. **Exception type restricts what it may justify.** Only `waiver` and `concession` may cover failed verification claims in a `WAIVED` gate decision, subject to authenticated scope and policy authorization. `residual_risk_acceptance` may disposition risk but does not waive failed verification. `dispensation` affects an obligation's deadline, not claim satisfaction. `defer` means *nothing is currently satisfied, waived, or accepted* — it must never, by itself, authorize gate advancement, even when otherwise valid, current, and correctly scoped. The aggregate context rejects unresolved critical risks independently of generic gate approvals.
 
 ## 5. Relationship to other contracts
 

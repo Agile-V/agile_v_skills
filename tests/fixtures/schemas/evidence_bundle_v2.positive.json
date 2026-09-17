@@ -93,7 +93,7 @@
         ],
         "evidence_source": {
           "adapter_ref": "EAD-pytest-junit-v1",
-          "adapter_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          "adapter_digest": "sha256:22b32bf40d1a4d5f25b52f3d63e3d7451ae42f0eeead9fa27c2732de404c39b8"
         }
       }
     ],
