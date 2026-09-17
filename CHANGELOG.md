@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. Releases are managed by [Release Please](https://github.com/googleapis/release-please) from Conventional Commits.
 
+## [3.10.0](https://github.com/Agile-V/agile_v_skills/compare/v3.9.0...v3.10.0) (2026-09-17)
+
+
+### Features
+
+* add agile-v-adr skill for Architecture Decision Records ([#35](https://github.com/Agile-V/agile_v_skills/issues/35)) ([85ec71e](https://github.com/Agile-V/agile_v_skills/commit/85ec71e98d52d7c5c38a554023b1b369def3de86))
+* **gxp:** add draft GxP qualification profile (DQ/IQ/OQ/PQ) ([#40](https://github.com/Agile-V/agile_v_skills/issues/40)) ([f1d7efb](https://github.com/Agile-V/agile_v_skills/commit/f1d7efb5177f56f7cdd7d7930ca84fad873ddbbf))
+* **skills:** add agile-v-human-oversight draft skill ([#39](https://github.com/Agile-V/agile_v_skills/issues/39)) ([dca43f0](https://github.com/Agile-V/agile_v_skills/commit/dca43f026b175ad9a0388d18b2c75701801ea3eb))
+* **skills:** add agile-v-sop-adapter draft skill ([#37](https://github.com/Agile-V/agile_v_skills/issues/37)) ([5efc967](https://github.com/Agile-V/agile_v_skills/commit/5efc967f441ccdcf39362bc797e59870da09de44))
+* **skills:** evidence admission, independence classes, and gate/waiver contracts (PR-S01-S13) ([#41](https://github.com/Agile-V/agile_v_skills/issues/41)) ([71a9c67](https://github.com/Agile-V/agile_v_skills/commit/71a9c67d6c7b00f5b4446ec749b4d49bcc51e9dc))
+
+
+### Bug Fixes
+
+* **contracts:** close admission trust gaps for issue 42 ([#43](https://github.com/Agile-V/agile_v_skills/issues/43)) ([982c1f6](https://github.com/Agile-V/agile_v_skills/commit/982c1f6435219f0fe83dcef485503f45a7e9717e))
+
 ## [3.9.0](https://github.com/Agile-V/agile_v_skills/compare/v3.8.1...v3.9.0) (2026-08-10)
 
 
