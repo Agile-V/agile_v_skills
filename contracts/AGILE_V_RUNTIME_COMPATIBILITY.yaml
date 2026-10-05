@@ -8,6 +8,11 @@
 # and the enforcement-class rule referenced there: a skill instruction is not
 # the same claim as a runtime-enforced control.
 
+# Validated by schemas/RUNTIME_COMPATIBILITY.schema.json. Only the release
+# verification workflow (.github/workflows/runtime-conformance.yml) may
+# produce a `verified` record, and only for an immutable runtime release.
+schema_version: "1.0"
+
 skills_contract:
   # Informational: the repository release line this file was authored against.
   # Not machine-enforced against package.json (patch releases do not require

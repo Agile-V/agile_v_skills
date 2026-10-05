@@ -1,0 +1,22 @@
+# Agile-V Evidence Property Profile -- policy-side artifact.
+# See docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md
+schema_version: '1.0'
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+profile:
+  profile_id: EVP-requirement-satisfaction-L3
+  claim_type: requirement_satisfaction
+  risk_level: L3
+  required_properties:
+  - provenance
+  - state_binding
+  - subject_digest_binding
+  - test_result
+  status: candidate
+  owner: Agile-V
+  rationale: 'L3: adds an integrity-protected subject digest binding (e.g. a verified attestation).'
+  known_limitations:
+  - Attestation integrity does not establish test adequacy.
+  supersedes: null
+  superseded_by: null

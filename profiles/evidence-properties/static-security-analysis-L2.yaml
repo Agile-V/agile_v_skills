@@ -1,0 +1,22 @@
+# Agile-V Evidence Property Profile -- policy-side artifact.
+# See docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md
+schema_version: '1.0'
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+profile:
+  profile_id: EVP-static-security-analysis-L2
+  claim_type: static_security_analysis
+  risk_level: L2
+  required_properties:
+  - finding_absence_within_ruleset_scope
+  - ruleset_executed
+  - ruleset_identity
+  - state_binding
+  status: candidate
+  owner: Agile-V
+  rationale: Pinned ruleset executed against the bound subject without findings in scope.
+  known_limitations:
+  - Absence within a ruleset is not absence of vulnerabilities.
+  supersedes: null
+  superseded_by: null

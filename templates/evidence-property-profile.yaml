@@ -1,0 +1,20 @@
+# Template: Agile-V Evidence Property Profile (copy to profiles/evidence-properties/<claim-slug>-L<n>.yaml).
+# Validated by schemas/EVIDENCE_PROPERTY_PROFILE.schema.json and
+# profiles/evidence-property-registry-entry.schema.json.
+schema_version: "1.0"
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+profile:
+  profile_id: EVP-<claim-slug>-L2
+  claim_type: <claim_type>
+  risk_level: L2
+  required_properties:
+    - <property>
+  status: experimental
+  owner: Agile-V
+  rationale: "<why these properties are necessary for this claim at this risk level>"
+  known_limitations:
+    - "<what satisfying this profile still does not show>"
+  supersedes: null
+  superseded_by: null

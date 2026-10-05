@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/schemas/AGENT_DELEGATION_RECORD.v2.schema.json",
+  "title": "Agent delegation record v2 (attenuating authority)",
+  "description": "Delegation may preserve or reduce authority; it may never increase it. Storage validity is necessary but not sufficient: contracts.semantics.evaluate_delegation checks the chain. v1 (AGENT_DELEGATION_RECORD.schema.json) remains readable with its original meaning.",
+  "type": "object",
+  "required": ["schema_version", "delegation", "delegator", "delegate", "authority_ceiling", "scope", "revocation"],
+  "properties": {
+    "schema_version": {"const": "2.0"},
+    "delegation": {
+      "type": "object",
+      "required": ["id", "task_id", "parent_delegation_ref", "source_authority_ref", "issued_at", "expires_at", "nonce", "single_use"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^DEL-[A-Z0-9-]+$"},
+        "task_id": {"type": "string", "minLength": 1},
+        "correlation_id": {"type": "string", "minLength": 1},
+        "parent_delegation_ref": {"type": ["string", "null"], "pattern": "^DEL-[A-Z0-9-]+$"},
+        "source_authority_ref": {"type": "string", "pattern": "^AUTH-[A-Z0-9-]+$"},
+        "issued_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "nonce": {"type": "string", "minLength": 16},
+        "single_use": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "delegator": {"$ref": "#/$defs/party"},
+    "delegate": {"$ref": "#/$defs/party"},
+    "authority_ceiling": {"$ref": "#/$defs/ceiling"},
+    "scope": {"$ref": "#/$defs/scope"},
+    "revocation": {
+      "type": "object",
+      "required": ["status", "revocation_ref"],
+      "properties": {
+        "status": {"enum": ["active", "revoked", "expired"]},
+        "revocation_ref": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "party": {
+      "type": "object",
+      "required": ["agent_id", "authenticated_identity_ref"],
+      "properties": {
+        "agent_id": {"type": "string", "minLength": 1},
+        "authenticated_identity_ref": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "ceiling": {
+      "type": "object",
+      "required": ["max_risk_level", "max_side_effect", "may_delegate_further", "max_delegation_depth"],
+      "properties": {
+        "max_risk_level": {"enum": ["L0", "L1", "L2", "L3", "L4"]},
+        "max_side_effect": {"enum": ["none", "internal_state", "external_state", "irreversible"]},
+        "may_delegate_further": {"type": "boolean"},
+        "max_delegation_depth": {"type": "integer", "minimum": 0, "maximum": 16}
+      },
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "object",
+      "required": ["requirements", "actions", "resources", "tools", "data_classes"],
+      "properties": {
+        "requirements": {"$ref": "#/$defs/set"},
+        "actions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "resources": {"$ref": "#/$defs/set"},
+        "tools": {"$ref": "#/$defs/set"},
+        "data_classes": {"$ref": "#/$defs/set"}
+      },
+      "additionalProperties": false
+    },
+    "set": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+  }
+}

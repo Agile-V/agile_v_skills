@@ -1,0 +1,53 @@
+# Agile-V Evidence Source Profile -- policy-side artifact.
+# Evidence producers MUST NOT edit this file within the task that uses it.
+# See docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md
+schema_version: '1.0'
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+adapter:
+  adapter_id: EAD-sigstore-attestation-v1
+  adapter_version: '1'
+  title: Sigstore / DSSE attestation
+  status: candidate
+  owner: Agile-V
+  evidence_type: attestation
+  source_version_scope:
+    tool: Sigstore (cosign)
+    format: DSSE envelope / in-toto statement
+    supported_versions: '>=2.0'
+  may_establish:
+  - attestation_integrity
+  - signer_identity
+  - subject_digest_binding
+  - provenance_statement_integrity
+  - provenance
+  may_not_establish:
+  - human_authority
+  - independent_verification
+  - intended_use_validation
+  - organizational_independence
+  - quality
+  - regulatory_compliance
+  - safety
+  - semantic_correctness
+  - test_result
+  - test_sufficiency
+  minimum_evidence_locators:
+  - bundle_uri
+  - subject_digest
+  - certificate_identity
+  freshness:
+    invalidated_by:
+    - source
+    - tool
+    max_age_days: null
+  known_limitations:
+  - signer_identity is established only when the verifier checked the certificate identity and issuer
+    against policy.
+  - A valid signature proves who signed what, not that the signed statement is true.
+  references:
+  - https://docs.sigstore.dev/cosign/verifying/attestation/
+  supersedes: null
+  superseded_by: null
+  trust_boundary: transparency-log-verification

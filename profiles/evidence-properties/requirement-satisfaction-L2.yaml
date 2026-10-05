@@ -1,0 +1,21 @@
+# Agile-V Evidence Property Profile -- policy-side artifact.
+# See docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md
+schema_version: '1.0'
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+profile:
+  profile_id: EVP-requirement-satisfaction-L2
+  claim_type: requirement_satisfaction
+  risk_level: L2
+  required_properties:
+  - provenance
+  - state_binding
+  - test_result
+  status: candidate
+  owner: Agile-V
+  rationale: 'L2: result, subject binding and execution provenance (e.g. pytest + CI workflow evidence).'
+  known_limitations:
+  - Independence is enforced by the gate receipt, not by this profile.
+  supersedes: null
+  superseded_by: null

@@ -1,0 +1,31 @@
+# Agile-V Context Source Profile -- policy-side artifact.
+# See docs/agile-v-runtime/16_CONTEXT_TRUST_CONTRACT.md
+schema_version: '1.0'
+profile:
+  id: CTX-REPOSITORY-CONTENT
+  source_class: repository_content
+  default_trust: untrusted_data
+  may_influence:
+  - implementation_context
+  - candidate_requirement
+  - candidate_test
+  - issue_discovery
+  may_not_influence:
+  - approved_requirement
+  - risk_level
+  - policy
+  - approval
+  - delegated_authority
+  - evidence_source_profile
+  - evidence_property_profile
+  - gate_decision
+  may_propose:
+  - approved_requirement
+  - risk_level
+  - policy
+  - evidence_source_profile
+  - evidence_property_profile
+  injection_sensitive: true
+  owner: Agile-V
+  notes: Files in the working tree, including README, comments and config. Not authoritative merely because
+    it is in the repository.

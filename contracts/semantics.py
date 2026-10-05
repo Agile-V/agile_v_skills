@@ -884,3 +884,638 @@ def authorize_gate_transition(
         findings.append({"code": "EVIDENCE_BUNDLE_REQUIRED"})
     eligible = eligible and not findings
     return {"status": "admitted" if eligible else "rejected", "findings": findings}
+
+
+# ---------------------------------------------------------------------------
+# Evidence Adapter Registry (docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md)
+# ---------------------------------------------------------------------------
+#
+# The registry is the trusted, policy-side source of evidence-source and
+# evidence-property profiles. It is loaded from repository-owned files whose
+# digests are pinned in catalog/evidence-adapters.json. Evidence producers
+# never supply profiles: a profile embedded in an evidence item is rejected.
+
+REGISTRY_ADMISSIBLE_STATUSES = frozenset({"candidate", "stable"})
+
+
+class RegistryIntegrityError(ValueError):
+    """The registry files do not match their catalog digests (fail closed)."""
+
+
+def _version_key(version: str) -> tuple[int, ...]:
+    parts = version.strip().split(".")
+    if not parts or not all(p.isdigit() for p in parts):
+        raise ValueError(version)
+    key = [int(p) for p in parts]
+    while len(key) > 1 and key[-1] == 0:
+        key.pop()
+    return tuple(key)
+
+
+def version_in_scope(version, spec: str) -> bool:
+    """True only when ``version`` satisfies every clause of ``spec``.
+
+    ``spec`` is ``*`` or comma-separated clauses of ``>=,<=,==,<,>`` with
+    dotted numeric versions. Unparseable versions never satisfy a non-``*``
+    scope (fail closed).
+    """
+    if spec == "*":
+        return True
+    if not isinstance(version, str):
+        return False
+    try:
+        actual = _version_key(version)
+    except ValueError:
+        return False
+    import operator
+    ops = {">=": operator.ge, "<=": operator.le, "==": operator.eq, "<": operator.lt, ">": operator.gt}
+    for clause in spec.split(","):
+        clause = clause.strip()
+        op = next(o for o in (">=", "<=", "==", "<", ">") if clause.startswith(o))
+        if not ops[op](actual, _version_key(clause[len(op):])):
+            return False
+    return True
+
+
+class EvidenceAdapterRegistry:
+    """Trusted, digest-pinned view of the evidence adapter registry.
+
+    ``resolve_adapter``/``resolve_property_profile`` return only current,
+    non-historical entries whose status is admissible. ``resolve_snapshot``
+    returns any registered snapshot -- including historical/deprecated ones --
+    by exact (id, digest) match only.
+    """
+
+    def __init__(self, catalog: dict, records: dict[str, dict]):
+        self._catalog = deepcopy(catalog)
+        self._sources: list[tuple[dict, dict]] = []
+        self._properties: list[tuple[dict, dict]] = []
+        for entry in catalog.get("adapters", []):
+            record = records.get(entry["profile_path"])
+            if record is None or profile_digest(record) != entry["profile_digest"]:
+                raise RegistryIntegrityError(entry["profile_path"])
+            if record["adapter"]["adapter_id"] != entry["adapter_id"]:
+                raise RegistryIntegrityError(entry["profile_path"])
+            self._sources.append((entry, deepcopy(record)))
+        for entry in catalog.get("property_profiles", []):
+            record = records.get(entry["profile_path"])
+            if record is None or profile_digest(record) != entry["profile_digest"]:
+                raise RegistryIntegrityError(entry["profile_path"])
+            self._properties.append((entry, deepcopy(record)))
+
+    @classmethod
+    def from_repository(cls, root: Path | None = None) -> "EvidenceAdapterRegistry":
+        import yaml
+        root = root or Path(__file__).resolve().parents[1]
+        catalog = json.loads((root / "catalog" / "evidence-adapters.json").read_text(encoding="utf-8"))
+        records = {}
+        for entry in catalog.get("adapters", []) + catalog.get("property_profiles", []):
+            path = root / entry["profile_path"]
+            try:
+                records[entry["profile_path"]] = yaml.safe_load(path.read_text(encoding="utf-8"))
+            except OSError as exc:
+                raise RegistryIntegrityError(entry["profile_path"]) from exc
+        return cls(catalog, records)
+
+    @property
+    def catalog(self) -> dict:
+        return deepcopy(self._catalog)
+
+    def resolve_adapter(self, ref):
+        for entry, record in self._sources:
+            if (entry["adapter_id"] == ref and not entry["historical"]
+                    and entry["status"] in REGISTRY_ADMISSIBLE_STATUSES):
+                return deepcopy(record)
+        return None
+
+    def resolve_snapshot(self, ref, digest):
+        for entry, record in self._sources:
+            if entry["adapter_id"] == ref and entry["profile_digest"] == digest:
+                return deepcopy(record)
+        return None
+
+    def is_superseded_snapshot(self, ref, digest) -> bool:
+        return any(entry["adapter_id"] == ref and entry["profile_digest"] == digest
+                   and (entry["historical"] or entry["status"] == "deprecated")
+                   for entry, _ in self._sources)
+
+    def resolve_property_profile(self, claim_type, risk_level):
+        for entry, record in self._properties:
+            if ((entry["claim_type"], entry["risk_level"]) == (claim_type, risk_level)
+                    and entry["status"] in REGISTRY_ADMISSIBLE_STATUSES):
+                return deepcopy(record)
+        return None
+
+    def historical_adapter_resolver(self, bundle_instance: dict):
+        """Resolver that returns, per adapter_ref, the exact snapshot the
+        bundle's evidence is bound to. Conflicting digests for one ref, or a
+        digest not in the registry, resolve to nothing (fail closed)."""
+        bound: dict[str, set] = {}
+        for item in bundle_instance.get("bundle", {}).get("evidence", []):
+            source = item.get("evidence_source") or {}
+            bound.setdefault(source.get("adapter_ref"), set()).add(source.get("adapter_digest"))
+
+        def resolve(ref):
+            digests = bound.get(ref, set())
+            if len(digests) != 1:
+                return None
+            return self.resolve_snapshot(ref, next(iter(digests)))
+        return resolve
+
+
+SELF_SUPPLIED_PROFILE_KEYS = frozenset({"profile", "adapter_profile", "source_profile", "may_establish"})
+
+
+def evaluate_evidence_bundle_against_registry(instance: dict, registry: EvidenceAdapterRegistry, *,
+                                              historical: bool = False) -> dict:
+    """Aggregate evidence evaluation using ONLY the trusted registry.
+
+    ``historical=False`` answers "is this admissible under current profiles?".
+    ``historical=True`` answers "was this valid under the exact profile
+    snapshots it was bound to?" -- it never establishes current reuse
+    eligibility (see 10_CHANGE_AWARE_REVALIDATION.md).
+    """
+    resolver = registry.historical_adapter_resolver(instance) if historical else registry.resolve_adapter
+    result = evaluate_evidence_bundle(instance, resolve_adapter=resolver,
+                                      resolve_property_profile=registry.resolve_property_profile)
+    if any(f["code"] == "SCHEMA_INVALID" for f in result["findings"]):
+        return result
+    findings = list(result["findings"])
+    for item in instance["bundle"]["evidence"]:
+        locator = {"evidence_ref": item["evidence_id"]}
+        source = item.get("evidence_source") or {}
+        ref = source.get("adapter_ref")
+        if SELF_SUPPLIED_PROFILE_KEYS & set(source):
+            findings.append({"code": "EVIDENCE_SOURCE_SELF_SUPPLIED_PROFILE", **locator})
+        if not historical and registry.is_superseded_snapshot(ref, source.get("adapter_digest")):
+            findings.append({"code": "EVIDENCE_SOURCE_SUPERSEDED", **locator})
+        record = resolver(ref)
+        if record is None:
+            continue
+        adapter = record["adapter"]
+        scope = adapter.get("source_version_scope", {}).get("supported_versions", "*")
+        if scope != "*":
+            if not source.get("tool_version"):
+                findings.append({"code": "EVIDENCE_SOURCE_TOOL_VERSION_UNKNOWN", **locator})
+            elif not version_in_scope(source["tool_version"], scope):
+                findings.append({"code": "EVIDENCE_SOURCE_TOOL_VERSION_UNSUPPORTED", **locator})
+        locators = source.get("locators")
+        required = adapter.get("minimum_evidence_locators", [])
+        if required and (not isinstance(locators, dict) or
+                         not all(isinstance(locators.get(k), str) and locators.get(k) for k in required)):
+            findings.append({"code": "EVIDENCE_LOCATOR_MISSING", **locator})
+    return {"status": "rejected" if findings else "admitted", "findings": findings}
+
+
+# ---------------------------------------------------------------------------
+# Delegation v2 (schemas/AGENT_DELEGATION_RECORD.v2.schema.json,
+# docs/agile-v-runtime/05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md section 3.1)
+# ---------------------------------------------------------------------------
+#
+# Delegation may preserve or reduce authority. It may never increase it.
+# Scope sets are compared literally: no wildcard, prefix or pattern grants
+# anything ("*" is an ordinary string). Unknown parent authority rejects.
+
+SIDE_EFFECT_ORDER = ["none", "internal_state", "external_state", "irreversible"]
+DELEGATION_SCOPE_FIELDS = ("requirements", "actions", "resources", "tools", "data_classes")
+_AUTHORITY_REQUIRED = {"id", "holder_identity_ref", "task_id", "scope", "authority_ceiling", "expires_at", "status"}
+
+
+def delegation_scope_is_subset_of_parent(child_scope: dict, parent_scope: dict) -> list[str]:
+    """Return the scope fields in which the child adds anything."""
+    return [field for field in DELEGATION_SCOPE_FIELDS
+            if not set(child_scope.get(field, [])) <= set(parent_scope.get(field, []))]
+
+
+def delegation_authority_is_attenuated(child_ceiling: dict, parent_ceiling: dict) -> list[str]:
+    """Return reason codes for every ceiling dimension the child raises."""
+    codes = []
+    if RISK_LEVEL_ORDER.index(child_ceiling["max_risk_level"]) > RISK_LEVEL_ORDER.index(parent_ceiling["max_risk_level"]):
+        codes.append("DELEGATION_RISK_ESCALATION")
+    if SIDE_EFFECT_ORDER.index(child_ceiling["max_side_effect"]) > SIDE_EFFECT_ORDER.index(parent_ceiling["max_side_effect"]):
+        codes.append("DELEGATION_SIDE_EFFECT_ESCALATION")
+    return codes
+
+
+def delegation_time_is_within_parent(child: dict, parent_expires_at: str) -> bool:
+    return _parse_datetime(child["delegation"]["expires_at"]) <= _parse_datetime(parent_expires_at)
+
+
+def delegation_depth_is_allowed(child_ceiling: dict, parent_ceiling: dict) -> list[str]:
+    """A parent must permit re-delegation; the child's remaining depth must
+    be strictly smaller and it cannot gain re-delegation the parent lacks."""
+    codes = []
+    if not parent_ceiling["may_delegate_further"] or parent_ceiling["max_delegation_depth"] < 1:
+        codes.append("DELEGATION_REDELEGATION_NOT_PERMITTED")
+    elif child_ceiling["max_delegation_depth"] > parent_ceiling["max_delegation_depth"] - 1:
+        codes.append("DELEGATION_DEPTH_EXCEEDED")
+    if child_ceiling["may_delegate_further"] and child_ceiling["max_delegation_depth"] < 1:
+        codes.append("DELEGATION_DEPTH_EXCEEDED")
+    return codes
+
+
+def _authority_is_well_formed(record) -> bool:
+    if not isinstance(record, dict) or not isinstance(record.get("authority"), dict):
+        return False
+    authority = record["authority"]
+    if not _AUTHORITY_REQUIRED <= authority.keys():
+        return False
+    ceiling, scope = authority["authority_ceiling"], authority["scope"]
+    try:
+        _parse_datetime(authority["expires_at"])
+        return (isinstance(scope, dict) and isinstance(ceiling, dict)
+                and all(isinstance(scope.get(f), list) for f in DELEGATION_SCOPE_FIELDS)
+                and ceiling.get("max_risk_level") in RISK_LEVEL_ORDER
+                and ceiling.get("max_side_effect") in SIDE_EFFECT_ORDER
+                and isinstance(ceiling.get("may_delegate_further"), bool)
+                and isinstance(ceiling.get("max_delegation_depth"), int))
+    except (TypeError, ValueError, AttributeError):
+        return False
+
+
+def _link_findings(child: dict, parent_scope: dict, parent_ceiling: dict, parent_expires: str,
+                   *, root: bool) -> list[dict]:
+    ref = child["delegation"]["id"]
+    findings = [{"code": "DELEGATION_SCOPE_EXPANSION", "delegation_ref": ref, "field": field}
+                for field in delegation_scope_is_subset_of_parent(child["scope"], parent_scope)]
+    findings += [{"code": code, "delegation_ref": ref}
+                 for code in delegation_authority_is_attenuated(child["authority_ceiling"], parent_ceiling)]
+    if not delegation_time_is_within_parent(child, parent_expires):
+        findings.append({"code": "DELEGATION_EXPIRY_EXTENDED", "delegation_ref": ref})
+    child_ceiling = child["authority_ceiling"]
+    if root:
+        # A root grant is bounded by the authority itself: it may not
+        # exceed the authority's own re-delegation depth.
+        if child_ceiling["max_delegation_depth"] > parent_ceiling["max_delegation_depth"]:
+            findings.append({"code": "DELEGATION_DEPTH_EXCEEDED", "delegation_ref": ref})
+        if child_ceiling["may_delegate_further"] and not parent_ceiling["may_delegate_further"]:
+            findings.append({"code": "DELEGATION_REDELEGATION_NOT_PERMITTED", "delegation_ref": ref})
+    else:
+        findings += [{"code": code, "delegation_ref": ref}
+                     for code in delegation_depth_is_allowed(child_ceiling, parent_ceiling)]
+    return findings
+
+
+def delegation_chain_is_valid(record: dict, **kwargs) -> bool:
+    """Boolean convenience over ``evaluate_delegation``; prefer the findings."""
+    return evaluate_delegation(record, **kwargs)["status"] == "admitted"
+
+
+def evaluate_delegation(record: dict, *, resolve_delegation, resolve_authority, now: datetime,
+                        is_nonce_consumed=None, request: dict | None = None,
+                        max_chain_length: int = 16) -> dict:
+    """Canonical aggregate evaluator for a v2 delegation (and its chain).
+
+    resolve_delegation(ref) -> durable v2 record or None (trusted store).
+    resolve_authority(ref)  -> {"authority": {...}} grant from the trusted
+        authority provider, already authenticated; None when unknown.
+    is_nonce_consumed(nonce) -> True when a single-use delegation was used.
+    request: optional {"action", "resource", "tool", "data_class",
+        "requirement", "risk_level", "side_effect"} checked against the leaf.
+
+    Evaluation never consumes a nonce; the runtime must do that atomically
+    at the effect boundary.
+    """
+    findings = _schema_findings(record, "AGENT_DELEGATION_RECORD.v2")
+    if findings:
+        return {"status": "rejected", "findings": findings, "chain": []}
+    if not isinstance(now, datetime) or now.tzinfo is None:
+        return {"status": "rejected", "findings": [{"code": "EVALUATION_TIME_INVALID"}], "chain": []}
+    chain = [deepcopy(record)]
+    seen = {record["delegation"]["id"]}
+    while chain[-1]["delegation"]["parent_delegation_ref"] is not None:
+        parent_ref = chain[-1]["delegation"]["parent_delegation_ref"]
+        if parent_ref in seen or len(chain) >= max_chain_length:
+            findings.append({"code": "DELEGATION_CHAIN_CYCLE", "delegation_ref": parent_ref})
+            return {"status": "rejected", "findings": findings, "chain": [c["delegation"]["id"] for c in chain]}
+        parent = _resolve(resolve_delegation, (parent_ref,), "DELEGATION_PARENT_UNRESOLVED", findings,
+                          delegation_ref=parent_ref)
+        if parent is None:
+            return {"status": "rejected", "findings": findings, "chain": [c["delegation"]["id"] for c in chain]}
+        errors = _schema_findings(parent, "AGENT_DELEGATION_RECORD.v2")
+        if errors or parent["delegation"]["id"] != parent_ref:
+            findings.extend(errors or [{"code": "DELEGATION_PARENT_UNRESOLVED", "delegation_ref": parent_ref}])
+            return {"status": "rejected", "findings": findings, "chain": [c["delegation"]["id"] for c in chain]}
+        seen.add(parent_ref)
+        chain.append(parent)
+    ids = [c["delegation"]["id"] for c in chain]
+
+    root = chain[-1]
+    authority_ref = root["delegation"]["source_authority_ref"]
+    authority_record = _resolve(resolve_authority, (authority_ref,), "DELEGATION_AUTHORITY_UNRESOLVED",
+                                findings, authority_ref=authority_ref)
+    if authority_record is not None and not _authority_is_well_formed(authority_record):
+        findings.append({"code": "DELEGATION_AUTHORITY_INVALID", "authority_ref": authority_ref})
+        authority_record = None
+    if authority_record is not None:
+        authority = authority_record["authority"]
+        if authority["id"] != authority_ref:
+            findings.append({"code": "DELEGATION_AUTHORITY_INVALID", "authority_ref": authority_ref})
+        if authority["status"] != "active" or _parse_datetime(authority["expires_at"]) <= now:
+            findings.append({"code": "DELEGATION_AUTHORITY_REVOKED", "authority_ref": authority_ref})
+        if authority["holder_identity_ref"] != root["delegator"]["authenticated_identity_ref"]:
+            findings.append({"code": "DELEGATION_CHAIN_BROKEN", "delegation_ref": root["delegation"]["id"]})
+        if authority["task_id"] != root["delegation"]["task_id"]:
+            findings.append({"code": "DELEGATION_TASK_MISMATCH", "delegation_ref": root["delegation"]["id"]})
+        findings += _link_findings(root, authority["scope"], authority["authority_ceiling"],
+                                   authority["expires_at"], root=True)
+
+    nonces = set()
+    for index, item in enumerate(chain):
+        ref = item["delegation"]["id"]
+        issued = _parse_datetime(item["delegation"]["issued_at"])
+        expires = _parse_datetime(item["delegation"]["expires_at"])
+        if item["revocation"]["status"] == "revoked":
+            findings.append({"code": "DELEGATION_REVOKED", "delegation_ref": ref})
+        if item["revocation"]["status"] == "expired" or expires <= now:
+            findings.append({"code": "DELEGATION_EXPIRED", "delegation_ref": ref})
+        if issued > now or expires <= issued:
+            findings.append({"code": "DELEGATION_NOT_YET_VALID", "delegation_ref": ref})
+        nonce = item["delegation"]["nonce"]
+        if nonce in nonces:
+            findings.append({"code": "DELEGATION_REPLAYED", "delegation_ref": ref})
+        nonces.add(nonce)
+        if index == 0 and item["delegation"]["single_use"]:
+            try:
+                consumed = is_nonce_consumed is None or is_nonce_consumed(nonce) is not False
+            except Exception:
+                consumed = True
+            if consumed:
+                findings.append({"code": "DELEGATION_REPLAYED", "delegation_ref": ref})
+        if index + 1 < len(chain):
+            parent = chain[index + 1]
+            if (item["delegator"]["authenticated_identity_ref"] != parent["delegate"]["authenticated_identity_ref"]
+                    or item["delegation"]["task_id"] != parent["delegation"]["task_id"]):
+                findings.append({"code": "DELEGATION_CHAIN_BROKEN", "delegation_ref": ref})
+            findings += _link_findings(item, parent["scope"], parent["authority_ceiling"],
+                                       parent["delegation"]["expires_at"], root=False)
+
+    if request is not None:
+        leaf = chain[0]
+        scope, ceiling = leaf["scope"], leaf["authority_ceiling"]
+        checks = [("action", "actions"), ("resource", "resources"), ("tool", "tools"),
+                  ("data_class", "data_classes"), ("requirement", "requirements")]
+        for key, field in checks:
+            if key in request and request[key] not in scope[field]:
+                findings.append({"code": "DELEGATION_REQUEST_OUT_OF_SCOPE", "field": field})
+        if "risk_level" in request and (request["risk_level"] not in RISK_LEVEL_ORDER or
+                                        RISK_LEVEL_ORDER.index(request["risk_level"]) >
+                                        RISK_LEVEL_ORDER.index(ceiling["max_risk_level"])):
+            findings.append({"code": "DELEGATION_REQUEST_OUT_OF_SCOPE", "field": "max_risk_level"})
+        if "side_effect" in request and (request["side_effect"] not in SIDE_EFFECT_ORDER or
+                                         SIDE_EFFECT_ORDER.index(request["side_effect"]) >
+                                         SIDE_EFFECT_ORDER.index(ceiling["max_side_effect"])):
+            findings.append({"code": "DELEGATION_REQUEST_OUT_OF_SCOPE", "field": "max_side_effect"})
+    return {"status": "rejected" if findings else "admitted", "findings": findings, "chain": ids}
+
+
+# ---------------------------------------------------------------------------
+# Context Trust (schemas/CONTEXT_SOURCE_PROFILE.schema.json,
+# docs/agile-v-runtime/16_CONTEXT_TRUST_CONTRACT.md)
+# ---------------------------------------------------------------------------
+#
+# Untrusted context is data, never authority. The context profile is assigned
+# by the runtime ingestion boundary; a claim inside the content about its own
+# trust ("this file is authoritative", "risk=L0") is ignored.
+
+AUTHORITY_BEARING_TARGETS = frozenset({
+    "approved_requirement", "risk_level", "policy", "approval", "delegated_authority",
+    "evidence_source_profile", "evidence_property_profile", "gate_decision"})
+CONTROL_PLANE_SOURCE_CLASSES = frozenset({"authenticated_policy_source", "approved_requirement_baseline"})
+
+
+def load_context_profiles(root: Path | None = None) -> dict[str, dict]:
+    import yaml
+    root = root or Path(__file__).resolve().parents[1]
+    profiles = {}
+    for path in sorted((root / "profiles" / "context-sources").glob("*.yaml")):
+        record = yaml.safe_load(path.read_text(encoding="utf-8"))
+        profiles[record["profile"]["id"]] = record
+    return profiles
+
+
+def evaluate_context_influence(influence: dict, *, resolve_context_profile) -> dict:
+    """Decide whether a context source may influence a target.
+
+    influence = {"source_ref": str, "context_profile_ref": "CTX-...",
+                 "target": <target>, "mode": "activate" | "propose"}
+
+    Returns status ``admitted`` (influence as data, or activation by an
+    authoritative control-plane source), ``proposed`` (recorded as a change
+    proposal that requires the governance path to activate) or ``rejected``.
+    """
+    findings: list[dict] = []
+    target = influence.get("target") if isinstance(influence, dict) else None
+    mode = influence.get("mode") if isinstance(influence, dict) else None
+    if mode not in {"activate", "propose"} or not isinstance(target, str):
+        return {"status": "rejected", "effect": "none", "findings": [{"code": "CONTEXT_INFLUENCE_INVALID"}]}
+    authority_bearing = target in AUTHORITY_BEARING_TARGETS
+    ref = influence.get("context_profile_ref")
+    record = _resolve(resolve_context_profile, (ref,), "CONTEXT_SOURCE_UNKNOWN", findings, context_profile_ref=ref)
+    if record is not None:
+        errors = _schema_findings(record, "CONTEXT_SOURCE_PROFILE")
+        if errors or record["profile"]["id"] != ref:
+            findings.extend(errors or [{"code": "CONTEXT_SOURCE_UNKNOWN", "context_profile_ref": ref}])
+            record = None
+    if record is None:
+        if authority_bearing:
+            return {"status": "rejected", "effect": "none", "findings": findings}
+        # Non-authority targets: unknown sources are still usable as untrusted data.
+        return {"status": "admitted", "effect": "data", "findings": findings}
+    profile = record["profile"]
+    authoritative = (profile["default_trust"] == "authoritative"
+                     and profile["source_class"] in CONTROL_PLANE_SOURCE_CLASSES)
+    if target in profile["may_not_influence"]:
+        if mode == "propose" and target in profile["may_propose"]:
+            return {"status": "proposed", "effect": "proposal", "findings": []}
+        code = "CONTEXT_AUTHORITY_ESCALATION" if authority_bearing else "CONTEXT_INFLUENCE_NOT_PERMITTED"
+        return {"status": "rejected", "effect": "none", "findings": [{"code": code, "target": target}]}
+    if mode == "propose":
+        if target in profile["may_propose"] or (not authority_bearing and target in profile["may_influence"]):
+            return {"status": "proposed", "effect": "proposal", "findings": []}
+        return {"status": "rejected", "effect": "none",
+                "findings": [{"code": "CONTEXT_PROPOSAL_NOT_PERMITTED", "target": target}]}
+    if target not in profile["may_influence"]:
+        code = "CONTEXT_AUTHORITY_ESCALATION" if authority_bearing else "CONTEXT_INFLUENCE_NOT_PERMITTED"
+        return {"status": "rejected", "effect": "none", "findings": [{"code": code, "target": target}]}
+    if authority_bearing and not authoritative:
+        return {"status": "rejected", "effect": "none",
+                "findings": [{"code": "CONTEXT_AUTHORITY_ESCALATION", "target": target}]}
+    return {"status": "admitted", "effect": "activate" if authority_bearing else "data", "findings": []}
+
+
+# ---------------------------------------------------------------------------
+# Revalidation reuse aggregate (10_CHANGE_AWARE_REVALIDATION.md)
+# ---------------------------------------------------------------------------
+
+def evaluate_revalidation_reuse(assessment_instance: dict, evidence_item: dict) -> dict:
+    """May this evidence item be reused for a current decision after change?
+
+    Admitted only when the assessment is schema-valid and conservative, the
+    item's own evaluation is UNCHANGED with complete coverage, the item
+    declares its invalidation dependencies, and none of the changed
+    dependency kinds is one the item declares (an UNCHANGED verdict that
+    contradicts a declared dependency is rejected, not trusted).
+    """
+    findings = _schema_findings(assessment_instance, "REVALIDATION_ASSESSMENT")
+    if findings:
+        return {"status": "rejected", "findings": findings}
+    assessment = assessment_instance["assessment"]
+    ref = evidence_item.get("evidence_id") if isinstance(evidence_item, dict) else None
+    evaluation = next((e for e in assessment["evaluations"] if e["evidence_ref"] == ref), None)
+    if evaluation is None:
+        return {"status": "rejected", "findings": [{"code": "REVALIDATION_EVALUATION_MISSING", "evidence_ref": ref}]}
+    if not revalidation_coverage_is_conservative(assessment_instance):
+        findings.append({"code": "REVALIDATION_COVERAGE_NOT_CONSERVATIVE"})
+    if evaluation["result"] not in REUSE_ELIGIBLE_RESULTS:
+        findings.append({"code": "REVALIDATION_RESULT_NOT_REUSABLE", "result": evaluation["result"]})
+    if evaluation.get("dependency_coverage", assessment["coverage"]) != "complete":
+        findings.append({"code": "REVALIDATION_COVERAGE_INCOMPLETE"})
+    dependencies = evidence_item.get("invalidation_dependencies")
+    if not dependencies:
+        findings.append({"code": "REVALIDATION_DEPENDENCIES_UNKNOWN", "evidence_ref": ref})
+    else:
+        changed = {c["kind"] for c in assessment["changed_refs"]}
+        overlap = changed & {d["kind"] for d in dependencies}
+        if overlap and evaluation["result"] == "UNCHANGED":
+            findings.append({"code": "REVALIDATION_DEPENDENCY_CONFLICT", "kinds": sorted(overlap)})
+    return {"status": "rejected" if findings else "admitted", "findings": findings}
+
+
+# ---------------------------------------------------------------------------
+# AI Influence Traceability (schemas/AI_RUN_MANIFEST.schema.json; draft skill
+# agile-v-aibom). Reference checks used by the graduation evidence package.
+# ---------------------------------------------------------------------------
+
+import re as _re
+
+_REASONING_MARKERS = _re.compile(r"<\s*/?\s*(thinking|reasoning|scratchpad)\b|chain[-_ ]of[-_ ]thought\s*:", _re.I)
+_SECRET_PATTERNS = _re.compile(
+    r"(-----BEGIN [A-Z ]*PRIVATE KEY-----|\bAKIA[0-9A-Z]{16}\b|\bgh[pousr]_[A-Za-z0-9]{30,}\b|"
+    r"\bsk-[A-Za-z0-9_-]{20,}\b|\bxox[abpr]-[A-Za-z0-9-]{10,}\b|\bBearer\s+[A-Za-z0-9._-]{20,})")
+AIBOM_COMPONENT_KINDS = {"models": "model", "tools": "tool", "agile_v_skills": "skill"}
+
+
+def _strings(value):
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, dict):
+        for item in value.values():
+            yield from _strings(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _strings(item)
+
+
+def _aibom_components(manifest: dict):
+    for field, kind in AIBOM_COMPONENT_KINDS.items():
+        for index, item in enumerate(manifest.get(field) or []):
+            yield kind, f"{field}[{index}]", item
+    if isinstance(manifest.get("agent_runtime"), dict):
+        yield "runtime", "agent_runtime", manifest["agent_runtime"]
+
+
+def evaluate_ai_run_manifest(manifest: dict, *, resolve_source=None) -> dict:
+    """Reference admission checks for an AI Run Manifest.
+
+    ``verified`` confidence is accepted only when the component's
+    ``evidence_locator`` is ``<adapter_ref>#<locator>`` and the trusted
+    ``resolve_source(adapter_ref)`` profile may establish
+    ``verified_<kind>_identity``. No registry v1 profile can, so ``verified``
+    fails closed today: a declaration is never promoted to verification.
+    """
+    findings = _schema_findings(manifest, "AI_RUN_MANIFEST")
+    if findings:
+        return {"status": "rejected", "findings": findings}
+    privacy = manifest["security_and_privacy"]
+    text = list(_strings(manifest))
+    if privacy["hidden_chain_of_thought_excluded"] is not True or any(_REASONING_MARKERS.search(s) for s in text):
+        findings.append({"code": "AIBOM_HIDDEN_REASONING_CAPTURED"})
+    if privacy["secrets_redacted"] is not True or any(_SECRET_PATTERNS.search(s) for s in text):
+        findings.append({"code": "AIBOM_SECRET_CAPTURED"})
+    risk = manifest["risk"]["agile_v_risk_level"]
+    for kind, path, item in _aibom_components(manifest):
+        confidence = item.get("confidence")
+        if confidence == "verified":
+            locator = item.get("evidence_locator") or ""
+            ref = locator.split("#", 1)[0] if "#" in locator else None
+            profile = None
+            if ref and resolve_source is not None:
+                try:
+                    profile = resolve_source(ref)
+                except Exception:
+                    profile = None
+            capability = f"verified_{kind}_identity"
+            if not (isinstance(profile, dict) and capability in profile.get("adapter", {}).get("may_establish", [])
+                    and capability not in profile.get("adapter", {}).get("may_not_establish", [])):
+                findings.append({"code": "AIBOM_VERIFIED_WITHOUT_TRUSTED_SOURCE", "path": path})
+        if (confidence == "unresolved" and kind in {"model", "runtime"}
+                and RISK_LEVEL_ORDER.index(risk) >= RISK_LEVEL_ORDER.index("L3")):
+            findings.append({"code": "AIBOM_UNRESOLVED_MATERIAL_IDENTITY", "path": path})
+    return {"status": "rejected" if findings else "admitted", "findings": findings}
+
+
+def _identity(kind: str, item: dict) -> tuple[str, dict]:
+    if kind == "model":
+        return item["name"], {k: item.get(k) for k in ("provider", "model_id", "model_version", "endpoint_or_deployment")}
+    if kind == "tool":
+        return item["name"], {k: item.get(k) for k in ("type", "version", "allowed", "used")}
+    if kind == "skill":
+        return item["skill"], {k: item.get(k) for k in ("version", "source", "commit_sha")}
+    return "agent_runtime", {k: item.get(k) for k in ("agent_name", "agent_framework", "framework_version",
+                                                      "sandbox_image", "sandbox_image_digest", "execution_environment")}
+
+
+# AI-BOM component kind -> Change-Aware Revalidation dependency kind.
+AIBOM_REVALIDATION_KIND = {"model": "model", "tool": "tool", "skill": "tool", "runtime": "environment"}
+
+
+def ai_bom_diff(baseline: dict, current: dict) -> list[dict]:
+    """Material AI-context changes between two manifests, as revalidation
+    ``changed_refs`` entries ({kind, ref, change, ai_component}). Confidence
+    changes are reported too, so a declared->verified flip is never silent."""
+    def index(manifest):
+        result = {}
+        for kind, _, item in _aibom_components(manifest):
+            name, identity = _identity(kind, item)
+            result[(kind, name)] = (identity, item.get("confidence"))
+        return result
+    before, after = index(baseline), index(current)
+    changes = []
+    for key in sorted(set(before) | set(after)):
+        kind, name = key
+        if key not in before:
+            change = "added"
+        elif key not in after:
+            change = "removed"
+        elif before[key][0] != after[key][0]:
+            change = "modified"
+        elif before[key][1] != after[key][1]:
+            change = "confidence_changed"
+        else:
+            continue
+        changes.append({"kind": AIBOM_REVALIDATION_KIND[kind], "ref": f"{kind}:{name}", "change": change,
+                        "ai_component": kind})
+    return changes
+
+
+def reconcile_ai_inventory(declared_models: list[dict], observed_components: list[dict]) -> list[dict]:
+    """Compare declared models with an observed runtime inventory (e.g. a
+    k8s-aibom export normalized to {name, model_id, confidence}). Observed
+    confidence is retained as reported; nothing is upgraded to verified."""
+    observed = {c.get("model_id") or c.get("name"): c for c in observed_components}
+    declared = {m["model_id"]: m for m in declared_models}
+    findings = []
+    for model_id, model in sorted(declared.items()):
+        match = observed.get(model_id)
+        if match is None:
+            findings.append({"code": "AIBOM_DECLARED_NOT_OBSERVED", "model_id": model_id,
+                             "declared_confidence": model.get("confidence")})
+        else:
+            findings.append({"code": "AIBOM_OBSERVED", "model_id": model_id,
+                             "declared_confidence": model.get("confidence"),
+                             "observed_confidence": match.get("confidence", "unresolved")})
+    for model_id in sorted(set(observed) - set(declared)):
+        findings.append({"code": "AIBOM_OBSERVED_NOT_DECLARED", "model_id": model_id,
+                         "observed_confidence": observed[model_id].get("confidence", "unresolved")})
+    return findings

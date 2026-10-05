@@ -75,7 +75,7 @@ Choose the smallest profile appropriate to the risk.
 |---|---|
 | **49 skills** | Machine-readable [`catalog/skills.json`](catalog/skills.json) and the [Skill Routing Guide](SKILL_ROUTING_GUIDE.md) |
 | **Executable contract suite** | Run `python -m pytest tests -q` for the current pass/skip counts; deterministic schema, aggregate admission, and repository tests under [`tests/`](tests/) |
-| **36 evidence schemas** | Requirements, risk, builds, tests, verification, validation, approvals, traceability, controls, delegation, and AI provenance in [`schemas/`](schemas/) |
+| **40 evidence schemas** | Requirements, risk, builds, tests, verification, validation, approvals, traceability, controls, delegation, and AI provenance in [`schemas/`](schemas/) |
 | **Five build domains** | [Python](domains/build-agent-python/SKILL.md), [JavaScript/TypeScript](domains/build-agent-js/SKILL.md), [NestJS](domains/build-agent-nestjs/SKILL.md), [Dart/Flutter](domains/build-agent-dart/SKILL.md), and [embedded C/C++](domains/build-agent-embedded/SKILL.md) |
 | **Public runtime contracts** | [Lifecycle](docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md), [risk classification](docs/agile-v-runtime/04_RISK_CLASSIFICATION.md), and [tool/delegation controls](docs/agile-v-runtime/05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md) |
 | **Reproducible claims policy** | Measurement inputs and methods are defined in [`PERFORMANCE.md`](PERFORMANCE.md) |

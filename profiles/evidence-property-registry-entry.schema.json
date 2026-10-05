@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/profiles/evidence-property-registry-entry.schema.json",
+  "title": "Agile-V Evidence Adapter Registry property-profile entry (overlay on EVIDENCE_PROPERTY_PROFILE)",
+  "type": "object",
+  "required": ["profile", "fixture_owner"],
+  "properties": {
+    "fixture_owner": {"type": "string", "minLength": 1},
+    "profile": {
+      "type": "object",
+      "required": ["profile_id", "claim_type", "risk_level", "required_properties", "status", "owner",
+                   "rationale", "known_limitations", "supersedes", "superseded_by"],
+      "properties": {
+        "profile_id": {"type": "string", "pattern": "^EVP-[a-z0-9]+(?:-[a-z0-9]+)*-L[0-4]$"},
+        "claim_type": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+        "risk_level": {"enum": ["L0", "L1", "L2", "L3", "L4"]},
+        "required_properties": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"}},
+        "status": {"enum": ["experimental", "candidate", "stable", "deprecated"]},
+        "owner": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 10},
+        "known_limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10}},
+        "supersedes": {"type": ["string", "null"], "pattern": "^sha256:[a-f0-9]{64}$"},
+        "superseded_by": {"type": ["string", "null"], "pattern": "^sha256:[a-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

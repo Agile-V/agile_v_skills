@@ -227,6 +227,18 @@ From this contract version forward: any **new** `L2`+ gate decision MUST be reco
 
 `contracts/semantics.py` exposes three aggregate entrypoints — `evaluate_evidence_bundle`, `evaluate_gate_receipt`, `authorize_gate_transition` — that are the only functions that should be documented as answering "may this evidence/gate actually advance?". They run every applicable lower-level predicate and return `{"status": "admitted"|"rejected", "findings": [{"code": ...}, ...]}` rather than a bare boolean. See `07_EVIDENCE_ADMISSION_CONTRACT.md` section 7.
 
+### 7.10 Registry, delegation v2, context trust, telemetry and runtime compatibility
+
+| Schema | Purpose | Contract |
+|---|---|---|
+| Registry overlays `profiles/evidence-*-registry-entry.schema.json` | Stricter registry fields (owner, status, version scope, locators, freshness, limitations, supersession) on top of the source/property profile storage schemas | [15_EVIDENCE_ADAPTER_REGISTRY.md](15_EVIDENCE_ADAPTER_REGISTRY.md) |
+| [`AGENT_DELEGATION_RECORD.v2`](../../schemas/AGENT_DELEGATION_RECORD.v2.schema.json) | Attenuating delegation: parent link, source authority, ceiling (risk, side effect, depth), scope sets, nonce, revocation. v1 unchanged. | [05 §3.1](05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md) |
+| [`CONTEXT_SOURCE_PROFILE`](../../schemas/CONTEXT_SOURCE_PROFILE.schema.json) | Source class + allowed influence; only control-plane classes may be authoritative | [16_CONTEXT_TRUST_CONTRACT.md](16_CONTEXT_TRUST_CONTRACT.md) |
+| [`AGILE_V_TELEMETRY_EVENT`](../../schemas/AGILE_V_TELEMETRY_EVENT.schema.json) | OpenTelemetry-mapped lifecycle/assurance events with privacy-safe defaults | [17_OPENTELEMETRY_CONTRACT.md](17_OPENTELEMETRY_CONTRACT.md) |
+| [`RUNTIME_COMPATIBILITY`](../../schemas/RUNTIME_COMPATIBILITY.schema.json) | Validates `contracts/AGILE_V_RUNTIME_COMPATIBILITY.yaml`; `verified` requires an immutable release identity and a clean, skip-free result | [conformance/RUNTIME_STATUS.md](../../conformance/RUNTIME_STATUS.md) |
+
+Additional aggregate evaluators: `evaluate_evidence_bundle_against_registry`, `evaluate_delegation`, `evaluate_context_influence`, `evaluate_revalidation_reuse`, `evaluate_ai_run_manifest`.
+
 ---
 
 ## Cross-references

@@ -1,0 +1,22 @@
+# Agile-V Context Source Profile -- policy-side artifact.
+# See docs/agile-v-runtime/16_CONTEXT_TRUST_CONTRACT.md
+schema_version: '1.0'
+profile:
+  id: CTX-TOOL-DESCRIPTION
+  source_class: tool_description
+  default_trust: untrusted_data
+  may_influence:
+  - implementation_context
+  may_not_influence:
+  - approved_requirement
+  - risk_level
+  - policy
+  - approval
+  - delegated_authority
+  - evidence_source_profile
+  - evidence_property_profile
+  - gate_decision
+  may_propose: []
+  injection_sensitive: true
+  owner: Agile-V
+  notes: MCP/tool descriptions are untrusted text; they never grant permission or declare required privileges.

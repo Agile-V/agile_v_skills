@@ -1,0 +1,17 @@
+{
+  "schema_version": "2.0",
+  "delegation": {
+    "id": "DEL-NEG-1",
+    "task_id": "AAV-0042",
+    "parent_delegation_ref": null,
+    "issued_at": "2026-09-14T00:00:00Z",
+    "expires_at": "2026-09-20T00:00:00Z",
+    "nonce": "short",
+    "single_use": false
+  },
+  "delegator": {"agent_id": "orchestrator", "authenticated_identity_ref": "ID-ORCH"},
+  "delegate": {"agent_id": "build-agent", "authenticated_identity_ref": "ID-BUILD", "role": "admin"},
+  "authority_ceiling": {"max_risk_level": "L9", "max_side_effect": "everything", "may_delegate_further": true, "max_delegation_depth": -1},
+  "scope": {"requirements": [], "actions": [], "resources": [], "tools": [], "data_classes": []},
+  "revocation": {"status": "active", "revocation_ref": null}
+}

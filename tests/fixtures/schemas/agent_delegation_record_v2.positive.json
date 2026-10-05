@@ -1,0 +1,31 @@
+{
+  "schema_version": "2.0",
+  "delegation": {
+    "id": "DEL-ROOT-1",
+    "task_id": "AAV-0042",
+    "correlation_id": "COR-0042",
+    "parent_delegation_ref": null,
+    "source_authority_ref": "AUTH-LEAD-1",
+    "issued_at": "2026-09-14T00:00:00Z",
+    "expires_at": "2026-09-20T00:00:00Z",
+    "nonce": "n-root-0000000000000001",
+    "single_use": false
+  },
+  "delegator": {"agent_id": "orchestrator", "authenticated_identity_ref": "ID-ORCH"},
+  "delegate": {"agent_id": "build-agent", "authenticated_identity_ref": "ID-BUILD"},
+  "authority_ceiling": {
+    "max_risk_level": "L2",
+    "max_side_effect": "internal_state",
+    "may_delegate_further": true,
+    "max_delegation_depth": 1
+  },
+  "scope": {
+    "requirements": ["REQ-1", "REQ-2"],
+    "actions": ["edit", "test"],
+    "resources": ["ART-1", "ART-2"],
+    "tools": ["fs.write", "pytest"],
+    "data_classes": ["internal"]
+  },
+  "revocation": {"status": "active", "revocation_ref": null},
+  "evidence_refs": ["TRACE-1"]
+}

@@ -1,0 +1,24 @@
+# Agile-V Evidence Property Profile -- policy-side artifact.
+# See docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md
+schema_version: '1.0'
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+profile:
+  profile_id: EVP-firmware-hil-L4
+  claim_type: firmware_hil
+  risk_level: L4
+  required_properties:
+  - hil_execution
+  - physical_measurement
+  - provenance
+  - state_binding
+  - target_configuration
+  status: candidate
+  owner: Agile-V
+  rationale: Hardware-in-the-loop execution on the bound image and hardware revision with physical measurement.
+    Simulation sources cannot satisfy it.
+  known_limitations:
+  - No HIL source profile exists in registry v1; claims of this type fail closed until one is reviewed.
+  supersedes: null
+  superseded_by: null

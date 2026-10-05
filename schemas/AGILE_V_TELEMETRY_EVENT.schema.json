@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/schemas/AGILE_V_TELEMETRY_EVENT.schema.json",
+  "title": "Agile-V telemetry event (OpenTelemetry mapping)",
+  "description": "Vendor-neutral lifecycle/assurance span or event. Reuses OpenTelemetry semantic conventions (gen_ai.*, service.*, deployment.*, code.*, error.*, vcs.*) and adds agilev.* only for assurance concepts. Telemetry is observability, never evidence admission. See docs/agile-v-runtime/17_OPENTELEMETRY_CONTRACT.md.",
+  "type": "object",
+  "required": ["schema_version", "name", "kind", "trace_id", "span_id", "time", "privacy_profile", "attributes"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "name": {"enum": ["agilev.task.create", "agilev.requirements.freeze", "agilev.risk.classify",
+                      "agilev.evidence.collect", "agilev.evidence.admit", "agilev.evidence.reject",
+                      "agilev.verify", "agilev.gate.evaluate", "agilev.gate.authorize",
+                      "agilev.approval.consume", "agilev.revalidation.evaluate",
+                      "agilev.delegation.evaluate", "agilev.transition.execute"]},
+    "kind": {"enum": ["span", "event"]},
+    "trace_id": {"type": "string", "pattern": "^[a-f0-9]{32}$"},
+    "span_id": {"type": "string", "pattern": "^[a-f0-9]{16}$"},
+    "parent_span_id": {"type": "string", "pattern": "^[a-f0-9]{16}$"},
+    "time": {"type": "string", "format": "date-time"},
+    "end_time": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["UNSET", "OK", "ERROR"]},
+    "privacy_profile": {"enum": ["default", "extended"]},
+    "attributes": {
+      "type": "object",
+      "required": ["agilev.task.id"],
+      "propertyNames": {
+        "allOf": [
+          {"pattern": "^(agilev|gen_ai|service|deployment|code|error|vcs|session)\\.[a-z0-9_.]+$"},
+          {"not": {"pattern": "(reasoning|chain_of_thought|thought|thinking|secret|password|credential|api_key|private_key|authorization)"}}
+        ]
+      },
+      "properties": {
+        "agilev.task.id": {"type": "string", "minLength": 1},
+        "agilev.risk.level": {"enum": ["L0", "L1", "L2", "L3", "L4"]},
+        "agilev.subject.type": {"type": "string"},
+        "agilev.subject.ref": {"type": "string"},
+        "agilev.subject.digest": {"$ref": "#/$defs/digest"},
+        "agilev.policy.digest": {"$ref": "#/$defs/digest"},
+        "agilev.claim.id": {"type": "string", "pattern": "^CLM-"},
+        "agilev.evidence.id": {"type": "string", "pattern": "^EVI-"},
+        "agilev.evidence.source_profile": {"type": "string", "pattern": "^EAD-"},
+        "agilev.gate.id": {"type": "string"},
+        "agilev.gate.receipt_id": {"type": "string"},
+        "agilev.decision.status": {"enum": ["admitted", "rejected", "proposed", "PASS", "FAIL", "WAIVED", "BLOCKED", "STALE", "UNKNOWN"]},
+        "agilev.reason_codes": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}},
+        "agilev.independence.class": {"enum": ["I0", "I1", "I2", "I3", "I4"]},
+        "agilev.approval.ref": {"type": "string"},
+        "agilev.exception.ref": {"type": "string"},
+        "agilev.revalidation.status": {"enum": ["UNCHANGED", "STALE", "REVALIDATION_REQUIRED", "UNKNOWN"]},
+        "agilev.agent_run.id": {"type": "string"},
+        "agilev.delegation.id": {"type": "string", "pattern": "^DEL-"},
+        "agilev.context.profile": {"type": "string", "pattern": "^CTX-"}
+      },
+      "additionalProperties": {"type": ["string", "number", "boolean", "array"]}
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {"properties": {"privacy_profile": {"const": "default"}}},
+      "then": {"properties": {"attributes": {"propertyNames": {"not": {"enum": [
+        "gen_ai.input.messages", "gen_ai.output.messages", "gen_ai.system_instructions",
+        "gen_ai.tool.call.arguments", "gen_ai.tool.call.result", "gen_ai.tool.definitions",
+        "gen_ai.prompt", "gen_ai.completion"]}}}}}
+    },
+    {
+      "if": {"properties": {"name": {"enum": ["agilev.gate.evaluate", "agilev.gate.authorize"]}}},
+      "then": {"properties": {"attributes": {"required": ["agilev.gate.id", "agilev.decision.status", "agilev.reason_codes", "agilev.subject.digest", "agilev.policy.digest"]}}}
+    },
+    {
+      "if": {"properties": {"name": {"enum": ["agilev.evidence.admit", "agilev.evidence.reject"]}}},
+      "then": {"properties": {"attributes": {"required": ["agilev.evidence.id", "agilev.evidence.source_profile", "agilev.decision.status", "agilev.reason_codes"]}}}
+    },
+    {
+      "if": {"properties": {"name": {"const": "agilev.evidence.reject"}}},
+      "then": {"properties": {"attributes": {"properties": {"agilev.reason_codes": {"minItems": 1}, "agilev.decision.status": {"const": "rejected"}}}}}
+    },
+    {
+      "if": {"properties": {"name": {"const": "agilev.delegation.evaluate"}}},
+      "then": {"properties": {"attributes": {"required": ["agilev.delegation.id", "agilev.decision.status", "agilev.reason_codes"]}}}
+    }
+  ],
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"}}
+}

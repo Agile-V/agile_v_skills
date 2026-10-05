@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/schemas/CONTEXT_SOURCE_PROFILE.schema.json",
+  "title": "Context source trust profile",
+  "description": "Explicit source class plus allowed influence; no numeric trust score. Only accepted control-plane source classes may be authoritative. See docs/agile-v-runtime/16_CONTEXT_TRUST_CONTRACT.md.",
+  "type": "object",
+  "required": ["schema_version", "profile"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "profile": {
+      "type": "object",
+      "required": ["id", "source_class", "default_trust", "may_influence", "may_not_influence", "may_propose", "injection_sensitive", "owner"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^CTX-[A-Z0-9-]+$"},
+        "source_class": {"enum": ["authenticated_policy_source", "approved_requirement_baseline", "repository_content",
+                                   "user_prompt", "web_retrieval", "rag_document", "tool_description", "tool_result",
+                                   "peer_agent_message", "mcp_resource", "generated_wiki"]},
+        "default_trust": {"enum": ["authoritative", "untrusted_data"]},
+        "may_influence": {"$ref": "#/$defs/targets"},
+        "may_not_influence": {"$ref": "#/$defs/targets"},
+        "may_propose": {"$ref": "#/$defs/targets"},
+        "injection_sensitive": {"type": "boolean"},
+        "owner": {"type": "string", "minLength": 1},
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {"properties": {"default_trust": {"const": "authoritative"}}},
+          "then": {"properties": {"source_class": {"enum": ["authenticated_policy_source", "approved_requirement_baseline"]}}}
+        },
+        {
+          "if": {"properties": {"default_trust": {"const": "untrusted_data"}}},
+          "then": {"properties": {"may_influence": {"items": {"enum": ["implementation_context", "candidate_requirement",
+                                                                           "candidate_test", "issue_discovery", "documentation_draft"]}}}}
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "target": {"enum": ["implementation_context", "candidate_requirement", "candidate_test", "issue_discovery",
+                        "documentation_draft", "approved_requirement", "risk_level", "policy", "approval",
+                        "delegated_authority", "evidence_source_profile", "evidence_property_profile", "gate_decision"]},
+    "targets": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/target"}}
+  }
+}

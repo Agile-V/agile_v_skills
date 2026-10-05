@@ -31,6 +31,10 @@ SCHEMA_KEY_MAP = {
     "governance_conversion": "GOVERNANCE_CONVERSION",
     "evidence_source_profile": "EVIDENCE_SOURCE_PROFILE",
     "evidence_property_profile": "EVIDENCE_PROPERTY_PROFILE",
+    "agent_delegation_record_v2": "AGENT_DELEGATION_RECORD.v2",
+    "context_source_profile": "CONTEXT_SOURCE_PROFILE",
+    "runtime_compatibility": "RUNTIME_COMPATIBILITY",
+    "agile_v_telemetry_event": "AGILE_V_TELEMETRY_EVENT",
 }
 
 
@@ -105,3 +109,4 @@ def test_repository_version_is_referenced_not_duplicated():
     assert contract["repository_version_ref"] == "package.json#/version"
     assert "repository_version_line" not in contract
     assert json.loads((ROOT / "package.json").read_text())["version"]
+

@@ -1,0 +1,50 @@
+# Agile-V Evidence Source Profile -- policy-side artifact.
+# Evidence producers MUST NOT edit this file within the task that uses it.
+# See docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md
+schema_version: '1.0'
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+adapter:
+  adapter_id: EAD-semgrep-findings-v1
+  adapter_version: '1'
+  title: Semgrep findings report
+  status: candidate
+  owner: Agile-V
+  evidence_type: static_analysis
+  source_version_scope:
+    tool: Semgrep
+    format: JSON output
+    supported_versions: '>=1.0'
+  may_establish:
+  - ruleset_executed
+  - finding_presence
+  - finding_absence_within_ruleset_scope
+  - ruleset_identity
+  - state_binding
+  may_not_establish:
+  - absence_of_all_vulnerabilities
+  - complete_security
+  - human_authority
+  - independent_verification
+  - intended_use_validation
+  - organizational_independence
+  - regulatory_compliance
+  - system_safety
+  minimum_evidence_locators:
+  - report_digest
+  - ruleset_ref
+  freshness:
+    invalidated_by:
+    - source
+    - tool
+    - policy
+    max_age_days: null
+  known_limitations:
+  - Absence of findings is bounded by the executed ruleset and scanned paths.
+  - Ruleset identity must be pinned; registry rulesets can change between runs.
+  references:
+  - https://semgrep.dev/docs/cli-reference
+  supersedes: null
+  superseded_by: null
+  trust_boundary: isolated-scan-job

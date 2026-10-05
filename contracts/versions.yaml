@@ -18,6 +18,10 @@ contracts:
   conformance_catalog: "1.0"
   trusted_admission_context: "1.0"
   aggregate_semantics: "2.0"
+  evidence_adapter_registry: "1.0"
+  context_trust_contract: "1.0"
+  opentelemetry_contract: "1.0"
+  delegation_contract: "2.0"
 
   # Schemas (schemas/) -- value must equal that schema's schema_version const
   requirements: "1.0"
@@ -33,3 +37,7 @@ contracts:
   governance_conversion: "1.1"
   evidence_source_profile: "1.0"
   evidence_property_profile: "1.0"
+  agent_delegation_record_v2: "2.0"
+  context_source_profile: "1.0"
+  runtime_compatibility: "1.0"
+  agile_v_telemetry_event: "1.0"

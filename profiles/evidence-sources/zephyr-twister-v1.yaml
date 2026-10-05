@@ -1,0 +1,52 @@
+# Agile-V Evidence Source Profile -- policy-side artifact.
+# Evidence producers MUST NOT edit this file within the task that uses it.
+# See docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md
+schema_version: '1.0'
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+adapter:
+  adapter_id: EAD-zephyr-twister-v1
+  adapter_version: '1'
+  title: Zephyr Twister test report
+  status: candidate
+  owner: Agile-V
+  evidence_type: test_result
+  source_version_scope:
+    tool: Zephyr Twister
+    format: twister.json
+    supported_versions: '>=3.0'
+  may_establish:
+  - test_suite_execution
+  - target_configuration
+  - test_result
+  - build_outcome
+  - state_binding
+  may_not_establish:
+  - electrical_safety
+  - human_authority
+  - independent_verification
+  - intended_use_validation
+  - organizational_independence
+  - physical_measurement
+  - real_hil_success
+  - regulatory_compliance
+  minimum_evidence_locators:
+  - report_digest
+  - platform
+  - zephyr_revision
+  freshness:
+    invalidated_by:
+    - source
+    - tool
+    - environment
+    - hardware
+    max_age_days: null
+  known_limitations:
+  - Results on emulated or simulated platforms are not hardware results.
+  - build_outcome is established only when the build stage is captured in the report.
+  references:
+  - https://docs.zephyrproject.org/latest/develop/test/twister.html
+  supersedes: null
+  superseded_by: null
+  trust_boundary: isolated-test-job
