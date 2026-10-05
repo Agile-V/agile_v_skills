@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. Releases are managed by [Release Please](https://github.com/googleapis/release-please) from Conventional Commits.
 
+## [3.10.0](https://github.com/Agile-V/agile_v_skills/compare/v3.9.0...v3.10.0) (2026-10-05)
+
+
+### Features
+
+* add agile-v-adr skill for Architecture Decision Records ([#35](https://github.com/Agile-V/agile_v_skills/issues/35)) ([85ec71e](https://github.com/Agile-V/agile_v_skills/commit/85ec71e98d52d7c5c38a554023b1b369def3de86))
+* **conformance:** add AgileV-Bench v0.1, runtime release verification and release integrity ([#47](https://github.com/Agile-V/agile_v_skills/issues/47)) ([c86485f](https://github.com/Agile-V/agile_v_skills/commit/c86485f5d969923fee6126fb6c83e5cfd43dffc5))
+* **contracts:** add evidence adapter registry, delegation v2, context trust and telemetry contracts ([#45](https://github.com/Agile-V/agile_v_skills/issues/45)) ([0f58ff5](https://github.com/Agile-V/agile_v_skills/commit/0f58ff53127620b680b530756e9394626b6fb811))
+* **gxp:** add draft GxP qualification profile (DQ/IQ/OQ/PQ) ([#40](https://github.com/Agile-V/agile_v_skills/issues/40)) ([f1d7efb](https://github.com/Agile-V/agile_v_skills/commit/f1d7efb5177f56f7cdd7d7930ca84fad873ddbbf))
+* **packaging:** publish Agent Plugins 1.0 packages with capability composition ([#46](https://github.com/Agile-V/agile_v_skills/issues/46)) ([346bf55](https://github.com/Agile-V/agile_v_skills/commit/346bf5511dd70690808d5460b2c346c5ad2319a9))
+* **skills:** add agile-v-human-oversight draft skill ([#39](https://github.com/Agile-V/agile_v_skills/issues/39)) ([dca43f0](https://github.com/Agile-V/agile_v_skills/commit/dca43f026b175ad9a0388d18b2c75701801ea3eb))
+* **skills:** add agile-v-sop-adapter draft skill ([#37](https://github.com/Agile-V/agile_v_skills/issues/37)) ([5efc967](https://github.com/Agile-V/agile_v_skills/commit/5efc967f441ccdcf39362bc797e59870da09de44))
+* **skills:** evidence admission, independence classes, and gate/waiver contracts (PR-S01-S13) ([#41](https://github.com/Agile-V/agile_v_skills/issues/41)) ([71a9c67](https://github.com/Agile-V/agile_v_skills/commit/71a9c67d6c7b00f5b4446ec749b4d49bcc51e9dc))
+
+
+### Bug Fixes
+
+* **ci:** quote runtime conformance NOT EXECUTED message ([#48](https://github.com/Agile-V/agile_v_skills/issues/48)) ([e5fbe84](https://github.com/Agile-V/agile_v_skills/commit/e5fbe84f2873022f4535fae1449fcac4a4b1886a))
+* **contracts:** close admission trust gaps for issue 42 ([#43](https://github.com/Agile-V/agile_v_skills/issues/43)) ([982c1f6](https://github.com/Agile-V/agile_v_skills/commit/982c1f6435219f0fe83dcef485503f45a7e9717e))
+
 ## [3.9.0](https://github.com/Agile-V/agile_v_skills/compare/v3.8.1...v3.9.0) (2026-08-10)
 
 
