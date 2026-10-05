@@ -1,0 +1,232 @@
+{
+  "$schema": "./evidence-adapter-catalog.schema.json",
+  "adapters": [
+    {
+      "adapter_id": "EAD-agent-plugin-package-v1",
+      "adapter_version": "1",
+      "evidence_type": "artifact_identity",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:291c5e92f00a5c7ef63b6439fecf10d10be527e709184bcef613fb0607c3e6c7",
+      "profile_path": "profiles/evidence-sources/agent-plugin-package-v1.yaml",
+      "status": "candidate"
+    },
+    {
+      "adapter_id": "EAD-agent-session-metadata-v1",
+      "adapter_version": "1",
+      "evidence_type": "ai_run_metadata",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:d350dbe15d5b42d5ae24a213e8fbbc141e450d10f5c5f97aa852d7ce3c9b6370",
+      "profile_path": "profiles/evidence-sources/agent-session-metadata-v1.yaml",
+      "status": "experimental"
+    },
+    {
+      "adapter_id": "EAD-container-image-digest-v1",
+      "adapter_version": "1",
+      "evidence_type": "artifact_identity",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:d2fa6eaeda03aa046765f6486b51987c4bce1746a155f662695a3c71576e1753",
+      "profile_path": "profiles/evidence-sources/container-image-digest-v1.yaml",
+      "status": "candidate"
+    },
+    {
+      "adapter_id": "EAD-git-commit-v1",
+      "adapter_version": "1",
+      "evidence_type": "source_identity",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:90c33c142b1d989fa32eb0fa0173789480863bf482aa0407033bfee1522501be",
+      "profile_path": "profiles/evidence-sources/git-commit-v1.yaml",
+      "status": "candidate"
+    },
+    {
+      "adapter_id": "EAD-github-actions-v1",
+      "adapter_version": "1",
+      "evidence_type": "ci_workflow_run",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:1e78dcfea9befb0d9783dada347e3036ce79a40af34193e0b2b694121b042335",
+      "profile_path": "profiles/evidence-sources/github-actions-v1.yaml",
+      "status": "candidate"
+    },
+    {
+      "adapter_id": "EAD-k8s-aibom-v1",
+      "adapter_version": "1",
+      "evidence_type": "ai_inventory",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:49082a43ec4e513ef73adf81b0fe7e739cd3b96517b2dbb00399474d9812e2ab",
+      "profile_path": "profiles/evidence-sources/k8s-aibom-v1.yaml",
+      "status": "experimental"
+    },
+    {
+      "adapter_id": "EAD-kicad-drc-v1",
+      "adapter_version": "1",
+      "evidence_type": "hardware_rule_check",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:4dd8a1855db8561b7a9fa473e9418b3b892f60b95c9a2ee49f11c61307b8465f",
+      "profile_path": "profiles/evidence-sources/kicad-drc-v1.yaml",
+      "status": "candidate"
+    },
+    {
+      "adapter_id": "EAD-kicad-erc-v1",
+      "adapter_version": "1",
+      "evidence_type": "hardware_rule_check",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:1b52b71a0b4981c94a988c03802f15ea828884ab7421fb50b141578a1f9efade",
+      "profile_path": "profiles/evidence-sources/kicad-erc-v1.yaml",
+      "status": "candidate"
+    },
+    {
+      "adapter_id": "EAD-otel-genai-trace-v1",
+      "adapter_version": "1",
+      "evidence_type": "telemetry_trace",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:0202ba282612761f3fe19ba09e8289144d2ba1393568c377defe4d85dcfcd36c",
+      "profile_path": "profiles/evidence-sources/otel-genai-trace-v1.yaml",
+      "status": "experimental"
+    },
+    {
+      "adapter_id": "EAD-pytest-junit-v1",
+      "adapter_version": "1",
+      "evidence_type": "test_result",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:013e364dfa4309acc7b99e6c24f9a0cab24b7122868d96bff5a20ad72ca7de05",
+      "profile_path": "profiles/evidence-sources/pytest-junit-v1.yaml",
+      "status": "candidate"
+    },
+    {
+      "adapter_id": "EAD-renode-simulation-v1",
+      "adapter_version": "1",
+      "evidence_type": "simulation_result",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:f588da027a1e05b9f30c2e93e2d1f322d9a55e5643dc24e0a20f72c50b4267c6",
+      "profile_path": "profiles/evidence-sources/renode-simulation-v1.yaml",
+      "status": "candidate"
+    },
+    {
+      "adapter_id": "EAD-semgrep-findings-v1",
+      "adapter_version": "1",
+      "evidence_type": "static_analysis",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:a31de8df644cbc64fc6bbf5655da7fff595f67dc126d20bad53598479a3067e7",
+      "profile_path": "profiles/evidence-sources/semgrep-findings-v1.yaml",
+      "status": "candidate"
+    },
+    {
+      "adapter_id": "EAD-sigstore-attestation-v1",
+      "adapter_version": "1",
+      "evidence_type": "attestation",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:e1c4d1445a89e27797fb141f328d47550df0224f3edab74e6376922b07cb8936",
+      "profile_path": "profiles/evidence-sources/sigstore-attestation-v1.yaml",
+      "status": "candidate"
+    },
+    {
+      "adapter_id": "EAD-sonarqube-quality-gate-v1",
+      "adapter_version": "1",
+      "evidence_type": "static_analysis",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:79a0f26204acd8322132b08a6fc0debbf13f06fb20634bf2815ac63fabf0a66d",
+      "profile_path": "profiles/evidence-sources/sonarqube-quality-gate-v1.yaml",
+      "status": "candidate"
+    },
+    {
+      "adapter_id": "EAD-zephyr-twister-v1",
+      "adapter_version": "1",
+      "evidence_type": "test_result",
+      "historical": false,
+      "owner": "Agile-V",
+      "profile_digest": "sha256:04e6b4bb608ddd9c0cca2269404b6d8d7a4d30a41f7794e3715389a2cdedcf79",
+      "profile_path": "profiles/evidence-sources/zephyr-twister-v1.yaml",
+      "status": "candidate"
+    }
+  ],
+  "generator": "tools/build_evidence_adapter_catalog.py",
+  "property_profiles": [
+    {
+      "claim_type": "firmware_hil",
+      "owner": "Agile-V",
+      "profile_digest": "sha256:1bd2700d6b8f4097a26cf5c10e2bde32a3d87710e2415e7be2aae42c80625859",
+      "profile_id": "EVP-firmware-hil-L4",
+      "profile_path": "profiles/evidence-properties/firmware-hil-L4.yaml",
+      "risk_level": "L4",
+      "status": "candidate"
+    },
+    {
+      "claim_type": "hardware_electrical_rule_check",
+      "owner": "Agile-V",
+      "profile_digest": "sha256:ac2ac0f314f7ca53078ff6e9357afaa499a6648417dc2bd6ce7c06f34b6e7c17",
+      "profile_id": "EVP-hardware-electrical-rule-check-L3",
+      "profile_path": "profiles/evidence-properties/hardware-electrical-rule-check-L3.yaml",
+      "risk_level": "L3",
+      "status": "candidate"
+    },
+    {
+      "claim_type": "requirement_satisfaction",
+      "owner": "Agile-V",
+      "profile_digest": "sha256:8bde3bad2419e4735b8f14b4d7768d6ebed4c336ff1c67cc013ee7cc23e3e719",
+      "profile_id": "EVP-requirement-satisfaction-L0",
+      "profile_path": "profiles/evidence-properties/requirement-satisfaction-L0.yaml",
+      "risk_level": "L0",
+      "status": "candidate"
+    },
+    {
+      "claim_type": "requirement_satisfaction",
+      "owner": "Agile-V",
+      "profile_digest": "sha256:7a13762b66fceb2f342f3528c3a3cee0876e41a1c1105971b2dc8abfed560dc5",
+      "profile_id": "EVP-requirement-satisfaction-L1",
+      "profile_path": "profiles/evidence-properties/requirement-satisfaction-L1.yaml",
+      "risk_level": "L1",
+      "status": "candidate"
+    },
+    {
+      "claim_type": "requirement_satisfaction",
+      "owner": "Agile-V",
+      "profile_digest": "sha256:82c12f52a71eacc761fd1bc73e311b64b2ba5734f72bcd717bd53581642a3ed3",
+      "profile_id": "EVP-requirement-satisfaction-L2",
+      "profile_path": "profiles/evidence-properties/requirement-satisfaction-L2.yaml",
+      "risk_level": "L2",
+      "status": "candidate"
+    },
+    {
+      "claim_type": "requirement_satisfaction",
+      "owner": "Agile-V",
+      "profile_digest": "sha256:c6d393ab197268fc148935ea5d16632934829a70fa3a76b297421aa103bf8bb7",
+      "profile_id": "EVP-requirement-satisfaction-L3",
+      "profile_path": "profiles/evidence-properties/requirement-satisfaction-L3.yaml",
+      "risk_level": "L3",
+      "status": "candidate"
+    },
+    {
+      "claim_type": "requirement_satisfaction",
+      "owner": "Agile-V",
+      "profile_digest": "sha256:8659a05a984af7e3b558805c7e3eda64be127196c37267d3f6495649c6b0c6a2",
+      "profile_id": "EVP-requirement-satisfaction-L4",
+      "profile_path": "profiles/evidence-properties/requirement-satisfaction-L4.yaml",
+      "risk_level": "L4",
+      "status": "candidate"
+    },
+    {
+      "claim_type": "static_security_analysis",
+      "owner": "Agile-V",
+      "profile_digest": "sha256:95f93f0738932ff45cb972316ba3ea2a78daece8e9faea85b9290073e634a534",
+      "profile_id": "EVP-static-security-analysis-L2",
+      "profile_path": "profiles/evidence-properties/static-security-analysis-L2.yaml",
+      "risk_level": "L2",
+      "status": "candidate"
+    }
+  ],
+  "registry_contract_version": "1.0",
+  "schema_version": "1.0"
+}

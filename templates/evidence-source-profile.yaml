@@ -1,0 +1,38 @@
+# Template: Agile-V Evidence Source Profile (copy to profiles/evidence-sources/<slug>-v1.yaml).
+# Policy-side artifact. Validated by schemas/EVIDENCE_SOURCE_PROFILE.schema.json and
+# profiles/evidence-source-registry-entry.schema.json. See docs/CONTRIBUTING_EVIDENCE_ADAPTERS.md.
+schema_version: "1.0"
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+adapter:
+  adapter_id: EAD-<tool-slug>-v1        # equals file name without .yaml, prefixed EAD-
+  adapter_version: "1"
+  title: "<Tool> <evidence format>"
+  status: experimental                   # maintainers promote to candidate/stable
+  owner: Agile-V                         # never the vendor by virtue of authorship
+  evidence_type: <snake_case_type>
+  source_version_scope:
+    tool: "<Tool name>"
+    format: "<exact output format>"
+    supported_versions: ">=1.0,<2.0"     # or "*" only when the format is version-independent
+  may_establish:
+    - <property>
+  may_not_establish:                     # must include the five authority/validation properties
+    - human_authority
+    - organizational_independence
+    - independent_verification
+    - intended_use_validation
+    - regulatory_compliance
+  minimum_evidence_locators:
+    - report_digest
+  freshness:
+    invalidated_by: [source, tool]
+    max_age_days: null
+  known_limitations:
+    - "<true, specific statement of what this evidence cannot show>"
+  references:
+    - https://<authoritative tool documentation>
+  supersedes: null
+  superseded_by: null
+  trust_boundary: "<where the tool runs, e.g. isolated-test-job>"

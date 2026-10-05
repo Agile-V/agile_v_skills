@@ -1,0 +1,13 @@
+{
+  "description": "Privacy-safe default telemetry for one Gate 2 flow. IDs, digests, versions and reason codes only. Correlates to tests/fixtures/schemas/gate_receipt.positive.json (GATE-1) and an AI Run Manifest run_id.",
+  "events": [
+    {"schema_version": "1.0", "name": "agilev.task.create", "kind": "span", "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736", "span_id": "00f067aa0ba902b7", "time": "2026-09-13T11:00:00Z", "end_time": "2026-09-13T11:00:01Z", "status": "OK", "privacy_profile": "default",
+     "attributes": {"agilev.task.id": "AAV-0042", "agilev.risk.level": "L2", "agilev.agent_run.id": "RUN-0042", "service.name": "agentic-agile-v", "gen_ai.operation.name": "invoke_agent", "gen_ai.agent.name": "build-agent"}},
+    {"schema_version": "1.0", "name": "agilev.evidence.admit", "kind": "event", "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736", "span_id": "53995c3f42cd8ad8", "parent_span_id": "00f067aa0ba902b7", "time": "2026-09-13T11:40:00Z", "privacy_profile": "default",
+     "attributes": {"agilev.task.id": "AAV-0042", "agilev.evidence.id": "EVI-1", "agilev.evidence.source_profile": "EAD-pytest-junit-v1", "agilev.claim.id": "CLM-1", "agilev.decision.status": "admitted", "agilev.reason_codes": []}},
+    {"schema_version": "1.0", "name": "agilev.evidence.reject", "kind": "event", "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736", "span_id": "a3ce929d0e0e4736", "parent_span_id": "00f067aa0ba902b7", "time": "2026-09-13T11:41:00Z", "privacy_profile": "default",
+     "attributes": {"agilev.task.id": "AAV-0042", "agilev.evidence.id": "EVI-9", "agilev.evidence.source_profile": "EAD-semgrep-findings-v1", "agilev.decision.status": "rejected", "agilev.reason_codes": ["EVIDENCE_PROPERTY_OVERCLAIM"]}},
+    {"schema_version": "1.0", "name": "agilev.gate.evaluate", "kind": "span", "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736", "span_id": "b7ad6b7169203331", "parent_span_id": "00f067aa0ba902b7", "time": "2026-09-13T12:00:00Z", "end_time": "2026-09-13T12:00:00Z", "status": "OK", "privacy_profile": "default",
+     "attributes": {"agilev.task.id": "AAV-0042", "agilev.gate.id": "gate_2", "agilev.gate.receipt_id": "GATE-1", "agilev.risk.level": "L2", "agilev.subject.type": "source_control_commit", "agilev.subject.ref": "cccccccccccccccccccccccccccccccccccccccc", "agilev.subject.digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "agilev.policy.digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "agilev.independence.class": "I2", "agilev.approval.ref": "APR-1", "agilev.decision.status": "admitted", "agilev.reason_codes": [], "agilev.agent_run.id": "RUN-0042"}}
+  ]
+}

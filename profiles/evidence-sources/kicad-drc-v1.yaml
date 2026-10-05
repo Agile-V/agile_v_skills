@@ -1,0 +1,51 @@
+# Agile-V Evidence Source Profile -- policy-side artifact.
+# Evidence producers MUST NOT edit this file within the task that uses it.
+# See docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md
+schema_version: '1.0'
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+adapter:
+  adapter_id: EAD-kicad-drc-v1
+  adapter_version: '1'
+  title: KiCad design rules check report
+  status: candidate
+  owner: Agile-V
+  evidence_type: hardware_rule_check
+  source_version_scope:
+    tool: KiCad (kicad-cli pcb drc)
+    format: JSON report
+    supported_versions: '>=8.0,<11.0'
+  may_establish:
+  - drc_executed
+  - drc_result
+  - drc_rule_set
+  - state_binding
+  may_not_establish:
+  - board_is_safe
+  - functional_in_real_hardware
+  - human_authority
+  - human_ee_approval
+  - independent_verification
+  - intended_use_validation
+  - manufacturable
+  - organizational_independence
+  - physical_measurement
+  - regulatory_compliance
+  minimum_evidence_locators:
+  - report_digest
+  - board_digest
+  freshness:
+    invalidated_by:
+    - source
+    - tool
+    - hardware
+    max_age_days: null
+  known_limitations:
+  - DRC checks configured layout constraints; fabricator capability must be checked separately.
+  - Rule files and exclusions are project-local and must be pinned for L3+.
+  references:
+  - https://docs.kicad.org/9.0/en/cli/cli.html
+  supersedes: null
+  superseded_by: null
+  trust_boundary: isolated-eda-job

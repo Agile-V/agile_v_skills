@@ -1,5 +1,7 @@
 # Agent Tool and Delegation Contract
 
+**Contract version: 2.0** (registry key `delegation_contract`). v2 adds the machine-checkable attenuation model in section 3.1; the v1 record and its meaning are unchanged.
+
 > **Purpose:** Normative, compact contract for MCP tools and A2A handoffs. Applies with `CONTROL_MATRIX.yaml`, `POLICY.yaml`, and durable Human Gate records.
 
 ## 1. Non-negotiable invariant
@@ -31,6 +33,28 @@ Before delegating at L2+, create `AGENT_DELEGATION_RECORD.yaml`. The receiver ac
 | Scope | Bind REQs, actions, tools, resources/data classes, and maximum permissions; no implicit expansion |
 | Lifetime | `issued_at` and `expires_at` required; reject replay, revocation, and expiry |
 | Acceptance | Delegate explicitly accepts/rejects with timestamp and reason; rejection has no side effect |
+
+### 3.1 Delegation v2: authority attenuation (normative)
+
+> **Delegation may preserve or reduce authority. It may never increase it.**
+
+New delegations SHOULD use [`AGENT_DELEGATION_RECORD.v2`](../../schemas/AGENT_DELEGATION_RECORD.v2.schema.json). v1 records ([`AGENT_DELEGATION_RECORD`](../../schemas/AGENT_DELEGATION_RECORD.schema.json)) remain readable with their original meaning; they are not reinterpreted as v2. The reference evaluator is `contracts.semantics.evaluate_delegation`, which walks the chain from the leaf to a root whose `source_authority_ref` resolves through the trusted authority provider.
+
+A child delegation MUST NOT, relative to its parent (or a root relative to its authority grant):
+
+| Prohibited change | Reason code |
+|---|---|
+| Add an action, resource, tool, data class or requirement (literal set comparison; `*` grants nothing) | `DELEGATION_SCOPE_EXPANSION` (with `field`) |
+| Raise `max_risk_level` | `DELEGATION_RISK_ESCALATION` |
+| Raise `max_side_effect` (`none < internal_state < external_state < irreversible`) | `DELEGATION_SIDE_EFFECT_ESCALATION` |
+| Extend `expires_at` | `DELEGATION_EXPIRY_EXTENDED` |
+| Re-delegate when the parent forbids it | `DELEGATION_REDELEGATION_NOT_PERMITTED` |
+| Keep or increase remaining `max_delegation_depth` | `DELEGATION_DEPTH_EXCEEDED` |
+| Recover revoked/expired authority | `DELEGATION_REVOKED`, `DELEGATION_EXPIRED`, `DELEGATION_AUTHORITY_REVOKED` |
+
+Additional fail-closed rules: unknown parent → `DELEGATION_PARENT_UNRESOLVED`; unknown authority → `DELEGATION_AUTHORITY_UNRESOLVED`; a resolved record that is not an authority grant (e.g. an approval) → `DELEGATION_AUTHORITY_INVALID`; delegator not equal to the parent's delegate or task mismatch → `DELEGATION_CHAIN_BROKEN`/`DELEGATION_TASK_MISMATCH`; cycle → `DELEGATION_CHAIN_CYCLE`; nonce reuse in a chain, consumed single-use nonce, or single-use without a nonce store → `DELEGATION_REPLAYED`; a requested effect outside the leaf scope/ceiling → `DELEGATION_REQUEST_OUT_OF_SCOPE`.
+
+The authority provider returns `{"authority": {id, holder_identity_ref, task_id, status, expires_at, scope, authority_ceiling}}` only after authenticating the holder. A peer-agent message is never a delegation record. Evaluation does not consume a nonce; the runtime does that atomically at the effect boundary.
 
 ## 4. Scoped, expiring approvals
 

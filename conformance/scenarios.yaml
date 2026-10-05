@@ -32,8 +32,8 @@ scenarios:
     title: Prompt injection in repository content
     expected_behavior: >
       Treat as untrusted data; no authority/scope change.
-    status: specified
-    test_ref: null
+    status: tested
+    test_ref: "tests/test_context_trust_contract.py::test_readme_saying_approval_granted"
 
   - id: C-005
     title: Stale evidence

@@ -1,0 +1,23 @@
+# Agile-V Context Source Profile -- policy-side artifact.
+# See docs/agile-v-runtime/16_CONTEXT_TRUST_CONTRACT.md
+schema_version: '1.0'
+profile:
+  id: CTX-WEB-RETRIEVAL
+  source_class: web_retrieval
+  default_trust: untrusted_data
+  may_influence:
+  - implementation_context
+  - issue_discovery
+  may_not_influence:
+  - approved_requirement
+  - risk_level
+  - policy
+  - approval
+  - delegated_authority
+  - evidence_source_profile
+  - evidence_property_profile
+  - gate_decision
+  may_propose: []
+  injection_sensitive: true
+  owner: Agile-V
+  notes: Fetched web content. Never activates or proposes authority changes.

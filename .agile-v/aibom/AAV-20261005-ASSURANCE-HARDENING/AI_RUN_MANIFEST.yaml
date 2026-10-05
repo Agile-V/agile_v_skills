@@ -1,0 +1,87 @@
+aibom_schema_version: "0.2"
+manifest_type: agile-v-agent-run-bom
+identity:
+  task_id: AAV-20261005-ASSURANCE-HARDENING
+  run_id: RUN-20261005-OPENCODE
+  created_at: "2026-10-05T00:00:00Z"
+  created_by: OpenCode
+  repository: Agile-V/agile_v_skills
+  commit_sha: 982c1f6435219f0fe83dcef485503f45a7e9717e
+  branch: feat/assurance-contract-hardening
+risk:
+  agile_v_risk_level: L2
+  ai_influence_level: substantial
+  regulated_context: false
+  human_approval_required: true
+models:
+  - name: Claude Opus
+    provider: GitHub Copilot
+    model_id: github-copilot/claude-opus-5.5
+    confidence: declared
+    evidence_locator: OpenCode session environment
+agent_runtime:
+  agent_name: OpenCode
+  agent_framework: OpenCode
+  execution_environment: local
+  confidence: declared
+agile_v_skills:
+  - skill: agile-v-core
+    source: repository
+    confidence: declared
+    evidence_locator: agile-v-core/SKILL.md
+tools:
+  - name: OpenCode filesystem, shell and web fetch
+    type: other
+    version: unresolved
+    allowed: true
+    used: true
+    confidence: declared
+agent_interoperability:
+  untrusted_context_enforced: null
+  tool_records: []
+  delegation_records: []
+context:
+  declared:
+    instruction_bundles:
+      - name: AGENTS.md
+        evidence_locator: AGENTS.md
+    policies: []
+    sources:
+      - name: agile_v_skills_concrete_implementation_plan.md
+        purpose: User-requested implementation plan (AVS-01..AVS-11)
+        evidence_locator: agile_v_skills_concrete_implementation_plan.md
+        context_profile_ref: CTX-USER-PROMPT
+      - name: Agent Plugins 1.0 specification and schemas
+        version_or_hash: "sha256:0a4aad95ce337878ad38802ebf0daa3fde76abe3f65400c86bcbb1ec0b3ab883"
+        purpose: Vendored plugin.schema.json (digest recorded in packaging/agent-plugins/schemas/1.0.0/PROVENANCE.yaml)
+        evidence_locator: https://agent-plugins.org/specification
+        context_profile_ref: CTX-WEB-RETRIEVAL
+    datasets: []
+  observed:
+    sources: []
+    tool_calls_evidence: OpenCode session tool outputs
+    policy_decisions_evidence: docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md
+    confidence: declared
+hashes: []
+artifact_influence:
+  - artifact_id: ART-ASSURANCE-HARDENING
+    artifact_type: documentation
+    contribution: generated
+    contribution_description: >-
+      Evidence Adapter Registry, Delegation v2, Context Trust, OpenTelemetry contract, capability
+      composition, Agent Plugin packaging, runtime compatibility schema, AgileV-Bench v0.1, AI-BOM
+      graduation evidence, release manifest tooling and tests.
+    confidence: declared
+    evidence_locator: release/assurance-digests.json
+security_and_privacy:
+  secrets_redacted: true
+  hidden_chain_of_thought_excluded: true
+  pii_redacted: true
+  prompt_capture_policy: metadata_only
+summary:
+  unresolved_items:
+    - All new registry profiles are candidate/experimental; none reviewed against real tool output by an independent maintainer.
+    - No runtime release has been verified; compatibility remains unverified.
+    - agile-v-aibom graduation to candidate awaits an authorized reviewer decision.
+  verifier_notes: Tests are local author-run checks, not independent verification or intended-use validation.
+  human_approval: pending

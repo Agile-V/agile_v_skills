@@ -1,0 +1,24 @@
+# Agile-V Evidence Property Profile -- policy-side artifact.
+# See docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md
+schema_version: '1.0'
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+profile:
+  profile_id: EVP-requirement-satisfaction-L4
+  claim_type: requirement_satisfaction
+  risk_level: L4
+  required_properties:
+  - independent_verification
+  - provenance
+  - state_binding
+  - subject_digest_binding
+  - test_result
+  status: candidate
+  owner: Agile-V
+  rationale: 'L4: additionally requires evidence from a source capable of establishing independent verification.
+    No tool adapter in registry v1 can establish it; this fails closed by design.'
+  known_limitations:
+  - Requires a verification-record source profile that is not yet part of the registry.
+  supersedes: null
+  superseded_by: null

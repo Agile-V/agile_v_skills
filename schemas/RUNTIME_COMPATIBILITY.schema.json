@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/schemas/RUNTIME_COMPATIBILITY.schema.json",
+  "title": "Agile-V skills <-> runtime compatibility declaration",
+  "description": "Validates contracts/AGILE_V_RUNTIME_COMPATIBILITY.yaml. 'verified' requires an immutable released runtime artifact identity and a clean conformance result; a branch, PR SHA or skipped run can never be 'verified'.",
+  "type": "object",
+  "required": ["schema_version", "skills_contract", "compatible_runtimes", "generated_copy_provenance_fields"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "skills_contract": {
+      "type": "object",
+      "required": ["repository_version_ref", "contract_versions_ref"],
+      "properties": {
+        "repository_version_ref": {"const": "package.json#/version"},
+        "contract_versions_ref": {"const": "contracts/versions.yaml"}
+      },
+      "additionalProperties": false
+    },
+    "compatible_runtimes": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/runtime"}
+    },
+    "generated_copy_provenance_fields": {"type": "array", "minItems": 3, "uniqueItems": true, "items": {"type": "string"}}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "runtime": {
+      "type": "object",
+      "required": ["repository", "minimum_version", "verification_status", "required_capabilities", "notes"],
+      "properties": {
+        "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+        "minimum_version": {"type": ["string", "null"]},
+        "verification_status": {"enum": ["verified", "failed", "partial", "unverified"]},
+        "required_capabilities": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "notes": {"type": "string"},
+        "release_verification": {"$ref": "#/$defs/release_verification"}
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {"properties": {"verification_status": {"const": "verified"}}},
+          "then": {
+            "required": ["release_verification"],
+            "properties": {
+              "minimum_version": {"type": "string", "minLength": 1},
+              "release_verification": {
+                "properties": {
+                  "status": {"const": "verified"},
+                  "results": {"properties": {"mismatches": {"const": 0}, "skipped": {"const": 0}, "positive": {"minimum": 1}}}
+                }
+              }
+            }
+          },
+          "else": {"properties": {"minimum_version": {"type": "null"}}}
+        }
+      ]
+    },
+    "release_verification": {
+      "type": "object",
+      "required": ["runtime", "verified_against", "results", "status"],
+      "properties": {
+        "runtime": {
+          "type": "object",
+          "required": ["id", "repository", "release", "artifact_digest", "compatibility_manifest_digest"],
+          "properties": {
+            "id": {"type": "string", "minLength": 1},
+            "repository": {"type": "string"},
+            "release": {"type": "string", "pattern": "^v?[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"},
+            "artifact_digest": {"$ref": "#/$defs/digest"},
+            "compatibility_manifest_digest": {"$ref": "#/$defs/digest"}
+          },
+          "additionalProperties": false
+        },
+        "verified_against": {
+          "type": "object",
+          "required": ["contracts_commit", "contract_versions_digest", "conformance_corpus_digest"],
+          "properties": {
+            "contracts_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+            "contract_versions_digest": {"$ref": "#/$defs/digest"},
+            "conformance_corpus_digest": {"$ref": "#/$defs/digest"}
+          },
+          "additionalProperties": false
+        },
+        "results": {
+          "type": "object",
+          "required": ["positive", "rejected_as_expected", "mismatches", "skipped"],
+          "properties": {
+            "positive": {"type": "integer", "minimum": 0},
+            "rejected_as_expected": {"type": "integer", "minimum": 0},
+            "mismatches": {"type": "integer", "minimum": 0},
+            "skipped": {"type": "integer", "minimum": 0}
+          },
+          "additionalProperties": false
+        },
+        "status": {"enum": ["verified", "failed", "partial", "unverified"]},
+        "verified_at": {"type": "string", "format": "date-time"},
+        "workflow_run": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

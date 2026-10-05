@@ -1,0 +1,53 @@
+# Agile-V Evidence Source Profile -- policy-side artifact.
+# Evidence producers MUST NOT edit this file within the task that uses it.
+# See docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md
+schema_version: '1.0'
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+adapter:
+  adapter_id: EAD-sonarqube-quality-gate-v1
+  adapter_version: '1'
+  title: SonarQube quality gate status
+  status: candidate
+  owner: Agile-V
+  evidence_type: static_analysis
+  source_version_scope:
+    tool: SonarQube
+    format: api/qualitygates/project_status
+    supported_versions: '>=9.9'
+  may_establish:
+  - static_analysis_executed
+  - quality_gate_result
+  - reported_issue_counts
+  - coverage_measurement
+  - hotspot_review_state
+  - state_binding
+  may_not_establish:
+  - absence_of_all_vulnerabilities
+  - complete_security
+  - human_authority
+  - human_release_authority
+  - independent_verification
+  - intended_use_validation
+  - organizational_independence
+  - regulatory_compliance
+  - runtime_correctness
+  minimum_evidence_locators:
+  - analysis_id
+  - project_key
+  - revision
+  freshness:
+    invalidated_by:
+    - source
+    - tool
+    - policy
+    max_age_days: null
+  known_limitations:
+  - Quality-gate thresholds are server configuration; the result is only as strong as the configured gate.
+  - coverage_measurement and hotspot_review_state are only established when present in the analysis payload.
+  references:
+  - https://docs.sonarsource.com/sonarqube-server/latest/quality-standards-administration/managing-quality-gates/introduction-to-quality-gates/
+  supersedes: null
+  superseded_by: null
+  trust_boundary: analysis-server

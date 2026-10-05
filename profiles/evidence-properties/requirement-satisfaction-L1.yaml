@@ -1,0 +1,20 @@
+# Agile-V Evidence Property Profile -- policy-side artifact.
+# See docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md
+schema_version: '1.0'
+compatibility: additive
+migration: none
+fixture_owner: Agile-V
+profile:
+  profile_id: EVP-requirement-satisfaction-L1
+  claim_type: requirement_satisfaction
+  risk_level: L1
+  required_properties:
+  - state_binding
+  - test_result
+  status: candidate
+  owner: Agile-V
+  rationale: 'L1: the result must be bound to the evaluated subject state.'
+  known_limitations:
+  - Does not require execution provenance.
+  supersedes: null
+  superseded_by: null

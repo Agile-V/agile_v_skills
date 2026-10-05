@@ -1,0 +1,11 @@
+# Graduation decision record. Only an authorized reviewer may change `decision`.
+# An AI agent assembling the evidence package is not the reviewer.
+skill: agile-v-aibom
+from_state: draft
+requested_state: candidate
+decision: pending          # pending | approved | rejected
+reviewer: null             # authenticated identity of the authorized reviewer
+reviewed_at: null
+evidence_package: .agile-v/graduation/agile-v-aibom/README.md
+evidence_assembled_by: OpenCode (AI agent) -- see .agile-v/aibom/AAV-20261005-ASSURANCE-HARDENING/AI_RUN_MANIFEST.yaml
+conditions: []
