@@ -51,7 +51,8 @@ jobs:
           python-version: "3.11"
       - name: Report absence of configured runtime
         if: env.TEST_RUNTIME == ''
-        run: echo "external runtime conformance: NOT EXECUTED (no AGILEV_TEST_RUNTIME_REPOSITORY configured)"
+        run: |
+          echo "external runtime conformance: NOT EXECUTED (no AGILEV_TEST_RUNTIME_REPOSITORY configured)"
       - name: Checkout development runtime
         if: env.TEST_RUNTIME != ''
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
