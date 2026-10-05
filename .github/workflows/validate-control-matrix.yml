@@ -29,7 +29,15 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r requirements-test.txt
       - name: Evidence adapter catalog is current
         run: python tools/build_evidence_adapter_catalog.py --check
+      - name: Benchmark corpus is current and valid
+        run: |
+          python tools/build_agilev_bench.py --check
+          python tools/validate_benchmark.py
       - name: Agent Plugin profiles compose
         run: python tools/build_agent_plugins.py --check
+      - name: Release digests match repository state
+        run: python tools/build_release_manifest.py --check
       - name: Run complete test suite
-        run: python -m pytest tests -q
+        run: python -m pytest tests -q -rs
+      - name: Reference benchmark (reference semantics, not runtime conformance)
+        run: python tools/run_agilev_bench.py

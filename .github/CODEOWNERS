@@ -1,0 +1,12 @@
+# Normative assurance surfaces require maintainer review. Owners are current
+# repository administrators; switch to Agile-V teams (e.g.
+# @Agile-V/assurance-maintainers) once they exist. Branch protection should
+# require CODEOWNER review for these paths.
+/contracts/                  @KochC @JoshuaWellbrock
+/schemas/                    @KochC @JoshuaWellbrock
+/docs/agile-v-runtime/       @KochC @JoshuaWellbrock
+/profiles/                   @KochC @JoshuaWellbrock
+/benchmarks/                 @KochC @JoshuaWellbrock
+/release/                    @KochC @JoshuaWellbrock
+/packaging/agent-plugins/    @KochC @JoshuaWellbrock
+/.github/workflows/          @KochC @JoshuaWellbrock

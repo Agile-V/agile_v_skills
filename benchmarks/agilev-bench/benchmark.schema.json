@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/benchmarks/agilev-bench/benchmark.schema.json",
+  "title": "AgileV-Bench case",
+  "description": "Self-contained benchmark case: all candidate records (input) and trusted-provider data (trusted) needed to evaluate it. Consumable without importing contracts.semantics.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["benchmark_version", "id", "category", "title", "domain", "tags", "operation", "input", "trusted", "expected"],
+  "properties": {
+    "benchmark_version": {"const": "0.1"},
+    "id": {"type": "string", "pattern": "^AVB-[A-Z]+-[0-9]{3}$"},
+    "category": {"enum": ["state-binding", "policy-binding", "evidence-capability", "contradiction", "approvals",
+                          "independence", "exceptions", "revalidation", "delegation", "context-trust",
+                          "ai-provenance", "cross-domain"]},
+    "title": {"type": "string", "minLength": 10},
+    "domain": {"enum": ["generic", "software", "firmware", "pcb"]},
+    "tags": {"type": "array", "uniqueItems": true, "items": {"enum": ["tamper", "replay", "injection"]}},
+    "operation": {"enum": ["gate_transition", "evidence_registry", "delegation", "context_influence",
+                           "revalidation_reuse", "ai_run_manifest"]},
+    "input": {"type": "object"},
+    "trusted": {"type": "object"},
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason_codes"],
+      "properties": {
+        "status": {"enum": ["admitted", "rejected", "proposed"]},
+        "reason_codes": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}}
+      },
+      "allOf": [
+        {"if": {"properties": {"status": {"const": "rejected"}}}, "then": {"properties": {"reason_codes": {"minItems": 1}}}},
+        {"if": {"properties": {"status": {"enum": ["admitted", "proposed"]}}}, "then": {"properties": {"reason_codes": {"maxItems": 0}}}}
+      ]
+    },
+    "source_ref": {"type": "string"}
+  }
+}

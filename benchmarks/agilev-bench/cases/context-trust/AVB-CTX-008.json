@@ -1,0 +1,50 @@
+{
+  "benchmark_version": "0.1",
+  "category": "context-trust",
+  "domain": "generic",
+  "expected": {
+    "reason_codes": [],
+    "status": "admitted"
+  },
+  "id": "AVB-CTX-008",
+  "input": {
+    "influence": {
+      "context_profile_ref": "CTX-APPROVED-REQUIREMENT-BASELINE",
+      "mode": "activate",
+      "source_ref": "src:AVB-CTX-008",
+      "target": "approved_requirement"
+    }
+  },
+  "operation": "context_influence",
+  "tags": [],
+  "title": "Approved requirement baseline remains authoritative",
+  "trusted": {
+    "context_profiles": {
+      "CTX-APPROVED-REQUIREMENT-BASELINE": {
+        "profile": {
+          "default_trust": "authoritative",
+          "id": "CTX-APPROVED-REQUIREMENT-BASELINE",
+          "injection_sensitive": false,
+          "may_influence": [
+            "approved_requirement",
+            "implementation_context",
+            "candidate_test"
+          ],
+          "may_not_influence": [
+            "policy",
+            "approval",
+            "delegated_authority",
+            "evidence_source_profile",
+            "evidence_property_profile",
+            "gate_decision"
+          ],
+          "may_propose": [],
+          "notes": "Frozen, human-approved requirement baseline. Remains authoritative for the active cycle.",
+          "owner": "Agile-V",
+          "source_class": "approved_requirement_baseline"
+        },
+        "schema_version": "1.0"
+      }
+    }
+  }
+}

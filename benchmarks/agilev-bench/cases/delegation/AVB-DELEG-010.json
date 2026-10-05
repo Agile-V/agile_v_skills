@@ -1,0 +1,176 @@
+{
+  "benchmark_version": "0.1",
+  "category": "delegation",
+  "domain": "generic",
+  "expected": {
+    "reason_codes": [
+      "DELEGATION_AUTHORITY_INVALID"
+    ],
+    "status": "rejected"
+  },
+  "id": "AVB-DELEG-010",
+  "input": {
+    "record": {
+      "authority_ceiling": {
+        "max_delegation_depth": 0,
+        "max_risk_level": "L2",
+        "max_side_effect": "internal_state",
+        "may_delegate_further": false
+      },
+      "delegate": {
+        "agent_id": "test-runner",
+        "authenticated_identity_ref": "ID-TEST"
+      },
+      "delegation": {
+        "correlation_id": "COR-0042",
+        "expires_at": "2026-09-19T00:00:00Z",
+        "id": "DEL-CHILD-1",
+        "issued_at": "2026-09-14T00:00:00Z",
+        "nonce": "n-child-000000000000001",
+        "parent_delegation_ref": "DEL-ROOT-1",
+        "single_use": false,
+        "source_authority_ref": "AUTH-LEAD-1",
+        "task_id": "AAV-0042"
+      },
+      "delegator": {
+        "agent_id": "build-agent",
+        "authenticated_identity_ref": "ID-BUILD"
+      },
+      "evidence_refs": [
+        "TRACE-1"
+      ],
+      "revocation": {
+        "revocation_ref": null,
+        "status": "active"
+      },
+      "schema_version": "2.0",
+      "scope": {
+        "actions": [
+          "test"
+        ],
+        "data_classes": [
+          "internal"
+        ],
+        "requirements": [
+          "REQ-1"
+        ],
+        "resources": [
+          "ART-1"
+        ],
+        "tools": [
+          "pytest"
+        ]
+      }
+    }
+  },
+  "operation": "delegation",
+  "tags": [],
+  "title": "Unrelated approval used as delegation authority",
+  "trusted": {
+    "authorities": {
+      "AUTH-LEAD-1": {
+        "approval": {
+          "approver": {
+            "authority_source": "quality-unit",
+            "identity": "reviewer-1",
+            "role": "release_owner"
+          },
+          "binding": {
+            "artifact_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "requirement_baseline_id": "BL-1",
+            "resume_token_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+          },
+          "control_refs": [
+            "AV-CONTROL-019"
+          ],
+          "correlation_id": "COR-1",
+          "decided_at": "2026-09-01T00:05:00Z",
+          "decision": "approved",
+          "expires_at": "2027-01-01T00:00:00Z",
+          "gate_id": "gate_2",
+          "id": "APR-1",
+          "issued_at": "2026-09-01T00:00:00Z",
+          "scope": {
+            "action": "release",
+            "data_classes": [
+              "internal"
+            ],
+            "resources": [
+              "ART-1"
+            ]
+          },
+          "task_id": "AAV-0042",
+          "usage": {
+            "consumed_at": null,
+            "reusable": false
+          }
+        },
+        "compatibility": "additive",
+        "fixture_owner": "tests",
+        "migration": "none",
+        "schema_version": "2.0"
+      }
+    },
+    "consumed_nonces": [],
+    "delegations": {
+      "DEL-ROOT-1": {
+        "authority_ceiling": {
+          "max_delegation_depth": 1,
+          "max_risk_level": "L2",
+          "max_side_effect": "internal_state",
+          "may_delegate_further": true
+        },
+        "delegate": {
+          "agent_id": "build-agent",
+          "authenticated_identity_ref": "ID-BUILD"
+        },
+        "delegation": {
+          "correlation_id": "COR-0042",
+          "expires_at": "2026-09-20T00:00:00Z",
+          "id": "DEL-ROOT-1",
+          "issued_at": "2026-09-14T00:00:00Z",
+          "nonce": "n-root-0000000000000001",
+          "parent_delegation_ref": null,
+          "single_use": false,
+          "source_authority_ref": "AUTH-LEAD-1",
+          "task_id": "AAV-0042"
+        },
+        "delegator": {
+          "agent_id": "orchestrator",
+          "authenticated_identity_ref": "ID-ORCH"
+        },
+        "evidence_refs": [
+          "TRACE-1"
+        ],
+        "revocation": {
+          "revocation_ref": null,
+          "status": "active"
+        },
+        "schema_version": "2.0",
+        "scope": {
+          "actions": [
+            "edit",
+            "test"
+          ],
+          "data_classes": [
+            "internal"
+          ],
+          "requirements": [
+            "REQ-1",
+            "REQ-2"
+          ],
+          "resources": [
+            "ART-1",
+            "ART-2"
+          ],
+          "tools": [
+            "fs.write",
+            "pytest"
+          ]
+        }
+      }
+    },
+    "now": "2026-09-15T00:00:00+00:00"
+  }
+}

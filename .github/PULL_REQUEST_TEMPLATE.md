@@ -24,3 +24,17 @@ Describe the problem and the smallest complete change.
 ## Evidence and Risk
 
 List test output, evidence locators, affected draft contracts, and unresolved risks. Write `None` where applicable.
+
+## Normative Change (contracts, schemas, profiles, runtime docs, benchmark)
+
+Answer or write `N/A`:
+
+- What behavior changes?
+- Is the change backward compatible?
+- Which schema/contract version changes (`contracts/versions.yaml`)?
+- Which positive test proves intended behavior?
+- Which negative tests prove failure behavior?
+- Does the conformance corpus / AgileV-Bench change (regenerate with `tools/build_agilev_bench.py`)?
+- Does a runtime implementation need an update?
+- Does an evidence profile need revalidation?
+- [ ] Regenerated derived files: `tools/build_evidence_adapter_catalog.py`, `tools/build_agilev_bench.py`, `tools/build_release_manifest.py`

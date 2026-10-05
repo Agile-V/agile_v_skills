@@ -110,3 +110,91 @@ def test_repository_version_is_referenced_not_duplicated():
     assert "repository_version_line" not in contract
     assert json.loads((ROOT / "package.json").read_text())["version"]
 
+
+# --- Runtime compatibility release verification (AVS-03) -------------------------
+
+def _compat_validator():
+    jsonschema = pytest.importorskip("jsonschema")
+    schema = json.loads((SCHEMAS / "RUNTIME_COMPATIBILITY.schema.json").read_text(encoding="utf-8"))
+    return jsonschema.Draft202012Validator(schema)
+
+
+def _verified_runtime():
+    return {"repository": "Agile-V/agentic_agile_v", "minimum_version": "1.2.3", "verification_status": "verified",
+            "required_capabilities": ["fail_closed_gate_engine"], "notes": "x",
+            "release_verification": {
+                "runtime": {"id": "agentic_agile_v", "repository": "Agile-V/agentic_agile_v", "release": "v1.2.3",
+                            "artifact_digest": "sha256:" + "a" * 64,
+                            "compatibility_manifest_digest": "sha256:" + "b" * 64},
+                "verified_against": {"contracts_commit": "c" * 40, "contract_versions_digest": "sha256:" + "d" * 64,
+                                     "conformance_corpus_digest": "sha256:" + "e" * 64},
+                "results": {"positive": 3, "rejected_as_expected": 20, "mismatches": 0, "skipped": 0},
+                "status": "verified"}}
+
+
+def _compat_with(runtime):
+    compat = _yaml(COMPAT)
+    compat["compatible_runtimes"]["agentic_agile_v"] = runtime
+    return compat
+
+
+def test_compatibility_file_validates_against_schema():
+    assert not list(_compat_validator().iter_errors(_yaml(COMPAT)))
+
+
+def test_verified_requires_immutable_release_identity():
+    validator = _compat_validator()
+    assert not list(validator.iter_errors(_compat_with(_verified_runtime())))
+    branch = _verified_runtime()
+    branch["release_verification"]["runtime"]["release"] = "feature/hardening"
+    assert list(validator.iter_errors(_compat_with(branch)))
+    no_record = _verified_runtime()
+    del no_record["release_verification"]
+    assert list(validator.iter_errors(_compat_with(no_record)))
+
+
+@pytest.mark.parametrize("field, value", [("skipped", 1), ("mismatches", 1), ("positive", 0)])
+def test_verified_cannot_have_skips_mismatches_or_no_positive(field, value):
+    runtime = _verified_runtime()
+    runtime["release_verification"]["results"][field] = value
+    assert list(_compat_validator().iter_errors(_compat_with(runtime)))
+
+
+def test_unverified_cannot_declare_minimum_version_schema():
+    runtime = _verified_runtime()
+    runtime["verification_status"] = "partial"
+    assert list(_compat_validator().iter_errors(_compat_with(runtime)))
+
+
+def _junit(tmp_path, cases):
+    body = "".join(f'<testcase name="test_runtime_matches_reference[{name}]">{extra}</testcase>'
+                   for name, extra in cases)
+    path = tmp_path / "r.xml"
+    path.write_text(f"<testsuites><testsuite>{body}</testsuite></testsuites>")
+    return path
+
+
+IDENTITY = {"id": "agentic_agile_v", "repository": "Agile-V/agentic_agile_v", "release": "v1.2.3",
+            "artifact_digest": "sha256:" + "a" * 64, "compatibility_manifest_digest": "sha256:" + "b" * 64}
+
+
+@pytest.mark.parametrize("cases, identity, expected", [
+    ([("positive", ""), ("state", "")], IDENTITY, "verified"),
+    ([("positive", ""), ("state", "<failure/>")], IDENTITY, "failed"),
+    ([("positive", ""), ("state", "<skipped/>")], IDENTITY, "partial"),
+    ([("positive", "<skipped/>"), ("state", "<skipped/>")], IDENTITY, "unverified"),
+    ([("positive", ""), ("state", "")], dict(IDENTITY, release="main"), "unverified"),
+    ([("positive", ""), ("state", "")], dict(IDENTITY, artifact_digest="abc"), "unverified"),
+])
+def test_record_status_is_conservative(tmp_path, cases, identity, expected):
+    from tools.record_runtime_compatibility import build_record, validate_record
+    record = build_record(junit=_junit(tmp_path, cases), runtime=identity, contracts_commit="c" * 40)
+    assert record["status"] == expected
+    if expected == "verified":
+        assert validate_record(record) == []
+
+
+def test_skipped_runs_are_reported_as_not_executed_in_ci_workflow():
+    text = (ROOT / ".github/workflows/runtime-conformance.yml").read_text()
+    assert "external runtime conformance: NOT EXECUTED" in text
+    assert "workflow_dispatch" in text and "Verify artifact digest" in text

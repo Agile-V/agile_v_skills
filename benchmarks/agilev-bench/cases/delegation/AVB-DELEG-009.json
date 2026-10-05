@@ -1,0 +1,117 @@
+{
+  "benchmark_version": "0.1",
+  "category": "delegation",
+  "domain": "generic",
+  "expected": {
+    "reason_codes": [
+      "DELEGATION_PARENT_UNRESOLVED"
+    ],
+    "status": "rejected"
+  },
+  "id": "AVB-DELEG-009",
+  "input": {
+    "record": {
+      "authority_ceiling": {
+        "max_delegation_depth": 0,
+        "max_risk_level": "L2",
+        "max_side_effect": "internal_state",
+        "may_delegate_further": false
+      },
+      "delegate": {
+        "agent_id": "test-runner",
+        "authenticated_identity_ref": "ID-TEST"
+      },
+      "delegation": {
+        "correlation_id": "COR-0042",
+        "expires_at": "2026-09-19T00:00:00Z",
+        "id": "DEL-CHILD-1",
+        "issued_at": "2026-09-14T00:00:00Z",
+        "nonce": "n-child-000000000000001",
+        "parent_delegation_ref": "DEL-ROOT-1",
+        "single_use": false,
+        "source_authority_ref": "AUTH-LEAD-1",
+        "task_id": "AAV-0042"
+      },
+      "delegator": {
+        "agent_id": "build-agent",
+        "authenticated_identity_ref": "ID-BUILD"
+      },
+      "evidence_refs": [
+        "TRACE-1"
+      ],
+      "revocation": {
+        "revocation_ref": null,
+        "status": "active"
+      },
+      "schema_version": "2.0",
+      "scope": {
+        "actions": [
+          "test"
+        ],
+        "data_classes": [
+          "internal"
+        ],
+        "requirements": [
+          "REQ-1"
+        ],
+        "resources": [
+          "ART-1"
+        ],
+        "tools": [
+          "pytest"
+        ]
+      }
+    }
+  },
+  "operation": "delegation",
+  "tags": [],
+  "title": "Unknown parent delegation",
+  "trusted": {
+    "authorities": {
+      "AUTH-LEAD-1": {
+        "authority": {
+          "authority_ceiling": {
+            "max_delegation_depth": 2,
+            "max_risk_level": "L3",
+            "max_side_effect": "external_state",
+            "may_delegate_further": true
+          },
+          "expires_at": "2026-09-30T00:00:00Z",
+          "holder_identity_ref": "ID-ORCH",
+          "id": "AUTH-LEAD-1",
+          "scope": {
+            "actions": [
+              "edit",
+              "test",
+              "release"
+            ],
+            "data_classes": [
+              "internal",
+              "confidential"
+            ],
+            "requirements": [
+              "REQ-1",
+              "REQ-2",
+              "REQ-3"
+            ],
+            "resources": [
+              "ART-1",
+              "ART-2",
+              "ART-3"
+            ],
+            "tools": [
+              "fs.write",
+              "pytest",
+              "git.push"
+            ]
+          },
+          "status": "active",
+          "task_id": "AAV-0042"
+        }
+      }
+    },
+    "consumed_nonces": [],
+    "delegations": {},
+    "now": "2026-09-15T00:00:00+00:00"
+  }
+}

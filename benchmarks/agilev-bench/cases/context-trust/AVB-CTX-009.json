@@ -1,0 +1,28 @@
+{
+  "benchmark_version": "0.1",
+  "category": "context-trust",
+  "domain": "generic",
+  "expected": {
+    "reason_codes": [
+      "CONTEXT_SOURCE_UNKNOWN"
+    ],
+    "status": "rejected"
+  },
+  "id": "AVB-CTX-009",
+  "input": {
+    "influence": {
+      "context_profile_ref": "CTX-UNREGISTERED",
+      "mode": "activate",
+      "source_ref": "src:AVB-CTX-009",
+      "target": "policy"
+    }
+  },
+  "operation": "context_influence",
+  "tags": [
+    "injection"
+  ],
+  "title": "Unknown source class tries to set policy",
+  "trusted": {
+    "context_profiles": {}
+  }
+}
