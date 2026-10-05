@@ -141,7 +141,7 @@ When separate agents are unavailable, design tests before implementation and use
 | `regulated` | L3/L4, safety-relevant, sensitive, regulated, or externally assured work |
 | `business-preview` | Locally evaluating draft business and executive-governance contracts |
 
-The [Installation Profiles](docs/INSTALL_PROFILES.md) document lists exact skill directories and copy commands. Add one implementation domain when building. Agent Skills may be installed at project or user level, depending on the platform.
+Preferred: install a published [Agent Plugins 1.0](https://agent-plugins.org/specification) package (`agile-v-core`, `agile-v-verified-build`, `agile-v-regulated`, `agile-v-embedded`) from the [GitHub release assets](https://github.com/Agile-V/agile_v_skills/releases) if your client supports Agent Plugins; see [`packaging/agent-plugins/`](packaging/agent-plugins/). Otherwise the [Installation Profiles](docs/INSTALL_PROFILES.md) document lists exact skill directories and copy commands. Add one implementation domain when building. Agent Skills may be installed at project or user level, depending on the platform.
 
 ## Platforms
 

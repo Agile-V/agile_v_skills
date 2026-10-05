@@ -54,6 +54,16 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.governance.adr"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -65,6 +75,14 @@
       "routing": {
         "intent": "Capture AI influence provenance and release evidence for L1+ AI-assisted work.",
         "prerequisites": []
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.ai-influence.inventory"
+        ],
+        "requires": [],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -78,6 +96,16 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.implementation.behavioral-guardrails"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -91,6 +119,17 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.compliance.risk-capa-gates",
+          "org.agile-v.evidence.revalidation"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -104,6 +143,16 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.governance.control-matrix"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -117,6 +166,16 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.validation.gxp-qualification"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -131,6 +190,17 @@
           "agile-v-core",
           "agile-v-control-matrix"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.governance.human-oversight"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle",
+          "org.agile-v.governance.control-matrix"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -144,6 +214,16 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.compliance.sop-binding"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -155,6 +235,15 @@
       "routing": {
         "intent": "Load foundational Agile V values, directives, traceability, and context rules.",
         "prerequisites": []
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.core.lifecycle",
+          "org.agile-v.risk.classification"
+        ],
+        "requires": [],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -168,6 +257,16 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.lifecycle.change-management"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -181,6 +280,16 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.orchestration.pipeline"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -194,6 +303,16 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.product.backlog"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -207,6 +326,16 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.verification.quality-gates"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -221,6 +350,17 @@
           "agile-v-core",
           "logic-gatekeeper"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.implementation.build"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle",
+          "org.agile-v.requirements.gatekeeping"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -232,6 +372,14 @@
       "routing": {
         "intent": "Manage budgets, OKRs, resources, vendors, and operational risk.",
         "prerequisites": []
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.business.operations"
+        ],
+        "requires": [],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -243,6 +391,14 @@
       "routing": {
         "intent": "Provide shared governance primitives and gates for C-Suite orchestrators.",
         "prerequisites": []
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.executive.foundation"
+        ],
+        "requires": [],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -256,6 +412,16 @@
         "prerequisites": [
           "c-suite-foundation"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.executive.briefing"
+        ],
+        "requires": [
+          "org.agile-v.executive.foundation"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -269,6 +435,16 @@
         "prerequisites": [
           "c-suite-foundation"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.executive.ceo"
+        ],
+        "requires": [
+          "org.agile-v.executive.foundation"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -282,6 +458,16 @@
         "prerequisites": [
           "c-suite-foundation"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.executive.cfo"
+        ],
+        "requires": [
+          "org.agile-v.executive.foundation"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -295,6 +481,16 @@
         "prerequisites": [
           "c-suite-foundation"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.executive.coo"
+        ],
+        "requires": [
+          "org.agile-v.executive.foundation"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -308,6 +504,16 @@
         "prerequisites": [
           "c-suite-foundation"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.executive.chro"
+        ],
+        "requires": [
+          "org.agile-v.executive.foundation"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -321,6 +527,16 @@
         "prerequisites": [
           "c-suite-foundation"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.executive.cto"
+        ],
+        "requires": [
+          "org.agile-v.executive.foundation"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -334,6 +550,17 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.compliance.audit",
+          "org.agile-v.evidence.admission"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -349,6 +576,18 @@
           "graph-traceability-agent",
           "build-agent"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.evidence.diff"
+        ],
+        "requires": [
+          "org.agile-v.implementation.build",
+          "org.agile-v.traceability.graph",
+          "org.agile-v.understanding.impact-analysis"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -360,6 +599,14 @@
       "routing": {
         "intent": "Turn research and feedback into traceable hypotheses and candidate requirements.",
         "prerequisites": []
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.requirements.discovery"
+        ],
+        "requires": [],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -371,6 +618,14 @@
       "routing": {
         "intent": "Create or refresh standards-based repository and compliance documentation.",
         "prerequisites": []
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.documentation.repository"
+        ],
+        "requires": [],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -385,6 +640,17 @@
           "build-agent",
           "agile-v-behavioral"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.implementation.build.dart"
+        ],
+        "requires": [
+          "org.agile-v.implementation.behavioral-guardrails",
+          "org.agile-v.implementation.build"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -399,6 +665,18 @@
           "build-agent",
           "agile-v-behavioral"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.implementation.build.embedded",
+          "org.agile-v.implementation.firmware"
+        ],
+        "requires": [
+          "org.agile-v.implementation.behavioral-guardrails",
+          "org.agile-v.implementation.build"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -413,6 +691,17 @@
           "build-agent",
           "agile-v-behavioral"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.implementation.build.js"
+        ],
+        "requires": [
+          "org.agile-v.implementation.behavioral-guardrails",
+          "org.agile-v.implementation.build"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -427,6 +716,17 @@
           "build-agent",
           "agile-v-behavioral"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.implementation.build.nestjs"
+        ],
+        "requires": [
+          "org.agile-v.implementation.behavioral-guardrails",
+          "org.agile-v.implementation.build"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -441,6 +741,17 @@
           "build-agent",
           "agile-v-behavioral"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.implementation.build.python"
+        ],
+        "requires": [
+          "org.agile-v.implementation.behavioral-guardrails",
+          "org.agile-v.implementation.build"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -457,6 +768,19 @@
           "requirement-architect",
           "build-agent"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.traceability.graph"
+        ],
+        "requires": [
+          "org.agile-v.implementation.build",
+          "org.agile-v.requirements.baseline",
+          "org.agile-v.understanding.impact-analysis",
+          "org.agile-v.understanding.system-model"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -470,6 +794,16 @@
         "prerequisites": [
           "venture-strategist"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.business.gtm"
+        ],
+        "requires": [
+          "org.agile-v.business.strategy"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -483,6 +817,16 @@
         "prerequisites": [
           "system-understanding-agent"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.understanding.impact-analysis"
+        ],
+        "requires": [
+          "org.agile-v.understanding.system-model"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -496,6 +840,16 @@
         "prerequisites": [
           "requirement-architect"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.requirements.gatekeeping"
+        ],
+        "requires": [
+          "org.agile-v.requirements.baseline"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -509,6 +863,16 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.operations.observability"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -520,6 +884,14 @@
       "routing": {
         "intent": "Scout technologies, manage prototypes, IP, and innovation transfer.",
         "prerequisites": []
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.business.rd"
+        ],
+        "requires": [],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -533,6 +905,16 @@
         "prerequisites": [
           "test-designer"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.verification.independent"
+        ],
+        "requires": [
+          "org.agile-v.testing.design"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -547,6 +929,17 @@
           "system-understanding-agent",
           "impact-analysis-agent"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.testing.regression-selection"
+        ],
+        "requires": [
+          "org.agile-v.understanding.impact-analysis",
+          "org.agile-v.understanding.system-model"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -560,6 +953,16 @@
         "prerequisites": [
           "red-team-verifier"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.operations.release"
+        ],
+        "requires": [
+          "org.agile-v.verification.independent"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -571,6 +974,14 @@
       "routing": {
         "intent": "Convert product intent, feature concepts, and goals into formal requirements.",
         "prerequisites": []
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.requirements.baseline"
+        ],
+        "requires": [],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -584,6 +995,16 @@
         "prerequisites": [
           "agile-v-core"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.safety.hazard-analysis"
+        ],
+        "requires": [
+          "org.agile-v.core.lifecycle"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -597,6 +1018,16 @@
         "prerequisites": [
           "logic-gatekeeper"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.hardware.schematic"
+        ],
+        "requires": [
+          "org.agile-v.requirements.gatekeeping"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -608,6 +1039,14 @@
       "routing": {
         "intent": "Build reviewable system context from an existing codebase knowledge graph.",
         "prerequisites": []
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.understanding.system-model"
+        ],
+        "requires": [],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -621,6 +1060,16 @@
         "prerequisites": [
           "logic-gatekeeper"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.testing.design"
+        ],
+        "requires": [
+          "org.agile-v.requirements.gatekeeping"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -632,6 +1081,14 @@
       "routing": {
         "intent": "Perform STRIDE and privacy analysis before formalizing requirements.",
         "prerequisites": []
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.security.threat-model"
+        ],
+        "requires": [],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -643,6 +1100,14 @@
       "routing": {
         "intent": "Convert design intent, flows, accessibility, and UX constraints into specifications.",
         "prerequisites": []
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.requirements.ux-spec"
+        ],
+        "requires": [],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -656,6 +1121,16 @@
         "prerequisites": [
           "red-team-verifier"
         ]
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.validation.intended-use"
+        ],
+        "requires": [
+          "org.agile-v.verification.independent"
+        ],
+        "conflicts": [],
+        "supersedes": []
       }
     },
     {
@@ -667,6 +1142,14 @@
       "routing": {
         "intent": "Define business strategy, portfolios, positioning, and fundraising materials.",
         "prerequisites": []
+      },
+      "capabilities": {
+        "provides": [
+          "org.agile-v.business.strategy"
+        ],
+        "requires": [],
+        "conflicts": [],
+        "supersedes": []
       }
     }
   ]

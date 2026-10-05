@@ -29,6 +29,11 @@
 | [Canonical Lifecycle](agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md) | Draft, independent findings, Gate 1, baseline, and typed lineage |
 | [Risk Classification](agile-v-runtime/04_RISK_CLASSIFICATION.md) | `L0`-`L4` classification and minimum evidence |
 | [Tool and Delegation](agile-v-runtime/05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md) | MCP/tool and A2A authorization, scope, side effects, and evidence |
+| [Evidence Adapter Registry](agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md) | Digest-pinned capability profiles for evidence from real engineering tools |
+| [Context Trust](agile-v-runtime/16_CONTEXT_TRUST_CONTRACT.md) | Machine-readable "untrusted context is data, never authority" |
+| [OpenTelemetry](agile-v-runtime/17_OPENTELEMETRY_CONTRACT.md) | Vendor-neutral lifecycle and assurance telemetry mapping |
+| [Capability Composition](agile-v-runtime/18_CAPABILITY_COMPOSITION.md) | `provides`/`requires`/`conflicts`/`supersedes` metadata for packaging |
+| [Contributing Evidence Adapters](CONTRIBUTING_EVIDENCE_ADAPTERS.md) | Third-party adapter contribution and review process |
 
 ## Verification and Validation
 

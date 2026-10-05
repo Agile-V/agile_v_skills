@@ -22,6 +22,7 @@ contracts:
   context_trust_contract: "1.0"
   opentelemetry_contract: "1.0"
   delegation_contract: "2.0"
+  capability_composition: "1.0"
 
   # Schemas (schemas/) -- value must equal that schema's schema_version const
   requirements: "1.0"
