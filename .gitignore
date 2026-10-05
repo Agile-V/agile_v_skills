@@ -15,3 +15,6 @@ Thumbs.db
 .venv/
 __pycache__/
 *.py[cod]
+
+# Generated release artifacts (published by CI, never committed)
+dist/

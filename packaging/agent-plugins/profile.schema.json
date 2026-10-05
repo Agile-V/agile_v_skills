@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/packaging/agent-plugins/profile.schema.json",
+  "title": "Agile-V Agent Plugin distribution profiles",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "agent_plugins_spec", "profiles"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "agent_plugins_spec": {"const": "1.0.0"},
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "channel", "description", "include"],
+        "properties": {
+          "name": {"type": "string", "maxLength": 48, "pattern": "^(?!.*(?:--|\\.\\.))[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?$"},
+          "channel": {"enum": ["stable", "preview"]},
+          "description": {"type": "string", "minLength": 10},
+          "extends": {"type": "string"},
+          "include": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}}
+        }
+      }
+    }
+  }
+}

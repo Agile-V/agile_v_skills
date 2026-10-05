@@ -1,0 +1,14 @@
+# Vendored, unmodified Agent Plugins 1.0.0 schemas. Do not edit these files;
+# tests/test_agent_plugin_profiles.py verifies the digests below.
+upstream: Agent Plugins Specification
+upstream_version: "1.0.0"
+specification: https://agent-plugins.org/specification
+license: Apache-2.0  # schemas are software material per https://github.com/agentplugins/agent-plugins-spec/blob/main/LICENSE.md
+retrieved_at: "2026-10-05"
+files:
+  plugin.schema.json:
+    source_url: https://agent-plugins.org/schemas/1.0.0/plugin.schema.json
+    sha256: 0a4aad95ce337878ad38802ebf0daa3fde76abe3f65400c86bcbb1ec0b3ab883
+  mcp.schema.json:
+    source_url: https://agent-plugins.org/schemas/1.0.0/mcp.schema.json
+    sha256: 6539175bfcdf43085855183e86da40ea94b166547a72b47ae9a0a390516d3acb

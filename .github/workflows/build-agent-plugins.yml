@@ -1,0 +1,64 @@
+name: Build Agent Plugins
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-plugins-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write        # attach release assets
+      id-token: write        # artifact attestation (Sigstore-backed)
+      attestations: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-test.txt
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements-test.txt
+      - name: Validate profiles and composition
+        run: python tools/build_agent_plugins.py --check
+      - name: Build stable packages
+        run: python tools/build_agent_plugins.py --out dist/agent-plugins --zip --commit "$GITHUB_SHA"
+      - name: Package tests
+        run: python -m pytest tests/test_agent_plugin_profiles.py tests/test_agent_plugin_build.py -q
+      - name: Verify checksums
+        working-directory: dist/agent-plugins
+        run: sha256sum --check SHA256SUMS
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: agent-plugins
+          path: |
+            dist/agent-plugins/*.zip
+            dist/agent-plugins/SHA256SUMS
+      - name: Attest package provenance
+        if: github.event_name == 'release'
+        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
+        with:
+          subject-path: dist/agent-plugins/*.zip
+      - name: Attach to GitHub release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh release upload "${{ github.event.release.tag_name }}"
+          dist/agent-plugins/*.zip dist/agent-plugins/SHA256SUMS --clobber
