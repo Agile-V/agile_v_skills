@@ -1,7 +1,7 @@
 {
   "agent_plugin_profiles_digest": "sha256:5fefd87e2a4852a62338b82ec9d9d6e8a7c502fd5f33f7c4ccdccb52adc112dc",
   "benchmark_corpus_digest": "sha256:9c8a2dfbe886615eda36d220855ebbba3ac0f6040e2117f6062a6a1371906b99",
-  "catalog_content_digest": "sha256:7dbaa18d93a11356d37e95253b678a8d104164aa56f30532a2c3e5fb53aff4ff",
+  "catalog_content_digest": "sha256:4707fd5b5bbadcff4487aee9331e9fb8d67781795e62f9fe38f8ac0f92618cf7",
   "catalog_ref": "catalog/skills.json",
   "conformance_corpus_digest": "sha256:a6fe97e189129c9e03bd408ab2aa96c1126afd73acdd6eb4821ff06b35c0362e",
   "contract_versions_digest": "sha256:5742308e29617fb7c7f07b2d13ee2fb8148aa7e7dce1b7d6852a82ef3895e720",

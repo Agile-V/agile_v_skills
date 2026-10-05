@@ -3,17 +3,19 @@ name: agile-v-aibom
 description: Captures, validates, compares, and summarizes the AI system context that influenced an Agile-V task. Produces AI_RUN_MANIFEST, AI_BOM_EVIDENCE_FRAGMENT, AI_INFLUENCE_SUMMARY, and optional CycloneDX ML-BOM export. Load for any materially AI-influenced task, including L0.
 license: CC-BY-SA-4.0
 metadata:
-  version: "1.5"
+  version: "1.6"
   standard: "Agile V"
   author: agile-v.org
   status: draft
   preview:
     owner: agile-v.org
-    graduation_target: candidate
+    lifecycle_state: candidate
+    graduation_record: ".agile-v/graduation/agile-v-aibom/REVIEW_RECORD.yaml"
+    graduation_target: stable
     graduation_criteria_ref: "docs/agile-v-runtime/13_SKILL_GRADUATION_POLICY.md#2-minimum-requirements-per-state"
     compatibility_declaration: "No additional runtime dependency declared beyond standard Agile V skill loading (agile-v-core); see metadata.requires if present."
     known_limitations:
-      - "Candidate evidence package exists (.agile-v/graduation/agile-v-aibom/: negative tests and two reference end-to-end scenarios in tests/test_aibom_graduation.py), but no authorized reviewer decision is recorded, so the skill is not a candidate."
+      - "Candidate (reviewer decision recorded 2026-10-05); candidates are not released and remain excluded from stable plugin packages. Stable graduation evidence is incomplete."
       - "Confidence 'verified' cannot currently be established: no Evidence Adapter Registry v1 source may establish verified model/runtime identity, so contracts.semantics.evaluate_ai_run_manifest rejects every 'verified' entry."
       - "No external reviewer or independent user feedback recorded."
       - "Contract may change incompatibly between minor versions while in draft status."

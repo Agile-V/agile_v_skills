@@ -3,9 +3,14 @@
 skill: agile-v-aibom
 from_state: draft
 requested_state: candidate
-decision: pending          # pending | approved | rejected
-reviewer: null             # authenticated identity of the authorized reviewer
-reviewed_at: null
+decision: approved         # pending | approved | rejected
+reviewer: KochC            # GitHub-authenticated repository administrator
+reviewed_at: "2026-10-05T22:00:00Z"
+decision_channel: >-
+  Explicit instruction by the reviewer in the OpenCode session that recorded
+  this file; committed via a PR authored under the reviewer's GitHub identity.
 evidence_package: .agile-v/graduation/agile-v-aibom/README.md
 evidence_assembled_by: OpenCode (AI agent) -- see .agile-v/aibom/AAV-20261005-ASSURANCE-HARDENING/AI_RUN_MANIFEST.yaml
-conditions: []
+conditions:
+  - "Candidate is not 'released': the catalog keeps status draft and stable plugin packages keep excluding the skill."
+  - "Stable requires external reviewer feedback, Gate Receipt compatibility and a trusted source able to establish verified identity."
