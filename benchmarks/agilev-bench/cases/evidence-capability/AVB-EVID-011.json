@@ -1,0 +1,247 @@
+{
+  "benchmark_version": "0.1",
+  "category": "evidence-capability",
+  "domain": "generic",
+  "expected": {
+    "reason_codes": [
+      "EVIDENCE_ADMISSION_INCONSISTENT"
+    ],
+    "status": "rejected"
+  },
+  "id": "AVB-EVID-011",
+  "input": {
+    "bundle": {
+      "bundle": {
+        "admission": {
+          "rationale_ref": "GATE-1",
+          "status": "admitted"
+        },
+        "baseline": {
+          "requirement_baseline_id": "BL-1",
+          "requirement_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "subject_state": {
+            "profile_specific": {
+              "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+              "repository_commit": "cccccccccccccccccccccccccccccccccccccccc",
+              "tree_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+            "subject_type": "source_control_commit"
+          }
+        },
+        "claims": [
+          {
+            "claim_id": "CLM-1",
+            "claim_type": "requirement_satisfaction",
+            "object_ref": "REQ-1",
+            "predicate": "satisfies",
+            "required_evidence_properties": [
+              "provenance",
+              "state_binding",
+              "test_result"
+            ],
+            "subject_ref": "ART-1"
+          }
+        ],
+        "environment_binding": {
+          "environment_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "environment_id": "ENV-1",
+          "hardware_revision": null
+        },
+        "evidence": [
+          {
+            "establishes_properties": [
+              "test_result",
+              "state_binding"
+            ],
+            "evidence_id": "EVI-1",
+            "evidence_source": {
+              "adapter_digest": "sha256:013e364dfa4309acc7b99e6c24f9a0cab24b7122868d96bff5a20ad72ca7de05",
+              "adapter_ref": "EAD-pytest-junit-v1",
+              "locators": {
+                "report_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+                "report_uri": "artifact://junit.xml"
+              },
+              "tool_version": "8.3.5"
+            },
+            "evidence_type": "test_result",
+            "integrity": {
+              "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+            },
+            "invalidation_dependencies": [
+              {
+                "kind": "source",
+                "ref": "source_commit"
+              },
+              {
+                "kind": "policy",
+                "ref": "policy_digest"
+              }
+            ],
+            "policy_binding": {
+              "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+            },
+            "producer": {
+              "identity": "ci-runner-primary",
+              "role": "ci",
+              "runtime_ref": "gha-1"
+            },
+            "result": {
+              "status": "pass"
+            },
+            "state_binding": {
+              "profile_specific": {
+                "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+                "source_commit": "cccccccccccccccccccccccccccccccccccccccc"
+              },
+              "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+              "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+              "subject_type": "source_control_commit"
+            },
+            "supports": [
+              "CLM-1"
+            ]
+          }
+        ],
+        "id": "EVD-AAV-0042",
+        "obligations": [],
+        "policy_binding": {
+          "control_matrix_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "policy_id": "POL-1",
+          "policy_version": "2.3"
+        },
+        "residual_risks": [],
+        "risk_level": "L2",
+        "task_id": "AAV-0042"
+      },
+      "compatibility": "additive",
+      "fixture_owner": "tests",
+      "migration": "none",
+      "schema_version": "2.4"
+    }
+  },
+  "operation": "evidence_registry",
+  "tags": [],
+  "title": "pytest alone cannot establish L2 provenance",
+  "trusted": {
+    "historical": false,
+    "registry": {
+      "catalog": {
+        "$schema": "./evidence-adapter-catalog.schema.json",
+        "adapters": [
+          {
+            "adapter_id": "EAD-pytest-junit-v1",
+            "adapter_version": "1",
+            "evidence_type": "test_result",
+            "historical": false,
+            "owner": "Agile-V",
+            "profile_digest": "sha256:013e364dfa4309acc7b99e6c24f9a0cab24b7122868d96bff5a20ad72ca7de05",
+            "profile_path": "profiles/evidence-sources/pytest-junit-v1.yaml",
+            "status": "candidate"
+          }
+        ],
+        "generator": "tools/build_evidence_adapter_catalog.py",
+        "property_profiles": [
+          {
+            "claim_type": "requirement_satisfaction",
+            "owner": "Agile-V",
+            "profile_digest": "sha256:82c12f52a71eacc761fd1bc73e311b64b2ba5734f72bcd717bd53581642a3ed3",
+            "profile_id": "EVP-requirement-satisfaction-L2",
+            "profile_path": "profiles/evidence-properties/requirement-satisfaction-L2.yaml",
+            "risk_level": "L2",
+            "status": "candidate"
+          }
+        ],
+        "registry_contract_version": "1.0",
+        "schema_version": "1.0"
+      },
+      "records": {
+        "profiles/evidence-properties/requirement-satisfaction-L2.yaml": {
+          "compatibility": "additive",
+          "fixture_owner": "Agile-V",
+          "migration": "none",
+          "profile": {
+            "claim_type": "requirement_satisfaction",
+            "known_limitations": [
+              "Independence is enforced by the gate receipt, not by this profile."
+            ],
+            "owner": "Agile-V",
+            "profile_id": "EVP-requirement-satisfaction-L2",
+            "rationale": "L2: result, subject binding and execution provenance (e.g. pytest + CI workflow evidence).",
+            "required_properties": [
+              "provenance",
+              "state_binding",
+              "test_result"
+            ],
+            "risk_level": "L2",
+            "status": "candidate",
+            "superseded_by": null,
+            "supersedes": null
+          },
+          "schema_version": "1.0"
+        },
+        "profiles/evidence-sources/pytest-junit-v1.yaml": {
+          "adapter": {
+            "adapter_id": "EAD-pytest-junit-v1",
+            "adapter_version": "1",
+            "evidence_type": "test_result",
+            "freshness": {
+              "invalidated_by": [
+                "source",
+                "requirement",
+                "environment",
+                "tool"
+              ],
+              "max_age_days": null
+            },
+            "known_limitations": [
+              "A passing report shows that collected tests passed; it does not show that the tests are adequate for the requirement.",
+              "JUnit XML has no native subject digest; state_binding relies on the runner recording the tested commit/build digest."
+            ],
+            "may_establish": [
+              "test_execution",
+              "test_result",
+              "test_case_identity",
+              "execution_timestamp",
+              "state_binding"
+            ],
+            "may_not_establish": [
+              "complete_security",
+              "human_authority",
+              "independent_verification",
+              "intended_use_validation",
+              "organizational_independence",
+              "physical_measurement",
+              "provenance",
+              "regulatory_compliance"
+            ],
+            "minimum_evidence_locators": [
+              "report_uri",
+              "report_digest"
+            ],
+            "owner": "Agile-V",
+            "references": [
+              "https://docs.pytest.org/en/stable/how-to/output.html#creating-junitxml-format-files"
+            ],
+            "source_version_scope": {
+              "format": "JUnit XML",
+              "supported_versions": ">=7.0,<10.0",
+              "tool": "pytest"
+            },
+            "status": "candidate",
+            "superseded_by": null,
+            "supersedes": null,
+            "title": "pytest / JUnit XML test report",
+            "trust_boundary": "isolated-test-job"
+          },
+          "compatibility": "additive",
+          "fixture_owner": "Agile-V",
+          "migration": "none",
+          "schema_version": "1.0"
+        }
+      }
+    }
+  }
+}

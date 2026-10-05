@@ -40,6 +40,10 @@ jobs:
         run: python tools/build_agent_plugins.py --out dist/agent-plugins --zip --commit "$GITHUB_SHA"
       - name: Package tests
         run: python -m pytest tests/test_agent_plugin_profiles.py tests/test_agent_plugin_build.py -q
+      - name: Release manifest
+        run: |
+          python tools/build_release_manifest.py --check
+          python tools/build_release_manifest.py --release-out dist/agent-plugins --plugin-dir dist/agent-plugins
       - name: Verify checksums
         working-directory: dist/agent-plugins
         run: sha256sum --check SHA256SUMS
@@ -50,6 +54,7 @@ jobs:
           path: |
             dist/agent-plugins/*.zip
             dist/agent-plugins/SHA256SUMS
+            dist/agent-plugins/ASSURANCE_RELEASE_MANIFEST.json
       - name: Attest package provenance
         if: github.event_name == 'release'
         uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
@@ -61,4 +66,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: >
           gh release upload "${{ github.event.release.tag_name }}"
-          dist/agent-plugins/*.zip dist/agent-plugins/SHA256SUMS --clobber
+          dist/agent-plugins/*.zip dist/agent-plugins/SHA256SUMS
+          dist/agent-plugins/ASSURANCE_RELEASE_MANIFEST.json --clobber

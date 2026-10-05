@@ -66,6 +66,12 @@ build agents under `domains/`.
 │   ├── build-agent-nestjs/     # NestJS
 │   └── build-agent-python/     # Python
 ├── docs/                   # Guides, attribution, runtime contracts, standards, compliance
+├── contracts/              # versions.yaml registry, runtime compatibility, reference semantics
+├── profiles/               # Evidence-source/property and context-source profiles (policy-side)
+├── benchmarks/agilev-bench/ # Adversarial assurance benchmark corpus
+├── packaging/agent-plugins/ # Agent Plugins 1.0 distribution profiles (packages are generated)
+├── release/                # Assurance release manifest schema and committed digests
+├── tools/                  # Deterministic generators/checkers
 ├── package.json            # Metadata + version only (no deps, no scripts)
 ├── CHANGELOG.md            # Maintained by Release Please
 ├── PERFORMANCE.md          # Reproducible performance measurement method
@@ -74,11 +80,12 @@ build agents under `domains/`.
 
 ## Build / Lint / Test Commands
 
-There is no application build or dependency installation. This repository contains Markdown skills plus JSON schemas and Python schema-validation tests; it has no application source code.
+There is no application build or dependency installation. This repository contains Markdown skills, JSON schemas, the Python reference semantics in `contracts/semantics.py`, deterministic generators/checkers in `tools/`, and tests; it has no application source code and executes no engineering transitions.
 
 - **No `npm install` needed** — `package.json` holds metadata only (no deps).
 - **Validation:** run `python -m pytest tests -q` when Python and the dependencies in `requirements-test.txt` are available; otherwise review frontmatter, JSON schemas, fixtures, links, and content manually.
 - **No linter configured** — no `.eslintrc`, `.prettierrc`, or `.editorconfig`.
+- **Generated files (run after changing their inputs; CI runs `--check`):** `python tools/build_evidence_adapter_catalog.py` (profiles → `catalog/evidence-adapters.json`), `python tools/build_agilev_bench.py` (benchmark corpus), `python tools/build_release_manifest.py` (`release/assurance-digests.json`). `python tools/build_agent_plugins.py --check` validates distribution profiles.
 
 ### Versioning (CI/CD)
 
@@ -182,7 +189,7 @@ for context engineering patterns.
 - **Domain-specific skills** go under `domains/` (e.g., `domains/build-agent-dart/`)
 - **Compliance docs** live in `docs/compliance/` (numbered: `01_`, `02_`, etc.)
 - **Do not create** `node_modules/`, lock files, or build artifacts
-- **Do not add** executable code, scripts, or binaries to this repo
+- **Do not add** executable code, scripts, or binaries to this repo, except reference semantics in `contracts/` and deterministic generators/checkers in `tools/` (no runtime execution, deployment, signing or network side effects)
 
 ## What NOT to Do
 

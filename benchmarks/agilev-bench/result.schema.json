@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/benchmarks/agilev-bench/result.schema.json",
+  "title": "AgileV-Bench per-case result (one JSON object per line)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["benchmark_version", "runtime", "case_id", "expected_status", "actual_status",
+               "expected_reason_codes", "actual_reason_codes", "latency_ms", "notes"],
+  "properties": {
+    "benchmark_version": {"const": "0.1"},
+    "runtime": {
+      "type": "object",
+      "required": ["id", "kind"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["reference", "runtime-release", "runtime-development", "live-agent-platform"]},
+        "release": {"type": "string"},
+        "artifact_digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"}
+      }
+    },
+    "case_id": {"type": "string", "pattern": "^AVB-[A-Z]+-[0-9]{3}$"},
+    "expected_status": {"enum": ["admitted", "rejected", "proposed"]},
+    "actual_status": {"enum": ["admitted", "rejected", "proposed", "error", "not_executed"]},
+    "expected_reason_codes": {"type": "array", "items": {"type": "string"}},
+    "actual_reason_codes": {"type": "array", "items": {"type": "string"}},
+    "latency_ms": {"type": ["number", "null"], "minimum": 0},
+    "token_cost": {"type": ["number", "null"], "minimum": 0},
+    "human_review_time_s": {"type": ["number", "null"], "minimum": 0},
+    "notes": {"type": "string"}
+  }
+}

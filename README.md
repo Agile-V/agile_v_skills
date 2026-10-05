@@ -77,7 +77,9 @@ Choose the smallest profile appropriate to the risk.
 | **Executable contract suite** | Run `python -m pytest tests -q` for the current pass/skip counts; deterministic schema, aggregate admission, and repository tests under [`tests/`](tests/) |
 | **40 evidence schemas** | Requirements, risk, builds, tests, verification, validation, approvals, traceability, controls, delegation, and AI provenance in [`schemas/`](schemas/) |
 | **Five build domains** | [Python](domains/build-agent-python/SKILL.md), [JavaScript/TypeScript](domains/build-agent-js/SKILL.md), [NestJS](domains/build-agent-nestjs/SKILL.md), [Dart/Flutter](domains/build-agent-dart/SKILL.md), and [embedded C/C++](domains/build-agent-embedded/SKILL.md) |
-| **Public runtime contracts** | [Lifecycle](docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md), [risk classification](docs/agile-v-runtime/04_RISK_CLASSIFICATION.md), and [tool/delegation controls](docs/agile-v-runtime/05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md) |
+| **Public runtime contracts** | [Lifecycle](docs/agile-v-runtime/03_CANONICAL_LIFECYCLE_CONTRACT.md), [risk classification](docs/agile-v-runtime/04_RISK_CLASSIFICATION.md), [tool/delegation controls](docs/agile-v-runtime/05_AGENT_TOOL_AND_DELEGATION_CONTRACT.md), [evidence adapter registry](docs/agile-v-runtime/15_EVIDENCE_ADAPTER_REGISTRY.md), [context trust](docs/agile-v-runtime/16_CONTEXT_TRUST_CONTRACT.md), and [OpenTelemetry mapping](docs/agile-v-runtime/17_OPENTELEMETRY_CONTRACT.md) |
+| **Evidence adapter registry** | 15 digest-pinned source profiles (pytest, GitHub Actions, SonarQube, Semgrep, Sigstore, k8s-aibom, KiCad ERC/DRC, Zephyr Twister, Renode, AI provenance sources) in [`profiles/`](profiles/); all `candidate` or `experimental` |
+| **AgileV-Bench v0.1** | 108 self-contained adversarial cases with a reference-semantics runner in [`benchmarks/agilev-bench/`](benchmarks/agilev-bench/); no live-runtime results published |
 | **Reproducible claims policy** | Measurement inputs and methods are defined in [`PERFORMANCE.md`](PERFORMANCE.md) |
 
 [`package.json`](package.json) is the current repository-version source; the
@@ -224,7 +226,12 @@ red-team-verifier/            independent verification
 validation-agent/             separate intended-use validation
 skills/                       existing-repository evidence agents
 catalog/                      machine-readable skill catalog
-schemas/                      18 JSON evidence schemas
+schemas/                      JSON evidence schemas
+profiles/                     evidence-source, evidence-property and context-source profiles
+benchmarks/agilev-bench/      adversarial assurance benchmark corpus
+packaging/agent-plugins/      Agent Plugins 1.0 distribution profiles
+tools/                        deterministic generators and checkers (no runtime execution)
+release/                      assurance release manifest schema and committed digests
 templates/                    reusable project evidence records
 tests/                        deterministic contract tests and fixtures
 docs/                         tutorials, runtime, standards, and compliance

@@ -1,0 +1,96 @@
+{
+  "benchmark_version": "0.1",
+  "category": "revalidation",
+  "domain": "generic",
+  "expected": {
+    "reason_codes": [
+      "REVALIDATION_RESULT_NOT_REUSABLE"
+    ],
+    "status": "rejected"
+  },
+  "id": "AVB-REVAL-001",
+  "input": {
+    "assessment": {
+      "assessment": {
+        "changed_refs": [
+          {
+            "kind": "source",
+            "ref": "changed-source"
+          }
+        ],
+        "conservative_fallback_applied": false,
+        "coverage": "complete",
+        "evaluated_at": "2026-09-13T12:00:00Z",
+        "evaluations": [
+          {
+            "claim_refs": [
+              "CLM-1"
+            ],
+            "evidence_ref": "EVI-1",
+            "result": "STALE"
+          }
+        ],
+        "id": "REVAL-BENCH",
+        "risk_level": "L2",
+        "task_id": "AAV-0042"
+      },
+      "compatibility": "additive",
+      "fixture_owner": "agilev-bench",
+      "migration": "none",
+      "schema_version": "1.2"
+    },
+    "evidence_item": {
+      "establishes_properties": [
+        "provenance",
+        "state_binding",
+        "test_result"
+      ],
+      "evidence_id": "EVI-1",
+      "evidence_source": {
+        "adapter_digest": "sha256:22b32bf40d1a4d5f25b52f3d63e3d7451ae42f0eeead9fa27c2732de404c39b8",
+        "adapter_ref": "EAD-pytest-junit-v1"
+      },
+      "evidence_type": "test_result",
+      "integrity": {
+        "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      "invalidation_dependencies": [
+        {
+          "kind": "source",
+          "ref": "source_ref"
+        },
+        {
+          "kind": "policy",
+          "ref": "policy_ref"
+        }
+      ],
+      "policy_binding": {
+        "policy_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      },
+      "producer": {
+        "identity": "ci-runner-primary",
+        "role": "ci",
+        "runtime_ref": "gha-1"
+      },
+      "result": {
+        "status": "pass"
+      },
+      "state_binding": {
+        "profile_specific": {
+          "build_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "source_commit": "cccccccccccccccccccccccccccccccccccccccc"
+        },
+        "subject_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "subject_ref": "cccccccccccccccccccccccccccccccccccccccc",
+        "subject_type": "source_control_commit"
+      },
+      "supports": [
+        "CLM-1"
+      ]
+    }
+  },
+  "operation": "revalidation_reuse",
+  "tags": [],
+  "title": "Source code changed; evidence depends on source",
+  "trusted": {}
+}

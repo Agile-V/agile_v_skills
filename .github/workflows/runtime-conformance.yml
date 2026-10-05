@@ -1,0 +1,123 @@
+name: Runtime Conformance
+
+# Two modes:
+#  * pull_request / push: informational run against an explicitly configured
+#    development runtime (repository variable AGILEV_TEST_RUNTIME_REPOSITORY).
+#    Never produces a `verified` record. Absent configuration prints
+#    "external runtime conformance: NOT EXECUTED" -- never "passed".
+#  * workflow_dispatch (release verification): downloads an immutable runtime
+#    release artifact, verifies its digest, installs it in a clean virtualenv,
+#    runs tests/test_runtime_conformance.py and emits a compatibility record.
+#    A record is uploaded for review; contracts/AGILE_V_RUNTIME_COMPATIBILITY.yaml
+#    is only updated by a reviewed PR, and only when status == verified.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      runtime_repository:
+        description: "Runtime repository (owner/name)"
+        required: true
+        default: "Agile-V/agentic_agile_v"
+      release_tag:
+        description: "Immutable runtime release tag (e.g. v1.2.3)"
+        required: true
+      artifact_name:
+        description: "Release asset to install (wheel or sdist)"
+        required: true
+      artifact_digest:
+        description: "Expected sha256:<hex> of the release asset"
+        required: true
+      compatibility_manifest_name:
+        description: "Release asset containing the runtime compatibility manifest"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  informational:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TEST_RUNTIME: ${{ vars.AGILEV_TEST_RUNTIME_REPOSITORY }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.11"
+      - name: Report absence of configured runtime
+        if: env.TEST_RUNTIME == ''
+        run: echo "external runtime conformance: NOT EXECUTED (no AGILEV_TEST_RUNTIME_REPOSITORY configured)"
+      - name: Checkout development runtime
+        if: env.TEST_RUNTIME != ''
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: ${{ env.TEST_RUNTIME }}
+          path: runtime
+      - name: Informational conformance run (never 'verified')
+        if: env.TEST_RUNTIME != ''
+        continue-on-error: true
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements-test.txt
+          AGILEV_RUNTIME_CHECKOUT="$PWD/runtime" python -m pytest tests/test_runtime_conformance.py -q -rs \
+            || echo "external runtime conformance: INFORMATIONAL FAILURE (development runtime, not a release)"
+
+  release-verification:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.11"
+      - name: Download immutable release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p runtime-release
+          gh release download "${{ inputs.release_tag }}" --repo "${{ inputs.runtime_repository }}" \
+            --pattern "${{ inputs.artifact_name }}" --pattern "${{ inputs.compatibility_manifest_name }}" \
+            --dir runtime-release
+      - name: Verify artifact digest
+        working-directory: runtime-release
+        run: |
+          actual="sha256:$(sha256sum '${{ inputs.artifact_name }}' | cut -d' ' -f1)"
+          test "$actual" = "${{ inputs.artifact_digest }}" || { echo "artifact digest mismatch: $actual"; exit 1; }
+          echo "MANIFEST_DIGEST=sha256:$(sha256sum '${{ inputs.compatibility_manifest_name }}' | cut -d' ' -f1)" >> "$GITHUB_ENV"
+      - name: Install runtime in a clean virtualenv
+        run: |
+          python -m venv /tmp/runtime-venv
+          /tmp/runtime-venv/bin/python -m pip install --disable-pip-version-check "runtime-release/${{ inputs.artifact_name }}"
+          python -m pip install --disable-pip-version-check -r requirements-test.txt
+      - name: Run conformance against the released runtime
+        continue-on-error: true
+        run: |
+          AGILEV_RUNTIME_PYTHON=/tmp/runtime-venv/bin/python \
+            python -m pytest tests/test_runtime_conformance.py -q -rs --junitxml=runtime-conformance.xml
+      - name: Build compatibility record
+        id: record
+        continue-on-error: true
+        run: |
+          python tools/record_runtime_compatibility.py --junit runtime-conformance.xml \
+            --runtime-id agentic_agile_v --runtime-repository "${{ inputs.runtime_repository }}" \
+            --release "${{ inputs.release_tag }}" --artifact-digest "${{ inputs.artifact_digest }}" \
+            --compatibility-manifest-digest "$MANIFEST_DIGEST" --contracts-commit "$GITHUB_SHA" \
+            --workflow-run "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --out runtime-compatibility-record.json
+      - name: Upload record for review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: runtime-compatibility-record
+          path: |
+            runtime-compatibility-record.json
+            runtime-conformance.xml
+      - name: Fail unless verified
+        if: steps.record.outcome != 'success'
+        run: |
+          echo "Compatibility status is not 'verified'; contracts/AGILE_V_RUNTIME_COMPATIBILITY.yaml must not be updated."
+          exit 1

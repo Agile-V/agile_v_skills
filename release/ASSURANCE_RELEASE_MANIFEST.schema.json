@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agile-v.org/release/ASSURANCE_RELEASE_MANIFEST.schema.json",
+  "title": "Agile-V Assurance Release Manifest",
+  "description": "Binds a release to exact contracts, schemas, skill catalog, registry profiles and conformance corpus. It proves integrity and provenance of these inputs; it does not claim runtime conformance or skill correctness.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["repository", "repository_version", "commit", "source_tree_clean", "contract_versions_ref",
+               "contract_versions_digest", "catalog_ref", "catalog_digest", "catalog_content_digest", "schemas_digest", "schemas",
+               "evidence_adapter_catalog_digest", "profiles_digest", "reference_semantics_digest",
+               "conformance_corpus_digest", "benchmark_corpus_digest", "agent_plugin_profiles_digest",
+               "plugin_artifacts", "runtime_conformance_claim", "generated_at", "generator_version"],
+  "properties": {
+    "repository": {"const": "Agile-V/agile_v_skills"},
+    "repository_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+"},
+    "commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "source_tree_clean": {"type": ["boolean", "null"]},
+    "contract_versions_ref": {"const": "contracts/versions.yaml"},
+    "contract_versions_digest": {"$ref": "#/$defs/digest"},
+    "catalog_ref": {"const": "catalog/skills.json"},
+    "catalog_digest": {"$ref": "#/$defs/digest"},
+    "catalog_content_digest": {"$ref": "#/$defs/digest"},
+    "schemas_digest": {"$ref": "#/$defs/digest"},
+    "schemas": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^schemas/.+\\.schema\\.json$"}},
+    "evidence_adapter_catalog_digest": {"$ref": "#/$defs/digest"},
+    "profiles_digest": {"$ref": "#/$defs/digest"},
+    "reference_semantics_digest": {"$ref": "#/$defs/digest"},
+    "conformance_corpus_digest": {"$ref": "#/$defs/digest"},
+    "benchmark_corpus_digest": {"$ref": "#/$defs/digest"},
+    "agent_plugin_profiles_digest": {"$ref": "#/$defs/digest"},
+    "plugin_artifacts": {
+      "type": "array",
+      "items": {"type": "object", "additionalProperties": false, "required": ["file", "sha256"],
+                "properties": {"file": {"type": "string", "pattern": "\\.zip$"}, "sha256": {"$ref": "#/$defs/digest"}}}
+    },
+    "runtime_conformance_claim": {"const": "none"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "generator_version": {"type": "string"}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"}}
+}

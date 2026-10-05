@@ -63,3 +63,23 @@ Required decision fixtures and synthetic provider boundaries are in
 `tests/admission_support.py`, `tests/test_issue42_trust_closure.py`, and
 `tests/test_runtime_conformance.py`. Routine CI skips the opt-in runtime suite
 if neither runtime location is configured; skipped runs are not conformance.
+
+## Release verification path
+
+`.github/workflows/runtime-conformance.yml` automates step 5 for an
+**immutable runtime release**: it downloads the release asset, verifies its
+SHA-256, installs it into a clean virtualenv, runs
+`tests/test_runtime_conformance.py`, and produces a compatibility record via
+`tools/record_runtime_compatibility.py`. The record binds the runtime release,
+artifact digest, compatibility-manifest digest, skills commit,
+`contracts/versions.yaml` digest and conformance-corpus digest.
+`schemas/RUNTIME_COMPATIBILITY.schema.json` makes `verified` structurally
+impossible without an immutable release tag, artifact digests, at least one
+positive case and zero mismatches or skips. Pull-request runs are
+informational only; when no runtime is configured they report
+`external runtime conformance: NOT EXECUTED`. The compatibility declaration
+is updated only by a reviewed PR carrying a `verified` record.
+
+AgileV-Bench v0.1 (`benchmarks/agilev-bench/`) extends the corpus available to
+runtimes; runtimes may publish scored results with `tools/run_agilev_bench.py --score`.
+No runtime result is published for v0.1.

@@ -1,0 +1,888 @@
+{
+  "benchmark": "AgileV-Bench",
+  "benchmark_version": "0.1",
+  "case_count": 108,
+  "case_schema": "benchmark.schema.json",
+  "cases": [
+    {
+      "category": "ai-provenance",
+      "domain": "generic",
+      "id": "AVB-AIPROV-001",
+      "operation": "ai_run_manifest",
+      "path": "cases/ai-provenance/AVB-AIPROV-001.json",
+      "sha256": "sha256:a77052da492a2a90ed00e69d9cd25f9ff31c8b1619e00473463ab25ce7b16466"
+    },
+    {
+      "category": "ai-provenance",
+      "domain": "generic",
+      "id": "AVB-AIPROV-002",
+      "operation": "ai_run_manifest",
+      "path": "cases/ai-provenance/AVB-AIPROV-002.json",
+      "sha256": "sha256:8081432ca38c909db14ee4ea2bcc0014acada874abfec7b940928d08a2b1d136"
+    },
+    {
+      "category": "ai-provenance",
+      "domain": "generic",
+      "id": "AVB-AIPROV-003",
+      "operation": "ai_run_manifest",
+      "path": "cases/ai-provenance/AVB-AIPROV-003.json",
+      "sha256": "sha256:87e0fd16707373e409b71b83e09c7a1feeb0596bd12a8f0f472457ec03beeee9"
+    },
+    {
+      "category": "ai-provenance",
+      "domain": "generic",
+      "id": "AVB-AIPROV-004",
+      "operation": "ai_run_manifest",
+      "path": "cases/ai-provenance/AVB-AIPROV-004.json",
+      "sha256": "sha256:68b0f81d64f489039179bd6d1b8e80b2d5e10f951fc3926596b15fe1d4c2b797"
+    },
+    {
+      "category": "approvals",
+      "domain": "generic",
+      "id": "AVB-APPR-001",
+      "operation": "gate_transition",
+      "path": "cases/approvals/AVB-APPR-001.json",
+      "sha256": "sha256:ce705c831047d4df7ce1ea1349da38e64dba13dc1df71c32680699ba38579819"
+    },
+    {
+      "category": "approvals",
+      "domain": "generic",
+      "id": "AVB-APPR-002",
+      "operation": "gate_transition",
+      "path": "cases/approvals/AVB-APPR-002.json",
+      "sha256": "sha256:e42757058f039c7b09cca5ecbeb99436121cf702b9ed49be25ad99696befe7b7"
+    },
+    {
+      "category": "approvals",
+      "domain": "generic",
+      "id": "AVB-APPR-003",
+      "operation": "gate_transition",
+      "path": "cases/approvals/AVB-APPR-003.json",
+      "sha256": "sha256:b09028946fe08a7284aee5fc36f5f21b4a8bebefd80ac8ec87173f0af3f56fb6"
+    },
+    {
+      "category": "approvals",
+      "domain": "generic",
+      "id": "AVB-APPR-004",
+      "operation": "gate_transition",
+      "path": "cases/approvals/AVB-APPR-004.json",
+      "sha256": "sha256:01ce12c4c35292bc082136161136dfa8263f788483ecdbd7b73e20280c057a93"
+    },
+    {
+      "category": "approvals",
+      "domain": "generic",
+      "id": "AVB-APPR-005",
+      "operation": "gate_transition",
+      "path": "cases/approvals/AVB-APPR-005.json",
+      "sha256": "sha256:83efb9084109b105fbfd170327e8f620a68d09511ddb0d5fee5f556a1fb1abf3"
+    },
+    {
+      "category": "approvals",
+      "domain": "generic",
+      "id": "AVB-APPR-006",
+      "operation": "gate_transition",
+      "path": "cases/approvals/AVB-APPR-006.json",
+      "sha256": "sha256:ae9000277416f83c744ba38a9cdddf24274e0ad6ae946c3547fe4a346c0373b2"
+    },
+    {
+      "category": "approvals",
+      "domain": "generic",
+      "id": "AVB-APPR-007",
+      "operation": "gate_transition",
+      "path": "cases/approvals/AVB-APPR-007.json",
+      "sha256": "sha256:4d5074be99d8d2bbe7f39e9295afc12fffd664b1ae995fcd014cfd246531c2a4"
+    },
+    {
+      "category": "approvals",
+      "domain": "generic",
+      "id": "AVB-APPR-008",
+      "operation": "gate_transition",
+      "path": "cases/approvals/AVB-APPR-008.json",
+      "sha256": "sha256:729912309eb555cf08030a76291d544de6a132daa5fb2021b2d920d43a61400f"
+    },
+    {
+      "category": "approvals",
+      "domain": "generic",
+      "id": "AVB-APPR-009",
+      "operation": "gate_transition",
+      "path": "cases/approvals/AVB-APPR-009.json",
+      "sha256": "sha256:395774893918a7a0269a979a56c0a2b5e9a74a010546e6b9764cc89b1cafa8fd"
+    },
+    {
+      "category": "approvals",
+      "domain": "generic",
+      "id": "AVB-APPR-010",
+      "operation": "gate_transition",
+      "path": "cases/approvals/AVB-APPR-010.json",
+      "sha256": "sha256:471872c04c7006dfdcd9940d70986f981d64eec14a86f90624d63d57fc56f322"
+    },
+    {
+      "category": "approvals",
+      "domain": "generic",
+      "id": "AVB-APPR-011",
+      "operation": "gate_transition",
+      "path": "cases/approvals/AVB-APPR-011.json",
+      "sha256": "sha256:aed368129a172beaae15cc932c424b99235e5afd1f2f35c883bc44720ea7bfaf"
+    },
+    {
+      "category": "approvals",
+      "domain": "generic",
+      "id": "AVB-APPR-012",
+      "operation": "gate_transition",
+      "path": "cases/approvals/AVB-APPR-012.json",
+      "sha256": "sha256:30a98ddda999b3b05dca31532d234a19ea8fb96092c3a05f19e5714040fe1dd4"
+    },
+    {
+      "category": "contradiction",
+      "domain": "generic",
+      "id": "AVB-CONTRA-001",
+      "operation": "gate_transition",
+      "path": "cases/contradiction/AVB-CONTRA-001.json",
+      "sha256": "sha256:f96e56547f21a11a45b444d06c766f0a100285b70c425c981336c3d774ff3aaf"
+    },
+    {
+      "category": "contradiction",
+      "domain": "generic",
+      "id": "AVB-CONTRA-002",
+      "operation": "gate_transition",
+      "path": "cases/contradiction/AVB-CONTRA-002.json",
+      "sha256": "sha256:5ecc06e4703323643572c6c1b2fb95633bfc368073f74b2ef2edc1f6f9cad832"
+    },
+    {
+      "category": "contradiction",
+      "domain": "generic",
+      "id": "AVB-CONTRA-003",
+      "operation": "gate_transition",
+      "path": "cases/contradiction/AVB-CONTRA-003.json",
+      "sha256": "sha256:30e3146d80ba239458f55f6043d2eac4d930d0ccf6718146d93bdb362daec3c3"
+    },
+    {
+      "category": "contradiction",
+      "domain": "generic",
+      "id": "AVB-CONTRA-004",
+      "operation": "gate_transition",
+      "path": "cases/contradiction/AVB-CONTRA-004.json",
+      "sha256": "sha256:d651389a3cbf3405f8ce619bff269f5da201beef9705a45d42c720895114bc7d"
+    },
+    {
+      "category": "contradiction",
+      "domain": "generic",
+      "id": "AVB-CONTRA-005",
+      "operation": "gate_transition",
+      "path": "cases/contradiction/AVB-CONTRA-005.json",
+      "sha256": "sha256:f49ccc997c1aaff5f9ef45243180a8ae793ef99e51fa13496417308967a857c4"
+    },
+    {
+      "category": "context-trust",
+      "domain": "generic",
+      "id": "AVB-CTX-001",
+      "operation": "context_influence",
+      "path": "cases/context-trust/AVB-CTX-001.json",
+      "sha256": "sha256:6a0b7d0703d81d564a05f092c073e59537b28cc3f7d5b1ab7bd9ebf57b5c7702"
+    },
+    {
+      "category": "context-trust",
+      "domain": "generic",
+      "id": "AVB-CTX-002",
+      "operation": "context_influence",
+      "path": "cases/context-trust/AVB-CTX-002.json",
+      "sha256": "sha256:c298ea593f67da5ea5b3f264174806b4d3bb5540cc29fa7ab768adacd208403d"
+    },
+    {
+      "category": "context-trust",
+      "domain": "generic",
+      "id": "AVB-CTX-003",
+      "operation": "context_influence",
+      "path": "cases/context-trust/AVB-CTX-003.json",
+      "sha256": "sha256:9b4a697328e92058dbe6e8ab0c5fd28e662f7af70225b4d86acda8cf162dbea0"
+    },
+    {
+      "category": "context-trust",
+      "domain": "generic",
+      "id": "AVB-CTX-004",
+      "operation": "context_influence",
+      "path": "cases/context-trust/AVB-CTX-004.json",
+      "sha256": "sha256:cc0e60860c73efe8ecab9dce10b65445f2f370b30dcc48b04bbb19fed5446dea"
+    },
+    {
+      "category": "context-trust",
+      "domain": "generic",
+      "id": "AVB-CTX-005",
+      "operation": "context_influence",
+      "path": "cases/context-trust/AVB-CTX-005.json",
+      "sha256": "sha256:2859f5b2826981f883fafeb98a7dff49e20699356e92e8db417dd829df71b15b"
+    },
+    {
+      "category": "context-trust",
+      "domain": "generic",
+      "id": "AVB-CTX-006",
+      "operation": "context_influence",
+      "path": "cases/context-trust/AVB-CTX-006.json",
+      "sha256": "sha256:6c225804dd316a39c6772998fb1aa715ea4c279ea760b96aa7ca3539d4541d70"
+    },
+    {
+      "category": "context-trust",
+      "domain": "generic",
+      "id": "AVB-CTX-007",
+      "operation": "context_influence",
+      "path": "cases/context-trust/AVB-CTX-007.json",
+      "sha256": "sha256:0996e3895c810e57b9d1f440965b9f46202763624e9a41e0761f57454efed694"
+    },
+    {
+      "category": "context-trust",
+      "domain": "generic",
+      "id": "AVB-CTX-008",
+      "operation": "context_influence",
+      "path": "cases/context-trust/AVB-CTX-008.json",
+      "sha256": "sha256:71fd77cd3e73d992fbe59d657787db2d4dbd740b54cf4b76ae0ce484701ba852"
+    },
+    {
+      "category": "context-trust",
+      "domain": "generic",
+      "id": "AVB-CTX-009",
+      "operation": "context_influence",
+      "path": "cases/context-trust/AVB-CTX-009.json",
+      "sha256": "sha256:2e5b7599383cb115a42accd6bef4d9f1145afb7a11598009b0eccb054e39e089"
+    },
+    {
+      "category": "context-trust",
+      "domain": "generic",
+      "id": "AVB-CTX-010",
+      "operation": "context_influence",
+      "path": "cases/context-trust/AVB-CTX-010.json",
+      "sha256": "sha256:65c291ee3dea110a709ee9500f290e2d2c775a9f9cf37b3ed2bc47d3634a445a"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-001",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-001.json",
+      "sha256": "sha256:654c806fc2b52d622b9ffca7556420729c83e16dd82ccaa724bfb27a06f7b805"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-002",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-002.json",
+      "sha256": "sha256:923336a6084199ab2be83be2e9f239be0bf8195180f10d82e8fd3a75c9ca6232"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-003",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-003.json",
+      "sha256": "sha256:71fe2c1fb2c9dc748b83e7de0db8c8e464d9701957504373742d5391ea10ee1a"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-004",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-004.json",
+      "sha256": "sha256:cfe0448a9e0fc6163d8db16305dc63261b74fce0a2451528d7501655ab24013d"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-005",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-005.json",
+      "sha256": "sha256:3ca095d24aa863572680b961f850dea43341e01f057e1906b3a5868e1afff59a"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-006",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-006.json",
+      "sha256": "sha256:f19742abe1ff351b18d6e6af0596340c8463021c40f809b50c0fc37a893bdce2"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-007",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-007.json",
+      "sha256": "sha256:6ff95a6127fcc379d8b0718fae4bf869b6036fa2c02949c8ea0a5f826d12aaad"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-008",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-008.json",
+      "sha256": "sha256:3e9a75e0685ab202da6a4abb545912e2a1fa0254160c150f6b0a752527acd3bd"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-009",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-009.json",
+      "sha256": "sha256:5e950d3fb4d4ec1afed653ec96dbc8614e059148b8e2e204b21cbd06721f8b01"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-010",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-010.json",
+      "sha256": "sha256:0eba902b392347d07f0ce8cf9a4ca1f67b974bb6299a4feac40f05e697928fd0"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-011",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-011.json",
+      "sha256": "sha256:61775c5971bef572e2634e3384cc9fa3417cef39f9faeb95191a909b91d5c23d"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-012",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-012.json",
+      "sha256": "sha256:b291bd678eb0559eaa9ac37e1234cda8b434ab55087c49dd7ccbd86c4549b48a"
+    },
+    {
+      "category": "delegation",
+      "domain": "generic",
+      "id": "AVB-DELEG-013",
+      "operation": "delegation",
+      "path": "cases/delegation/AVB-DELEG-013.json",
+      "sha256": "sha256:7ec48b9850d1d7014f8df0bb3f8dc8fd06b0481fff21e4046d19373e0145a8a1"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "software",
+      "id": "AVB-EVID-001",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-001.json",
+      "sha256": "sha256:58e6539b22567a48969bf9894881608484c0320ed2b33f577fad45d34aac1d5b"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-002",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-002.json",
+      "sha256": "sha256:e104c633ebc5e747c312a81a42bb037f5f9a43515637f33260620099ff91e29c"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-003",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-003.json",
+      "sha256": "sha256:758889ac93daabe3802070102de2bb193b9c977d1959da270ab913e940f0f34d"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-004",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-004.json",
+      "sha256": "sha256:c97debaeab5d7941fd30faa9997b1583b20ee17017b9375c2d2baa8ba380402a"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-005",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-005.json",
+      "sha256": "sha256:95781aabfce85b7a0bb3140e15ca85d17908f728499b294a86356d7405078e01"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-006",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-006.json",
+      "sha256": "sha256:b7c1c350cbf09487b5eef15db3dd0c17002ddb851bb622a94c553a62efcdb42c"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-007",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-007.json",
+      "sha256": "sha256:9f0908e183b4d15351c3f04309b4d072714531abe136e8e7928a26001ebf59cb"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-008",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-008.json",
+      "sha256": "sha256:e6d3a9fefd92e7ff5bdbadb31b8223fd338f9a7580d1a9d8d974cb570fbba5a5"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-009",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-009.json",
+      "sha256": "sha256:dbfe91e91860bbd82255435d5bc75fc58f132ce158ef5468bc2e69ed7cd78873"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-010",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-010.json",
+      "sha256": "sha256:7cd4dfd59a89d7770368cb1e18e9c442eba09519dd523e9eb9385f23e009832a"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-011",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-011.json",
+      "sha256": "sha256:00d8b89b21fff495043dd533bc3ea4af6270b8b919f8e947ac45c457318091c7"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-012",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-012.json",
+      "sha256": "sha256:a77260e269f621826940edf1bb3b039bff4a70af96d0b1d3a3529f7f0bc7b80e"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-013",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-013.json",
+      "sha256": "sha256:1da2bea679ea80cf6d6438baf69dadfd1a5a68c71948d401061cc8002a2d66bc"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-014",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-014.json",
+      "sha256": "sha256:6884b79f49f569d66a6c0cb8c18bd15c0db212ba48999d4b8f6d41751a7fb322"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-015",
+      "operation": "evidence_registry",
+      "path": "cases/evidence-capability/AVB-EVID-015.json",
+      "sha256": "sha256:5f6339f74fda9f493907a347557627368e9b67f31c48c52db76a0b25afc5bc99"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-016",
+      "operation": "gate_transition",
+      "path": "cases/evidence-capability/AVB-EVID-016.json",
+      "sha256": "sha256:3296e0236006c9ac0e4a3cfda6135bbe4c5dc915bce290023f05f6f1c7c42277"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-017",
+      "operation": "gate_transition",
+      "path": "cases/evidence-capability/AVB-EVID-017.json",
+      "sha256": "sha256:86cdea40e8994a7823ee5a4aa7ec804a80efe7aba88589b57e93cd85eec40ef5"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-018",
+      "operation": "gate_transition",
+      "path": "cases/evidence-capability/AVB-EVID-018.json",
+      "sha256": "sha256:ebbc62e901ad5fce26846eebe3707256d815def51fa56da6cc5a5e5bc3d8f644"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-019",
+      "operation": "gate_transition",
+      "path": "cases/evidence-capability/AVB-EVID-019.json",
+      "sha256": "sha256:61ac20b3751767bc551804509489585cd0bfff8ed049ecc2dc0c2eefbd982a7c"
+    },
+    {
+      "category": "evidence-capability",
+      "domain": "generic",
+      "id": "AVB-EVID-020",
+      "operation": "gate_transition",
+      "path": "cases/evidence-capability/AVB-EVID-020.json",
+      "sha256": "sha256:8a424b485ff9cac72e948305530c5f0008551e4be9f462c0773eb21fcbc5670b"
+    },
+    {
+      "category": "exceptions",
+      "domain": "generic",
+      "id": "AVB-EXC-001",
+      "operation": "gate_transition",
+      "path": "cases/exceptions/AVB-EXC-001.json",
+      "sha256": "sha256:1b27d0052373d6bd63d3a62187fb0bcbde815f71d9cb82e9a05dfa0807494e6d"
+    },
+    {
+      "category": "exceptions",
+      "domain": "generic",
+      "id": "AVB-EXC-002",
+      "operation": "gate_transition",
+      "path": "cases/exceptions/AVB-EXC-002.json",
+      "sha256": "sha256:ce2060d9d790e3b4487dfbda7c965e318fc036bb3a63d2bf4cbe98d1ce856f15"
+    },
+    {
+      "category": "exceptions",
+      "domain": "generic",
+      "id": "AVB-EXC-003",
+      "operation": "gate_transition",
+      "path": "cases/exceptions/AVB-EXC-003.json",
+      "sha256": "sha256:c16be3d03e976b63953db0d266c64f522e2dd258ec0482ac304c9cd8cc6e4db4"
+    },
+    {
+      "category": "exceptions",
+      "domain": "generic",
+      "id": "AVB-EXC-004",
+      "operation": "gate_transition",
+      "path": "cases/exceptions/AVB-EXC-004.json",
+      "sha256": "sha256:f195902397a00c04906abf25e998ea2e5454787cbef6158817ec6a75b0692feb"
+    },
+    {
+      "category": "exceptions",
+      "domain": "generic",
+      "id": "AVB-EXC-005",
+      "operation": "gate_transition",
+      "path": "cases/exceptions/AVB-EXC-005.json",
+      "sha256": "sha256:b3b88a7c5ae6964c365d3e43bc5e62d4b7191b5d36bad2155b1927ac0905df65"
+    },
+    {
+      "category": "exceptions",
+      "domain": "generic",
+      "id": "AVB-EXC-006",
+      "operation": "gate_transition",
+      "path": "cases/exceptions/AVB-EXC-006.json",
+      "sha256": "sha256:69357a484d995dc7f5a2c26feafeb66f045a0d942f488f8bd49eddb6cdf7040a"
+    },
+    {
+      "category": "independence",
+      "domain": "generic",
+      "id": "AVB-INDEP-001",
+      "operation": "gate_transition",
+      "path": "cases/independence/AVB-INDEP-001.json",
+      "sha256": "sha256:6727b104460cfffb6d6ec8b05e08eb940e43c6a313dbd895a3bb4fa19bbe6497"
+    },
+    {
+      "category": "independence",
+      "domain": "generic",
+      "id": "AVB-INDEP-002",
+      "operation": "gate_transition",
+      "path": "cases/independence/AVB-INDEP-002.json",
+      "sha256": "sha256:38de1ab19a046965abc9a1fa88cf94f03e22fe3646b5b33c9afea7c367ba123b"
+    },
+    {
+      "category": "independence",
+      "domain": "generic",
+      "id": "AVB-INDEP-003",
+      "operation": "gate_transition",
+      "path": "cases/independence/AVB-INDEP-003.json",
+      "sha256": "sha256:dc29bc9906404014b372a5488c3ab550634ebebedf65fb1f95cc1713a2a7ce25"
+    },
+    {
+      "category": "independence",
+      "domain": "generic",
+      "id": "AVB-INDEP-004",
+      "operation": "gate_transition",
+      "path": "cases/independence/AVB-INDEP-004.json",
+      "sha256": "sha256:6967f6b374b026a415b20fab290d195f52a46dbcce143afaf51dad381b81ed8a"
+    },
+    {
+      "category": "independence",
+      "domain": "generic",
+      "id": "AVB-INDEP-005",
+      "operation": "gate_transition",
+      "path": "cases/independence/AVB-INDEP-005.json",
+      "sha256": "sha256:18b827604ae45786001db13d3af91b8d1007b60bed3ca89f4aeb893b11c459e0"
+    },
+    {
+      "category": "independence",
+      "domain": "generic",
+      "id": "AVB-INDEP-006",
+      "operation": "gate_transition",
+      "path": "cases/independence/AVB-INDEP-006.json",
+      "sha256": "sha256:987d428cf5a288ea3540725f9b2ccf496eb6d3f53ecd5f574f7786f7411d9f78"
+    },
+    {
+      "category": "policy-binding",
+      "domain": "generic",
+      "id": "AVB-POLICY-001",
+      "operation": "gate_transition",
+      "path": "cases/policy-binding/AVB-POLICY-001.json",
+      "sha256": "sha256:221c63071b0fe1cdf3ec21cbccab3df2af8b0760067bafe54f69351a370c4fa5"
+    },
+    {
+      "category": "policy-binding",
+      "domain": "generic",
+      "id": "AVB-POLICY-002",
+      "operation": "gate_transition",
+      "path": "cases/policy-binding/AVB-POLICY-002.json",
+      "sha256": "sha256:c3387b86e78a81c06b8c5f7587b55bd8a06656905b4700db761de8b9f4af0560"
+    },
+    {
+      "category": "policy-binding",
+      "domain": "generic",
+      "id": "AVB-POLICY-003",
+      "operation": "gate_transition",
+      "path": "cases/policy-binding/AVB-POLICY-003.json",
+      "sha256": "sha256:cfcd263ed8ab22e5596f278cfb8e0063411908ab8c3a9a805ae78a1b53e1d6d9"
+    },
+    {
+      "category": "policy-binding",
+      "domain": "generic",
+      "id": "AVB-POLICY-004",
+      "operation": "gate_transition",
+      "path": "cases/policy-binding/AVB-POLICY-004.json",
+      "sha256": "sha256:c738d03d77d645e0fa5606d67cbc69f2d0d918185994bb102e4fc3c95c6d451b"
+    },
+    {
+      "category": "policy-binding",
+      "domain": "generic",
+      "id": "AVB-POLICY-005",
+      "operation": "gate_transition",
+      "path": "cases/policy-binding/AVB-POLICY-005.json",
+      "sha256": "sha256:6c8591fa67f28d89ff2c8064472e6ca647c64e51a139f45bb445dc1548eb90ff"
+    },
+    {
+      "category": "policy-binding",
+      "domain": "generic",
+      "id": "AVB-POLICY-006",
+      "operation": "gate_transition",
+      "path": "cases/policy-binding/AVB-POLICY-006.json",
+      "sha256": "sha256:1bc112c7ec63f863ba218015d27a3d8dc78f4486f992e8ccc5eee716de9a68cc"
+    },
+    {
+      "category": "policy-binding",
+      "domain": "generic",
+      "id": "AVB-POLICY-007",
+      "operation": "gate_transition",
+      "path": "cases/policy-binding/AVB-POLICY-007.json",
+      "sha256": "sha256:59eac5b1801ab4c6d453de953155340171b25e660ae0f7647ec99ccdc242b479"
+    },
+    {
+      "category": "revalidation",
+      "domain": "generic",
+      "id": "AVB-REVAL-001",
+      "operation": "revalidation_reuse",
+      "path": "cases/revalidation/AVB-REVAL-001.json",
+      "sha256": "sha256:416e50d2ec48b1ca3f6a1c5cea869cc50b986e81b896e2ba8e4894e2dee71755"
+    },
+    {
+      "category": "revalidation",
+      "domain": "generic",
+      "id": "AVB-REVAL-002",
+      "operation": "revalidation_reuse",
+      "path": "cases/revalidation/AVB-REVAL-002.json",
+      "sha256": "sha256:f8c34239c6fc9c969a2dd71db390257ac209b63d31ef78545bdf33cdbdaabe7c"
+    },
+    {
+      "category": "revalidation",
+      "domain": "generic",
+      "id": "AVB-REVAL-003",
+      "operation": "revalidation_reuse",
+      "path": "cases/revalidation/AVB-REVAL-003.json",
+      "sha256": "sha256:6922c180edef55539145625c238fe6318d57550d512821e9652e9697861f029f"
+    },
+    {
+      "category": "revalidation",
+      "domain": "generic",
+      "id": "AVB-REVAL-004",
+      "operation": "revalidation_reuse",
+      "path": "cases/revalidation/AVB-REVAL-004.json",
+      "sha256": "sha256:2ea2b83d927c341e25fdb43af63d8b4456ffc3ff1ec9c22c76b9c489982aab79"
+    },
+    {
+      "category": "revalidation",
+      "domain": "generic",
+      "id": "AVB-REVAL-005",
+      "operation": "revalidation_reuse",
+      "path": "cases/revalidation/AVB-REVAL-005.json",
+      "sha256": "sha256:26f9f0ea8bf0ceb7136f6f834d8d15a0565398b9fc4b2d4a62a9f4adcd405406"
+    },
+    {
+      "category": "revalidation",
+      "domain": "generic",
+      "id": "AVB-REVAL-006",
+      "operation": "revalidation_reuse",
+      "path": "cases/revalidation/AVB-REVAL-006.json",
+      "sha256": "sha256:3e008e1e3f93df1287499b59292dede54f9324f8af5021ac8a488fb58a4b2843"
+    },
+    {
+      "category": "revalidation",
+      "domain": "firmware",
+      "id": "AVB-REVAL-007",
+      "operation": "revalidation_reuse",
+      "path": "cases/revalidation/AVB-REVAL-007.json",
+      "sha256": "sha256:4821a2f3985bdf48cc1803b1bd656cf7cb8495dca553a3cf3ee969e531001b9f"
+    },
+    {
+      "category": "revalidation",
+      "domain": "generic",
+      "id": "AVB-REVAL-008",
+      "operation": "revalidation_reuse",
+      "path": "cases/revalidation/AVB-REVAL-008.json",
+      "sha256": "sha256:49d051c28e203bcc2dc8c34482c3fc5689306d113a9f35ccd6801d1e4c323556"
+    },
+    {
+      "category": "revalidation",
+      "domain": "generic",
+      "id": "AVB-REVAL-009",
+      "operation": "revalidation_reuse",
+      "path": "cases/revalidation/AVB-REVAL-009.json",
+      "sha256": "sha256:9764a1f5af1959c1f7dfc99aa9beed1b771764861ab2d617cf9b05bad4ba2487"
+    },
+    {
+      "category": "revalidation",
+      "domain": "generic",
+      "id": "AVB-REVAL-010",
+      "operation": "revalidation_reuse",
+      "path": "cases/revalidation/AVB-REVAL-010.json",
+      "sha256": "sha256:cfc370a5174b7b04742fd9a966c944b6dd257869e86707a64c0c7635f489e6c9"
+    },
+    {
+      "category": "revalidation",
+      "domain": "generic",
+      "id": "AVB-REVAL-011",
+      "operation": "revalidation_reuse",
+      "path": "cases/revalidation/AVB-REVAL-011.json",
+      "sha256": "sha256:3de5aab1193ec590d93dfc7818e90c20063b042d5763283c81ef47ed574710ae"
+    },
+    {
+      "category": "revalidation",
+      "domain": "generic",
+      "id": "AVB-REVAL-012",
+      "operation": "revalidation_reuse",
+      "path": "cases/revalidation/AVB-REVAL-012.json",
+      "sha256": "sha256:5a584e00ee3b3c87da6b42a776c1d5d43db6d1451c717e80a0580e625dc13cd6"
+    },
+    {
+      "category": "state-binding",
+      "domain": "software",
+      "id": "AVB-STATE-001",
+      "operation": "gate_transition",
+      "path": "cases/state-binding/AVB-STATE-001.json",
+      "sha256": "sha256:fa2688ef8b86b96629015afec4edb440f02227a590984c6eda0216b1ce9b8ea2"
+    },
+    {
+      "category": "state-binding",
+      "domain": "generic",
+      "id": "AVB-STATE-002",
+      "operation": "gate_transition",
+      "path": "cases/state-binding/AVB-STATE-002.json",
+      "sha256": "sha256:434c1edebf81f8bf0e58e655c39692e2b597a55142c5ff94600b8a58009ac31f"
+    },
+    {
+      "category": "state-binding",
+      "domain": "generic",
+      "id": "AVB-STATE-003",
+      "operation": "gate_transition",
+      "path": "cases/state-binding/AVB-STATE-003.json",
+      "sha256": "sha256:518b1d4233a51d844c04cb79761b74cb1d282875192a193936e597748af0379f"
+    },
+    {
+      "category": "state-binding",
+      "domain": "generic",
+      "id": "AVB-STATE-004",
+      "operation": "gate_transition",
+      "path": "cases/state-binding/AVB-STATE-004.json",
+      "sha256": "sha256:f8db06bc69c462647bcacf2bfca06ff28dfaacda9dac687d3503a98619c22ede"
+    },
+    {
+      "category": "state-binding",
+      "domain": "generic",
+      "id": "AVB-STATE-005",
+      "operation": "gate_transition",
+      "path": "cases/state-binding/AVB-STATE-005.json",
+      "sha256": "sha256:51abfcb061714981035adb7471f24e7adb40a5c5698f7ed3362d4fba284953f5"
+    },
+    {
+      "category": "state-binding",
+      "domain": "generic",
+      "id": "AVB-STATE-006",
+      "operation": "gate_transition",
+      "path": "cases/state-binding/AVB-STATE-006.json",
+      "sha256": "sha256:586dda2ec9218e183f1ce63a3b7254ade1951653d3e65540657ec272b0f6ae7b"
+    },
+    {
+      "category": "state-binding",
+      "domain": "generic",
+      "id": "AVB-STATE-007",
+      "operation": "gate_transition",
+      "path": "cases/state-binding/AVB-STATE-007.json",
+      "sha256": "sha256:5f5c95f5085b4c7c59e1a8bf8cc50dbc20a12702b37a990e6d608dd7c225d24c"
+    },
+    {
+      "category": "cross-domain",
+      "domain": "software",
+      "id": "AVB-XDOM-001",
+      "operation": "gate_transition",
+      "path": "cases/cross-domain/AVB-XDOM-001.json",
+      "sha256": "sha256:9f1ee045e6439ad2902575626eef8dd63704e3da63498976cad7f8257093883c"
+    },
+    {
+      "category": "cross-domain",
+      "domain": "software",
+      "id": "AVB-XDOM-002",
+      "operation": "gate_transition",
+      "path": "cases/cross-domain/AVB-XDOM-002.json",
+      "sha256": "sha256:c0f419d80567f3187d0e9fbc36ea7c09694e058e08d727d59ed8630211d9712b"
+    },
+    {
+      "category": "cross-domain",
+      "domain": "firmware",
+      "id": "AVB-XDOM-003",
+      "operation": "gate_transition",
+      "path": "cases/cross-domain/AVB-XDOM-003.json",
+      "sha256": "sha256:5a39ad4b6b2d0e4d913ad9384f532c42e4c4c1bbae4b63c9335ddeeb011314ba"
+    },
+    {
+      "category": "cross-domain",
+      "domain": "firmware",
+      "id": "AVB-XDOM-004",
+      "operation": "gate_transition",
+      "path": "cases/cross-domain/AVB-XDOM-004.json",
+      "sha256": "sha256:ee331d64fb8fc0abec61a06bf146b84731e913408edb1c5970f5050c137bc2bd"
+    },
+    {
+      "category": "cross-domain",
+      "domain": "pcb",
+      "id": "AVB-XDOM-005",
+      "operation": "gate_transition",
+      "path": "cases/cross-domain/AVB-XDOM-005.json",
+      "sha256": "sha256:4f62521f7c387959c716359aa225ae18c4af723d3456cb8e16fd3fa9a81402b7"
+    },
+    {
+      "category": "cross-domain",
+      "domain": "pcb",
+      "id": "AVB-XDOM-006",
+      "operation": "gate_transition",
+      "path": "cases/cross-domain/AVB-XDOM-006.json",
+      "sha256": "sha256:b61f5ac1f34b835137e60fc12ccf9147880ea2f80db7dfd447baf9c0e113c67f"
+    }
+  ],
+  "categories": {
+    "ai-provenance": 4,
+    "approvals": 12,
+    "context-trust": 10,
+    "contradiction": 5,
+    "cross-domain": 6,
+    "delegation": 13,
+    "evidence-capability": 20,
+    "exceptions": 6,
+    "independence": 6,
+    "policy-binding": 7,
+    "revalidation": 12,
+    "state-binding": 7
+  },
+  "corpus_digest": "sha256:9c8a2dfbe886615eda36d220855ebbba3ac0f6040e2117f6062a6a1371906b99",
+  "result_schema": "result.schema.json"
+}

@@ -1,0 +1,56 @@
+{
+  "benchmark_version": "0.1",
+  "category": "context-trust",
+  "domain": "generic",
+  "expected": {
+    "reason_codes": [
+      "CONTEXT_AUTHORITY_ESCALATION"
+    ],
+    "status": "rejected"
+  },
+  "id": "AVB-CTX-006",
+  "input": {
+    "influence": {
+      "context_profile_ref": "CTX-GENERATED-WIKI",
+      "mode": "activate",
+      "source_ref": "src:AVB-CTX-006",
+      "target": "risk_level"
+    }
+  },
+  "operation": "context_influence",
+  "tags": [
+    "injection"
+  ],
+  "title": "Generated wiki page changes the risk level",
+  "trusted": {
+    "context_profiles": {
+      "CTX-GENERATED-WIKI": {
+        "profile": {
+          "default_trust": "untrusted_data",
+          "id": "CTX-GENERATED-WIKI",
+          "injection_sensitive": true,
+          "may_influence": [
+            "implementation_context",
+            "documentation_draft",
+            "issue_discovery"
+          ],
+          "may_not_influence": [
+            "approved_requirement",
+            "risk_level",
+            "policy",
+            "approval",
+            "delegated_authority",
+            "evidence_source_profile",
+            "evidence_property_profile",
+            "gate_decision"
+          ],
+          "may_propose": [],
+          "notes": "Generated documentation never overrides frozen requirements or policy.",
+          "owner": "Agile-V",
+          "source_class": "generated_wiki"
+        },
+        "schema_version": "1.0"
+      }
+    }
+  }
+}
