@@ -37,7 +37,8 @@ CI fetches the latest runtime BOM artifact and attaches it to Agile-V evidence.
 steps:
   - name: Fetch k8s-aibom
     run: |
-      kubectl get mlbom -n ai-workloads -o json > .agile-v/aibom/${TASK_ID}/k8s_runtime.cdx.json
+      # kubectl-aibom plugin (kubectl krew install aibom); --raw emits the canonical CycloneDX bytes
+      kubectl aibom view <aibom-name> -n ai-workloads --raw > .agile-v/aibom/${TASK_ID}/k8s_runtime.cdx.json
       sha256sum .agile-v/aibom/${TASK_ID}/k8s_runtime.cdx.json
 ```
 
